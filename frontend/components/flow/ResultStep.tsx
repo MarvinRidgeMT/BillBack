@@ -73,10 +73,23 @@ export function ResultStep(props: ResultStepProps) {
 
   return (
     <StepCard step={4} entrance={entrance} reduce={reduce}>
+      {/* Always here, so a screen reader hears the verdict when it lands. */}
+      <p className="sr-only" role="status">
+        {state.phase === "loading" && t("result.checking")}
+        {state.phase === "ready" &&
+          `${t(TITLES[state.data.status])}. ${
+            state.sample
+              ? t("result.sample_note")
+              : t(household === 1 ? "result.fpl_one" : "result.fpl_other", {
+                  pct: Math.round(state.data.percent_of_fpl),
+                  n: household,
+                })
+          } ${t("result.fine")}`}
+      </p>
       {state.phase === "loading" && (
         <>
           <StepHeading key="loading">{t("result.checking_title")}</StepHeading>
-          <p className="status-line" role="status">
+          <p className="status-line" aria-hidden="true">
             <span className="pulse-dot" aria-hidden="true" />
             <span>{t("result.checking")}</span>
           </p>

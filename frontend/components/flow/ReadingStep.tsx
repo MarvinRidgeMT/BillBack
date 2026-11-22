@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ApiError, DEMO_MODE } from "@/lib/api";
 import { confidencePercent, displayField } from "@/lib/format";
 import { hospitalBySlug, matchHospital, NOT_LISTED } from "@/lib/hospitals";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, type Translate } from "@/lib/i18n";
 import { SOFT } from "@/lib/motion";
 import {
   CONFIRM_THRESHOLD,
@@ -61,9 +61,14 @@ export function ReadingStep(props: ReadingStepProps) {
     <StepCard step={2} entrance={entrance} reduce={reduce}>
       {sample && <p className="banner">{t("reading.sample_banner")}</p>}
       <StepHeading>{t("reading.title")}</StepHeading>
+      {/* Always here, so a screen reader hears the change from "reading" to what was found. */}
+      <p className="sr-only" role="status">
+        {state.phase === "loading" && t("reading.status")}
+        {state.phase === "ready" && foundSummary(state.data, t)}
+      </p>
 
       {state.phase === "loading" && (
-        <p className="status-line" role="status">
+        <p className="status-line" aria-hidden="true">
           <span className="pulse-dot" aria-hidden="true" />
           <span>{t("reading.status")}</span>
         </p>
@@ -95,6 +100,18 @@ export function ReadingStep(props: ReadingStepProps) {
   );
 }
 
+function needsCheck(data: BillReadData, name: FieldName): boolean {
+  return data.fields_to_confirm.includes(name) || data.fields[name].confidence < CONFIRM_THRESHOLD;
+}
+
+/** "Done in 2.6 seconds. One detail needs your eyes." */
+function foundSummary(data: BillReadData, t: Translate): string {
+  const count = FIELD_NAMES.filter((name) => needsCheck(data, name)).length;
+  const done = t("reading.done", { seconds: data.seconds.toFixed(1) });
+  if (count === 0) return done;
+  return `${done} ${count === 1 ? t("reading.needs_one") : t("reading.needs_many", { n: count })}`;
+}
+
 /** The five fields, revealed one by one, with anything under 80% sure handed to the patient to fix. */
 function Confirm({
   data,
@@ -106,9 +123,6 @@ function Confirm({
   const baseId = useId();
   const locale = lang === "es" ? "es-US" : "en-US";
 
-  const needsCheck = (name: FieldName) =>
-    data.fields_to_confirm.includes(name) || data.fields[name].confidence < CONFIRM_THRESHOLD;
-  const toCheck = FIELD_NAMES.filter(needsCheck);
 
   const [edits, setEdits] = useState<Partial<Record<FieldName, string>>>({});
   const [revealed, setRevealed] = useState(reduce);
@@ -147,21 +161,11 @@ function Confirm({
     onConfirm({ fields, hospital: chosen });
   }
 
-  const seconds = data.seconds.toFixed(1);
-  const needs =
-    toCheck.length === 0
-      ? ""
-      : toCheck.length === 1
-        ? t("reading.needs_one")
-        : t("reading.needs_many", { n: toCheck.length });
-
   return (
     <>
-      <p className="status-line" role="status">
+      <p className="status-line" aria-hidden="true">
         {revealed ? (
-          <span>
-            {t("reading.done", { seconds })} {needs}
-          </span>
+          <span>{foundSummary(data, t)}</span>
         ) : (
           <>
             <span className="pulse-dot" aria-hidden="true" />
@@ -173,7 +177,7 @@ function Confirm({
       <div>
         {FIELD_NAMES.map((name, i) => {
           const field = data.fields[name];
-          const check = needsCheck(name);
+          const check = needsCheck(data, name);
           const id = `${baseId}-${name}`;
           const shown = valueOf(name);
           return (
@@ -206,7 +210,7 @@ function Confirm({
               )}
               <span className="chip">{t("reading.sure", { pct: confidencePercent(field.confidence) })}</span>
               {check && field.note && (
-                <span className="note" id={`${id}-note`}>
+                <span className="note" id={`${id}-note`} lang={lang === "es" ? "en" : undefined}>
                   {field.note}
                 </span>
               )}

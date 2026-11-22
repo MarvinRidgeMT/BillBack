@@ -491,7 +491,7 @@
   background: var(--ink);
   transform-origin: left;
 }
-.panel h2 {
+.panel h1 {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(32px, 5vw, 44px);
@@ -755,6 +755,12 @@
   outline: none;
   box-shadow: none;
 }
+/* The ring goes on the whole "$ ____" box, not only the bare input inside it. */
+.money:has(input:focus-visible) {
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--ink);
+}
 .verdict {
   display: flex;
   gap: 30px;
@@ -785,11 +791,14 @@
   text-decoration-color: var(--coral);
   text-decoration-thickness: 1.5px;
 }
+/* Small stamp: coral fill behind dark text, so it passes AA (coral text on white doesn't). */
 .mini-bill .stamp {
   width: 62%;
   right: -8%;
   bottom: 4%;
   border-width: 3px;
+  background: var(--coral);
+  color: var(--on-coral);
 }
 .mini-bill .stamp b {
   font-size: 20px;
@@ -858,6 +867,12 @@
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
 }
+/* A link that stands on its own line gets a full 44px touch target. */
+.text-link.tap {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -912,12 +927,10 @@
   html {
     scroll-behavior: auto;
   }
-  .cloud,
-  .scrap,
-  .pulse-dot {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
-  }
-  * {
     transition: none !important;
   }
 }
