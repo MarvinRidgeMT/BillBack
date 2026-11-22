@@ -372,3 +372,149 @@
     transition: none;
   }
 }
+
+/* Charity-care tile map (home page) */
+.charity-map {
+  border-top: 0;
+  padding-top: 0;
+}
+.map-lead {
+  margin: 0 0 20px;
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+.tile-map {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(8, auto);
+  gap: clamp(3px, 0.6vw, 6px);
+  max-width: 760px;
+}
+.tile {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: clamp(4px, 1vw, 10px);
+  background: color-mix(in srgb, var(--mint) 45%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: clamp(8px, 1.4vw, 13px);
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.tile.has {
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 4px 10px -6px rgba(14, 59, 46, 0.45);
+}
+.tile-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px;
+}
+.dot-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.map-dot {
+  width: clamp(10px, 1.6vw, 14px);
+  height: clamp(10px, 1.6vw, 14px);
+  border-radius: 50%;
+  border: 2px solid var(--card);
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(14, 59, 46, 0.25);
+}
+/* A bigger invisible tap target around each small dot. */
+.map-dot:not(.static) {
+  position: relative;
+}
+.map-dot:not(.static)::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+.map-dot:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 2px;
+}
+.map-dot.static {
+  display: inline-block;
+  vertical-align: -1px;
+  cursor: default;
+}
+.band-200 {
+  background: #2f9e6e;
+}
+.band-250 {
+  background: #7cc47f;
+}
+.band-300 {
+  background: #f2b84b;
+}
+.band-400 {
+  background: #ff6b4a;
+}
+.band-none {
+  background: #9aa8a2;
+}
+.map-tip {
+  position: absolute;
+  z-index: 5;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  translate: -50% 0;
+  width: max-content;
+  max-width: min(260px, 70vw);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--card);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: left;
+  box-shadow: 0 10px 24px -10px rgba(14, 59, 46, 0.6);
+}
+.map-tip .text-link {
+  color: var(--card);
+}
+.map-legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding: 0;
+  margin: 18px 0 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.tile[data-edge="left"] .map-tip {
+  left: -8px;
+  translate: 0 0;
+}
+.tile[data-edge="right"] .map-tip {
+  left: auto;
+  right: -8px;
+  translate: 0 0;
+}
+.charity-map .map-lead {
+  max-width: 60ch;
+}
+.charity-map .map-legend li {
+  counter-increment: none;
+  border-top: 0;
+  padding-top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.charity-map .map-legend li::before {
+  content: none;
+}

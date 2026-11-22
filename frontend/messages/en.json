@@ -198,5 +198,21 @@
   "wow.law.where": "This hospital is in {state}",
   "wow.law.lead": "State law:",
   "wow.law.read": "Read the law ({citation})",
-  "wow.law.note": "This may give you more than the hospital's policy. It's information, not legal advice. BillBack's result above uses the hospital's own policy."
+  "wow.law.note": "This may give you more than the hospital's policy. It's information, not legal advice. BillBack's result above uses the hospital's own policy.",
+  "map.title": "Same bill, very different rules",
+  "map.lead": "We've read {n} hospitals' policies so far. Their free-care limits range from {min}% to {max}% of the poverty line.",
+  "map.band_200": "Free care up to 200%",
+  "map.band_250": "Up to 250%",
+  "map.band_300": "Up to 300%",
+  "map.band_400": "Up to 400%",
+  "map.band_none": "Not stated",
+  "map.not_stated": "not stated",
+  "map.dot_label": "{name}, {state}: free care up to {free} of the poverty line",
+  "map.tip_free": "Free care: up to {pct} of the poverty line",
+  "map.tip_discount": "Discounts: up to {pct}",
+  "map.table_caption": "Hospitals whose policies we've read, with their income limits as a percent of the poverty line",
+  "map.col_hospital": "Hospital",
+  "map.col_state": "State",
+  "map.col_free": "Free care up to",
+  "map.col_discount": "Discounts up to"
 }

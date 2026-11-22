@@ -198,5 +198,21 @@
   "wow.law.where": "Este hospital está en {state}",
   "wow.law.lead": "Ley estatal:",
   "wow.law.read": "Leer la ley ({citation})",
-  "wow.law.note": "Esto podría darte más que la política del hospital. Es información, no asesoría legal. El resultado de BillBack arriba usa la política del propio hospital."
+  "wow.law.note": "Esto podría darte más que la política del hospital. Es información, no asesoría legal. El resultado de BillBack arriba usa la política del propio hospital.",
+  "map.title": "La misma factura, reglas muy distintas",
+  "map.lead": "Hasta ahora leímos las políticas de {n} hospitales. Sus límites para atención gratis van del {min}% al {max}% de la línea de pobreza.",
+  "map.band_200": "Gratis hasta el 200%",
+  "map.band_250": "Hasta el 250%",
+  "map.band_300": "Hasta el 300%",
+  "map.band_400": "Hasta el 400%",
+  "map.band_none": "No lo dice",
+  "map.not_stated": "no lo dice",
+  "map.dot_label": "{name}, {state}: atención gratis hasta {free} de la línea de pobreza",
+  "map.tip_free": "Atención gratis: hasta {pct} de la línea de pobreza",
+  "map.tip_discount": "Descuentos: hasta {pct}",
+  "map.table_caption": "Hospitales cuyas políticas leímos, con sus límites de ingreso como porcentaje de la línea de pobreza",
+  "map.col_hospital": "Hospital",
+  "map.col_state": "Estado",
+  "map.col_free": "Gratis hasta",
+  "map.col_discount": "Descuentos hasta"
 }

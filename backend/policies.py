@@ -109,8 +109,24 @@ def load_index() -> tuple[dict[str, Any], ...]:
     return tuple(build_index())
 
 
+def _limits(slug: str) -> dict[str, Any]:
+    """Free-care and discount limits (% of the poverty line) for the charity-care map. Additive fields."""
+    try:
+        rules, _ = load_policy(slug)
+    except (ValueError, LookupError):
+        return {"free_max_percent": None, "discount_max_percent": None}
+    tier_max = [t.fpl_max_percent for t in rules.discount.tiers if t.fpl_max_percent is not None]
+    return {
+        "free_max_percent": rules.free_care.fpl_max_percent,
+        "discount_max_percent": rules.discount.fpl_max_percent or (max(tier_max) if tier_max else None),
+    }
+
+
 def list_hospitals() -> list[dict[str, Any]]:
-    return [{"slug": h["slug"], "name": h["hospital_name"], "state": h["state"]} for h in load_index()]
+    return [
+        {"slug": h["slug"], "name": h["hospital_name"], "state": h["state"], "source_url": h.get("source_url"), **_limits(h["slug"])}
+        for h in load_index()
+    ]
 
 
 def source_url_for(rules: PolicyRules) -> Optional[str]:

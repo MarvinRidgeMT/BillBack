@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, MotionConfig } from "motion/react";
+import { CharityMap } from "@/components/CharityMap";
 import { Footer } from "@/components/Footer";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Nav } from "@/components/Nav";
@@ -206,6 +207,7 @@ function FlowInner() {
         </main>
       </div>
       <HowItWorks />
+      <CharityMap />
       <Footer />
     </MotionConfig>
   );

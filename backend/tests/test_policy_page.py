@@ -94,3 +94,12 @@ def test_state_laws_file_is_complete():
     for row in policy_facts._state_laws().values():
         for key in ("state", "name_en", "name_es", "summary_en", "summary_es", "citation", "url", "checked_on"):
             assert row[key], (row["state"], key)
+
+
+def test_hospitals_list_has_limits_for_the_map():
+    rows = client.get("/api/hospitals").json()["data"]
+    fort = next(r for r in rows if r["slug"] == FORT)
+    assert fort["free_max_percent"] == 200
+    assert fort["discount_max_percent"] == 400
+    assert fort["source_url"].startswith("https://")
+    assert all({"slug", "name", "state", "free_max_percent", "discount_max_percent"} <= set(r) for r in rows)
