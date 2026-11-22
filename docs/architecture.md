@@ -12,11 +12,12 @@ flowchart LR
     G --> H["4 · Patient answers<br/>household size + income"]
     H --> I["5 · Rules engine<br/>plain Python, no AI<br/>2026 HHS poverty guidelines"]
     I --> J["6 · Result<br/>likely free / discounted / not eligible / can't tell<br/>+ exact policy quote, page, link<br/>'Likely eligible, not a guarantee.'"]
+    J --> K["7 · Application PDF<br/>ReportLab, in memory, never saved<br/>request letter + checklist<br/>English or Spanish"]
 ```
 
 **Where AI is used:** only steps 1 and 3, and only to *extract* text into fields. Every extracted value carries a confidence score; policy rules also carry a verbatim quote and page number that code checks against the PDF.
 
-**Where AI is not used:** hospital matching, the poverty-line math, and the eligibility decision (step 5) are plain code with tests.
+**Where AI is not used:** hospital matching, the poverty-line math, the eligibility decision (step 5) and the application PDF (step 7) are plain code with tests.
 
 **We don't save your bill or answers:** the bill image is sent to the AI provider to be read, processed in memory, and discarded by our server. No accounts, no trackers. Only the public hospital policies are cached.
 
