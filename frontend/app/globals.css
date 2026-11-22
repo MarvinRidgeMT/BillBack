@@ -395,6 +395,32 @@
   color: var(--ink);
   text-decoration: underline;
 }
+/* Between phone and wide desktop the bill is a little smaller and further in, so the
+   whole bill and its stamp stay on screen. Its text scales with it. 1440px is unchanged. */
+@media (min-width: 701px) and (max-width: 1280px) {
+  .bill-anchor {
+    left: 84.5%;
+    width: 17.5vw;
+    container-type: inline-size;
+  }
+  .bill .h {
+    font-size: 5cqw;
+  }
+  .bill .s,
+  .bill .bill-row,
+  .bill .due {
+    font-size: 3.9cqw;
+  }
+  .bill .amt {
+    font-size: 10.7cqw;
+  }
+  .bill-anchor .stamp b {
+    font-size: 15.6cqw;
+  }
+  .bill-anchor .stamp span {
+    font-size: 5.7cqw;
+  }
+}
 /* The Spanish headline is longer, so it runs smaller to end before the bill. */
 .hero h1:lang(es) {
   font-size: clamp(46px, 8.2vw, 124px);
@@ -946,6 +972,41 @@
 .next-steps li,
 .caveats li {
   margin: 4px 0;
+}
+.policy-wording {
+  margin-top: 4px;
+  font-size: 15px;
+}
+.policy-wording summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding-right: 8px;
+  border-radius: 8px;
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  list-style: none;
+}
+.policy-wording summary::-webkit-details-marker {
+  display: none;
+}
+.policy-wording summary::before {
+  content: "+";
+  display: inline-block;
+  width: 1ch;
+  font-weight: 700;
+  text-decoration: none;
+}
+.policy-wording[open] summary::before {
+  content: "−";
+}
+.policy-wording .caveats {
+  margin-top: 0;
 }
 .caveats-title {
   font-weight: 500;
