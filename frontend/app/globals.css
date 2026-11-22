@@ -53,7 +53,7 @@
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   --sky-1: light-dark(#cfefe0, #0d2c24);
   --sky-2: light-dark(#eaf8f0, #13392f);
   --mint: light-dark(#bfe6d3, #174236);
