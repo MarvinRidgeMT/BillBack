@@ -1,0 +1,46 @@
+{
+  "policy_id": "HOSP-R019",
+  "hospital_name": "Ochsner Health",
+  "facility_names": [],
+  "state": "LA",
+  "source_url": "https://ochsner-craft.s3.amazonaws.com/www/static/English_OHS.REV.042-1-1-2025-09232025.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "1/1/2025",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "unresolved_home_area_rule",
+          "description": "Policy is unclear about where you need to live; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 1: This policy applies to all patients who are residents of the U.S. and who receive either Professional Services or Technical Services at Ochsner Health, as listed on Attachment D, that are Medically Ne"
+        },
+        {
+          "name": "asset_test",
+          "description": "Eligibility is determined based on Family Income, assets, and family size; no asset thresholds stated.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: Eligibility for Financial Assistance is determined based on the patient's Family Income, assets, and family size."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 3: Ochsner Health shall provide a 100% Financial Assistance discount for eligible services to patients whose Family Income is at 200% of the FPL Guidelines or less.",
+      "priority": 0
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

@@ -24,3 +24,17 @@
 | HOSP-R018 | Mercy Health | MO | FAILED |  |  |  |  | 0.7 | website returned HTTP 404 |
 | HOSP-R019 | Ochsner Health | LA | FAILED |  |  |  |  | 0.7 | website returned HTTP 404 |
 | HOSP-R020 | Ascension | MI | FAILED |  |  |  |  | 0.8 | website returned HTTP 404 |
+
+## Retry of the 6 failures (11:40am, one search per hospital for the current policy PDF)
+
+| id | hospital | new URL tried | result |
+|---|---|---|---|
+| HOSP-R001 | Adventist Health | https://www.adventisthealth.org/documents/system/financial-assistance-policy-california.pdf | FAILED again: HTTP 403 (site blocks automated download) |
+| HOSP-R002 | Los Angeles General Medical Center | https://file.lacounty.gov/SDSInter/dhs/1131808_PolicyDocument.pdf (LA County DHS policy) | ok: free ≤ 200%, discount limit not stated as a %, 1 field to review |
+| HOSP-R015 | Mission Health | none found (policy is a web page, no PDF) | not read: hospital moved the policy off PDF |
+| HOSP-R018 | Mercy Health | https://www.mercy.net/content/dam/mercy/en/pdf/hospital-and-health-services-financial-assistance-program.pdf | ok: free ≤ 200%, discount limit not stated as a %, 3 fields to review |
+| HOSP-R019 | Ochsner Health | https://ochsner-craft.s3.amazonaws.com/www/static/English_OHS.REV.042-1-1-2025-09232025.pdf | ok: free ≤ 200%, discount limit not stated as a %, 2 fields to review |
+| HOSP-R020 | Ascension (Michigan) | none found (only other states' PDFs) | not read: hospital moved the policy |
+
+**After the retry: 17/20 real policies read.** The 3 left are listed under README "Limits" as
+"hospital site blocked automated download or moved the policy." B's `source_url` values in `data/real-policies/` were not changed.

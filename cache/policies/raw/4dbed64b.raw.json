@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Mercy (Mercy Revenue Cycle)",
+  "hospital_state": "MO",
+  "source": null,
+  "policy_effective_date": "8/27/24",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
+      "page": 5,
+      "confidence": 0.5,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": null,
+    "tiers": [],
+    "evidence": {
+      "quote": "Patients who qualify for financial assistance will not be asked to pay more than 21% of the patient’s liability.",
+      "page": 2,
+      "confidence": 0.4,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "other",
+    "evidence": {
+      "quote": "If approved, patient will receive the appropriate financial discount on eligible services that were first billed to the patient in the prior 240 days from the date a completed application is submitted to Mercy.",
+      "page": 4,
+      "confidence": 0.5,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "income_basis": "unclear",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Third-party tool identifies patients at or below 200% FPL with low propensity to pay and grants a 100% charity adjustment for that encounter without an application.",
+  "how_to_apply": "Apply verbally or on paper (www.mercy.net/fa); return to Mercy Health, Attention Financial Assistance, 2115 S Fremont Avenue, Suite 5300, Springfield, MO 65804; Fax 417-829-4604; customer service 855-420-7900.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Exhibit A (FPL table with discount levels by income) is not present in the text, so FPL tier thresholds and the free-care limit for applicants could not be extracted; the 200% FPL figure applies only to presumptive eligibility via the third-party tool, and presumptive eligibility is not used at several communities (JFK, Southwest Missouri, Southeast Missouri, Pittsburg).",
+    "Policy says patients will not pay more than 21% of liability (at least 79% benefit), but no FPL range is given for this discount in the text.",
+    "The 240 days is a look-back for services first billed before the application date, not a clearly stated application deadline; the policy does not state a deadline to apply.",
+    "Policy covers many Mercy communities in MO, AR, OK, KS; JFK Clinic has separate rules in Exhibit B (uninsured only).",
+    "Patients are required to exhaust alternate payment options such as applying for Medicaid before financial assistance is considered.",
+    "Policy is a multi-state system policy; hospital_state set to MO based on the application return address."
+  ]
+}

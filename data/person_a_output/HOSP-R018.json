@@ -1,0 +1,29 @@
+{
+  "policy_id": "HOSP-R018",
+  "hospital_name": "Mercy (Mercy Revenue Cycle)",
+  "facility_names": [],
+  "state": "MO",
+  "source_url": "https://www.mercy.net/content/dam/mercy/en/pdf/hospital-and-health-services-financial-assistance-program.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "8/27/24",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {},
+      "evidence_ref": "Page 5: Mercy will grant these patients financial assistance presumptively, without the requirement of an application.",
+      "priority": 0
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

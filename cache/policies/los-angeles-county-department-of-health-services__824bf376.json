@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Los Angeles County Department of Health Services",
+  "hospital_state": "CA",
+  "source": {
+    "url": "https://file.lacounty.gov/SDSInter/dhs/1131808_PolicyDocument.pdf",
+    "sha256": "824bf376895410ca02043026ab3efdaf38e01883b02bf8a14568298c40deae0e",
+    "retrieved_at": "2026-11-22",
+    "page_count": 31
+  },
+  "policy_effective_date": "06/01/2026",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "Charity care is available for persons with income up to 200% of FPL; however, ATP has no upper income cap for eligibility for discounted care, but liability increases on a sliding scale above 200% FPL.",
+      "page": 3,
+      "confidence": 0.93,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "discount": {
+    "fpl_max_percent": null,
+    "tiers": [
+      {
+        "fpl_min_percent": 200.0,
+        "fpl_max_percent": null,
+        "discount_type": "sliding_scale",
+        "value": null,
+        "description": "ATP (LA County patients): no upper income cap; liability increases on a sliding scale above 200% FPL, not greater than Medicare/Medi-Cal amount for the same service. Specific liability charts are not included."
+      },
+      {
+        "fpl_min_percent": null,
+        "fpl_max_percent": 400.0,
+        "discount_type": "other",
+        "value": null,
+        "description": "DPP (out-of-county patients): income up to 400% FPL; liability not greater than Medi-Cal payment for the service, or 95% of charges if Medi-Cal amount exceeds charges. SSDPP (sensitive services, US residents outside LA County): up to 400% FPL on the ATP sliding scale."
+      }
+    ],
+    "evidence": {
+      "quote": "Charity care is available for persons with income up to 200% of FPL; however, ATP has no upper income cap for eligibility for discounted care, but liability increases on a sliding scale above 200% FPL.",
+      "page": 3,
+      "confidence": 0.6,
+      "status": "unclear",
+      "verified": true
+    }
+  },
+  "asset_test": {
+    "applies": false,
+    "details": "Resources/assets such as bank accounts and real property are not counted in ATP, DPP and SSDPP determinations.",
+    "evidence": {
+      "quote": "Resources/assets (i.e., bank accounts, real property, etc.) are not counted in the determination.",
+      "page": 3,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "ATP is for Los Angeles County residents (including those transitioning to or unhoused in LA County). Out-of-county patients use DPP (up to 400% FPL); SSDPP is for US residents outside LA County.",
+    "evidence": {
+      "quote": "The ATP program is the FAP for LA County patients that offers both free (charity) care and discounted care.",
+      "page": 2,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "application_window": {
+    "days": null,
+    "counted_from": null,
+    "evidence": {
+      "quote": "ATP applications can be made retroactively with no time limitation.",
+      "page": 3,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Patients with Restricted (Limited Scope) Medi-Cal with no share of cost who are LA County patients are presumptively eligible for ATP.",
+  "how_to_apply": "In person or by phone by visiting or calling one of the LA Health Services (DHS) facilities and speaking with Patient Financial Services staff; no specific address or phone number given.",
+  "needs_human_review": true,
+  "review_fields": [
+    "discount"
+  ],
+  "warnings": [
+    "Policy has no application deadline; retroactive applications have no time limitation, so days set to 0.",
+    "Discount ceiling is not a single number: ATP (LA County) has no upper cap above 200% FPL, while DPP and SSDPP for non-LA County patients cap at 400% FPL, so discount.fpl_max_percent is left null.",
+    "ATP liability charts by FPL are not included, so specific discount percentages are unavailable.",
+    "Document includes Policy 530 (collections) and application forms; only Policy 515 was used for eligibility rules.",
+    "Policy is also reproduced in Spanish."
+  ]
+}

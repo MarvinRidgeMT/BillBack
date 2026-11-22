@@ -37,8 +37,8 @@ Say it like this (all true, all measured):
 3. **Please confirm the 7 household detail notes** (193/200 detail match with 2026 numbers; status still 200/200).
    List: `eval/results/households.md`. Mostly an extra "unresolved residency rule" note.
 
-Also new: `eval/results/b_scorer_on_reader_output.md` — your scorer on our 14 real reads converted to your
-`HospitalPolicy` format (`data/person_a_output/`). **Completeness/format score, not accuracy:** avg 85.4/100, 0/14 pass,
+Also new: `eval/results/b_scorer_on_reader_output.md` — your scorer on our 17 real reads converted to your
+`HospitalPolicy` format (`data/person_a_output/`). **Completeness/format score, not accuracy:** avg 86.2/100, 0/17 pass,
 because our schema has no `version` field (and 5 policies state no effective date). We left those null instead of guessing.
 
 Cost note: a new hospital still costs **$0.0528** (target < $0.05, not met). We kept it rather than re-read policies

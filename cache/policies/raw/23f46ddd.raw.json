@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Ochsner Health",
+  "hospital_state": "LA",
+  "source": null,
+  "policy_effective_date": "1/1/2025",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "Ochsner Health shall provide a 100% Financial Assistance discount for eligible services to patients whose Family Income is at 200% of the FPL Guidelines or less.",
+      "page": 3,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": null,
+    "tiers": [
+      {
+        "fpl_min_percent": 201.0,
+        "fpl_max_percent": null,
+        "discount_type": "other",
+        "value": null,
+        "description": "Patients above 200% FPL may be eligible for discounted rates based on specific circumstances (catastrophic illness, medical indigence) at Ochsner's discretion; no fixed income ceiling or discount percentage stated."
+      }
+    ],
+    "evidence": {
+      "quote": "Patients whose Family Income exceeds 200% of the FPL may be eligible to receive discounted rates based on their specific circumstances, such as catastrophic illness or medical indigence, at the discretion of Ochsner Health.",
+      "page": 3,
+      "confidence": 0.6,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Eligibility is determined based on Family Income, assets, and family size; no asset thresholds stated.",
+    "evidence": {
+      "quote": "Eligibility for Financial Assistance is determined based on the patient's Family Income, assets, and family size.",
+      "page": 3,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "Residents of the U.S.",
+    "evidence": {
+      "quote": "This policy applies to all patients who are residents of the U.S. and who receive either Professional Services or Technical Services at Ochsner Health, as listed on Attachment D, that are Medically Necessary and who meet certain eligibility criteria.",
+      "page": 1,
+      "confidence": 0.7,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "A patient has 240 days from the date of the first post-discharge bill for an episode of care to apply for Financial Assistance for that episode of care.",
+      "page": 4,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Uninsured patients may be presumed eligible based on a third-party screening tool, and charges not covered by Medicaid or indigent care programs may be presumed eligible.",
+  "how_to_apply": "Contact Patient Account Customer Service by telephone, email, fax, or written correspondence, or visit the Patient Financial Services Department at Ochsner Health facilities; Patient Financial Services, 1514 Jefferson Highway, New Orleans, LA 70121; application is Attachment B.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Policy covers many facilities across Louisiana and Mississippi (e.g., Rush - Ochsner hospitals); state given as LA for Ochsner Health; rules appear uniform.",
+    "No upper FPL limit for discounts is stated; discounts above 200% FPL are discretionary, so discount.fpl_max_percent is null.",
+    "Amounts Generally Billed discounts (Attachment C) are not included in the provided text; uninsured patients not eligible for financial assistance still get an uninsured discount.",
+    "Insured patients are eligible for patient liability (deductibles, copays) but out-of-network patients identified through the application are ineligible.",
+    "Services excluded include transplant, elective, pre-paid fixed-price services, and certain professional providers listed in Attachment A.",
+    "Residency requirement is only U.S. residency, no state or service area; the policy also says immigration status is not considered.",
+    "Approvals are valid for 90 days."
+  ]
+}

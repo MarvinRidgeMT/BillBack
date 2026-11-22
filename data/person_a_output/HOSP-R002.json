@@ -1,0 +1,61 @@
+{
+  "policy_id": "HOSP-R002",
+  "hospital_name": "Los Angeles County Department of Health Services",
+  "facility_names": [],
+  "state": "CA",
+  "source_url": "https://file.lacounty.gov/SDSInter/dhs/1131808_PolicyDocument.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "06/01/2026",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: ATP is for Los Angeles County residents (including those transitioning to or unhoused in LA County). Out-of-county patients use DPP (up to 400% FPL); SSDPP is for US residents outside LA County.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "CA",
+          "evidence_ref": "Page 2: The ATP program is the FAP for LA County patients that offers both free (charity) care and discounted care."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 3: Charity care is available for persons with income up to 200% of FPL; however, ATP has no upper income cap for eligibility for discounted care, but liability increases on a sliding scale above 200% FPL",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-1",
+      "name": "DPP (out-of-county patients): income up to 400% FPL; liability not greater than Medi-Cal payment for the service, or 95% of charges if Medi-Cal amount exceeds charges. SSDPP (sensitive services, US residents outside LA County): up to 400% FPL on the ATP sliding scale.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "400.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": "DPP (out-of-county patients): income up to 400% FPL; liability not greater than Medi-Cal payment for the service, or 95% of charges if Medi-Cal amount exceeds charges. SSDPP (sensitive services, US residents outside LA County): up to 400% FPL on the ATP sliding scale.",
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: ATP is for Los Angeles County residents (including those transitioning to or unhoused in LA County). Out-of-county patients use DPP (up to 400% FPL); SSDPP is for US residents outside LA County.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "CA",
+          "evidence_ref": "Page 2: The ATP program is the FAP for LA County patients that offers both free (charity) care and discounted care."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 3: Charity care is available for persons with income up to 200% of FPL; however, ATP has no upper income cap for eligibility for discounted care, but liability increases on a sliding scale above 200% FPL",
+      "priority": 2
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

@@ -194,6 +194,20 @@
       "needs_human_review": true
     },
     {
+      "slug": "los-angeles-county-department-of-health-services",
+      "hospital_name": "Los Angeles County Department of Health Services",
+      "aliases": [],
+      "city": null,
+      "state": "CA",
+      "states": [
+        "CA"
+      ],
+      "file": "los-angeles-county-department-of-health-services__824bf376.json",
+      "source_url": "https://file.lacounty.gov/SDSInter/dhs/1131808_PolicyDocument.pdf",
+      "downloaded": null,
+      "needs_human_review": true
+    },
+    {
       "slug": "marshfield-clinic-health-system",
       "hospital_name": "Marshfield Clinic Health System",
       "aliases": [
@@ -213,6 +227,20 @@
       "needs_human_review": false
     },
     {
+      "slug": "mercy-mercy-revenue-cycle",
+      "hospital_name": "Mercy (Mercy Revenue Cycle)",
+      "aliases": [],
+      "city": null,
+      "state": "MO",
+      "states": [
+        "MO"
+      ],
+      "file": "mercy-mercy-revenue-cycle__4dbed64b.json",
+      "source_url": "https://www.mercy.net/content/dam/mercy/en/pdf/hospital-and-health-services-financial-assistance-program.pdf",
+      "downloaded": null,
+      "needs_human_review": true
+    },
+    {
       "slug": "novant-health-north-carolina-hospitals-provider-based-clinic",
       "hospital_name": "Novant Health (North Carolina Hospitals, Provider-based clinics)",
       "aliases": [],
@@ -224,6 +252,20 @@
       "file": "novant-health-north-carolina-hospitals-provider-based-clinic__ebf261b8.json",
       "source_url": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/financial-assistance-policy-nc-hospitals.pdf?v=2",
       "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "ochsner-health",
+      "hospital_name": "Ochsner Health",
+      "aliases": [],
+      "city": null,
+      "state": "LA",
+      "states": [
+        "LA"
+      ],
+      "file": "ochsner-health__23f46ddd.json",
+      "source_url": "https://ochsner-craft.s3.amazonaws.com/www/static/English_OHS.REV.042-1-1-2025-09232025.pdf",
+      "downloaded": null,
       "needs_human_review": true
     },
     {
