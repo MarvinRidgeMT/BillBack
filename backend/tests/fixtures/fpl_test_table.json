@@ -1,6 +1,6 @@
 {
   "_comment": "FAKE numbers for unit tests only. Not the real HHS guidelines.",
-  "year": 1999,
+  "year": 2024,
   "source_url": "test-fixture",
   "retrieved_at": "test-fixture",
   "tables": {

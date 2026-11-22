@@ -211,6 +211,124 @@ print(f"Explanation: {result.explanation}")
 
 ---
 
+## 3.5 Integration with Person A's Backend (FastAPI)
+
+### 3.5.1 Bridge Module: `backend/eligibility.py`
+
+Maps Person A's `PolicyRules` schema → Person B's `HospitalPolicy`/`HouseholdFacts`:
+
+```python
+from backend.eligibility import (
+    policy_rules_to_hospital_policy,
+    build_household_facts,
+    load_fpl_table_from_json,
+    run_eligibility,
+    eligibility_result_to_api_response,
+)
+from backend.policy_reader.schema import PolicyRules
+
+# 1. Convert PolicyRules to HospitalPolicy
+policy = policy_rules_to_hospital_policy(rules: PolicyRules) -> HospitalPolicy
+
+# 2. Build HouseholdFacts from API request
+household = build_household_facts(
+    household_size=int,
+    annual_income=float,
+    state=str,          # service state (2-letter)
+    assets_usd=float | None,
+    insurance_status=str | None,
+    residency_state=str | None,  # overrides state if different
+) -> HouseholdFacts
+
+# 3. Load FPL resolver from JSON (same format as backend/fpl.py DEFAULT_TABLE_PATH)
+resolver = load_fpl_table_from_json("data/fpl_2026.json") -> PovertyGuidelineResolver
+
+# 4. Run engine
+result = run_eligibility(
+    rules=rules,
+    household_size=int,
+    annual_income=float,
+    state=str,
+    fpl_resolver=resolver,
+    assets_usd=float | None,
+    insurance_status=str | None,
+    residency_state=str | None,
+) -> EligibilityResult
+
+# 5. Convert to API response (includes percent_of_fpl, evidence, extended fields)
+response = eligibility_result_to_api_response(result, rules, percent_of_fpl)
+```
+
+### 3.5.2 API Endpoint: `POST /api/eligibility`
+
+**Request** (`EligibilityRequest`):
+```json
+{
+  "hospital_slug": "usa-health",
+  "household_size": 1,
+  "annual_income": 15000,
+  "state": "AL",
+  "assets_usd": 0,
+  "insurance_status": "uninsured",
+  "residency_state": "AL"
+}
+```
+
+**Response** (`envelope.data`):
+```json
+{
+  "status": "likely_free | likely_discounted | probably_not_eligible | needs_more_information",
+  "tier": { "tier_id": "...", "type": "free|discounted", "discount_percent": 85.0, ... } | null,
+  "caveats": ["Residency required: AL", "Assets may be considered: ..."],
+  "disclaimer": "Likely eligible — not a guarantee",
+  "evidence": { "quote": "...", "page": 1, "confidence": 0.95, ... },
+  "percent_of_fpl": 150.0,
+  "hospital_name": "USA Health",
+  "source_url": "https://...",
+  "engine": "rules",
+  "explanation": "Household income qualifies...",
+  "missing_facts": ["assets"],
+  "unresolved_rules": ["residency"],
+  "policy_id": "usa-health-2024-01-01",
+  "fpl_used": 10000,
+  "fpl_year": 2024,
+  "fpl_region": "contiguous"
+}
+```
+
+### 3.5.3 Required FPL Table
+
+The backend needs `data/fpl_2026.json` (HHS 2026 guidelines) for production. Test fixture uses `backend/tests/fixtures/fpl_test_table.json` (synthetic 2024).
+
+```json
+{
+  "year": 2026,
+  "tables": {
+    "contiguous": { "base": { "1": 15060, "2": 20440, ... }, "additional_person": 5380 },
+    "AK": { "base": { ... }, "additional_person": 6725 },
+    "HI": { "base": { ... }, "additional_person": 6185 }
+  }
+}
+```
+
+---
+
+## 3.6 Running Backend Integration Tests
+
+```powershell
+cd C:\Users\abhi1_gxlm8t4\Documents\EvoHacks2
+.venv\Scripts\Activate.ps1
+
+# Run all backend tests (includes integration + e2e)
+python -m pytest backend/tests/ -v
+
+# Specific integration tests
+python -m pytest backend/tests/test_eligibility_stub.py::test_e2e_real_engine_with_usa_health -v
+python -m pytest backend/tests/test_eligibility_stub.py::test_e2e_sample_rules_direct -v
+```
+
+---
+
 ## 4. Ordered Checklist for Person A (Tomorrow)
 
 | # | Task | Command / Action | Expected Outcome |
