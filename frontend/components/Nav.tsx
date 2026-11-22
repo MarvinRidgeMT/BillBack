@@ -3,11 +3,23 @@
 import { useI18n } from "@/lib/i18n";
 
 /** Logo left; "How it works" and the language toggle right. */
-export function Nav() {
+export function Nav({ onHome }: { onHome?: () => void }) {
   const { t, toggleLang } = useI18n();
   return (
     <header className="nav">
-      <div className="logo">BILLBACK</div>
+      <a
+        className="logo"
+        href="/"
+        aria-label="BillBack home"
+        style={{ color: "inherit", textDecoration: "none" }}
+        onClick={(e) => {
+          if (!onHome) return;
+          e.preventDefault();
+          onHome();
+        }}
+      >
+        BILLBACK
+      </a>
       <nav className="nav-links" aria-label="BillBack">
         <a className="nav-link how-link" href="#how">
           {t("nav.how")}

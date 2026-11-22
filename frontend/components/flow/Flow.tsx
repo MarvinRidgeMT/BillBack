@@ -138,7 +138,7 @@ function FlowInner() {
     <MotionConfig reducedMotion="user">
       <div className="stage">
         <Sky parallax={parallax} calm={step !== "hero"} />
-        <Nav />
+        <Nav onHome={startOver} />
         <main>
           <AnimatePresence mode="wait">
             {step === "hero" && (
