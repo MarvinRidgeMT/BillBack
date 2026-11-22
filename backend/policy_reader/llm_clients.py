@@ -29,11 +29,21 @@ class PolicyReaderError(RuntimeError):
 
 
 @dataclass(frozen=True)
+class ImagePart:
+    data: bytes
+    media_type: str  # "image/jpeg" or "image/png"
+
+
+@dataclass(frozen=True)
 class PromptInput:
     instructions: str
-    policy_text: str
-    pdf_bytes: Optional[bytes] = None  # attached only when some pages have no text layer
+    policy_text: str  # page-tagged document text (policy) or extracted bill text; may be ""
+    pdf_bytes: Optional[bytes] = None  # attached when the model must read the PDF itself
     correction: Optional[str] = None  # set on the one retry after a validation error
+    images: tuple[ImagePart, ...] = ()
+    # JSON schemas for structured output; None = the policy rules schema.
+    strict_schema: Optional[dict] = None  # Claude (closed objects, few unions)
+    loose_schema: Optional[dict] = None  # Gemini
 
 
 @dataclass(frozen=True)
@@ -83,7 +93,19 @@ class AnthropicClient:
                     },
                 }
             )
-        blocks.append({"type": "text", "text": prompt.policy_text})
+        for image in prompt.images:
+            blocks.append(
+                {
+                    "type": "image",
+                    "source": {
+                        "type": "base64",
+                        "media_type": image.media_type,
+                        "data": base64.standard_b64encode(image.data).decode("ascii"),
+                    },
+                }
+            )
+        if prompt.policy_text:
+            blocks.append({"type": "text", "text": prompt.policy_text})
         if prompt.correction:
             blocks.append({"type": "text", "text": prompt.correction})
         return blocks
@@ -100,7 +122,10 @@ class AnthropicClient:
                 fallbacks="default",
                 system=prompt.instructions,
                 messages=[{"role": "user", "content": self._content(prompt)}],
-                output_config={"effort": self.effort, "format": {"type": "json_schema", "schema": self._schema}},
+                output_config={
+                    "effort": self.effort,
+                    "format": {"type": "json_schema", "schema": prompt.strict_schema or self._schema},
+                },
             )
         except anthropic.AuthenticationError as exc:
             raise PolicyReaderError("Anthropic rejected the API key (check ANTHROPIC_API_KEY)") from exc
@@ -149,11 +174,16 @@ class GeminiClient:
         parts: list = [prompt.instructions]
         if prompt.pdf_bytes:
             parts.append(types.Part.from_bytes(data=prompt.pdf_bytes, mime_type="application/pdf"))
-        parts.append(prompt.policy_text)
+        for image in prompt.images:
+            parts.append(types.Part.from_bytes(data=image.data, mime_type=image.media_type))
+        if prompt.policy_text:
+            parts.append(prompt.policy_text)
         if prompt.correction:
             parts.append(prompt.correction)
         config = types.GenerateContentConfig(
-            temperature=0, response_mime_type="application/json", response_json_schema=llm_json_schema()
+            temperature=0,
+            response_mime_type="application/json",
+            response_json_schema=prompt.loose_schema or llm_json_schema(),
         )
         for attempt in (1, 2):
             start = time.perf_counter()

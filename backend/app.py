@@ -5,9 +5,11 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
 
+
+from backend.bill_reader import reader as bill_reader
 from backend.policy_reader.fetch import MAX_BYTES, FetchError, fetch_policy_pdf
 from backend.policy_reader.reader import PolicyReaderError, read_policy
 
@@ -64,3 +66,17 @@ async def policy_read(request: Request) -> dict[str, Any]:
             "seconds": round(result.seconds, 2),
         }
     )
+
+
+@app.post("/api/bill/read")
+async def bill_read(file: UploadFile) -> dict[str, Any]:
+    """Multipart 'file' (photo or PDF). Read into memory only; never saved."""
+    data = await file.read(bill_reader.MAX_BILL_BYTES + 1)
+    try:
+        result = await run_in_threadpool(bill_reader.read_bill, data, file.content_type or "")
+    except bill_reader.BillReadError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except PolicyReaderError as exc:
+        log.exception("bill reader failed")
+        raise HTTPException(502, "could not read that bill; please try again") from exc
+    return _envelope(result.to_dict())

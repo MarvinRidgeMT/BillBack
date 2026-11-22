@@ -11,3 +11,6 @@ rapidfuzz
 python-dotenv
 pytest
 anthropic
+reportlab
+pillow
+pillow-heif
