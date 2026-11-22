@@ -162,5 +162,14 @@
   "footer.no_store": "We never store your bill",
   "footer.not_advice": "Not legal or financial advice",
   "footer.repo": "GitHub repo",
-  "footer.data": "Data: 2026 HHS poverty guidelines and hospitals' own policies"
+  "footer.data": "Data: 2026 HHS poverty guidelines and hospitals' own policies",
+  "caveat.assets": "This hospital may also look at your savings and other assets.",
+  "caveat.residency": "This hospital may require you to live in its service area.",
+  "caveat.confirm": "Some policy details need confirming: {list}.",
+  "caveat.confirm_plain": "Some policy details need confirming.",
+  "caveat.field.application_window": "how long you have to apply",
+  "caveat.field.asset_test": "the asset test",
+  "caveat.field.residency": "where you must live",
+  "caveat.field.income_limits": "the income limits",
+  "result.policy_wording": "Policy wording"
 }

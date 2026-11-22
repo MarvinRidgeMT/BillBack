@@ -162,5 +162,14 @@
   "footer.no_store": "Nunca guardamos su factura",
   "footer.not_advice": "No es asesoría legal ni financiera",
   "footer.repo": "Repositorio en GitHub",
-  "footer.data": "Datos: guías de pobreza del HHS de 2026 y las políticas de los propios hospitales"
+  "footer.data": "Datos: guías de pobreza del HHS de 2026 y las políticas de los propios hospitales",
+  "caveat.assets": "Este hospital también puede considerar sus ahorros y otros bienes.",
+  "caveat.residency": "Este hospital puede exigir que usted viva en su zona de servicio.",
+  "caveat.confirm": "Algunos detalles de la política se deben confirmar: {list}.",
+  "caveat.confirm_plain": "Algunos detalles de la política se deben confirmar.",
+  "caveat.field.application_window": "el plazo para solicitar",
+  "caveat.field.asset_test": "la prueba de bienes",
+  "caveat.field.residency": "dónde debe vivir",
+  "caveat.field.income_limits": "los límites de ingresos",
+  "result.policy_wording": "Texto de la política"
 }

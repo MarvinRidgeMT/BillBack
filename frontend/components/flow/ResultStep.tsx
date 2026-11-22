@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { Stamp } from "@/components/hero/Stamp";
 import { Button } from "@/components/ui/button";
 import { ApiError, DEMO_MODE } from "@/lib/api";
+import { plainCaveat } from "@/lib/caveats";
 import { enMessage, useI18n, useT, type MessageKey, type Translate } from "@/lib/i18n";
 import { EASE_OUT, SNAPPY_SETTLE_MS } from "@/lib/motion";
 import { MOCK_ELIGIBILITY_DEFAULT } from "@/lib/mock";
@@ -212,6 +213,8 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
   const extraDisclaimer = data.disclaimer && !saysTheSame ? data.disclaimer : "";
   const amount = sample ? "" : bill.fields.amount_due;
   const canApply = canMakePacket(data);
+  // Plain words for the patient. The backend's own text stays available under "Policy wording".
+  const caveats = data.caveats.map((c) => plainCaveat(c, t));
 
   return (
     <>
@@ -304,11 +307,23 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
       {data.caveats.length > 0 && (
         <>
           <p className="caveats-title">{t("result.caveats_title")}</p>
-          <ul className="caveats" lang={en}>
-            {data.caveats.map((c) => (
-              <li key={c}>{c}</li>
+          <ul className="caveats">
+            {caveats.map((c) => (
+              <li key={c.original} lang={c.rewritten ? undefined : en}>
+                {c.text}
+              </li>
             ))}
           </ul>
+          {caveats.some((c) => c.rewritten) && (
+            <details className="policy-wording">
+              <summary>{t("result.policy_wording")}</summary>
+              <ul className="caveats" lang={en}>
+                {caveats.map((c) => (
+                  <li key={c.original}>{c.original}</li>
+                ))}
+              </ul>
+            </details>
+          )}
         </>
       )}
 
