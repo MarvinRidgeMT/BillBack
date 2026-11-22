@@ -11,9 +11,15 @@ Built at EvoHacks II.
 
 ## The problem
 
+Medical debt is common. In December 2025, **26.6% of U.S. adults** said they or a family member had medical debt, and **15.4%** had bills past due or that they couldn't pay. Of adults with medical debt, **more than half owed $1,000 or more**, and **about 1 in 3 had been contacted by a collection agency** in the past year ([Urban Institute, 2026](https://www.urban.org/research/publication/more-one-quarter-us-adults-had-medical-debt-2025)).
+
 Nonprofit hospitals have to offer free or discounted care to low-income patients, but most patients never hear about it. Hospitals reported sending **$2.7 billion** in bills over one year to patients who probably qualified for free or discounted care ([KFF Health News, 2019](https://kffhealthnews.org/news/patients-eligible-for-charity-care-instead-get-big-bills/)).
 
 The rules are buried in long PDF policies that differ from hospital to hospital. The nonprofit Dollar For has helped file more than 17,000 applications and get more than $60 million in medical debt relieved. To do that, its staff read every hospital policy by hand, with two researchers checking each one ([Messac et al., *Health Affairs*, 2024](https://pmc.ncbi.nlm.nih.gov/articles/PMC12230784/)).
+
+## How BillBack is different
+
+Dollar For proves this works: its advocates have filed 17,000+ applications ([Health Affairs Scholar](https://pmc.ncbi.nlm.nih.gov/articles/PMC12230784/)). BillBack is the self-serve, instant version: it reads the hospital's own policy, shows the exact line, and lets a rule (not AI) decide. Undue Medical Debt buys and erases old debt after the fact ([2025 impact report](https://unduemedicaldebt.org/wp-content/uploads/2026/05/Undue-Medical-Debt-2025-Impact-Report_Digital.pdf)), while BillBack tries to stop an eligible bill from becoming debt. Paid advocates like Goodbill take a share of the savings ([Goodbill pricing](https://help.goodbill.com/en/articles/254209)); BillBack is free.
 
 ## Who it's for
 
@@ -70,19 +76,29 @@ How these were measured: [eval/results/SUMMARY.md](eval/results/SUMMARY.md) (reb
 - **Every value can be checked.** Each policy rule has a word-for-word quote, a page number and a confidence score. Code confirms the quote appears in the PDF; if it doesn't, the rule is flagged and its confidence is capped.
 - **Low confidence goes to a person.** Any bill field under 0.8 confidence, or one that fails a check, is shown to the patient to confirm or fix. Unclear policy rules are reported as "we still need to know", never treated as a pass.
 - **The patient stays in control.** BillBack never contacts the hospital. Results say "Likely eligible, not a guarantee." The hospital makes the final decision.
-- **Data:** BillBack doesn't save bills. Uploads are read in memory and never written to disk. The bill image (or its text) is sent to the Anthropic API to be read. Only public hospital policies are cached. Every bill and household in this repo is fictional.
+- **Data:** BillBack doesn't save your bill or answers. The bill image is sent to our AI provider (the Anthropic API) to be read, processed in memory, and discarded by our server. There are no accounts and no trackers. Only public hospital policies are cached. Every bill and household in this repo is fictional.
 
 ## Limits (honest)
 
+- **Not legal or financial advice; the hospital decides.** BillBack gives a sourced "likely" result and a draft letter. The patient reviews it and sends it.
 - **"Likely", not a guarantee.** Policies have exceptions (insurance status, which services, which facility), and the hospital decides.
+- **Asking to pause collections is a request, not a guarantee.** Federal rules ([IRS §501(r)(6)](https://www.irs.gov/charities-non-profits/billing-and-collections-section-501r6)) limit "extraordinary collection actions" while an application is pending, but routine billing contact may continue. The letter *asks* for a hold.
+- **Credit reports:** the federal CFPB rule removing medical debt from credit reports was vacated by a court in July 2025 and isn't in effect ([CFPB](https://www.consumerfinance.gov/ask-cfpb/do-medical-bills-affect-my-credit-and-where-do-i-find-out-whats-in-my-medical-payment-history-en-1837/)). BillBack does not promise credit removal.
+- **State laws vary** and aren't applied yet. Washington, California, New York, Illinois, Maryland, Colorado, Oregon and New Jersey go further than federal rules (see [the research notes](docs/research/expansion-research.md#22-state-charity-care-protections-beyond-the-federal-floor)). The result uses the hospital's own policy only.
 - **Policies contradict themselves.** USA Health's policy gives the application deadline as 240 days after the first bill in one section and 240 days after the date of service in another. BillBack flags this for review instead of picking one silently.
 - **Form vs. policy.** The first read of Adena Health took an asset test from a checkbox on the application form, not from a policy rule. It was flagged at 0.6 confidence; after a prompt fix it is now marked "unclear".
 - **Run-to-run variation.** On a re-run, Fort HealthCare's 12-row discount table came back as one "sliding scale 201–400%" tier. The free-care limit was the same both times.
 - **Watermarks and scans.** pdfplumber mixed a "COPY" watermark into USA Health's text. OCR (tesseract) wasn't installed on our build machine, so scanned pages are sent to the model as a PDF and their quotes can't be verified.
 - **Source documents.** Two of the policy links we were given point to an application form (Duke) and a clinic sliding-fee schedule (Heartland), not a hospital policy. Both are flagged for review. 6 of 20 hospital links failed to download (403/404 or no PDF).
-- **Not covered:** state charity-care laws, insurance statements (EOBs), billing-error detection, and the filled-in application packet (the button says "coming in the next version").
+- **Not covered:** state charity-care laws, insurance statements (EOBs) and billing-error detection.
 - **Cost:** the first bill for a hospital we haven't read yet costs about $0.053, just over our $0.05 target, because the policy has to be read once.
 - **Asset questions:** the app doesn't ask about savings yet, so hospitals with an asset test (USA Health, Boys Town) return "we can't tell" until it does. The API already accepts `assets_usd`.
+
+## What's next
+
+Next, BillBack grows from 19 hospitals to every U.S. nonprofit hospital. Hospitals' own IRS tax filings (Form 990 [Schedule H](https://www.irs.gov/instructions/i990sh)) list the income limits each one uses, and [CMS's hospital list](https://data.cms.gov/provider-data/dataset/xubh-q36u) lets us match any bill to the right hospital. We'll check each saved policy against both, plus state charity-care laws (Washington, California, New York, Illinois, Maryland, Colorado, Oregon and New Jersey go further than federal rules). After that: help for insured patients (26% of adults *with* health insurance had medical debt, per the [Urban Institute](https://www.urban.org/research/publication/more-one-quarter-us-adults-had-medical-debt-2025)), comparing the bill to the insurance statement and requesting an itemized bill; reminders and appeal letters for the 240-day application window; and pilots with community health centers, 211 and legal aid. It stays free for patients and never sells data.
+
+The research behind this plan, with sources: [docs/research/expansion-research.md](docs/research/expansion-research.md).
 
 Need help now? [Dollar For](https://dollarfor.org) helps people apply for free, or call the hospital's billing office and ask for a financial assistance application.
 

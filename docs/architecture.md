@@ -18,7 +18,7 @@ flowchart LR
 
 **Where AI is not used:** hospital matching, the poverty-line math, and the eligibility decision (step 5) are plain code with tests.
 
-**Nothing is stored:** uploads are read in memory. Only the public hospital policies are cached.
+**We don't save your bill or answers:** the bill image is sent to the AI provider to be read, processed in memory, and discarded by our server. No accounts, no trackers. Only the public hospital policies are cached.
 
 | Piece | Code |
 |---|---|
