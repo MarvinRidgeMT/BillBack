@@ -178,7 +178,7 @@ class FakeClient:
         self.payload = payload
         self.calls = 0
 
-    def generate(self, parts, schema):
+    def generate(self, prompt):
         self.calls += 1
         return reader.ModelResult(text=self.payload, input_tokens=1000, output_tokens=200, seconds=0.01)
 
@@ -211,7 +211,7 @@ def test_cache_hit_skips_model(tmp_path):
 
 def test_reader_retries_once_on_invalid_json(tmp_path):
     class Flaky(FakeClient):
-        def generate(self, parts, schema):
+        def generate(self, prompt):
             self.calls += 1
             text = "{not json" if self.calls == 1 else self.payload
             return reader.ModelResult(text=text, input_tokens=10, output_tokens=10, seconds=0.0)
@@ -227,7 +227,7 @@ def test_cache_lookup_miss_returns_none(tmp_path):
 
 
 @pytest.mark.live
-@pytest.mark.skipif(not os.getenv("GEMINI_API_KEY"), reason="GEMINI_API_KEY not set")
+@pytest.mark.skipif(not (os.getenv("ANTHROPIC_API_KEY") or os.getenv("GEMINI_API_KEY")), reason="no model API key in env")
 def test_live_one_real_policy(tmp_path):
     pdfs = sorted(Path("data/policies").glob("*.pdf"))
     if not pdfs:
@@ -235,3 +235,37 @@ def test_live_one_real_policy(tmp_path):
     result = reader.read_policy(pdfs[0].read_bytes(), cache_dir=tmp_path, use_cache=False)
     assert result.rules.hospital_name
     assert result.seconds < 120
+
+
+def test_strict_schema_closes_objects_and_drops_numeric_limits():
+    from backend.policy_reader.schema import strict_json_schema
+
+    schema = strict_json_schema()
+    text = json.dumps(schema)
+    assert "minimum" not in text and "maximum" not in text and "$ref" not in text
+
+    def check(node):
+        if isinstance(node, dict):
+            if node.get("type") == "object" and "properties" in node:
+                assert node["additionalProperties"] is False
+                assert set(node["required"]) == set(node["properties"])
+            for v in node.values():
+                check(v)
+        elif isinstance(node, list):
+            for v in node:
+                check(v)
+
+    check(schema)
+
+
+def test_raw_pdf_attached_only_when_pages_lack_text(tmp_path, monkeypatch):
+    seen = []
+
+    class Recorder(FakeClient):
+        def generate(self, prompt):
+            seen.append(prompt)
+            return super().generate(prompt)
+
+    reader.read_policy(_policy_pdf(), client=Recorder(FIXTURE.read_text()), cache_dir=tmp_path, use_cache=False)
+    assert seen[0].pdf_bytes is None
+    assert "=== PAGE 3 ===" in seen[0].policy_text

@@ -74,7 +74,7 @@ def run_all(folder: Path, use_cache: bool) -> int:
         avg_in = sum(r.input_tokens for r in fresh) / len(fresh)
         avg_out = sum(r.output_tokens for r in fresh) / len(fresh)
         costs = [c for c in (r.estimated_cost_usd() for r in fresh) if c is not None]
-        cost = f"${sum(costs) / len(costs):.4f}" if costs else "n/a (set GEMINI_PRICE_*_PER_M)"
+        cost = f"${sum(costs) / len(costs):.4f}" if costs else "n/a (set PRICE_IN_PER_M / PRICE_OUT_PER_M)"
         print(f"\nfresh runs: {len(fresh)}  avg {avg_s:.1f}s  avg tokens in {avg_in:.0f} / out {avg_out:.0f}  avg cost {cost}")
     for name, err in failures:
         print(f"FAILED {name}: {err}", file=sys.stderr)

@@ -158,3 +158,24 @@ def llm_json_schema() -> dict[str, Any]:
     # Ask the model for every field so it can't silently skip one.
     schema["required"] = list(schema["properties"].keys())
     return schema
+
+
+_UNSUPPORTED_STRICT_KEYWORDS = ("minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum", "minLength", "maxLength")
+
+
+def _strict(node: Any) -> Any:
+    if isinstance(node, list):
+        return [_strict(item) for item in node]
+    if not isinstance(node, dict):
+        return node
+    out = {k: _strict(v) for k, v in node.items() if k not in _UNSUPPORTED_STRICT_KEYWORDS}
+    if out.get("type") == "object" and "properties" in out:
+        out["additionalProperties"] = False
+        out["required"] = list(out["properties"].keys())
+    return out
+
+
+def strict_json_schema() -> dict[str, Any]:
+    """llm_json_schema() for strict structured outputs (Claude): every object closed and fully
+    required, numeric/string constraints removed (pydantic re-checks them after parsing)."""
+    return _strict(llm_json_schema())
