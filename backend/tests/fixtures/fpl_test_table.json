@@ -1,0 +1,11 @@
+{
+  "_comment": "FAKE numbers for unit tests only. Not the real HHS guidelines.",
+  "year": 1999,
+  "source_url": "test-fixture",
+  "retrieved_at": "test-fixture",
+  "tables": {
+    "contiguous": {"base": {"1": 10000, "2": 14000, "3": 18000, "4": 22000, "5": 26000, "6": 30000, "7": 34000, "8": 38000}, "additional_person": 4000},
+    "AK": {"base": {"1": 12500, "2": 17500, "3": 22500, "4": 27500, "5": 32500, "6": 37500, "7": 42500, "8": 47500}, "additional_person": 5000},
+    "HI": {"base": {"1": 11500, "2": 16100, "3": 20700, "4": 25300, "5": 29900, "6": 34500, "7": 39100, "8": 43700}, "additional_person": 4600}
+  }
+}
