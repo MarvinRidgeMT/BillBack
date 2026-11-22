@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Boys Town National Research Hospital",
+  "hospital_state": "NE",
+  "source": null,
+  "policy_effective_date": "02/1/23",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "have a household income at or below 200% of Federal Poverty Guidelines (FPG) (shown in the table below) may receive free care (an 100% discount.)",
+      "page": 2,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 201.0,
+        "fpl_max_percent": 250.0,
+        "discount_type": "percent_off",
+        "value": 75.0,
+        "description": "75% discount of gross charges per table; patient not charged more than AGB"
+      },
+      {
+        "fpl_min_percent": 251.0,
+        "fpl_max_percent": 300.0,
+        "discount_type": "percent_off",
+        "value": 50.0,
+        "description": "50% discount of gross charges per table; patient not charged more than AGB"
+      },
+      {
+        "fpl_min_percent": 301.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": 25.0,
+        "description": "25% discount of gross charges per table; patient not charged more than AGB"
+      }
+    ],
+    "evidence": {
+      "quote": "Individuals that do not have the necessary available funds to pay for services, with annual household incomes between 201% and 400% FPG will be eligible for up to a 75% discount of gross charges, as illustrated by the table below.",
+      "page": 2,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Patients with verified available cash on hand (liquid assets) to pay hospital balances are not eligible; cash on hand is verified using application documentation and considered in addition to income and family size.",
+    "evidence": {
+      "quote": "Patients who have verified available cash on hand (liquid assets) to pay hospital owed balances will not be eligible for financial assistance, per this FAP.",
+      "page": 2,
+      "confidence": 0.93,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "other",
+    "evidence": {
+      "quote": "Financial assistance will be considered at any point in the billing cycle, up to 240 days from the 1st billed date, post discharge date or date of service.",
+      "page": 3,
+      "confidence": 0.7,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "both",
+  "uses_income_table": true,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": null,
+  "how_to_apply": "Submit a complete application with documentation in person or by mail to BTNRH, 555 North 30th Street, Omaha, NE 68131; phone requests at 531-355-8195; applications also available at East and West Admissions and online.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Purpose section says income between 100% and 400% FPG qualifies, while the eligibility section gives free care at or below 200% FPG; used the specific eligibility section and table.",
+    "Application window clock start is ambiguous: '1st billed date, post discharge date or date of service'; counted_from set to other.",
+    "Underinsured (insured with out-of-pocket costs) patients are eligible; the 'up to 75%' discount wording is shown as fixed tiers per the table (75/50/25%).",
+    "Policy also requires patients to cooperate in exploring alternative assistance, including Medicaid."
+  ]
+}

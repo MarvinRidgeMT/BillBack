@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Marshfield Clinic Health System",
+  "hospital_state": "WI",
+  "source": null,
+  "policy_effective_date": "7/2/2025",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "Free Care: The gross (undiscounted) charge amount for eligible services will be waived for applicants whose total Income is at or below 200% of the current federal poverty level, shown on Appendix A.",
+      "page": 6,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 201.0,
+        "fpl_max_percent": 300.0,
+        "discount_type": "percent_off",
+        "value": 75.0,
+        "description": "75% discount for income 201%-300% FPL per Appendix A table"
+      },
+      {
+        "fpl_min_percent": 301.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": 65.0,
+        "description": "65% discount for income 301%-400% FPL per Appendix A table"
+      }
+    ],
+    "evidence": {
+      "quote": "Clinics (Marshfield Clinic- freestanding clinic locations | 100% | 75% | 65% |",
+      "page": 11,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.8,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "MCHS service area (State of Wisconsin and the Upper Peninsula of Michigan) for non-emergent medically necessary services; not required for emergency services",
+    "evidence": {
+      "quote": "Financial assistance is available for services required for an Emergency Medical Condition regardless of whether a patient resides within Marshfield Clinic Health System’s service area.",
+      "page": 5,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "other",
+    "evidence": {
+      "quote": "MCHS will accept a financial assistance application for at least 240 days following the patient/guarantor’s first billing statement or as deemed reasonable.",
+      "page": 7,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Presumptive eligibility grants 100% free care based on socio-economic factors such as means-tested program eligibility, homelessness, or low-income housing residency.",
+  "how_to_apply": "Mail or hand-deliver to Marshfield Clinic Health System Patient Financial Assistance Center, 3Q4 1000 North Oak Avenue, Marshfield, WI 54449; phone 1-800-782-8581, ext. 94475; application at https://marshfieldclinic.org/patient-resources/billing/financial-assistance",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Policy does not explicitly mention an asset test; only qualified health accounts (HSA/FSA) are expected to be used, and account statements may be requested as income documentation.",
+    "Counted from first billing statement (not specifically post-discharge); window is 'at least' 240 days.",
+    "Catastrophic cap: 100% discount on guarantor balances exceeding 10% of income when at or below 600% FPL.",
+    "Appendix A table header reads 'Less than or equal to 100-200%'; free care at or below 200% FPL taken from section 3.5.",
+    "Many outside provider groups are not covered by this policy (Appendix C).",
+    "Non-emergency residency rule depends on primary residence relative to service area and nature of care; not a flat requirement."
+  ]
+}

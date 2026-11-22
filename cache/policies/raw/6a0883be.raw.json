@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "USA Health",
+  "hospital_state": "AL",
+  "source": null,
+  "policy_effective_date": "04/2025",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "up to 200% 100% FAP adjustment applied",
+      "page": 4,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 200.0,
+        "fpl_max_percent": 300.0,
+        "discount_type": "percent_off",
+        "value": 85.0,
+        "description": "85% FAP adjustment applied"
+      },
+      {
+        "fpl_min_percent": 300.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": 75.0,
+        "description": "75% FAP adjustment applied"
+      }
+    ],
+    "evidence": {
+      "quote": "300-400% 75% FAP adjustment applied",
+      "page": 4,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Asset Test: a patient with assets exceeding 25% of household income amount may not be eligible; only assets accessible without penalty are considered.",
+    "evidence": {
+      "quote": "A patient with such assets that exceed 25% of such patient’s household income amount may not be eligible for financial assistance.",
+      "page": 5,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.8,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "date_of_service",
+    "evidence": {
+      "quote": "Patient applications can be submitted for consideration for up to 240 days past the date of service",
+      "page": 4,
+      "confidence": 0.6,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Eligibility may be determined via presumptive scoring for patients with a sufficient unpaid balance and no FAP application; full adjustment FPL for presumptive assistance is set at 100% of FPL.",
+  "how_to_apply": "Complete the FAP Application; phone (251) 434-3505, Mon–Fri 8 am–4:30 pm; mail USA Health, Attention: Business Office - Financial Counselor, P.O. Box 40010, Mobile, AL 36640-0010",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Application window is inconsistent: the table section says 240 days past date of service, while the definition says 240 days after the first post-discharge billing statement (or 30 days after ECA notice, whichever is later); catastrophic section says 240th day after first discharge bill.",
+    "Tier boundaries overlap at 200% and 300% in the policy table (up to 200%, 200-300%, 300-400%).",
+    "Residency not explicitly required; covered providers are limited to hospitals in Mobile, Alabama and clinics in Mobile and Baldwin Counties, which is not a stated patient residency requirement.",
+    "Patients above 400% FPL may qualify via a Means Test (medical debt at or above household gross income) for the 400% FPL level of assistance (75%).",
+    "Insured patients are addressed (under-insured eligible for personally responsible portion), though out-of-network plans may reduce or deny assistance.",
+    "Financial assistance amount is described as a sliding scale; the table gives fixed percentages."
+  ]
+}

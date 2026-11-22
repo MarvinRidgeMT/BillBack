@@ -3,7 +3,7 @@
   "hospital_name": "Marshfield Clinic Health System",
   "hospital_state": "WI",
   "source": {
-    "url": null,
+    "url": "https://www.marshfieldclinic.org/-/media/marshfieldclinic/files/shared/financial-assistance-policy-english.pdf",
     "sha256": "e23ca69e61134c7a90942a92571e137f2c93adf42a4b51100e78488ed81af60e",
     "retrieved_at": "2026-11-22",
     "page_count": 17
@@ -15,6 +15,7 @@
       "quote": "Free Care: The gross (undiscounted) charge amount for eligible services will be waived for applicants whose total Income is at or below 200% of the current federal poverty level, shown on Appendix A.",
       "page": 6,
       "confidence": 0.95,
+      "status": "stated",
       "verified": true
     }
   },
@@ -26,69 +27,70 @@
         "fpl_max_percent": 300.0,
         "discount_type": "percent_off",
         "value": 75.0,
-        "description": "75% discount for 201%-300% FPL per Appendix A location table"
+        "description": "75% discount for income 201%-300% FPL per Appendix A table"
       },
       {
         "fpl_min_percent": 301.0,
         "fpl_max_percent": 400.0,
         "discount_type": "percent_off",
         "value": 65.0,
-        "description": "65% discount for 301%-400% FPL per Appendix A location table"
+        "description": "65% discount for income 301%-400% FPL per Appendix A table"
       }
     ],
     "evidence": {
-      "quote": "Marshfield Medical Center-Marshfield | 100% | 75% | 65% |",
+      "quote": "Clinics (Marshfield Clinic- freestanding clinic locations | 100% | 75% | 65% |",
       "page": 11,
       "confidence": 0.85,
+      "status": "stated",
       "verified": true
     }
   },
   "asset_test": {
     "applies": null,
-    "details": "Income documentation may include checking, savings and investment account statements, and applicants must use available funds in tax-advantaged health accounts (FSA/HSA); no explicit asset test stated.",
+    "details": null,
     "evidence": {
-      "quote": "Qualified Account review: Applicants with tax-advantaged personal health accounts such as flexible spending accounts or health savings accounts will be expected to utilize available funds upon being granted financial assistance.",
-      "page": 5,
-      "confidence": 0.4,
-      "verified": true
+      "quote": "",
+      "page": null,
+      "confidence": 0.8,
+      "status": "not_stated",
+      "verified": null
     }
   },
   "residency": {
     "required": true,
-    "area": "State of Wisconsin and the Upper Peninsula of Michigan (MCHS service area); emergency care eligible regardless of residence",
+    "area": "MCHS service area (State of Wisconsin and the Upper Peninsula of Michigan) for non-emergent medically necessary services; not required for emergency services",
     "evidence": {
-      "quote": "For non- emergent medically necessary services, financial assistance eligibility is based on the patient’s primary residence in relation to the MCHS service area and the nature of the care required.",
+      "quote": "Financial assistance is available for services required for an Emergency Medical Condition regardless of whether a patient resides within Marshfield Clinic Health System’s service area.",
       "page": 5,
-      "confidence": 0.7,
+      "confidence": 0.8,
+      "status": "stated",
       "verified": true
     }
   },
   "application_window": {
     "days": 240,
-    "counted_from": "first_post_discharge_billing_statement",
+    "counted_from": "other",
     "evidence": {
       "quote": "MCHS will accept a financial assistance application for at least 240 days following the patient/guarantor’s first billing statement or as deemed reasonable.",
       "page": 7,
-      "confidence": 0.8,
+      "confidence": 0.85,
+      "status": "stated",
       "verified": true
     }
   },
-  "income_basis": "both",
+  "income_basis": "fpl_percent",
   "uses_income_table": false,
   "insured_patients_eligible": true,
-  "presumptive_eligibility": "Applicants may be presumed eligible for free care (100% discount) without an application based on socio-economic factors such as means-tested program eligibility or homelessness.",
-  "how_to_apply": "Mail or hand-deliver to Marshfield Clinic Health System Patient Financial Assistance Center, 3Q4 1000 North Oak Avenue Marshfield, WI 54449; 1-800-782-8581, ext. 94475; https://marshfieldclinic.org/patient-resources/billing/financial-assistance",
-  "needs_human_review": true,
-  "review_fields": [
-    "asset_test",
-    "residency"
-  ],
+  "presumptive_eligibility": "Presumptive eligibility grants 100% free care based on socio-economic factors such as means-tested program eligibility, homelessness, or low-income housing residency.",
+  "how_to_apply": "Mail or hand-deliver to Marshfield Clinic Health System Patient Financial Assistance Center, 3Q4 1000 North Oak Avenue, Marshfield, WI 54449; phone 1-800-782-8581, ext. 94475; application at https://marshfieldclinic.org/patient-resources/billing/financial-assistance",
+  "needs_human_review": false,
+  "review_fields": [],
   "warnings": [
-    "Catastrophic cap: 100% discount on guarantor balances exceeding 10% of income when FPL is at or below 600%.",
-    "Section 3.5 describes a sliding scale for 200%-400%; the Appendix A table gives 75% (201-300%) and 65% (301-400%).",
-    "Appendix A table header reads 'Less than or equal to 100-200%' for the free care band.",
-    "Residency rules for non-emergency care are discretionary; the 240 days is a minimum ('at least').",
-    "Many non-MCHS provider groups are not covered by this policy (Appendix C).",
-    "Asset test not explicitly addressed; applicants may be asked for account statements as income documentation."
+    "Policy does not explicitly mention an asset test; only qualified health accounts (HSA/FSA) are expected to be used, and account statements may be requested as income documentation.",
+    "Counted from first billing statement (not specifically post-discharge); window is 'at least' 240 days.",
+    "Catastrophic cap: 100% discount on guarantor balances exceeding 10% of income when at or below 600% FPL.",
+    "Appendix A table header reads 'Less than or equal to 100-200%'; free care at or below 200% FPL taken from section 3.5.",
+    "Many outside provider groups are not covered by this policy (Appendix C).",
+    "Non-emergency residency rule depends on primary residence relative to service area and nature of care; not a flat requirement."
   ]
 }

@@ -94,9 +94,37 @@ def sanity_problems(rules: PolicyRules) -> list[tuple[str, str]]:
     return problems
 
 
-def _is_not_stated(field) -> bool:
+def _has_values(field) -> bool:
     values = field.model_dump(exclude={"evidence"})
-    return not field.evidence.quote.strip() and all(v in (None, [], "") for v in values.values())
+    return any(v not in (None, [], "") for v in values.values())
+
+
+def _check_evidence(name: str, field, ev: dict, pages: dict[int, str], warnings: list[str]) -> None:
+    """Mutates the local dict copy `ev` only (built from model_dump, never the input model)."""
+    if ev["status"] == "stated" and not _has_values(field) and not ev["quote"].strip():
+        ev["status"] = "not_stated"  # pre-status JSON: empty field means the policy didn't say
+    if ev["status"] == "not_stated":
+        if _has_values(field) or ev["quote"].strip():
+            ev["status"] = "unclear"
+            warnings.append(f"{name}: marked not_stated but has a value or quote; treated as unclear")
+        else:
+            ev["verified"] = None
+            return
+    if ev["status"] == "unclear" and not ev["quote"].strip():
+        ev["verified"] = None
+        return
+    verified, page = find_quote(ev["quote"], pages, ev["page"])
+    ev["verified"] = verified
+    if verified and page != ev["page"]:
+        warnings.append(f"{name}: quote found on page {page}, not page {ev['page']}; page corrected")
+        ev["page"] = page
+    if not verified:
+        ev["confidence"] = min(ev["confidence"], UNVERIFIED_CONFIDENCE_CAP)
+        warnings.append(f"{name}: quote could not be found in the policy text")
+
+
+def _needs_review(ev: dict) -> bool:
+    return ev["status"] == "unclear" or ev["confidence"] < REVIEW_CONFIDENCE_THRESHOLD or ev["verified"] is False
 
 
 def post_validate(rules: PolicyRules, pages: dict[int, str]) -> PolicyRules:
@@ -104,30 +132,13 @@ def post_validate(rules: PolicyRules, pages: dict[int, str]) -> PolicyRules:
     warnings = list(data["warnings"])
 
     for name in EVIDENCE_FIELDS:
-        field = getattr(rules, name)
-        ev = data[name]["evidence"]
-        if _is_not_stated(field):
-            ev["verified"] = None
-            continue
-        verified, page = find_quote(ev["quote"], pages, ev["page"])
-        ev["verified"] = verified
-        if verified and page != ev["page"]:
-            warnings.append(f"{name}: quote found on page {page}, not page {ev['page']}; page corrected")
-            ev["page"] = page
-        if not verified:
-            ev["confidence"] = min(ev["confidence"], UNVERIFIED_CONFIDENCE_CAP)
-            warnings.append(f"{name}: quote could not be found in the policy text")
+        _check_evidence(name, getattr(rules, name), data[name]["evidence"], pages, warnings)
 
     for name, message in sanity_problems(rules):
         data[name]["evidence"]["confidence"] = min(data[name]["evidence"]["confidence"], SANITY_CONFIDENCE_CAP)
         warnings.append(message)
 
-    review = [
-        name
-        for name in EVIDENCE_FIELDS
-        if data[name]["evidence"]["confidence"] < REVIEW_CONFIDENCE_THRESHOLD
-        or data[name]["evidence"]["verified"] is False
-    ]
+    review = [name for name in EVIDENCE_FIELDS if _needs_review(data[name]["evidence"])]
     data["warnings"] = list(dict.fromkeys(warnings))
     data["review_fields"] = review
     data["needs_human_review"] = bool(review) or (rules.uses_income_table and rules.free_care.fpl_max_percent is None)

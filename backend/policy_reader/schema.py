@@ -27,6 +27,7 @@ CountedFrom = Literal[
     "other",
 ]
 IncomeBasis = Literal["fpl_percent", "income_table", "both", "unclear"]
+EvidenceStatus = Literal["stated", "not_stated", "unclear"]
 
 
 class _Model(BaseModel):
@@ -54,6 +55,13 @@ class Evidence(_Model):
     )
     page: Optional[int] = Field(None, description="1-based page number where the quote appears.")
     confidence: float = Field(0.0, ge=0.0, le=1.0)
+    status: EvidenceStatus = Field(
+        "stated",
+        description=(
+            "stated = the policy addresses this (quote required); not_stated = you read the whole policy and it "
+            "does not address this (values null, quote empty); unclear = ambiguous or contradictory."
+        ),
+    )
     # Set by code after quote verification; never filled by the model.
     verified: Optional[bool] = None
 

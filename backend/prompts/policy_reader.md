@@ -19,8 +19,11 @@ Extract these fields into the provided JSON schema:
 Also fill: hospital_name (the hospital or health system that issued the policy), hospital_state, policy_effective_date (as written), income_basis, uses_income_table, insured_patients_eligible, presumptive_eligibility (one short sentence), how_to_apply (address, phone or portal as written), and warnings.
 
 Evidence rules:
-- Every one of the 6 fields needs evidence: copy the exact sentence(s) from the policy text, verbatim, character for character, under 60 words, and give the page number it appears on. Do not paraphrase, merge sentences from different places, fix typos, or add words. For a table row, copy the row text as it appears.
-- If the policy does not state something, set the value(s) to null (where the schema has no null: "" for text, 0 for a number of days), quote to "", page to 0, and confidence 0.0-0.3. Never guess or fill in typical values (do not assume 200%/400% FPL or 240 days because they are common).
+- Each of the 6 fields has evidence.status:
+  - "stated": the policy addresses this. Copy the exact sentence(s) from the policy text, verbatim, character for character, under 60 words, and give the page number. Do not paraphrase, merge sentences from different places, fix typos, or add words. For a table row, copy the row text as it appears.
+  - "not_stated": you read the whole policy and it does not address this at all (for example, no mention of assets or residency anywhere). Set the value(s) to null ("" for text, 0 for a number of days), quote to "", page to 0, and confidence 0.85-1.0 for how sure you are that the policy is silent on it.
+  - "unclear": the policy mentions it but is ambiguous, contradicts itself, or you cannot tell what applies. Give your best value with a verbatim quote, confidence below 0.8, and a warning explaining why.
+- Never guess or fill in typical values (do not assume 200%/400% FPL or 240 days because they are common). A requirement only on the application form, not in the policy rules, is "unclear", not "stated".
 - confidence: 0.9-1.0 = stated explicitly in one place; 0.6-0.89 = needed light interpretation (for example combining a table header with a row); below 0.6 = unclear or inferred.
 
 Interpretation rules:

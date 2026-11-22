@@ -305,3 +305,66 @@ def test_short_table_row_quotes_verify_exactly_but_not_fuzzily():
     assert validate.find_quote("351-400% 80%", pages, 8) == (True, 8)
     assert validate.find_quote("< 250% 100%", pages, 8)[0] is False
     assert validate.find_quote("80%", pages, 8)[0] is False
+
+
+# ---------- evidence.status (stated / not_stated / unclear) ----------
+
+def _with(field, **evidence):
+    data = json.loads(FIXTURE.read_text())
+    data[field]["evidence"].update(evidence)
+    return data
+
+
+def test_not_stated_with_high_confidence_needs_no_review():
+    data = json.loads(FIXTURE.read_text())
+    data["asset_test"] = {"applies": None, "details": None, "evidence": {"quote": "", "page": 0, "confidence": 0.9, "status": "not_stated"}}
+    rules = validate.post_validate(PolicyRules.model_validate(data), PAGES)
+    assert rules.asset_test.evidence.status == "not_stated"
+    assert rules.asset_test.evidence.verified is None
+    assert "asset_test" not in rules.review_fields
+    assert rules.needs_human_review is False
+
+
+def test_unclear_always_needs_review():
+    data = _with("residency", status="unclear", confidence=0.95)
+    rules = validate.post_validate(PolicyRules.model_validate(data), PAGES)
+    assert "residency" in rules.review_fields and rules.needs_human_review
+
+
+def test_not_stated_but_value_given_becomes_unclear():
+    data = json.loads(FIXTURE.read_text())
+    data["residency"]["evidence"]["status"] = "not_stated"  # but required=True and a quote exist
+    rules = validate.post_validate(PolicyRules.model_validate(data), PAGES)
+    assert rules.residency.evidence.status == "unclear"
+    assert "residency" in rules.review_fields
+
+
+def test_stated_with_empty_quote_is_unverified():
+    data = _with("discount", quote="")
+    rules = validate.post_validate(PolicyRules.model_validate(data), PAGES)
+    assert rules.discount.evidence.verified is False
+    assert "discount" in rules.review_fields
+
+
+def test_old_json_without_status_still_loads():
+    data = json.loads(FIXTURE.read_text())
+    assert "status" not in data["free_care"]["evidence"]
+    assert PolicyRules.model_validate(data).free_care.evidence.status == "stated"
+
+
+def test_eval_maps_not_stated_to_one_config_value(monkeypatch):
+    from backend import eval_config
+
+    monkeypatch.setattr(eval_config, "NOT_STATED_ANSWER_KEY_VALUE", False)
+    assert eval_config.comparable_value(None, "not_stated") is False
+    monkeypatch.setattr(eval_config, "NOT_STATED_ANSWER_KEY_VALUE", None)
+    assert eval_config.comparable_value(None, "not_stated") is None
+    assert eval_config.comparable_value(True, "stated") is True
+
+
+def test_raw_model_output_saved_and_revalidated_without_model(tmp_path):
+    pdf = _policy_pdf()
+    reader.read_policy(pdf, client=FakeClient(FIXTURE.read_text()), cache_dir=tmp_path)
+    assert list((tmp_path / "raw").glob("*.raw.json"))
+    rules = reader.revalidate_cached(pdf, cache_dir=tmp_path)
+    assert rules is not None and rules.free_care.evidence.verified is True

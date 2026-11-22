@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Fort HealthCare, Inc.",
+  "hospital_state": "WI",
+  "source": null,
+  "policy_effective_date": "01/01/2025",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "Persons whose income is at or up to 200% of the guidelines will be considered for complete forgiveness of their outstanding bill.",
+      "page": 1,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 201.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "sliding_scale",
+        "value": null,
+        "description": "Reduced basis per Attachment 1 table: 90% discount at 210% FPG, declining stepwise (80% at 220%, 70% at 230%, 60% at 240%, 50% at 250%, 40% at 260%, 35% at 270%, 30% at 280%, 25% at 290%, 20% at 300-320%, 15% at 340-360%, 10% at 380-400%)."
+      }
+    ],
+    "evidence": {
+      "quote": "Persons whose income is greater than 200% of the guidelines, but not more than 400% of the guidelines, shall be eligible for Community Care on a reduced basis.",
+      "page": 1,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "Primary and secondary service areas (non-residents without insurance receive only the self-pay discount and must pay in advance)",
+    "evidence": {
+      "quote": "Community Care write-offs are available to eligible persons residing in our primary and secondary service areas requiring medically necessary treatment, but who are unable to pay for these services.",
+      "page": 1,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "Financial Assistance applications will be accepted by agency if (a) within 240 days from date of first post- discharged bill or (b) if later, 30 days from the date of ECA notification.",
+      "page": 4,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "both",
+  "uses_income_table": true,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "FHC may use electronic screening to grant presumptive eligibility (e.g., homeless, deceased with no estate, Medicaid eligible but not on date of service) with the most generous discount, without an application.",
+  "how_to_apply": "Complete the Financial Questionnaire (Attachment 2) returned from a FHC Patient Financial Counselor or online at www.forthealthcare.com; an appointment with the Patient Financial Advocate is available at no charge.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Policy also has a 68% self-pay discount for uninsured patients, separate from Community Care tiers.",
+    "Application deadline varies: 240 days from first post-discharge bill or, if later, 30 days from ECA notification; page 3 also says balances older than 240 days from date of service sent to collections are ineligible.",
+    "Asset test not stated, but patients must use HSA/HRA/FSA funds before approval, and patients above 200% FPL may be considered based on expenses exceeding income.",
+    "Table lists discounts at 10% steps to 200% FPL and 5% steps beyond; the table is based on % of FPG with dollar amounts by family size.",
+    "Patients must apply for Medicaid/Marketplace before application is processed (not required at or below 200% FPL).",
+    "Residency: patients outside service areas can still get only self-pay discount.",
+    "Free care text refers to Community Services Administration poverty guidelines; Federal Poverty Guidelines also referenced."
+  ]
+}

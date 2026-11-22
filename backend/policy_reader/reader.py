@@ -48,6 +48,35 @@ class ReadResult:
         return self.input_tokens / 1e6 * price_in + self.output_tokens / 1e6 * price_out
 
 
+def _raw_path(cache_dir: Path, sha: str) -> Path:
+    return Path(cache_dir) / "raw" / f"{sha[:8]}.raw.json"
+
+
+def _finish(raw: PolicyRules, doc: extract_text.ExtractedDoc, sha: str, url: Optional[str]) -> PolicyRules:
+    with_source = raw.model_copy(
+        update={
+            "source": Source(url=url, sha256=sha, retrieved_at=date.today().isoformat(), page_count=doc.page_count),
+            "warnings": list(doc.warnings) + list(raw.warnings),
+        }
+    )
+    return validate.post_validate(with_source, doc.page_map())
+
+
+def revalidate_cached(
+    pdf_bytes: bytes, *, url: Optional[str] = None, cache_dir: Path = cache.DEFAULT_CACHE_DIR
+) -> Optional[PolicyRules]:
+    """Re-run code validation on the saved raw model output (no API call). None if no raw output saved."""
+    sha = cache.sha256_bytes(pdf_bytes)
+    raw_file = _raw_path(cache_dir, sha)
+    if not raw_file.exists():
+        return None
+    previous = cache.lookup(sha, cache_dir)
+    url = url or (previous.source.url if previous and previous.source else None)
+    rules = _finish(PolicyRules.model_validate_json(raw_file.read_text()), extract_text.extract_pages(pdf_bytes), sha, url)
+    cache.save(rules, cache_dir)
+    return rules
+
+
 def _parse_with_retry(client: ModelClient, prompt: PromptInput) -> tuple[PolicyRules, ModelResult, int, int]:
     result = client.generate(prompt)
     tokens_in, tokens_out = result.input_tokens, result.output_tokens
@@ -90,14 +119,11 @@ def read_policy(
         pdf_bytes=pdf_bytes if doc.needs_raw_pdf else None,
     )
     raw, last, tokens_in, tokens_out = _parse_with_retry(client or default_client(), prompt)
+    raw_file = _raw_path(cache_dir, sha)
+    raw_file.parent.mkdir(parents=True, exist_ok=True)
+    raw_file.write_text(raw.model_dump_json(indent=2) + "\n")  # model output before code checks
 
-    with_source = raw.model_copy(
-        update={
-            "source": Source(url=url, sha256=sha, retrieved_at=date.today().isoformat(), page_count=doc.page_count),
-            "warnings": list(doc.warnings) + list(raw.warnings),
-        }
-    )
-    rules = validate.post_validate(with_source, doc.page_map())
+    rules = _finish(raw, doc, sha, url)
     path = cache.save(rules, cache_dir)
     return ReadResult(
         rules=rules,

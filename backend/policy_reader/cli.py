@@ -11,7 +11,9 @@ from pathlib import Path
 from typing import Optional
 
 from .fetch import fetch_policy_pdf
-from .reader import ReadResult, read_policy
+import csv
+
+from .reader import ReadResult, read_policy, revalidate_cached
 
 
 def _load(target: str) -> tuple[bytes, Optional[str]]:
@@ -52,7 +54,25 @@ def _print_table(rows: list[list[str]]) -> None:
         print(line(r))
 
 
+def _source_urls(folder: Path) -> dict[str, str]:
+    csv_path = folder / "sources.csv"
+    if not csv_path.exists():
+        return {}
+    with csv_path.open() as fh:
+        return {row["file"]: row["url"] for row in csv.DictReader(fh)}
+
+
+def run_revalidate(folder: Path) -> int:
+    urls = _source_urls(folder)
+    for pdf in sorted(folder.glob("*.pdf")):
+        rules = revalidate_cached(pdf.read_bytes(), url=urls.get(pdf.name))
+        status = "no raw output saved (re-run with --no-cache)" if rules is None else f"review_fields={rules.review_fields}"
+        print(f"{pdf.name:28} {status}")
+    return 0
+
+
 def run_all(folder: Path, use_cache: bool) -> int:
+    urls = _source_urls(folder)
     pdfs = sorted(folder.glob("*.pdf"))
     if not pdfs:
         print(f"no PDFs in {folder}", file=sys.stderr)
@@ -60,7 +80,7 @@ def run_all(folder: Path, use_cache: bool) -> int:
     rows, fresh, failures = [], [], []
     for pdf in pdfs:
         try:
-            result = read_policy(pdf.read_bytes(), use_cache=use_cache)
+            result = read_policy(pdf.read_bytes(), url=urls.get(pdf.name), use_cache=use_cache)
         except Exception as exc:  # keep going; report every failure at the end
             failures.append((pdf.name, str(exc)))
             continue
@@ -87,9 +107,12 @@ def main(argv: Optional[list[str]] = None) -> int:
     parser.add_argument("--all", type=Path, help="run every PDF in this folder and print a summary table")
     parser.add_argument("--out", type=Path, help="also write the rules JSON here")
     parser.add_argument("--no-cache", action="store_true", help="ignore cached results")
+    parser.add_argument("--revalidate", type=Path, help="re-run code checks on saved raw model output (no API call)")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(name)s: %(message)s")
 
+    if args.revalidate:
+        return run_revalidate(args.revalidate)
     if args.all:
         return run_all(args.all, use_cache=not args.no_cache)
     if not args.target:

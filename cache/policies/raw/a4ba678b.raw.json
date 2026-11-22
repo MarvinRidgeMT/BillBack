@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Baptist Memorial Health Care Corporation",
+  "hospital_state": "TN",
+  "source": null,
+  "policy_effective_date": "Effective Date: 9/03 (last revision 6/25)",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "< 200% 100%",
+      "page": 8,
+      "confidence": 0.7,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 201.0,
+        "fpl_max_percent": 250.0,
+        "discount_type": "percent_off",
+        "value": 95.0,
+        "description": "95% discount on financial need discount table"
+      },
+      {
+        "fpl_min_percent": 251.0,
+        "fpl_max_percent": 300.0,
+        "discount_type": "percent_off",
+        "value": 90.0,
+        "description": "90% discount"
+      },
+      {
+        "fpl_min_percent": 301.0,
+        "fpl_max_percent": 350.0,
+        "discount_type": "percent_off",
+        "value": 85.0,
+        "description": "85% discount"
+      },
+      {
+        "fpl_min_percent": 351.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": 80.0,
+        "description": "80% discount"
+      },
+      {
+        "fpl_min_percent": 401.0,
+        "fpl_max_percent": null,
+        "discount_type": "other",
+        "value": null,
+        "description": "Above 400%: discount varies by facility; uninsured get AGB-based Uninsured Discount"
+      }
+    ],
+    "evidence": {
+      "quote": "351-400% 80%",
+      "page": 8,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.8,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "The application period begins on the date medical care is provided (or earlier if the patient choses to apply) and ends on the later of 240 days after the first post-discharge billing statement or thirty days after the hospital (or an authorized third party) provides a written notice (final bill) to the patient outlining pending",
+      "page": 2,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": false,
+  "presumptive_eligibility": "Baptist may use external scoring systems to predict presumptive charity, and uninsured patients automatically receive the Uninsured Discount without an application.",
+  "how_to_apply": "Complete the Financial Assistance Application (download at www.baptistonline.org/patients-and-visitors/financial-assistance, email FAP@BMHCC.org, or get it from the facility Business Office); Central Business Office (877) 348-1281 for Medically Underinsured discount.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Table says '< 200%' for 100% and starts next band at 201%, so exactly 200% is ambiguous.",
+    "Only uninsured patients are eligible for financial need discount; insured patients only get a 25% discount on liability over $5,000 (Medically Underinsured).",
+    "Hospital state not stated; TN inferred from Shelby County reference and Baptist is headquartered in Memphis, with Mississippi facilities also mentioned.",
+    "Discount above 400% FPL varies by facility.",
+    "Policy covers multiple Baptist facilities; AGB-based Uninsured Discount rates differ by facility."
+  ]
+}
