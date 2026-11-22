@@ -162,8 +162,8 @@ right before the freeze; trimming non-FAP pages is the planned fix.
   (WA, CA, MD, OR, NJ only), appeal letter (`kind: "appeal"` on `POST /api/packet`), charity-care tile map on home.
 - Skipped: filling Fort HealthCare's own form. Its policy PDF has no form fields, and its application is an online web form
   (forthealthcare.com, Community Care page), not a fillable PDF.
-- **License decision for Anish:** Kokoro's web bundle includes espeak-ng (GPL-3.0); the repo is MIT. Not vendored;
-  Read it to me uses the device's own voice (speechSynthesis) in EN and ES.
+- **Voice license, decided (Anish, Nov 22):** browser voice. Kokoro's web bundle includes espeak-ng (GPL-3.0), so nothing
+  from Kokoro/espeak-ng is vendored and BillBack stays MIT. Read it to me uses speechSynthesis in EN and ES.
 - State laws: NY (403), IL (TLS error) and CO (bill summary has no 250% figure) couldn't be confirmed on the official pages, so they're left out.
 - 6 of 50 cached policy quotes can't be located on their page (tables, odd text layers): the receipt says
   "We couldn't box this line" and draws no box. LA County, Mercy and Ochsner have no PDF on disk, so the button is hidden.
