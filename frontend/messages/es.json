@@ -4,10 +4,10 @@
   "nav.lang_code": "en",
   "hero.line1": "PUEDE QUE NO",
   "hero.line2": "DEBA ESTA FACTURA",
-  "hero.side_left_1": "LA ATENCIÓN GRATUITA ES LEY",
-  "hero.side_left_2": "EN HOSPITALES SIN FINES DE LUCRO",
-  "hero.side_right_1": "$2,700 MILLONES COBRADOS A PACIENTES",
-  "hero.side_right_2": "QUE PROBABLEMENTE CALIFICABAN",
+  "hero.side_left_1": "La atención gratuita es ley",
+  "hero.side_left_2": "en hospitales sin fines de lucro",
+  "hero.side_right_1": "$2,700 millones cobrados a pacientes",
+  "hero.side_right_2": "que probablemente calificaban",
   "hero.cta_1": "REVISAR",
   "hero.cta_2": "MI FACTURA",
   "how.title": "Cómo funciona",
@@ -155,5 +155,6 @@
   "result.next_title": "Qué sigue",
   "result.next_1": "Firme la carta.",
   "result.next_2": "Adjunte los documentos.",
-  "result.next_3": "Envíela a la dirección de facturación que aparece en su factura y dé seguimiento en 30 días."
+  "result.next_3": "Envíela a la dirección de facturación que aparece en su factura y dé seguimiento en 30 días.",
+  "hero.source": "Fuente: KFF Health News"
 }

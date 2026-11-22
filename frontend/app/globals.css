@@ -256,9 +256,10 @@
 .bill-anchor {
   position: absolute;
   z-index: 3;
-  left: 70%;
-  top: 50%;
-  width: clamp(220px, 24vw, 330px);
+  /* Right of the headline, clear of its last letter. */
+  left: 86%;
+  top: 41%;
+  width: clamp(150px, 19.5vw, 290px);
   aspect-ratio: 0.78;
   translate: -50% -50%;
 }
@@ -369,6 +370,21 @@
 }
 .side.l {
   left: max(5vw, 16px);
+}
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink);
+  text-decoration: underline;
+}
+/* The Spanish headline is longer, so it runs smaller to end before the bill. */
+.hero h1:lang(es) {
+  font-size: clamp(46px, 8.2vw, 124px);
 }
 .side.r {
   right: calc(max(5vw, 16px) + 190px);

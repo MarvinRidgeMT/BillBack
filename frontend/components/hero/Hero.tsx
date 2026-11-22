@@ -5,6 +5,9 @@ import { useT } from "@/lib/i18n";
 import { EASE_OUT, SNAPPY, type Parallax } from "@/lib/motion";
 import { FloatingBill } from "./FloatingBill";
 
+// Where the $2.7B figure comes from.
+const SOURCE_URL = "https://kffhealthnews.org/news/patients-eligible-for-charity-care-instead-get-big-bills";
+
 const line = (delay: number): Variants => ({
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE_OUT, delay } },
@@ -57,14 +60,19 @@ export function Hero({ onStart, parallax, reduce }: HeroProps) {
       />
 
       <motion.p className="side l" variants={side(0.5)}>
-        {t("hero.side_left_1")}
+        {t("hero.side_left_1")}{" "}
         <br />
         {t("hero.side_left_2")}
       </motion.p>
       <motion.p className="side r" variants={side(0.6)}>
-        {t("hero.side_right_1")}
+        {t("hero.side_right_1")}{" "}
         <br />
         {t("hero.side_right_2")}
+        <br />
+        <a className="source-link" href={SOURCE_URL} target="_blank" rel="noopener noreferrer">
+          {t("hero.source")}
+          <span className="sr-only"> {t("result.new_tab")}</span>
+        </a>
       </motion.p>
 
       <motion.div className="cta-wrap" variants={cta}>
