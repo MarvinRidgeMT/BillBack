@@ -1,5 +1,30 @@
 # Notes for the team
 
+## FINAL NUMBERS FOR VIDEO (A, 11:10am — from `eval/results/SUMMARY.md`; say only these)
+| Test | Measured | Target | Result |
+|---|---|---|---|
+| Bill extraction (10 fake bills × 5 fields) | 50/50 (100%) | ≥ 90% | ✅ met |
+| Policy reader, hand spot-checks (2 real policies × 6 fields) | 11/12 (Boys Town 6/6, USA Health 5/6) | ≥ 90% | ✅ met (small sample, checked by hand) |
+| Policy reader, 120-field answer key | not measured (no field-level key for real PDFs) | ≥ 90% | — not measured |
+| Policy quotes verified verbatim in the PDF | 21/21 | all | ✅ met |
+| Policy re-run agreement (6 policies × 5 values) | 29/30 | — | info |
+| End-to-end households, status (10 households × 20 policies, 2026 FPL) | 10/10 households (200/200 results) | 10/10 | ✅ met |
+| …same, every detail incl. unresolved-rule notes | 7/10 households (193/200) | — | info (B to confirm 7 notes) |
+| Rules-engine + backend tests | 215 passed, 0 failed, 2 skipped | all pass | ✅ met |
+| Speed, bill → result (cached policy) | avg 2.6 s, max 3.3 s | < 60 s | ✅ met |
+| Speed, first bill for a new hospital (live policy read) | avg 10.9 s | < 60 s | ✅ met |
+| Cost per bill (cached policy) | $0.0096 | < $0.05 | ✅ met |
+| Cost, first bill for a new hospital | $0.0528 | < $0.05 | ❌ not met |
+| Bill fields sent to the patient to confirm | 2/50 (under 0.8 confidence: 2) | — | info |
+| Policy fields sent to human review | 4/30 | — | info |
+
+Say it like this (all true, all measured):
+- "On our 10 sample bills — crumpled, angled, dim — BillBack read **50 out of 50** fields correctly, in about **3 seconds** and about **one cent** per bill."
+- "Every policy quote we show was found **word for word** in the hospital's PDF (21 of 21)."
+- "The rules engine — plain code, no AI — gave the expected answer for **all 10** test households, using the **2026** federal poverty guidelines."
+- Don't say "90% of 120 policy fields": we didn't measure that. Do say "we checked two policies by hand: 11 of 12 fields right".
+
+
 ## For B — rules JSON contract (policy reader → rules engine)
 - Pydantic models: `backend/policy_reader/schema.py` (`PolicyRules`). Example: `backend/tests/fixtures/sample_rules.json`.
   Load with `PolicyRules.model_validate_json(path.read_text())`, or just `json.load` it.
@@ -90,3 +115,24 @@
   2. **Caveats leak field names**, e.g. "Some policy details need confirming: application_window". Plain words would read better ("how long you have to apply").
   3. Baptist Memorial: the cached policy says `hospital_state: "TN"`, the design doc and `sources.csv` say MS. I send MS. Same FPL row either way, but which is right?
 - The UI falls back to a clearly labeled **sample** (never shown as real) when `/api/eligibility` returns 503 or the backend is down, only if `NEXT_PUBLIC_DEMO_MODE=1`. It goes away by itself once `data/fpl_2026.json` exists.
+
+## Integration done (A, 11:10am) — read this, B and C
+
+### For B
+- Your engine is live behind `POST /api/eligibility` via `backend/eligibility.py` (your bridge, with fixes):
+  - FPL year now comes from `data/fpl_2026.json` (2026). It was 2024, and that's why the FPL evidence had `year: null` (regression test added).
+  - The FPL region now comes from the **household's** state (AK/HI rows), not the hospital's.
+  - A rule that's `unclear` or < 0.8 confidence becomes an unresolved condition, never a pass. A rule that's `not_stated` adds no condition.
+  - Open-ended tiers (no upper %) are skipped. `needs_more_information` is sent to the UI as `cannot_determine`.
+- `eval/households.py`: your 200 combinations reproduce **200/200 with 2024 numbers**. With 2026: **status 200/200**, but 7 results gain an extra unresolved-rule note (mostly residency; list in `eval/results/households.md`). **Please confirm that's expected.** The answer key was NOT edited.
+- Your 20 "real" policy JSONs say `verification_status: unverified` / "PDF not opened". So I ran our policy reader on their URLs: **14/20 read**; 6 failed at the hospital sites (403/404/no PDF link). Results are in `eval/results/b_real_policies.md`. Duke's URL is the **application form**, not the policy, and Heartland is an FQHC sliding-fee schedule; both are flagged for review.
+- I added an empty `scripts/__init__.py` so `eval/` can import your `dict_to_policy`. Nothing else in `scripts/` or `billback/` changed.
+
+### For C
+- **The API now matches your types:** 4 statuses, `tier` in the policy-tier shape, `evidence` (+ `source_url`), plain-word `caveats`, `disclaimer: "Likely eligible, not a guarantee."`. Extra keys: `explanation`, `missing_facts`, `fpl_year`, `engine_tier`.
+- **`GET /api/hospitals` exists** (19 hospitals now) and `POST /api/hospitals/match {hospital_name, hospital_address}` → `{slug, score, matched}`. Your hardcoded 6 still work; switching the list over is optional — **don't change it before the video.**
+- Your 3 observations: (1) the quote is now the field's quote; per-tier quotes need a schema change (after the hackathon). (2) caveats are plain words now. (3) Baptist: `TN` is the issuer (Memphis HQ); `MS` for OCH is fine — the FPL row is the same.
+- **The UI doesn't ask about savings.** So USA Health and Boys Town (asset test stated) return `cannot_determine` with "We still need to know: how much you have in savings or property". The API takes an optional `assets_usd` if you ever add the question.
+- The packet PDF isn't built ("Get my application" shows "coming in the next version"). Fine for the demo.
+- **Video bill:** use `bill_10_crumpled_dim.jpg` (Fort HealthCare, WI). It's crumpled + dim, and its account number "FH 7735-0092" goes to the **confirm step** (it has a space, which our check rejects). With household 3 / $40,000 / WI it gives **Likely free care, 146% of FPL**, with the page 1 quote. `bill_09_text.pdf` (Marshfield) also gives a clean "likely free" result; I ran that one through the real UI.
+- Demo with no API at all: `BILL_CACHE_ONLY=1 DEMO_CACHE_ONLY=1` on the backend. The 10 sample bills are served from `cache/bills/`.
