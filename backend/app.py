@@ -226,3 +226,36 @@ class MatchRequest(BaseModel):
 def hospitals_match(req: MatchRequest) -> dict[str, Any]:
     """Best cached policy for a bill's hospital. matched=false (score < 80) -> UI asks the patient to pick."""
     return _envelope(policies.match_hospital(req.hospital_name, req.hospital_address))
+
+
+# --- Result-screen extras: public policy facts only, plain code, no AI (backend/policy_page.py, policy_facts.py) ---
+from backend import policy_facts, policy_page  # noqa: E402
+
+
+def _policy_lookup(fn, *args):
+    try:
+        return fn(*args)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(404, str(exc)) from exc
+
+
+@app.get("/api/policy/page")
+def policy_page_image(slug: str, page: int, quote: str = "") -> dict[str, Any]:
+    """One policy page as a PNG + a box per line of the quote. found=false -> no box is drawn."""
+    if len(quote) > policy_page.MAX_QUOTE_CHARS:
+        raise HTTPException(400, "quote is too long")
+    return _envelope(_policy_lookup(policy_page.locate, slug, page, quote))
+
+
+@app.get("/api/policy/thresholds")
+def policy_thresholds(slug: str, household_size: int, state: str) -> dict[str, Any]:
+    if not 1 <= household_size <= 30:
+        raise HTTPException(400, "household_size must be 1-30")
+    return _envelope(_policy_lookup(policy_facts.thresholds, slug, household_size, state))
+
+
+@app.get("/api/policy/facts")
+def policy_facts_route(slug: str) -> dict[str, Any]:
+    return _envelope(_policy_lookup(policy_facts.facts, slug))

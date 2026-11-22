@@ -1,0 +1,55 @@
+{
+  "_note": "Information only, not legal advice. Each entry was checked against the official page on checked_on. NY, IL and CO were left out because their official pages could not be confirmed that day.",
+  "states": [
+    {
+      "state": "WA",
+      "name_en": "Washington",
+      "name_es": "Washington",
+      "summary_en": "Washington law requires free hospital care up to 300% of the poverty line at large hospital systems (75% off up to 350%, 50% off up to 400%), and free care up to 200% at other hospitals (75% off up to 250%, 50% off up to 300%)",
+      "summary_es": "La ley de Washington exige atención hospitalaria gratis hasta el 300% de la línea de pobreza en los sistemas hospitalarios grandes (75% de descuento hasta el 350%, 50% hasta el 400%), y gratis hasta el 200% en los demás hospitales (75% de descuento hasta el 250%, 50% hasta el 300%)",
+      "citation": "RCW 70.170.060",
+      "url": "https://app.leg.wa.gov/rcw/default.aspx?cite=70.170.060",
+      "checked_on": "2026-11-22"
+    },
+    {
+      "state": "CA",
+      "name_en": "California",
+      "name_es": "California",
+      "summary_en": "California's Hospital Fair Pricing Act says patients without insurance, or with high medical costs, whose family income is up to 400% of the poverty line qualify for charity or discounted care",
+      "summary_es": "La Ley de Precios Justos de Hospitales de California dice que los pacientes sin seguro, o con gastos médicos altos, cuyo ingreso familiar llega hasta el 400% de la línea de pobreza califican para atención gratuita o con descuento",
+      "citation": "Health & Safety Code §§127400–127446 (Hospital Fair Pricing Act)",
+      "url": "https://hcai.ca.gov/affordability/hospital-fair-billing-program/hospital-bill-complaint-program/frequently-asked-questions/",
+      "checked_on": "2026-11-22"
+    },
+    {
+      "state": "MD",
+      "name_en": "Maryland",
+      "name_es": "Maryland",
+      "summary_en": "Maryland law requires free hospital care for family income up to 200% of the poverty line, and lower costs from 201% to 300% (75% off up to 250%, 60% off up to 300%)",
+      "summary_es": "La ley de Maryland exige atención hospitalaria gratis con un ingreso familiar de hasta el 200% de la línea de pobreza, y costos más bajos del 201% al 300% (75% de descuento hasta el 250%, 60% hasta el 300%)",
+      "citation": "Md. Code, Health-General §19-214.1",
+      "url": "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=ghg&section=19-214.1",
+      "checked_on": "2026-11-22"
+    },
+    {
+      "state": "OR",
+      "name_en": "Oregon",
+      "name_es": "Oregón",
+      "summary_en": "Oregon law requires nonprofit hospitals to give free care up to 200% of the poverty line, and at least 75% off up to 300%, 50% off up to 350% and 25% off up to 400%",
+      "summary_es": "La ley de Oregón exige que los hospitales sin fines de lucro den atención gratis hasta el 200% de la línea de pobreza, y por lo menos 75% de descuento hasta el 300%, 50% hasta el 350% y 25% hasta el 400%",
+      "citation": "ORS 442.614",
+      "url": "https://www.oregonlegislature.gov/bills_laws/ors/ors442.html",
+      "checked_on": "2026-11-22"
+    },
+    {
+      "state": "NJ",
+      "name_en": "New Jersey",
+      "name_es": "Nueva Jersey",
+      "summary_en": "New Jersey's Charity Care Program gives free hospital care up to 200% of the poverty line and reduced charges from 201% to 300%, with asset limits ($7,500 for one person, $15,000 for a family)",
+      "summary_es": "El programa Charity Care de Nueva Jersey da atención hospitalaria gratis hasta el 200% de la línea de pobreza y cobros reducidos del 201% al 300%, con límites de bienes ($7,500 por persona, $15,000 por familia)",
+      "citation": "N.J. Charity Care Program (N.J.A.C. 10:52)",
+      "url": "https://nj.gov/health/hcf/charity-care/overview/",
+      "checked_on": "2026-11-22"
+    }
+  ]
+}
