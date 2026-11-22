@@ -156,5 +156,11 @@
   "result.next_1": "Sign the letter.",
   "result.next_2": "Attach the documents.",
   "result.next_3": "Send it to the billing address on your bill, and follow up in 30 days.",
-  "hero.source": "Source: KFF Health News"
+  "hero.source": "Source: KFF Health News",
+  "footer.label": "About BillBack",
+  "footer.built": "Built at EvoHacks II",
+  "footer.no_store": "We never store your bill",
+  "footer.not_advice": "Not legal or financial advice",
+  "footer.repo": "GitHub repo",
+  "footer.data": "Data: 2026 HHS poverty guidelines and hospitals' own policies"
 }

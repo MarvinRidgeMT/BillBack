@@ -156,5 +156,11 @@
   "result.next_1": "Firme la carta.",
   "result.next_2": "Adjunte los documentos.",
   "result.next_3": "Envíela a la dirección de facturación que aparece en su factura y dé seguimiento en 30 días.",
-  "hero.source": "Fuente: KFF Health News"
+  "hero.source": "Fuente: KFF Health News",
+  "footer.label": "Acerca de BillBack",
+  "footer.built": "Hecho en EvoHacks II",
+  "footer.no_store": "Nunca guardamos su factura",
+  "footer.not_advice": "No es asesoría legal ni financiera",
+  "footer.repo": "Repositorio en GitHub",
+  "footer.data": "Datos: guías de pobreza del HHS de 2026 y las políticas de los propios hospitales"
 }
