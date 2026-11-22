@@ -158,6 +158,10 @@ export interface PacketRequest {
   annual_income: number;
   eligibility: { status: string; percent_of_fpl: number; quote: string; page: number | null; fpl_year: number | null };
   lang: "en" | "es";
+  /** "appeal" = the "If they say no" request to reconsider. Default: the application. */
+  kind?: "application" | "appeal";
+  /** Optional SNAP/Medicaid/WIC answer: adds the benefit letter to the checklist. */
+  benefits?: boolean;
 }
 
 /** POST /api/packet. The PDF is built in memory on the backend and handed straight to the browser. */
@@ -180,7 +184,7 @@ export async function downloadPacket(body: PacketRequest): Promise<void> {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `BillBack-application-${body.hospital_slug}.pdf`;
+  a.download = `BillBack-${body.kind === "appeal" ? "appeal" : "application"}-${body.hospital_slug}.pdf`;
   document.body.appendChild(a);
   a.click();
   a.remove();

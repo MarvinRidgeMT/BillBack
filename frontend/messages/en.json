@@ -214,5 +214,6 @@
   "map.col_hospital": "Hospital",
   "map.col_state": "State",
   "map.col_free": "Free care up to",
-  "map.col_discount": "Discounts up to"
+  "map.col_discount": "Discounts up to",
+  "wow.appeal.link": "If they say no: get an appeal letter"
 }

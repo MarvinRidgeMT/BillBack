@@ -173,6 +173,8 @@ class PacketRequest(BaseModel):
     annual_income: float = Field(..., ge=0, le=10_000_000)
     eligibility: PacketEligibility
     lang: Literal["en", "es"] = "en"
+    kind: Literal["application", "appeal"] = "application"
+    benefits: bool = False  # optional SNAP/Medicaid/WIC answer: adds the benefit letter to the checklist
 
 
 @app.post("/api/packet")
@@ -184,6 +186,27 @@ def packet_pdf(req: PacketRequest) -> Response:
         raise HTTPException(400, str(exc)) from exc
     except LookupError as exc:
         raise HTTPException(404, str(exc)) from exc
+    if req.kind == "appeal":
+        pdf = packet.build_appeal(
+            bill=req.bill.model_dump(),
+            hospital_name=req.bill.hospital_name or rules.hospital_name,
+            household_size=req.household_size,
+            annual_income=req.annual_income,
+            percent_of_fpl=req.eligibility.percent_of_fpl,
+            fpl_year=req.eligibility.fpl_year or 2026,
+            quote=req.eligibility.quote,
+            page=req.eligibility.page or None,
+            source_url=policies.source_url_for(rules),
+            lang=req.lang,
+        )
+        return Response(
+            content=pdf,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f'attachment; filename="BillBack-appeal-{req.hospital_slug}.pdf"',
+                "Cache-Control": "no-store",
+            },
+        )
     pdf = packet.build_packet(
         bill=req.bill.model_dump(),
         hospital_name=req.bill.hospital_name or rules.hospital_name,
@@ -196,6 +219,7 @@ def packet_pdf(req: PacketRequest) -> Response:
         source_url=policies.source_url_for(rules),
         how_to_apply=rules.how_to_apply,
         lang=req.lang,
+        benefits=req.benefits,
     )
     filename = f"BillBack-application-{req.hospital_slug}.pdf"
     return Response(

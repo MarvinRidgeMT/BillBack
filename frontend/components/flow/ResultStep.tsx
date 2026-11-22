@@ -201,10 +201,12 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
   const amount = sample ? "" : bill.fields.amount_due;
   const canApply = data.status !== "probably_not_eligible";
 
-  async function getPacket() {
+  async function getPacket(kind: "application" | "appeal" = "application") {
     setPacket("working");
     try {
       await downloadPacket({
+        kind,
+        benefits: benefits === "yes",
         bill: bill.fields,
         hospital_slug: bill.hospital.slug,
         household_size: household,
@@ -407,7 +409,7 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
 
       <div className="btn-row">
         {canApply && !sample && (
-          <Button variant="coral" onClick={getPacket} disabled={packet === "working"}>
+          <Button variant="coral" onClick={() => getPacket()} disabled={packet === "working"}>
             {packet === "working" ? t("result.app_working") : t("result.get_app")}
           </Button>
         )}
@@ -415,6 +417,13 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
           {t("result.start_over")}
         </Button>
       </div>
+      {canApply && !sample && (
+        <p className="appeal-line">
+          <button type="button" className="text-link link-button" onClick={() => getPacket("appeal")} disabled={packet === "working"}>
+            {t("wow.appeal.link")}
+          </button>
+        </p>
+      )}
       <div aria-live="polite">{packet === "failed" && <p className="error-text">{t("result.app_failed")}</p>}</div>
 
       {helpLine}
