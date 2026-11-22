@@ -1,0 +1,374 @@
+/* Result-screen extras: receipt, what-if slider, read aloud, $0 finale, deadline, benefits, state law. */
+
+.receipt {
+  margin: -4px 0 16px;
+}
+.receipt-panel {
+  margin-top: 12px;
+}
+.receipt-frame {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 10px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  box-shadow: 0 12px 24px -16px rgba(14, 59, 46, 0.5);
+}
+.receipt-page {
+  position: relative;
+  width: 100%;
+  will-change: transform;
+}
+.receipt-page img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.receipt-page svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.receipt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.receipt-note {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+/* What-if slider */
+.whatif {
+  margin: 20px 0 8px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1.5px dashed var(--line);
+}
+.whatif-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+.whatif-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mint) 60%, transparent);
+  color: var(--ink);
+  vertical-align: 2px;
+}
+.whatif-sub {
+  margin: 4px 0 12px;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.whatif-readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.whatif-amount {
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.whatif-amount span {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink-2);
+}
+.whatif-pill-slot {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+.whatif-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.zone-free {
+  background: #2f9e6e;
+  color: #fff;
+}
+.zone-discount {
+  background: #f2b84b;
+  color: #3a2700;
+}
+.zone-none {
+  background: #c9d3ce;
+  color: #1f2d27;
+}
+.zone-unknown {
+  background: var(--line);
+  color: var(--ink);
+}
+.whatif-track {
+  position: relative;
+  margin-top: 14px;
+  padding-bottom: 38px;
+}
+.whatif-zones {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 999px;
+  overflow: hidden;
+  top: 22px;
+}
+.whatif-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+.whatif-track input[type="range"] {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  accent-color: var(--ink);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.whatif-track input[type="range"]::-webkit-slider-runnable-track {
+  height: 12px;
+  background: transparent;
+}
+.whatif-track input[type="range"]::-moz-range-track {
+  height: 12px;
+  background: transparent;
+}
+.whatif-track input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 4px solid var(--ink);
+  box-shadow: 0 2px 6px rgba(14, 59, 46, 0.35);
+}
+.whatif-track input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 4px solid var(--ink);
+}
+.whatif-track input[type="range"]:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+.whatif-markers {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 40px;
+  height: 36px;
+}
+.whatif-marker {
+  position: absolute;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.25;
+  color: var(--ink-2);
+  white-space: nowrap;
+  padding-top: 6px;
+  border-left: 0;
+}
+.whatif-marker::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 2px;
+  height: 10px;
+  background: var(--ink);
+}
+.whatif-marker b {
+  display: block;
+  color: var(--ink);
+}
+.whatif-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.whatif-foot p {
+  margin: 0;
+}
+
+/* Read it to me */
+.readaloud {
+  margin: 0 0 8px;
+}
+.readaloud-controls {
+  margin-top: 0;
+}
+.readaloud-summary {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  font-size: 16px;
+}
+.readaloud [data-current] {
+  background: var(--coral-bg);
+  border-radius: 4px;
+}
+.call-script {
+  margin-top: 10px;
+  font-size: 16px;
+}
+.call-script summary {
+  cursor: pointer;
+  font-weight: 500;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.call-script p {
+  margin: 6px 0;
+  padding: 2px 4px;
+}
+
+/* $0 finale: bill scraps burst out of the mini bill */
+.scrap-burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.burst-scrap {
+  position: absolute;
+  left: -26px;
+  top: -12px;
+  padding: 3px 7px;
+  background: #fff;
+  color: #2b3a34;
+  font: 700 13px/1.2 var(--font-mono, ui-monospace), monospace;
+  border-radius: 3px;
+  box-shadow: 0 6px 12px -6px rgba(14, 59, 46, 0.5);
+  clip-path: polygon(0 8%, 20% 0, 45% 10%, 70% 0, 100% 6%, 96% 100%, 70% 92%, 40% 100%, 12% 94%, 3% 100%);
+}
+
+/* Deadline, benefits and state-law boxes */
+.extra-box {
+  margin: 16px 0 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1.5px solid var(--line);
+  font-size: 16px;
+}
+.extra-box p {
+  margin: 0 0 6px;
+}
+.extra-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-weight: 600;
+}
+.days-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--card);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.days-chip.urgent {
+  background: var(--coral);
+  color: var(--on-coral);
+}
+.benefits-yes {
+  border-color: #2f9e6e;
+  background: color-mix(in srgb, #2f9e6e 12%, transparent);
+}
+.law-box {
+  background: color-mix(in srgb, var(--mint) 25%, transparent);
+}
+
+/* Optional benefits question */
+.benefits-q {
+  border: 0;
+  padding: 0;
+  margin-inline: 0;
+}
+.choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.choice input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--ink);
+}
+.choice:has(input:checked) {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--mint) 45%, transparent);
+}
+.choice:has(input:focus-visible) {
+  outline: 3px solid var(--coral);
+  outline-offset: 2px;
+}
+.call-script summary::before {
+  content: "▸";
+  margin-right: 8px;
+  transition: rotate 150ms ease-out;
+}
+.call-script[open] summary::before {
+  rotate: 90deg;
+}
+@media (prefers-reduced-motion: reduce) {
+  .call-script summary::before {
+    transition: none;
+  }
+}

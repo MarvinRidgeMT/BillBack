@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, DM_Sans } from "next/font/google";
 import "./globals.css";
+import "./wow.css";
 
 const anton = Anton({
   weight: "400",

@@ -15,7 +15,13 @@ import {
   type EligibilityData,
   type EligibilityStatus,
 } from "@/lib/types";
+import type { Benefits } from "./BenefitsQuestion";
+import { IncomeSlider } from "./IncomeSlider";
+import { PolicyReceipt } from "./PolicyReceipt";
+import { ReadAloud } from "./ReadAloud";
+import { ResultExtras } from "./ResultExtras";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
+import { FLIP_S, ScrapBurst } from "./ZeroFinale";
 
 const DOLLAR_FOR_URL = "https://dollarfor.org";
 const STAMP_DELAY_MS = 200;
@@ -43,11 +49,12 @@ interface ResultStepProps {
   bill: ConfirmedBill;
   household: number;
   income: number;
+  benefits?: Benefits;
   onRetry: () => void;
   onStartOver: () => void;
 }
 
-export function ResultStep({ entrance, reduce, checking, bill, household, income, onRetry, onStartOver }: ResultStepProps) {
+export function ResultStep({ entrance, reduce, checking, bill, household, income, benefits = "skip", onRetry, onStartOver }: ResultStepProps) {
   const t = useT();
   const [state, setState] = useState<State>({ phase: "loading" });
 
@@ -105,6 +112,7 @@ export function ResultStep({ entrance, reduce, checking, bill, household, income
           bill={bill}
           household={household}
           income={income}
+          benefits={benefits}
           reduce={reduce}
           onStartOver={onStartOver}
         />
@@ -151,21 +159,24 @@ interface VerdictProps {
   bill: ConfirmedBill;
   household: number;
   income: number;
+  benefits: Benefits;
   reduce: boolean;
   onStartOver: () => void;
 }
 
 type PacketState = "idle" | "working" | "failed";
 
-function Verdict({ data, sample, bill, household, income, reduce, onStartOver }: VerdictProps) {
+function Verdict({ data, sample, bill, household, income, benefits, reduce, onStartOver }: VerdictProps) {
   const { t, lang } = useI18n();
   const stamp = stampText(data, t);
   const [stamped, setStamped] = useState(reduce);
   const [packet, setPacket] = useState<PacketState>("idle");
 
   const free = data.status === "likely_free";
-  // For "likely free" the amount is struck through first, then the stamp lands: about 1s, once.
-  const stampDelayMs = free ? STRIKE_DELAY_MS + STRIKE_MS : STAMP_DELAY_MS;
+  // "$0" finale: the mini bill flips, the amount is struck through, the stamp lands and the scraps burst. Once.
+  const finale = free && !reduce && !sample;
+  const strikeDelayMs = finale ? FLIP_S * 1000 : STRIKE_DELAY_MS;
+  const stampDelayMs = free ? strikeDelayMs + STRIKE_MS : STAMP_DELAY_MS;
   const hasStamp = stamp !== null;
   useEffect(() => {
     if (reduce || !hasStamp) return;
@@ -228,7 +239,14 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
       {sample && <p className="banner">{t("result.sample_banner")}</p>}
 
       <div className={`verdict ${TONE[data.status]}`}>
-        <div className="mini-bill" aria-hidden="true">
+        <motion.div
+          className="mini-bill"
+          aria-hidden="true"
+          style={{ transformPerspective: 700 }}
+          initial={finale ? { rotateY: 0 } : false}
+          animate={finale ? { rotateY: 360 } : undefined}
+          transition={{ duration: FLIP_S, ease: EASE_OUT }}
+        >
           <span className="mini-name">{(sample ? data.hospital_name : bill.hospital.name).toUpperCase()}</span>
           <span className="mini-due">{t("result.mini_due")}</span>
           {amount && (
@@ -239,13 +257,14 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
                   className="strike"
                   initial={reduce ? false : { scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ duration: STRIKE_MS / 1000, ease: EASE_OUT, delay: STRIKE_DELAY_MS / 1000 }}
+                  transition={{ duration: STRIKE_MS / 1000, ease: EASE_OUT, delay: strikeDelayMs / 1000 }}
                 />
               )}
             </span>
           )}
           {stamp && <Stamp top={stamp.top} bottom={stamp.bottom} show={stamped} reduce={reduce} from={2.6} />}
-        </div>
+          {finale && <ScrapBurst delay={stampDelayMs / 1000} />}
+        </motion.div>
         <div>
           <StepHeading key={data.status}>{t(TITLES[data.status])}</StepHeading>
           <p className="sub mb-0!">
@@ -298,6 +317,34 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
         )}
       </div>
 
+      {quote && typeof evidence.page === "number" && !sample && (
+        <PolicyReceipt
+          slug={bill.hospital.slug}
+          page={evidence.page}
+          quote={quote}
+          hospital={hospitalName}
+          reduce={reduce}
+        />
+      )}
+
+      {!sample && (
+        <ReadAloud
+          summary={[
+            t(TITLES[data.status]) + ".",
+            t(household === 1 ? "result.fpl_one" : "result.fpl_other", { pct: Math.round(data.percent_of_fpl), n: household }),
+            ...(quote ? [t("wow.read.policy_says", { quote })] : []),
+          ]}
+          script={[
+            bill.fields.account_number
+              ? t("wow.read.call_1", { account: bill.fields.account_number })
+              : t("wow.read.call_1_no_account"),
+            t("wow.read.call_2"),
+            t("wow.read.call_3"),
+            t("wow.read.call_4"),
+          ]}
+        />
+      )}
+
       {canApply && !sample && (
         <>
           <p className="caveats-title">{t("result.next_title")}</p>
@@ -327,6 +374,8 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
         </ul>
       )}
 
+      <ResultExtras data={data} bill={bill} benefits={benefits} sample={sample} />
+
       {caveats.length > 0 && (
         <>
           <p className="caveats-title">{t("result.caveats_title")}</p>
@@ -344,6 +393,16 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
             ))}
           </ul>
         </>
+      )}
+
+      {!sample && (
+        <IncomeSlider
+          slug={bill.hospital.slug}
+          household={household}
+          state={bill.hospital.state}
+          income={income}
+          initial={data}
+        />
       )}
 
       <div className="btn-row">

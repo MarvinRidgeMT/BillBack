@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { formatIncomeInput, parseIncome } from "@/lib/format";
 import { useT } from "@/lib/i18n";
 import { SNAPPY } from "@/lib/motion";
+import { BenefitsQuestion, type Benefits } from "./BenefitsQuestion";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 
 const MIN_HOUSEHOLD = 1;
@@ -16,6 +17,8 @@ export interface Answers {
   household: number;
   /** Whole dollars per year. */
   income: number;
+  /** Optional SNAP/Medicaid/WIC answer. Shown on the result only; it never changes the eligibility call. */
+  benefits: Benefits;
 }
 
 interface QuestionsStepProps {
@@ -31,6 +34,7 @@ export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps
   const [household, setHousehold] = useState(MIN_HOUSEHOLD);
   const [income, setIncome] = useState("");
   const [showError, setShowError] = useState(false);
+  const [benefits, setBenefits] = useState<Benefits>("skip");
   const pop = useAnimationControls();
 
   // The buttons use aria-disabled, not disabled, so focus stays put at the limits.
@@ -49,7 +53,7 @@ export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps
       document.getElementById(`${id}-income`)?.focus();
       return;
     }
-    onSubmit({ household, income: dollars });
+    onSubmit({ household, income: dollars, benefits });
   }
 
   const invalid = showError && parseIncome(income) === null;
@@ -110,6 +114,8 @@ export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps
             </p>
           )}
         </div>
+
+        <BenefitsQuestion value={benefits} onChange={setBenefits} />
 
         <div className="btn-row">
           <Button type="submit" variant="coral">

@@ -12,6 +12,7 @@ import { I18nProvider } from "@/lib/i18n";
 import { MOCK_BILL_READ } from "@/lib/mock";
 import { useParallax, useReducedMotionPref } from "@/lib/motion";
 import type { BillReadData, ConfirmedBill, EligibilityData, EligibilityRequest } from "@/lib/types";
+import type { Benefits } from "./BenefitsQuestion";
 import { ManualEntry } from "./ManualEntry";
 import { QuestionsStep, type Answers } from "./QuestionsStep";
 import { ReadingStep } from "./ReadingStep";
@@ -33,6 +34,7 @@ interface Checking {
   attempt: number;
   request: EligibilityRequest;
   household: number;
+  benefits: Benefits;
   promise: Promise<EligibilityData>;
 }
 
@@ -93,12 +95,13 @@ function FlowInner() {
   );
 
   const startChecking = useCallback(
-    (request: EligibilityRequest) => {
+    (request: EligibilityRequest, benefits: Benefits = "skip") => {
       attempts.current += 1;
       setChecking({
         attempt: attempts.current,
         request,
         household: request.household_size,
+        benefits,
         promise: quiet(checkEligibility(request)),
       });
       go("result");
@@ -115,14 +118,14 @@ function FlowInner() {
   );
 
   const onAnswers = useCallback(
-    ({ household, income }: Answers) => {
+    ({ household, income, benefits }: Answers) => {
       if (!bill) return;
       startChecking({
         hospital_slug: bill.hospital.slug,
         household_size: household,
         annual_income: income,
         state: bill.hospital.state,
-      });
+      }, benefits);
     },
     [bill, startChecking],
   );
@@ -194,7 +197,8 @@ function FlowInner() {
                 bill={bill}
                 household={checking.household}
                 income={checking.request.annual_income}
-                onRetry={() => startChecking(checking.request)}
+                benefits={checking.benefits}
+                onRetry={() => startChecking(checking.request, checking.benefits)}
                 onStartOver={startOver}
               />
             )}
