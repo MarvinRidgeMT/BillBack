@@ -192,6 +192,7 @@ function FlowInner() {
                 checking={checking.promise}
                 bill={bill}
                 household={checking.household}
+                income={checking.request.annual_income}
                 onRetry={() => startChecking(checking.request)}
                 onStartOver={startOver}
               />

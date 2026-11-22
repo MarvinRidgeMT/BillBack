@@ -26,6 +26,11 @@ interface I18nValue {
   t: Translate;
 }
 
+/** The English text for a key, for comparing against English text from the backend. */
+export function enMessage(key: MessageKey): string {
+  return en[key];
+}
+
 const I18nContext = createContext<I18nValue | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
@@ -34,6 +39,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = lang;
+    document.title = MESSAGES[lang]["meta.title"];
   }, [lang]);
 
   const t = useCallback<Translate>(

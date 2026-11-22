@@ -5,9 +5,10 @@ import { motion } from "motion/react";
 import { Stamp } from "@/components/hero/Stamp";
 import { Button } from "@/components/ui/button";
 import { ApiError, DEMO_MODE } from "@/lib/api";
-import { useT, type MessageKey, type Translate } from "@/lib/i18n";
+import { enMessage, useI18n, useT, type MessageKey, type Translate } from "@/lib/i18n";
 import { EASE_OUT, SNAPPY_SETTLE_MS } from "@/lib/motion";
 import { MOCK_ELIGIBILITY_DEFAULT } from "@/lib/mock";
+import { buildPacket, canMakePacket, downloadPdf } from "@/lib/packet";
 import {
   CONFIRM_THRESHOLD,
   type ConfirmedBill,
@@ -39,11 +40,14 @@ interface ResultStepProps {
   checking: Promise<EligibilityData>;
   bill: ConfirmedBill;
   household: number;
+  /** Whole dollars per year, as the patient typed it. */
+  income: number;
   onRetry: () => void;
   onStartOver: () => void;
 }
 
-export function ResultStep({ entrance, reduce, checking, bill, household, onRetry, onStartOver }: ResultStepProps) {
+export function ResultStep(props: ResultStepProps) {
+  const { entrance, reduce, checking, bill, household, income, onRetry, onStartOver } = props;
   const t = useT();
   const [state, setState] = useState<State>({ phase: "loading" });
 
@@ -100,6 +104,7 @@ export function ResultStep({ entrance, reduce, checking, bill, household, onRetr
           sample={state.sample}
           bill={bill}
           household={household}
+          income={income}
           reduce={reduce}
           onStartOver={onStartOver}
         />
@@ -140,15 +145,33 @@ interface VerdictProps {
   sample: boolean;
   bill: ConfirmedBill;
   household: number;
+  income: number;
   reduce: boolean;
   onStartOver: () => void;
 }
 
-function Verdict({ data, sample, bill, household, reduce, onStartOver }: VerdictProps) {
-  const t = useT();
+type PacketState = "idle" | "working" | "done" | "failed";
+
+function Verdict({ data, sample, bill, household, income, reduce, onStartOver }: VerdictProps) {
+  const { t, lang } = useI18n();
   const stamp = stampText(data, t);
   const [stamped, setStamped] = useState(reduce);
-  const [showSoon, setShowSoon] = useState(false);
+  const [packet, setPacket] = useState<PacketState>("idle");
+  // Policy text and backend notes are in English. Say so, so a screen reader reads them right.
+  const en = lang === "es" ? "en" : undefined;
+
+  // The packet is built here in the browser from what is already on this page. Nothing is sent anywhere.
+  async function getApplication() {
+    if (packet === "working") return;
+    setPacket("working");
+    try {
+      const bytes = await buildPacket({ t, lang, bill, household, income, data });
+      downloadPdf(bytes, t("pdf.filename"));
+      setPacket("done");
+    } catch {
+      setPacket("failed");
+    }
+  }
 
   useEffect(() => {
     if (reduce || !stamp) return;
@@ -171,9 +194,11 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
   const sweepDelay = (stamp ? (STAMP_DELAY_MS + SNAPPY_SETTLE_MS) / 1000 : 0) + SWEEP_DELAY_S;
 
   const fine = t("result.fine");
-  const extraDisclaimer = data.disclaimer && !plain(fine).includes(plain(data.disclaimer)) ? data.disclaimer : "";
+  // The backend's disclaimer is English. Skip it when it only repeats our own line.
+  const saysTheSame = plain(`${fine} ${enMessage("result.fine")}`).includes(plain(data.disclaimer ?? ""));
+  const extraDisclaimer = data.disclaimer && !saysTheSame ? data.disclaimer : "";
   const amount = sample ? "" : bill.fields.amount_due;
-  const canApply = data.status !== "probably_not_eligible";
+  const canApply = canMakePacket(data);
 
   return (
     <>
@@ -202,7 +227,9 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
       </div>
 
       {data.status === "likely_discounted" && data.tier?.description && (
-        <p className="mt-3 mb-0">{data.tier.description}</p>
+        <p className="mt-3 mb-0" lang={en}>
+          {data.tier.description}
+        </p>
       )}
 
       <div className="quote-box">
@@ -212,6 +239,7 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
             {"“"}
             <motion.span
               className="hl"
+              lang={en}
               initial={reduce ? false : { backgroundSize: "0% 100%" }}
               animate={{ backgroundSize: "100% 100%" }}
               transition={{ duration: 1.1, ease: EASE_OUT, delay: sweepDelay }}
@@ -227,7 +255,7 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
           <p className="more">
             {quote && doubleCheck && <>{t("result.double_check")} </>}
             {policyUrl && (
-              <a className="text-link" href={policyUrl} target="_blank" rel="noopener noreferrer">
+              <a className="text-link tap" href={policyUrl} target="_blank" rel="noopener noreferrer">
                 {t("result.read_policy")}
                 <span className="sr-only"> {t("result.new_tab")}</span>
               </a>
@@ -241,7 +269,7 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
           <li>{t("result.next.payment_plan")}</li>
           <li>{t("result.next.check_errors")}</li>
           <li>
-            <a className="text-link" href={DOLLAR_FOR_URL} target="_blank" rel="noopener noreferrer">
+            <a className="text-link tap" href={DOLLAR_FOR_URL} target="_blank" rel="noopener noreferrer">
               {t("result.next.dollarfor")}
               <span className="sr-only"> {t("result.new_tab")}</span>
             </a>
@@ -257,7 +285,7 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
       {data.caveats.length > 0 && (
         <>
           <p className="caveats-title">{t("result.caveats_title")}</p>
-          <ul className="caveats">
+          <ul className="caveats" lang={en}>
             {data.caveats.map((c) => (
               <li key={c}>{c}</li>
             ))}
@@ -266,8 +294,8 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
       )}
 
       <div className="btn-row">
-        {canApply && (
-          <Button variant="coral" onClick={() => setShowSoon(true)} aria-expanded={showSoon}>
+        {canApply && !sample && (
+          <Button variant="coral" onClick={getApplication} aria-disabled={packet === "working" || undefined}>
             {t("result.get_app")}
           </Button>
         )}
@@ -275,11 +303,16 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
           {t("result.start_over")}
         </Button>
       </div>
-      <div aria-live="polite">{showSoon && <p className="info-text">{t("result.app_soon")}</p>}</div>
+      <div role="status">
+        {packet === "working" && <p className="info-text">{t("result.app_working")}</p>}
+        {packet === "done" && <p className="info-text">{t("result.app_done")}</p>}
+        {packet === "failed" && <p className="error-text">{t("result.app_failed")}</p>}
+      </div>
+      {canApply && sample && <p className="info-text">{t("result.app_sample")}</p>}
 
       <p className="fine">
         {fine}
-        {extraDisclaimer && <> {extraDisclaimer}</>}
+        {extraDisclaimer && <span lang={en}> {extraDisclaimer}</span>}
       </p>
     </>
   );
