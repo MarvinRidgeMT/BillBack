@@ -1,6 +1,8 @@
-"""Bridge: maps Person A's PolicyRules → Person B's EligibilityEngine.
+"""Bridge: maps Person A's PolicyRules → Person B's EligibilityEngine (billback/eligibility.py).
 
-This module replaces eligibility_stub.decide() with the real rules engine.
+Written by B, integrated by A. No AI here: thresholds come from the policy reader, the decision from B's engine.
+- not_stated residency/asset -> no condition; unclear or < 0.8 confidence -> an unresolved condition (never a pass)
+- FPL comes from data/fpl_2026.json; the year and region (from the household's state) are passed explicitly
 """
 
 from __future__ import annotations
@@ -44,42 +46,72 @@ def _map_threshold_type(income_basis: str | None, uses_income_table: bool) -> Th
     return ThresholdType.FPL_PERCENTAGE
 
 
+REVIEW_CONFIDENCE = 0.8
+MAX_HOUSEHOLD = 30  # matches the API's household_size limit
+DISCLAIMER = "Likely eligible, not a guarantee."
+# Names deliberately avoid the engine's "residen"/"asset" keywords so they always evaluate as UNKNOWN.
+_UNRESOLVED_NAMES = {"residency": "unresolved_home_area_rule", "asset_test": "unresolved_savings_rule"}
+PLAIN_FIELD_NAMES = {
+    "free_care": "the free-care income limit",
+    "discount": "the discount income limits",
+    "asset_test": "whether savings or property count",
+    "residency": "where you need to live",
+    "application_window": "how long you have to apply",
+}
+
+
+def _unresolved(field: str, rules: PolicyRules) -> bool:
+    ev = getattr(rules, field).evidence
+    return ev.status == "unclear" or ev.confidence < REVIEW_CONFIDENCE or ev.verified is False
+
+
+def _quote_ref(ev) -> Optional[str]:
+    if not ev.quote:
+        return None
+    return f"Page {ev.page}: {ev.quote[:200]}" if ev.page else ev.quote[:200]
+
+
 def _build_conditions_from_rules(rules: PolicyRules) -> list[PolicyCondition]:
-    """Build common conditions from PolicyRules that apply across tiers."""
+    """Residency and asset conditions that apply to every tier."""
     conditions = []
-
-    # Residency condition - use hospital_state (2-letter code) as verified_value for matching
-    if rules.residency.required is not None:
-        conditions.append(
-            PolicyCondition(
-                name="residency",
-                description=f"Residency required: {rules.residency.area or rules.hospital_state or 'policy area'}",
-                required=True,
-                verified_value=rules.hospital_state,  # Use 2-letter state code for matching against household.residency_state
-                evidence_ref=rules.residency.evidence.quote[:100] if rules.residency.evidence.quote else None,
+    for field in ("residency", "asset_test"):
+        part = getattr(rules, field)
+        ev = part.evidence
+        if ev.status == "not_stated":
+            continue  # policy is silent -> no restriction (UI tells the patient the policy doesn't say)
+        if _unresolved(field, rules):
+            conditions.append(
+                PolicyCondition(
+                    name=_UNRESOLVED_NAMES[field],
+                    description=f"Policy is unclear about {PLAIN_FIELD_NAMES[field]}; a person needs to check",
+                    required=True,
+                    evidence_ref=_quote_ref(ev),
+                )
             )
-        )
-
-    # Asset test condition - only add if applies=True
-    if rules.asset_test.applies is True:
-        conditions.append(
-            PolicyCondition(
-                name="asset_test",
-                description=rules.asset_test.details or "Asset test applies",
-                required=True,
-                evidence_ref=rules.asset_test.evidence.quote[:100] if rules.asset_test.evidence.quote else None,
+            continue
+        if field == "residency" and rules.residency.required:
+            conditions.append(
+                PolicyCondition(
+                    name="residency",
+                    description=f"Residency required: {rules.residency.area or rules.hospital_state or 'policy area'}",
+                    required=True,
+                    verified_value=rules.hospital_state,  # household state must match (approximation of service area)
+                    evidence_ref=_quote_ref(ev),
+                )
             )
-        )
-
-    # Application window (informational, not a condition that blocks eligibility)
-    # Skip adding as a condition - it's informational only
-    # if rules.application_window.days is not None:
-    #     conditions.append(...)
-
+        if field == "asset_test" and rules.asset_test.applies:
+            conditions.append(
+                PolicyCondition(
+                    name="asset_test",
+                    description=rules.asset_test.details or "Asset test applies",
+                    required=True,
+                    evidence_ref=_quote_ref(ev),
+                )
+            )
     return conditions
 
 
-def policy_rules_to_hospital_policy(rules: PolicyRules) -> HospitalPolicy:
+def policy_rules_to_hospital_policy(rules: PolicyRules, fpl_year: int = 2026) -> HospitalPolicy:
     """Convert Person A's PolicyRules to Person B's HospitalPolicy."""
     tiers: list[AssistanceTier] = []
     common_conditions = _build_conditions_from_rules(rules)
@@ -97,7 +129,7 @@ def policy_rules_to_hospital_policy(rules: PolicyRules) -> HospitalPolicy:
             discount_formula=None,
             conditions=common_conditions.copy(),
             scope={},
-            evidence_ref=rules.free_care.evidence.quote[:200] if rules.free_care.evidence.quote else None,
+            evidence_ref=_quote_ref(rules.free_care.evidence),
             priority=0,
         )
         tiers.append(free_tier)
@@ -122,6 +154,8 @@ def policy_rules_to_hospital_policy(rules: PolicyRules) -> HospitalPolicy:
         # Determine threshold values
         fpl_min = tier_data.fpl_min_percent
         fpl_max = tier_data.fpl_max_percent
+        if fpl_max is None:
+            continue  # open-ended band ("> 400%: varies by facility") has no income limit to test
 
         # For discount tiers, use fpl_max_percent as the threshold with inclusive boundary
         # The tier covers fpl_min to fpl_max
@@ -141,7 +175,7 @@ def policy_rules_to_hospital_policy(rules: PolicyRules) -> HospitalPolicy:
             discount_formula=discount_formula,
             conditions=common_conditions.copy(),
             scope={"fpl_min_percent": fpl_min} if fpl_min is not None else {},
-            evidence_ref=rules.discount.evidence.quote[:200] if rules.discount.evidence.quote else None,
+            evidence_ref=_quote_ref(rules.discount.evidence),
             priority=i + 1,  # Free care is priority 0, then discount tiers
         )
         tiers.append(discount_tier)
@@ -150,7 +184,7 @@ def policy_rules_to_hospital_policy(rules: PolicyRules) -> HospitalPolicy:
     # (The engine handles this via status NEEDS_MORE_INFORMATION -> PROBABLY_NOT_ELIGIBLE)
 
     # Determine default FPL year and region
-    default_fpl_year = 2024  # Synthetic test data uses 2024 guidelines; production uses data/fpl_2026.json
+    default_fpl_year = fpl_year  # the year of the table actually loaded (data/fpl_2026.json -> 2026)
     default_region = "contiguous"  # Most states use contiguous
 
     # Map hospital_state to region
@@ -162,7 +196,7 @@ def policy_rules_to_hospital_policy(rules: PolicyRules) -> HospitalPolicy:
             default_region = "hawaii"
 
     return HospitalPolicy(
-        policy_id=f"{rules.hospital_name.lower().replace(' ', '-')}-{rules.policy_effective_date or 'unknown'}",
+        policy_id=f"{rules.hospital_name.lower().replace(' ', '-')}",
         hospital_name=rules.hospital_name,
         facility_names=[],  # Not in PolicyRules
         state=rules.hospital_state or "XX",
@@ -243,11 +277,16 @@ def load_fpl_table_from_json(path_or_data: str | dict) -> PovertyGuidelineResolv
         # Add larger household sizes using additional_person increment
         if additional > 0:
             base_8 = base.get("8", 0)
-            for hs in range(9, 21):
+            for hs in range(9, MAX_HOUSEHOLD + 1):
                 amount = Decimal(str(base_8)) + Decimal(str(additional)) * (hs - 8)
                 resolver.add_guideline(FPLGuideline(year, region, hs, amount))
 
     return resolver
+
+
+def fpl_region_for_state(state: str) -> str:
+    code = state.strip().upper()
+    return {"AK": "alaska", "HI": "hawaii"}.get(code, "contiguous")
 
 
 def run_eligibility(
@@ -255,13 +294,14 @@ def run_eligibility(
     household_size: int,
     annual_income: float,
     state: str,
-    fpl_resolver: Optional[PovertyGuidelineResolver] = None,
+    fpl_resolver: PovertyGuidelineResolver,
+    fpl_year: int,
     assets_usd: Optional[float] = None,
     insurance_status: Optional[str] = None,
     residency_state: Optional[str] = None,
 ) -> EligibilityResult:
-    """Run the real eligibility engine with Person A's PolicyRules."""
-    policy = policy_rules_to_hospital_policy(rules)
+    """Run B's engine. FPL year = the loaded table's year; region = the household's state (AK/HI rows)."""
+    policy = policy_rules_to_hospital_policy(rules, fpl_year=fpl_year)
     household = build_household_facts(
         household_size=household_size,
         annual_income=annual_income,
@@ -270,75 +310,105 @@ def run_eligibility(
         insurance_status=insurance_status,
         residency_state=residency_state,
     )
-
-    # Use provided resolver or create synthetic one for testing
-    if fpl_resolver is None:
-        fpl_resolver = PovertyGuidelineResolver()  # Will use synthetic defaults if empty
-
-    return evaluate_eligibility(policy, household, fpl_resolver)
+    return evaluate_eligibility(policy, household, fpl_resolver, fpl_year=fpl_year, fpl_region=fpl_region_for_state(state))
 
 
-def eligibility_result_to_api_response(result: EligibilityResult, rules: PolicyRules, percent_of_fpl: float) -> dict[str, Any]:
-    """Convert EligibilityResult to the API response format expected by frontend."""
-    status_map = {
-        EligibilityStatus.LIKELY_FREE: "likely_free",
-        EligibilityStatus.LIKELY_DISCOUNTED: "likely_discounted",
-        EligibilityStatus.PROBABLY_NOT_ELIGIBLE: "probably_not_eligible",
-        EligibilityStatus.NEEDS_MORE_INFORMATION: "needs_more_information",
-    }
+_STATUS_MAP = {
+    EligibilityStatus.LIKELY_FREE: "likely_free",
+    EligibilityStatus.LIKELY_DISCOUNTED: "likely_discounted",
+    EligibilityStatus.PROBABLY_NOT_ELIGIBLE: "probably_not_eligible",
+    EligibilityStatus.NEEDS_MORE_INFORMATION: "cannot_determine",  # the UI's word for it
+}
+_MISSING_FACT_WORDS = {
+    "asset_test": "how much you have in savings or property",
+    "residency": "which state you live in",
+    "unresolved_home_area_rule": "the policy's home-area rule (unclear in the policy)",
+    "unresolved_savings_rule": "the policy's savings rule (unclear in the policy)",
+}
 
-    api_status = status_map.get(result.status, "needs_more_information")
 
-    # Build caveats (similar to stub)
-    caveats = []
-    if rules.residency.required:
-        caveats.append(f"Residency required: {rules.residency.area or 'see policy'}")
-    if rules.asset_test.applies:
-        caveats.append(f"Assets may be considered: {rules.asset_test.details or 'see policy'}")
-    if rules.needs_human_review:
-        caveats.append("Some policy details need confirming: " + ", ".join(rules.review_fields))
+def _plain_missing(fact: str) -> str:
+    for key, words in _MISSING_FACT_WORDS.items():
+        if key in fact:
+            return words
+    return fact.replace("_", " ")
 
-    # Determine tier info
-    tier_info = None
-    evidence = None
 
+def _caveats(rules: PolicyRules, result: EligibilityResult) -> list[str]:
+    notes = []
+    if rules.residency.evidence.status != "not_stated" and rules.residency.required:
+        notes.append(f"You may need to live in: {rules.residency.area or 'the hospital area'}.")
+    if rules.asset_test.evidence.status != "not_stated" and rules.asset_test.applies:
+        notes.append(f"Savings or property may count: {rules.asset_test.details or 'see the policy'}.")
+    for field in ("residency", "asset_test"):
+        if getattr(rules, field).evidence.status == "not_stated":
+            notes.append(f"The policy doesn't say anything about {PLAIN_FIELD_NAMES[field]}.")
+    review = [PLAIN_FIELD_NAMES.get(f, f) for f in rules.review_fields]
+    if review:
+        notes.append("Please double-check with the hospital: " + ", ".join(review) + ".")
+    missing = sorted({_plain_missing(m) for m in result.missing_facts})
+    if missing:
+        notes.append("We still need to know: " + "; ".join(missing) + ".")
+    return notes
+
+
+def _matched_rules_tier(result: EligibilityResult, rules: PolicyRules) -> Optional[dict[str, Any]]:
+    """The policy's own tier dict (C's UI shape) for the engine's matching discount tier."""
+    tier = result.matching_tier
+    if tier is None or tier.type == "free" or not tier.tier_id.startswith("discount-"):
+        return None
+    index = int(tier.tier_id.split("-", 1)[1])
+    return rules.discount.tiers[index].model_dump() if index < len(rules.discount.tiers) else None
+
+
+def eligibility_result_to_api_response(
+    result: EligibilityResult, rules: PolicyRules, percent_of_fpl: float, source_url: Optional[str]
+) -> dict[str, Any]:
+    """Shape the engine result for the UI (frontend/lib/types.ts EligibilityData) plus engine details."""
+    status = _STATUS_MAP.get(result.status, "cannot_determine")
+    explanation = result.explanation
+    if rules.uses_income_table and rules.free_care.fpl_max_percent is None and not rules.discount.tiers:
+        status = "cannot_determine"
+        explanation = "This policy lists income limits as a dollar table, not a percent of the poverty level, so we can't check it automatically."
+
+    if result.matching_tier is not None and result.matching_tier.type == "free":
+        evidence_field = rules.free_care.evidence
+    elif result.matching_tier is not None or rules.discount.tiers:
+        evidence_field = rules.discount.evidence
+    else:
+        evidence_field = rules.free_care.evidence
+    evidence = {**evidence_field.model_dump(), "source_url": source_url}
+
+    engine_tier = None
     if result.matching_tier:
-        tier_info = {
-            "tier_id": result.matching_tier.tier_id,
-            "name": result.matching_tier.name,
-            "type": result.matching_tier.type,
-            "threshold_value": str(result.matching_tier.threshold_value),
-            "threshold_type": result.matching_tier.threshold_type.value,
-            "inclusivity": result.matching_tier.inclusivity.value,
-            "discount_percent": str(result.matching_tier.discount_percent) if result.matching_tier.discount_percent else None,
-            "discount_formula": result.matching_tier.discount_formula,
+        t = result.matching_tier
+        engine_tier = {
+            "tier_id": t.tier_id,
+            "name": t.name,
+            "type": t.type,
+            "threshold_value": str(t.threshold_value),
+            "inclusivity": t.inclusivity.value,
+            "discount_percent": str(t.discount_percent) if t.discount_percent is not None else None,
+            "discount_formula": t.discount_formula,
         }
 
-        # Use the matching tier's evidence
-        if result.matching_tier.type == "free":
-            evidence = rules.free_care.evidence.model_dump()
-        else:
-            evidence = rules.discount.evidence.model_dump()
-    else:
-        # No matching tier - use discount evidence or free care evidence
-        evidence = rules.discount.evidence.model_dump() if rules.discount.tiers else rules.free_care.evidence.model_dump()
-
     return {
-        "status": api_status,
-        "tier": tier_info,
-        "caveats": caveats,
-        "disclaimer": "Likely eligible — not a guarantee",
+        "status": status,
+        "tier": _matched_rules_tier(result, rules),
         "evidence": evidence,
+        "caveats": _caveats(rules, result),
+        "disclaimer": DISCLAIMER,
         "percent_of_fpl": round(percent_of_fpl, 2),
         "hospital_name": rules.hospital_name,
-        "source_url": rules.source.url if rules.source else None,
+        "source_url": source_url,
         "engine": "rules",
-        # Extended fields from real engine
-        "explanation": result.explanation,
+        "explanation": explanation,
         "missing_facts": result.missing_facts,
         "unresolved_rules": result.unresolved_rules,
+        "engine_tier": engine_tier,
         "policy_id": result.policy_id,
-        "fpl_used": result.fpl_used,
+        "fpl_used": str(result.fpl_used) if result.fpl_used is not None else None,
         "fpl_year": result.fpl_year,
         "fpl_region": result.fpl_region,
+        "fpl_evidence": next((e for e in result.evidence if e.get("type") == "fpl_reference"), None),
     }

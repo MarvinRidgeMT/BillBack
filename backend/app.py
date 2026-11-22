@@ -7,17 +7,11 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
-
-
 from pydantic import BaseModel, Field
 
-from backend import eligibility_stub, fpl
-from backend.eligibility import (
-    run_eligibility,
-    eligibility_result_to_api_response,
-    load_fpl_table_from_json,
-)
+from backend import fpl, policies
 from backend.bill_reader import reader as bill_reader
+from backend.eligibility import eligibility_result_to_api_response, load_fpl_table_from_json, run_eligibility
 from backend.policy_reader.fetch import MAX_BYTES, FetchError, fetch_policy_pdf
 from backend.policy_reader.reader import PolicyReaderError, read_policy
 
@@ -94,20 +88,30 @@ class EligibilityRequest(BaseModel):
     hospital_slug: str = Field(..., max_length=60)
     household_size: int = Field(..., ge=1, le=30)
     annual_income: float = Field(..., ge=0, le=10_000_000)
-    state: str = Field(..., min_length=2, max_length=2)
+    state: str = Field(..., min_length=2, max_length=2, description="Household's state (picks the FPL row)")
     assets_usd: float | None = Field(None, ge=0, description="Total household assets (optional)")
-    insurance_status: str | None = Field(None, description="Insurance status: uninsured, insured, underinsured (optional)")
-    residency_state: str | None = Field(None, min_length=2, max_length=2, description="State of residency if different from state (optional)")
+    insurance_status: str | None = Field(None, max_length=20, description="uninsured / insured / underinsured (optional)")
+    residency_state: str | None = Field(None, min_length=2, max_length=2, description="State of residency if different (optional)")
+
+
+_fpl_resolver_cache: dict[str, Any] = {}
+
+
+def _fpl_resolver(table: dict[str, Any]):
+    key = f"{table['year']}:{table.get('source_url')}"
+    if key not in _fpl_resolver_cache:
+        _fpl_resolver_cache.clear()
+        _fpl_resolver_cache[key] = load_fpl_table_from_json(table)
+    return _fpl_resolver_cache[key]
 
 
 @app.post("/api/eligibility")
 def eligibility(req: EligibilityRequest) -> dict[str, Any]:
-    """Real rules engine (Person B's EligibilityEngine). Policy chosen by cached hospital slug."""
+    """B's rules engine (plain code, no AI) on a cached policy, with the 2026 HHS poverty guidelines."""
     try:
-        rules, _ = eligibility_stub.load_policy(req.hospital_slug)
-        # Use the same FPL table for both percent calculation and resolver
-        fpl_table = fpl._default_table()
-        pct = fpl.percent_of_fpl(req.annual_income, req.household_size, req.state, table=fpl_table)
+        rules, _ = policies.load_policy(req.hospital_slug)
+        table = fpl._default_table()
+        pct = fpl.percent_of_fpl(req.annual_income, req.household_size, req.state, table=table)
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
     except LookupError as exc:
@@ -116,24 +120,32 @@ def eligibility(req: EligibilityRequest) -> dict[str, Any]:
         log.error("FPL table missing: %s", exc)
         raise HTTPException(503, "poverty guideline table is not loaded yet") from exc
 
-    # Load FPL resolver from the same table used for percent_of_fpl
-    try:
-        fpl_resolver = load_fpl_table_from_json(fpl_table)
-    except FileNotFoundError:
-        # Fallback: create synthetic resolver for testing
-        from billback.eligibility import create_synthetic_resolver
-        fpl_resolver = create_synthetic_resolver()
-
     result = run_eligibility(
         rules=rules,
         household_size=req.household_size,
         annual_income=req.annual_income,
         state=req.state,
-        fpl_resolver=fpl_resolver,
+        fpl_resolver=_fpl_resolver(table),
+        fpl_year=int(table["year"]),
         assets_usd=req.assets_usd,
         insurance_status=req.insurance_status,
         residency_state=req.residency_state,
     )
+    return _envelope(eligibility_result_to_api_response(result, rules, pct, policies.source_url_for(rules)))
 
-    response = eligibility_result_to_api_response(result, rules, pct)
-    return _envelope(response)
+
+@app.get("/api/hospitals")
+def hospitals() -> dict[str, Any]:
+    """Every hospital with a cached policy: [{slug, name, state}]."""
+    return _envelope(policies.list_hospitals())
+
+
+class MatchRequest(BaseModel):
+    hospital_name: str | None = Field(None, max_length=300)
+    hospital_address: str | None = Field(None, max_length=500)
+
+
+@app.post("/api/hospitals/match")
+def hospitals_match(req: MatchRequest) -> dict[str, Any]:
+    """Best cached policy for a bill's hospital. matched=false (score < 80) -> UI asks the patient to pick."""
+    return _envelope(policies.match_hospital(req.hospital_name, req.hospital_address))

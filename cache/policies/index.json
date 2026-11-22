@@ -1,0 +1,113 @@
+{
+  "hospitals": [
+    {
+      "slug": "adena-health-system",
+      "hospital_name": "Adena Health System",
+      "aliases": [
+        "Adena Regional Medical Center",
+        "Adena Health"
+      ],
+      "city": "Chillicothe",
+      "state": "OH",
+      "states": [
+        "OH"
+      ],
+      "file": "adena-health-system__98aeefd8.json",
+      "source_url": "https://www.adena.org/docs/default-source/default-document-library/financial-assistance-policy.pdf?sfvrsn=2b0b72c7_3",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "baptist-memorial-health-care-corporation",
+      "hospital_name": "Baptist Memorial Health Care Corporation",
+      "aliases": [
+        "Baptist Memorial Health Care",
+        "Baptist Memorial Hospital",
+        "OCH Regional Medical Center",
+        "Baptist Memorial Hospital-Golden Triangle"
+      ],
+      "city": "Memphis",
+      "state": "TN",
+      "states": [
+        "TN",
+        "MS",
+        "AR"
+      ],
+      "file": "baptist-memorial-health-care-corporation__a4ba678b.json",
+      "source_url": "https://www.och.org/wp-content/uploads/2025/10/S-FI-3025-15-Hospital-Financial-Assist-Policy-Final-05-25.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "boys-town-national-research-hospital",
+      "hospital_name": "Boys Town National Research Hospital",
+      "aliases": [
+        "Boys Town Hospital",
+        "Boys Town National Research Hospital - West"
+      ],
+      "city": "Omaha",
+      "state": "NE",
+      "states": [
+        "NE"
+      ],
+      "file": "boys-town-national-research-hospital__9bae57a6.json",
+      "source_url": "https://media.boystown.org/image/upload/v1755542976/Financial-Assistance-Policy.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "fort-healthcare-inc",
+      "hospital_name": "Fort HealthCare, Inc.",
+      "aliases": [
+        "Fort HealthCare",
+        "Fort Memorial Hospital"
+      ],
+      "city": "Fort Atkinson",
+      "state": "WI",
+      "states": [
+        "WI"
+      ],
+      "file": "fort-healthcare-inc__5cc2d46b.json",
+      "source_url": "https://www.forthealthcare.com/wp-content/uploads/2025/03/Financial-Assistance-Policy-2025-Final-English-1.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": false
+    },
+    {
+      "slug": "marshfield-clinic-health-system",
+      "hospital_name": "Marshfield Clinic Health System",
+      "aliases": [
+        "Marshfield Clinic",
+        "Marshfield Medical Center"
+      ],
+      "city": "Marshfield",
+      "state": "WI",
+      "states": [
+        "WI",
+        "MI"
+      ],
+      "file": "marshfield-clinic-health-system__e23ca69e.json",
+      "source_url": "https://www.marshfieldclinic.org/-/media/marshfieldclinic/files/shared/financial-assistance-policy-english.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": false
+    },
+    {
+      "slug": "usa-health",
+      "hospital_name": "USA Health",
+      "aliases": [
+        "University of South Alabama",
+        "USA Health University Hospital",
+        "USA Health Children's & Women's Hospital",
+        "USA Health Providence Hospital"
+      ],
+      "city": "Mobile",
+      "state": "AL",
+      "states": [
+        "AL"
+      ],
+      "file": "usa-health__6a0883be.json",
+      "source_url": "https://www.usahealthsystem.com/uploads/pdfs/financial-assistance/usa-financial-assistance-policy-202505.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    }
+  ]
+}
