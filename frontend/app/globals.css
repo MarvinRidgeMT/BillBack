@@ -189,8 +189,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px max(5vw, 16px);
-  min-height: 80px;
+  padding: 0 max(5vw, 16px);
+  height: 80px;
 }
 .logo {
   font-family: var(--font-display);
@@ -202,7 +202,8 @@
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
+  margin-right: -10px;
   font-size: 15px;
   color: var(--ink);
 }
