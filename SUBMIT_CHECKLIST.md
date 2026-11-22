@@ -13,7 +13,7 @@ Go top to bottom. Tick each box only after you've seen it work. Claude Code did 
 - [x] `v1.0-submission` tag created **locally** (not pushed).
 
 ## Repo (you)
-- [x] Team credits filled from the GitHub org (A @AniMeruva-cmyk, B @abhinavmedisetty, C @SiddharthTumati). Add B's full name if he wants it.
+- [x] Team credits filled from the GitHub org (A @AniMeruva-cmyk, B @abhinavmedisetty, C @SiddharthTumati). Add B's full name if B wants it shown.
 - [ ] Replace `TODO_VIDEO_URL` and `TODO_DEMO_URL` in `README.md` and `DEVPOST.md` once C uploads
       (no deployed demo? change the demo line to "Run locally: see README").
 - [ ] Commit and push: `git add README.md DEVPOST.md && git commit -m "docs: final video and demo links" && git push origin main`
