@@ -1,0 +1,185 @@
+{
+  "summary": {
+    "correct": 35,
+    "scored": 36,
+    "policies": 6,
+    "excluded_fields": 0,
+    "percentage": 97.22222222222221
+  },
+  "policies": [
+    {
+      "policy_id": "adena-health-system",
+      "fields": {
+        "free_care": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "discount": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "asset_test": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "residency": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "application_window": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "source_url": {
+          "correct": true,
+          "detail": "OK"
+        }
+      }
+    },
+    {
+      "policy_id": "baptist-memorial-health-care-corporation",
+      "fields": {
+        "free_care": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "discount": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "asset_test": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "residency": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "application_window": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "source_url": {
+          "correct": true,
+          "detail": "OK"
+        }
+      }
+    },
+    {
+      "policy_id": "boys-town-national-research-hospital",
+      "fields": {
+        "free_care": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "discount": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "asset_test": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "residency": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "application_window": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "source_url": {
+          "correct": true,
+          "detail": "OK"
+        }
+      }
+    },
+    {
+      "policy_id": "fort-healthcare-inc",
+      "fields": {
+        "free_care": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "discount": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "asset_test": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "residency": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "application_window": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "source_url": {
+          "correct": true,
+          "detail": "OK"
+        }
+      }
+    },
+    {
+      "policy_id": "marshfield-clinic-health-system",
+      "fields": {
+        "free_care": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "discount": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "asset_test": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "residency": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "application_window": {
+          "correct": false,
+          "detail": "counted_from mismatch: ans=first_billing_statement, cached=other"
+        },
+        "source_url": {
+          "correct": true,
+          "detail": "OK"
+        }
+      }
+    },
+    {
+      "policy_id": "usa-health",
+      "fields": {
+        "free_care": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "discount": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "asset_test": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "residency": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "application_window": {
+          "correct": true,
+          "detail": "OK"
+        },
+        "source_url": {
+          "correct": true,
+          "detail": "OK"
+        }
+      }
+    }
+  ]
+}
