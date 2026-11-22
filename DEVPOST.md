@@ -1,6 +1,6 @@
 # Devpost submission text (copy and paste each field)
 
-All numbers come from `eval/results/SUMMARY.md`. Replace `TODO_VIDEO_URL`, `TODO_DEMO_URL` and `TODO_NAME` before submitting.
+All numbers come from `eval/results/SUMMARY.md`. Replace `TODO_VIDEO_URL` and `TODO_DEMO_URL` before submitting.
 
 ---
 
@@ -68,9 +68,9 @@ Pre-existing things we used:
 - Tools: we used Claude Code, an AI coding assistant, while building. Our prompts are in `docs/process/`.
 
 ## Team
-- TODO_NAME: AI and backend (policy reader, bill reader, poverty-line math, integration, evals)
-- TODO_NAME: eligibility rules engine, policies, answer key, households
-- TODO_NAME: front end, sample bills, design, video
+- Anish Meruva (@AniMeruva-cmyk): AI and backend (policy reader, bill reader, poverty-line math, integration, evals)
+- @abhinavmedisetty: eligibility rules engine, policies, answer key, households
+- Siddharth Tumati (@SiddharthTumati): front end, sample bills, design, video
 
 ---
 

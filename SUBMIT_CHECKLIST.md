@@ -13,10 +13,10 @@ Go top to bottom. Tick each box only after you've seen it work. Claude Code did 
 - [x] `v1.0-submission` tag created **locally** (not pushed).
 
 ## Repo (you)
-- [ ] Replace `TODO_NAME` (names / GitHub handles for A, B, C) in `README.md` (Team) and `DEVPOST.md` (Team).
+- [x] Team credits filled from the GitHub org (A @AniMeruva-cmyk, B @abhinavmedisetty, C @SiddharthTumati). Add B's full name if he wants it.
 - [ ] Replace `TODO_VIDEO_URL` and `TODO_DEMO_URL` in `README.md` and `DEVPOST.md` once C uploads
       (no deployed demo? change the demo line to "Run locally: see README").
-- [ ] Commit and push: `git add README.md DEVPOST.md && git commit -m "docs: final links and team names" && git push origin main`
+- [ ] Commit and push: `git add README.md DEVPOST.md && git commit -m "docs: final video and demo links" && git push origin main`
 - [ ] Move the tag to that commit and push it: `git tag -f v1.0-submission && git push origin v1.0-submission`
 - [ ] Make the repo public: GitHub → MarvinRidgeMT/BillBack → Settings → General → Danger Zone → Change visibility → Public.
 - [ ] Open https://github.com/MarvinRidgeMT/BillBack in an incognito (logged-out) window: the README renders, the Mermaid diagram shows,

@@ -249,9 +249,9 @@ Things we used that existed before the event:
 
 ## Team
 
-- **TODO_NAME (A):** AI and backend: policy reader, bill reader, poverty-line math, integration, evals.
-- **TODO_NAME (B):** eligibility rules engine, policies, answer key, households, engine tests.
-- **TODO_NAME (C):** front end, sample bills, design, video.
+- **Anish Meruva ([@AniMeruva-cmyk](https://github.com/AniMeruva-cmyk)), A:** AI and backend: policy reader, bill reader, poverty-line math, integration, evals.
+- **[@abhinavmedisetty](https://github.com/abhinavmedisetty), B:** eligibility rules engine, policies, answer key, households, engine tests.
+- **Siddharth Tumati ([@SiddharthTumati](https://github.com/SiddharthTumati)), C:** front end, sample bills, design, video.
 
 ## License
 
