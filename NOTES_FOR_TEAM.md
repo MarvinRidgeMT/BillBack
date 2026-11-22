@@ -1,5 +1,41 @@
 # Notes for the team
 
+## FOR C — RECORDING (A, 12:35pm; tag `demo-freeze`)
+**Nothing visible on screen changes after this tag** unless Anish asks.
+
+Start (two terminals, from the repo root):
+```
+DEMO_CACHE_ONLY=1 BILL_CACHE_ONLY=1 LIVE_MODE=0 .venv/bin/uvicorn backend.app:app --port 8000
+cd frontend && npm run build && npm start        # production build on :3000, no Next.js dev bubble
+```
+No API key or network needed: bills and policies come from `cache/`.
+
+Checked at 12:15–12:35 at 1440×900 and 390×844, EN and ES: no blockers. Shot order (what I clicked):
+1. Home: "YOU MAY NOT OWE THIS BILL" hero → scroll to the tile map ("Same bill, very different rules") → **CHECK MY BILL**.
+2. **Try a sample bill** (it's `bill_10_crumpled_dim.jpg`, Fort HealthCare, WI). "Check what we found" appears in ~2 s.
+3. The **Account number** box is red ("Please check this"). Click it, change `FH 7735-0092` to `FH7735-0092` → "✓ Checked".
+   "We think this is **Fort HealthCare, Inc.** (WI)" is already matched → **Looks right**.
+4. People: **+ +** to **3**. Income **40000**. SNAP/Medicaid/WIC: **Yes** → **See my result**.
+5. Result: **Likely free care, about 146%** of the poverty line, page 1 quote, "$0 OWED" stamp on the receipt.
+   - **See it in the hospital's policy** → page image with the boxed line (receipt zoom).
+   - **Read it to me** (browser voice; check your Mac's sound is on).
+   - Deadline: **220 days left**, **Add reminder to calendar** downloads a `.ics` (I checked the file; open it in Calendar on camera).
+   - "You may qualify automatically" box (because SNAP = Yes).
+   - **What if** slider: drag right → Free → Discount (past 200% = $54,640) → Not eligible (past 400% = $109,280). **Back to my income**.
+   - **Get my application** → PDF (2 pages for Fort HealthCare). **If they say no: get an appeal letter** → PDF.
+6. Top right **Español** → the whole result switches; hospital quotes stay in English and are labeled "(en inglés)".
+   (Only leftover English: the tiny decorative bill stubs floating in the background, "DUE"/"ACCT".)
+7. Optional state-law shot: **Start over → Type it in instead**, pick **UW Medicine (WA)**, 3 people, $50,000 →
+   "This hospital is in Washington" + the RCW 70.170.060 box.
+8. Optional: Marshfield Clinic (`bill_09_text.pdf`) → the packet ends with **Marshfield's own form** (4 pages EN, 7 ES).
+
+Numbers C can say now (all from scripts; see `eval/results/SUMMARY.md`):
+- Bills: **50 of 50** fields read correctly on our 10 fake bills (crumpled, angled, dim).
+- Households: **10 of 10** test households got the hand-calculated answer (rules engine, plain code, 2026 poverty guidelines).
+- Tests: **263 passed**, 0 failed (2 skipped: live-API tests).
+- Speed and cost: about **2.6 seconds** and about **one cent ($0.01)** per bill.
+- Policy reader score: **coming from B before 1pm** ("X of Y scored fields across six hospital policies"). Don't say "120 fields".
+
 ## FINAL NUMBERS FOR VIDEO (A, 11:10am — from `eval/results/SUMMARY.md`; say only these)
 | Test | Measured | Target | Result |
 |---|---|---|---|
