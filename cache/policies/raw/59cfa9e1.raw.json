@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Duke University Health System",
+  "hospital_state": "NC",
+  "source": null,
+  "policy_effective_date": null,
+  "free_care": {
+    "fpl_max_percent": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.9,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": null,
+    "tiers": [],
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.9,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": null,
+    "counted_from": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.9,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "income_basis": "unclear",
+  "uses_income_table": false,
+  "insured_patients_eligible": null,
+  "presumptive_eligibility": null,
+  "how_to_apply": "Fax 919-620-1241; Email PRMOSelfPayReimb@dm.duke.edu; Mail: PRMO Self-Pay, PO Box 110566, Durham, NC 27709; Contact 919-620-4555 or 800-782-6945",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Document is only a financial assistance application form, not the full policy; no eligibility thresholds, asset, residency, or deadline rules are stated.",
+    "Hospital name inferred from the Duke email domain and address; not explicitly named in the text.",
+    "Application requires spouse's financial information and signature if married, and proof of income; processing takes 4-6 weeks."
+  ]
+}

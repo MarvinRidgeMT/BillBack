@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "BayCare Health System",
+  "hospital_state": "FL",
+  "source": null,
+  "policy_effective_date": "January 1, 2026",
+  "free_care": {
+    "fpl_max_percent": 250.0,
+    "evidence": {
+      "quote": "Patients who have submitted a financial assistance application with complete information and who have qualified for financial assistance will receive a 100 percent discount.",
+      "page": 2,
+      "confidence": 0.75,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 250.0,
+    "tiers": [],
+    "evidence": {
+      "quote": "Hardship charity, under guidelines established by BayCare, extends beyond AHCA charity limits and includes patients with gross family income up to 250 percent of the federal poverty level.",
+      "page": 2,
+      "confidence": 0.6,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Liquid assets over $50,000 for the household may make a patient ineligible; for insured non-Medicare patients, liquid assets exceeding five times the patient responsibility; for uninsured patients, liquid assets exceeding five times total charges. Medicare recipients must provide proof of income and assets.",
+    "evidence": {
+      "quote": "If available liquid assets are over $50,000 for the household, the patient may not be eligible for financial assistance.",
+      "page": 3,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "Florida residents / hospital service area; non-Florida residents seeking planned services may not receive assistance",
+    "evidence": {
+      "quote": "Non-Florida residents seeking financial assistance while visiting Florida for planned services",
+      "page": 3,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "Patients may request financial assistance up to one year after the date of service.",
+      "page": 3,
+      "confidence": 0.5,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Uninsured emergency room patients within three months of date of service may be presumptively approved via third-party analytics if their reported FPL meets criteria; not for minors under 18.",
+  "how_to_apply": "Call (855) 233-1555, visit BayCareFinancialAssistance.org, or get applications from hospital Registration areas, emergency rooms, or Financial Assistance offices; return by mail, fax or email per application directions.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Policy has two programs: AHCA charity (income under 200% FPL, or hospital expenses over 25% of annual family income) and Hardship charity (up to 250% FPL). Qualifying patients receive a 100% discount, but the policy also says patients won't pay more than AGB, so the free-care limit is ambiguous.",
+    "Application deadline is ambiguous: policy says 240 days from first post-discharge billing statement for incomplete applications, and also says patients may request assistance up to one year after date of service.",
+    "Uninsured patients not qualifying get a 40% discount (plus 10% if paid within 30 days) under a separate Uninsured Patient Discount Policy; this is not financial assistance under this policy and is not listed as a tier.",
+    "AHCA criteria also mention total gross family income cannot exceed four times FPL for a family of four, in addition to the 200% criterion.",
+    "Asset thresholds vary by patient type and the policy says 'may not be eligible', not a hard rule."
+  ]
+}

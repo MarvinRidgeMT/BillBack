@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Washington Hospital Healthcare System",
+  "hospital_state": "CA",
+  "source": {
+    "url": "https://www.washingtonhealth.com/documents/financial-assistance-charity-care-policy-2026.pdf",
+    "sha256": "74213861fe3d587665dec30bc73406a516c781798f7487a28cb2245febdecce1",
+    "retrieved_at": "2026-11-22",
+    "page_count": 10
+  },
+  "policy_effective_date": null,
+  "free_care": {
+    "fpl_max_percent": 400.0,
+    "evidence": {
+      "quote": "(b) The patient’s family income does not exceed 400% of the FPL; and",
+      "page": 4,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [],
+    "evidence": {
+      "quote": "A patient who satisfies all the following criteria shall receive a 100% charity discount on all Eligible Hospital Services provided by Washington Hospital:",
+      "page": 4,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": null,
+    "counted_from": null,
+    "evidence": {
+      "quote": "Patient can reapply for charity care or financial assistance at any time.",
+      "page": 6,
+      "confidence": 0.6,
+      "status": "unclear",
+      "verified": true
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Patients recognized as homeless and deceased patients with no estate may be deemed eligible without meeting documentation requirements.",
+  "how_to_apply": "Complete the Application for Financial Assistance; contact the Financial Assistance Coordinator at (510) 818-7448.",
+  "needs_human_review": true,
+  "review_fields": [
+    "application_window"
+  ],
+  "warnings": [
+    "Eligibility requires Self-Pay Patient or High Medical Cost Patient status (insured patients qualify only as High Medical Cost Patients).",
+    "Policy states no explicit application deadline; no effective date given.",
+    "A separate Cash Discount Policy for Uninsured and Underinsured Patients exists with its own discounts, not detailed here.",
+    "Policy excludes non-medically necessary services and separately-billed physician services.",
+    "Policy says nothing about assets or residency.",
+    "application_window: marked not_stated but has a value or quote; treated as unclear"
+  ]
+}

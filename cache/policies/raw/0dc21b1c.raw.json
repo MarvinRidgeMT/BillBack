@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Baptist Health South Florida",
+  "hospital_state": "FL",
+  "source": null,
+  "policy_effective_date": "09/26/2024",
+  "free_care": {
+    "fpl_max_percent": 300.0,
+    "evidence": {
+      "quote": "Special needs financial assistance Vice President of Revenue Management Family income of 200 to 300% FPL (not to exceed $75,000) 100%",
+      "page": 3,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 300.0,
+    "tiers": [],
+    "evidence": {
+      "quote": "Patients qualifying for financial assistance under this policy receive a 100% discount (i.e., free care).",
+      "page": 3,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Footnote says other financial information such as assets and hospital charges may be considered; assets defined to include cash, investments, retirement funds, and equity in primary residence and real estate. Presumptive eligibility cases are exempt from the asset criteria.",
+    "evidence": {
+      "quote": "Other financial information such as assets and hospital charges may be considered.",
+      "page": 3,
+      "confidence": 0.7,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "Miami-Dade County; Broward County (only for services at listed providers located in Broward); Palm Beach County; Monroe County north of mile marker 25. Alternatively, patients who received or need emergent or urgent services for an acute event.",
+    "evidence": {
+      "quote": "The allocation of BHSF financial assistance resources will be limited to patients who:",
+      "page": 2,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "The Application Period begins on the date the care is provided and ends on the later of the 240th day after the date that the first post-discharge billing statement for the care is provided or at least 30 days after Baptist Health provides the individual with a written notice that sets a deadline after which extraordinary collection actions may be initiated.",
+      "page": 4,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "both",
+  "uses_income_table": true,
+  "insured_patients_eligible": false,
+  "presumptive_eligibility": "Emergent and urgent uninsured patients may be presumed eligible for 100% assistance if deceased with no known estate, homeless, or determined eligible by an independent third-party vendor.",
+  "how_to_apply": "Call a Financial Counselor at 786-596-6507 (Bethesda Hospitals: 561-737-7733 ext. 84671); mail to Baptist Health South Florida, Inc., P.O. Box 830880, Miami, FL 33283; or visit any hospital patient access department; website https://baptisthealth.net/patient-resources/billing-and-financial-assistance",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Both income bands give a 100% discount, so free care extends to 300% FPL, but incomes are capped at $75,000 regardless of family size.",
+    "The 200-300% band is labeled 'Special needs financial assistance' and may be case-by-case (budget-dependent); the 'state or federally qualified' label applies to 200% FPL or less.",
+    "Special needs band also tied to discharge date: accounts with discharge date older than the same or preceding two fiscal years are classified as special needs.",
+    "Bethesda Hospitals East and West: policy applies only to Emergent and Urgent patients.",
+    "Policy does not apply to Express Care, Care on Demand, concierge practices, cosmetic surgery, or private-practicing physicians.",
+    "Insured patients generally excluded; policy applies to charges not covered by insurance, though exhausted-benefit charges and non-Medicaid-provider services can qualify.",
+    "Residency is alternatively satisfied by emergent/urgent acute event care.",
+    "Application window not counted exactly as a single number: 240 days or at least 30 days after the ECA notice, whichever is later.",
+    "Financial assistance may be denied if patient refuses to apply for Medicaid or exchange coverage."
+  ]
+}

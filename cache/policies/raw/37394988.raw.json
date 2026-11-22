@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Deaconess Regional Healthcare Services Illinois, Inc. (Heartland Regional Medical Center)",
+  "hospital_state": "IL",
+  "source": null,
+  "policy_effective_date": "October 27, 2025",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "Patients whose family income is at or below 200% of the FPL are eligible to receive free care.",
+      "page": 3,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 350.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 200.0,
+        "fpl_max_percent": 350.0,
+        "discount_type": "amount_generally_billed",
+        "value": null,
+        "description": "Income above 200% and up to 350% of FPL eligible for services at a discount rate; qualifying patients not charged more than AGB. Uninsured patients receive an automatic uninsured discount (facility-specific, 63.64% to 81%)."
+      },
+      {
+        "fpl_min_percent": 350.0,
+        "fpl_max_percent": null,
+        "discount_type": "other",
+        "value": null,
+        "description": "Above 350% FPL may be eligible for discounted rates case-by-case at hospital discretion (catastrophic illness, medical indigence)."
+      }
+    ],
+    "evidence": {
+      "quote": "Patients whose family income is above 200% and up to 350% of the FPL are eligible to receive services at a discount rate.",
+      "page": 3,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Policy says to consider the patient's available assets and all other financial resources; assets defined as banking accounts, cash on hand, CDs, securities, real estate, vehicles, and financial settlements, with supporting documentation required.",
+    "evidence": {
+      "quote": "Consider the patient’s available assets and all other financial resources available to the patient.",
+      "page": 3,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 90,
+    "counted_from": "other",
+    "evidence": {
+      "quote": "Uninsured patients must be permitted to apply for a discount within 90 days of the date of discharge/service.",
+      "page": 4,
+      "confidence": 0.75,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Presumptive eligibility may be determined for homeless patients, public assistance eligibility, deceased patients with no known estate, and Medicaid non-covered charges.",
+  "how_to_apply": null,
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "The 90-day window applies to uninsured patients applying for the uninsured discount under the Hospital Uninsured Patient Discount Act; it is counted from date of discharge/service, and no deadline is stated for financial assistance generally.",
+    "Policy covers multiple facilities (Crossroads, Union County, Red Bud, TransCare EMS) with different uninsured discount percentages: Medical Center 81%, Crossroads 78.77%, Union County 63.64%, Red Bud 74.70%.",
+    "Section VI.B states the range as above 200% and less than 350% FPL, while Section VI.F says up to 350%; the more specific F was used.",
+    "Section VI.B says assistance applies to patients who lack assets to pay.",
+    "Policy limits collections to 20% of family income per 12-month period for uninsured patients.",
+    "No application address, phone, or portal given in the policy; websites listed refer to financial assistance pages.",
+    "Tier boundary: 200% and 350% shown as the policy states 'above 200% and up to 350%'."
+  ]
+}

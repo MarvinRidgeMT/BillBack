@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Heartland Health Services",
+  "hospital_state": "IL",
+  "source": null,
+  "policy_effective_date": null,
+  "free_care": {
+    "fpl_max_percent": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 200.0,
+    "tiers": [
+      {
+        "fpl_min_percent": null,
+        "fpl_max_percent": 200.0,
+        "discount_type": "other",
+        "value": null,
+        "description": "Patients pay only a minimum fee by tier: Category A $25, B $30, C $35, D $40; otherwise full fee. FPL ranges for each category are not stated."
+      }
+    ],
+    "evidence": {
+      "quote": "In order to qualify for the program, patients must provide proof of income below 200% of the current federal poverty level.",
+      "page": 1,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": null,
+    "counted_from": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": null,
+  "how_to_apply": "Complete the FA application with proof of income; submit at any Heartland Health Services clinic or mail to Heartland Health Services, Attn: Financial Assistance, 2214 N University, Peoria, IL 61604; questions: Michelle at (309) 680-7639.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "This is an FQHC sliding fee schedule for primary care visits, not a hospital charity care policy.",
+    "No free-care threshold is stated; minimum fees of $25-$40 apply even in discounted tiers.",
+    "FPL boundaries for Categories A-D are not given in the text.",
+    "Insured patients may apply for the discount to apply to co-insurance or deductible portions; insurance is billed first.",
+    "Discount is honored for one year from application date, then must reapply.",
+    "No policy effective date stated."
+  ]
+}

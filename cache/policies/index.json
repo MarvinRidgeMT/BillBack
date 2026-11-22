@@ -18,6 +18,32 @@
       "needs_human_review": true
     },
     {
+      "slug": "banner-health",
+      "hospital_name": "Banner Health",
+      "aliases": [],
+      "city": null,
+      "state": null,
+      "states": [],
+      "file": "banner-health__51370475.json",
+      "source_url": "https://www.bannerhealth.com/-/media/Files/Project/BH/Patients-Visitors/Billing/Financial-Assistance/2025-documents/Banner-Health-Financial-Assistance-Policy-for-Hospital-Patients-770-v6092925100125.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "baptist-health-south-florida",
+      "hospital_name": "Baptist Health South Florida",
+      "aliases": [],
+      "city": null,
+      "state": "FL",
+      "states": [
+        "FL"
+      ],
+      "file": "baptist-health-south-florida__0dc21b1c.json",
+      "source_url": "https://baptisthealth.net/patient-resources/billing-and-financial-assistance/financial-assistance-program/-/media/Documents/Patient-Resources/Financial-Assistance/Feb-2025/BHSF35514--Financial-Assistance-Policy-ENG-9262024-FINAL-updated-income-levels-2025-v2.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
       "slug": "baptist-memorial-health-care-corporation",
       "hospital_name": "Baptist Memorial Health Care Corporation",
       "aliases": [
@@ -39,6 +65,20 @@
       "needs_human_review": true
     },
     {
+      "slug": "baycare-health-system",
+      "hospital_name": "BayCare Health System",
+      "aliases": [],
+      "city": null,
+      "state": "FL",
+      "states": [
+        "FL"
+      ],
+      "file": "baycare-health-system__d6e631e0.json",
+      "source_url": "https://baycare.org/-/media/project/baycare/consumer-portal/billing-and-insurance/financial-assistance/financial-assistance-policies/26-12663-financial-full-policy-english.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
       "slug": "boys-town-national-research-hospital",
       "hospital_name": "Boys Town National Research Hospital",
       "aliases": [
@@ -52,6 +92,62 @@
       ],
       "file": "boys-town-national-research-hospital__9bae57a6.json",
       "source_url": "https://media.boystown.org/image/upload/v1755542976/Financial-Assistance-Policy.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "children-s-hospital-colorado",
+      "hospital_name": "Children's Hospital Colorado",
+      "aliases": [],
+      "city": null,
+      "state": "CO",
+      "states": [
+        "CO"
+      ],
+      "file": "children-s-hospital-colorado__a25d4f61.json",
+      "source_url": "https://www.childrenscolorado.org/globalassets/your-visit/financial-assistance-payment-plan-english.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "deaconess-regional-healthcare-services-illinois-inc-heartlan",
+      "hospital_name": "Deaconess Regional Healthcare Services Illinois, Inc. (Heartland Regional Medical Center)",
+      "aliases": [],
+      "city": null,
+      "state": "IL",
+      "states": [
+        "IL"
+      ],
+      "file": "deaconess-regional-healthcare-services-illinois-inc-heartlan__37394988.json",
+      "source_url": "https://redbudregional.com/wp-content/uploads/2025/12/DRHSI-Financial-Assistance-Policy-102725-final.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "duke-university-health-system",
+      "hospital_name": "Duke University Health System",
+      "aliases": [],
+      "city": null,
+      "state": "NC",
+      "states": [
+        "NC"
+      ],
+      "file": "duke-university-health-system__59cfa9e1.json",
+      "source_url": "https://www.dukehealth.org/sites/default/files/general_page/DUHSFinancialAssistanceApplication-English_2021.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "emory-healthcare",
+      "hospital_name": "Emory Healthcare",
+      "aliases": [],
+      "city": null,
+      "state": "GA",
+      "states": [
+        "GA"
+      ],
+      "file": "emory-healthcare__8a08f6f7.json",
+      "source_url": "https://www.emoryhealthcare.org/-/media/Project/EH/Emory/ui/pdfs/financial-information/13-hospitals-policies-regarding-charity-care-reduced-cost-services/financial-assistance-policy-20260521.pdf",
       "downloaded": "2026-11-22",
       "needs_human_review": true
     },
@@ -73,6 +169,20 @@
       "needs_human_review": false
     },
     {
+      "slug": "heartland-health-services",
+      "hospital_name": "Heartland Health Services",
+      "aliases": [],
+      "city": null,
+      "state": "IL",
+      "states": [
+        "IL"
+      ],
+      "file": "heartland-health-services__66e5994a.json",
+      "source_url": "https://www.hhsil.com/file/21/English%20FA%20Application%20002.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
       "slug": "marshfield-clinic-health-system",
       "hospital_name": "Marshfield Clinic Health System",
       "aliases": [
@@ -91,6 +201,48 @@
       "needs_human_review": false
     },
     {
+      "slug": "novant-health-north-carolina-hospitals-provider-based-clinic",
+      "hospital_name": "Novant Health (North Carolina Hospitals, Provider-based clinics)",
+      "aliases": [],
+      "city": null,
+      "state": "NC",
+      "states": [
+        "NC"
+      ],
+      "file": "novant-health-north-carolina-hospitals-provider-based-clinic__ebf261b8.json",
+      "source_url": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/financial-assistance-policy-nc-hospitals.pdf?v=2",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "texas-health-resources-texas-health",
+      "hospital_name": "Texas Health Resources (Texas Health)",
+      "aliases": [],
+      "city": null,
+      "state": "TX",
+      "states": [
+        "TX"
+      ],
+      "file": "texas-health-resources-texas-health__4cd1b026.json",
+      "source_url": "https://www.texashealth.org/-/media/Project/THR/shared/Documents/PDFs/Business-Office/Financial-Assistance/Financial-Assistance-Policy/Financial-Assistance-THR-System-Policy.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "uchealth",
+      "hospital_name": "UCHealth",
+      "aliases": [],
+      "city": null,
+      "state": "CO",
+      "states": [
+        "CO"
+      ],
+      "file": "uchealth__2e79001c.json",
+      "source_url": "https://uchealth-wp-uploads.s3.amazonaws.com/wp-content/uploads/2025/04/07133352/Financial-Assistance-Policy_03-27-2025-English.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
       "slug": "usa-health",
       "hospital_name": "USA Health",
       "aliases": [
@@ -106,6 +258,34 @@
       ],
       "file": "usa-health__6a0883be.json",
       "source_url": "https://www.usahealthsystem.com/uploads/pdfs/financial-assistance/usa-financial-assistance-policy-202505.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "uw-medicine-harborview-medical-center-uw-medical-center-airl",
+      "hospital_name": "UW Medicine (Harborview Medical Center, UW Medical Center, Airlift Northwest, UW Physicians, UW Medicine Primary Care)",
+      "aliases": [],
+      "city": null,
+      "state": "WA",
+      "states": [
+        "WA"
+      ],
+      "file": "uw-medicine-harborview-medical-center-uw-medical-center-airl__8c3c45b0.json",
+      "source_url": "https://doh.wa.gov/sites/default/files/2024-02/CCPUW.pdf",
+      "downloaded": "2026-11-22",
+      "needs_human_review": true
+    },
+    {
+      "slug": "washington-hospital-healthcare-system",
+      "hospital_name": "Washington Hospital Healthcare System",
+      "aliases": [],
+      "city": null,
+      "state": "CA",
+      "states": [
+        "CA"
+      ],
+      "file": "washington-hospital-healthcare-system__74213861.json",
+      "source_url": "https://www.washingtonhealth.com/documents/financial-assistance-charity-care-policy-2026.pdf",
       "downloaded": "2026-11-22",
       "needs_human_review": true
     }

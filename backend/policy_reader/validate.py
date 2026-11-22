@@ -123,7 +123,14 @@ def _check_evidence(name: str, field, ev: dict, pages: dict[int, str], warnings:
         warnings.append(f"{name}: quote could not be found in the policy text")
 
 
-def _needs_review(ev: dict) -> bool:
+# A policy may be silent on these and that means "no restriction". Silence on the income limits
+# (free_care / discount) or the deadline means we read the wrong document or missed something.
+NOT_STATED_OK = ("asset_test", "residency")
+
+
+def _needs_review(name: str, ev: dict) -> bool:
+    if ev["status"] == "not_stated" and name not in NOT_STATED_OK:
+        return True
     return ev["status"] == "unclear" or ev["confidence"] < REVIEW_CONFIDENCE_THRESHOLD or ev["verified"] is False
 
 
@@ -138,7 +145,7 @@ def post_validate(rules: PolicyRules, pages: dict[int, str]) -> PolicyRules:
         data[name]["evidence"]["confidence"] = min(data[name]["evidence"]["confidence"], SANITY_CONFIDENCE_CAP)
         warnings.append(message)
 
-    review = [name for name in EVIDENCE_FIELDS if _needs_review(data[name]["evidence"])]
+    review = [name for name in EVIDENCE_FIELDS if _needs_review(name, data[name]["evidence"])]
     data["warnings"] = list(dict.fromkeys(warnings))
     data["review_fields"] = review
     data["needs_human_review"] = bool(review) or (rules.uses_income_table and rules.free_care.fpl_max_percent is None)

@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "UW Medicine (Harborview Medical Center, UW Medical Center, Airlift Northwest, UW Physicians, UW Medicine Primary Care)",
+  "hospital_state": "WA",
+  "source": null,
+  "policy_effective_date": "v12 8/2026",
+  "free_care": {
+    "fpl_max_percent": 300.0,
+    "evidence": {
+      "quote": "0% - 300% of the Federal Poverty Level (FPL) for a 100% financial assistance discount",
+      "page": 4,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 301.0,
+        "fpl_max_percent": 350.0,
+        "discount_type": "percent_off",
+        "value": 75.0,
+        "description": "Facility services only with discharge dates on or after July 1, 2022, at Harborview Medical Center and UW Medical Center; 75% financial assistance discount"
+      },
+      {
+        "fpl_min_percent": 351.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": 50.0,
+        "description": "Facility services only with discharge dates on or after July 1, 2022, at Harborview Medical Center and UW Medical Center; 50% financial assistance discount"
+      }
+    ],
+    "evidence": {
+      "quote": "351% - 400% of the Federal Poverty Level (FPL) for a 50% financial assistance discount",
+      "page": 4,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": false,
+    "details": "Assets are not considered for financial assistance eligibility; they may be considered for Medicaid eligibility.",
+    "evidence": {
+      "quote": "UW Medicine does not take assets into consideration for determining Financial Assistance eligibility.",
+      "page": 4,
+      "confidence": 0.98,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": null,
+    "counted_from": null,
+    "evidence": {
+      "quote": "A patient may apply for financial assistance at any time prior to the account receiving a court judgement.",
+      "page": 5,
+      "confidence": 0.7,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "UW Medicine may waive income requirements, documentation, and verification if Financial Assistance eligibility is obvious.",
+  "how_to_apply": "Complete a Confidential Financial Information (CFI) Form with supporting documentation; documents available at uwmedicine.org/financialassistance or through Financial Counseling or Patient Financial Services.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "No fixed application deadline stated; policy says a patient may apply any time before a court judgement on the account (not a day count from a start date). The 15 business day period applies to returning application materials for collections purposes.",
+    "The 75% and 50% discount tiers apply only to facility services at Harborview Medical Center and UW Medical Center with discharge dates on or after July 1, 2022; other entities get free care up to 300% FPL only.",
+    "Financial assistance is generally secondary to third-party coverage; insured patients may qualify for remaining balances after coverage is exhausted.",
+    "Residency requirement not mentioned in the policy; it only notes assistance for out-of-state patients in identifying Medicaid programs.",
+    "Income is determined as of the date of service or at application if made within two years of service."
+  ]
+}

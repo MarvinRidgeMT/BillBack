@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Novant Health (North Carolina Hospitals, Provider-based clinics)",
+  "hospital_state": "NC",
+  "source": null,
+  "policy_effective_date": "Jan26+",
+  "free_care": {
+    "fpl_max_percent": 300.0,
+    "evidence": {
+      "quote": "Uninsured Patients meeting the requirements above and any uninsured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a 100% adjustment to any charges for services covered under this Policy.",
+      "page": 2,
+      "confidence": 0.6,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 300.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 200.0,
+        "fpl_max_percent": 250.0,
+        "discount_type": "percent_off",
+        "value": 75.0,
+        "description": "Insured NC residents only: 75% discount on patient responsibility (minus copays) for income between 200%-250% of FPL. Uninsured patients get 100% adjustment up to 300% FPL."
+      },
+      {
+        "fpl_min_percent": 250.0,
+        "fpl_max_percent": 300.0,
+        "discount_type": "percent_off",
+        "value": 50.0,
+        "description": "Insured NC residents only: 50% discount on patient responsibility (minus copays) for income between 250%-300% FPL. Uninsured patients get 100% adjustment."
+      }
+    ],
+    "evidence": {
+      "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
+      "page": 2,
+      "confidence": 0.7,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "All North Carolina residents, and non-NC residents within Horry, Lancaster and York Counties, SC. Insured discounts are for NC residents only.",
+    "evidence": {
+      "quote": "All North Carolina residents and non-North Carolina residents within the following South Carolina counties are eligible to apply for financial assistance as defined in this Policy.",
+      "page": 1,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "Application Period - the period that begins on the date the care is provided to an individual and ends on the 240th day after the individual is provided with the first billing statement for the care.",
+      "page": 6,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Presumptive eligibility is based on homelessness, mental incapacitation, Medicaid or other means-tested program enrollment, or income estimated via a third-party data source.",
+  "how_to_apply": "Complete the application and return it to the facility business office, revenue cycle advocate or financial counselor; Customer Service 888-844-0080; financial counselors (336) 718-5393, (704) 384-0539, (910) 667-7050; website http://www.novanthealth.org/GiveBack/FinancialAssistance.aspx",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Free care limit is ambiguous: uninsured patients with income up to 300% FPL get a 100% adjustment, while insured NC residents get 100% discount only below 200% FPL, and 75%/50% discounts at 200-250% and 250-300%. The free_care value of 300 applies to uninsured patients only; the insured free-care limit is below 200% FPL.",
+    "Tiers shown apply to insured NC residents; uninsured patients in the 200-300% range receive a 100% adjustment.",
+    "Policy does not mention assets.",
+    "Policy covers multiple hospitals; the application window and tiers are as stated for all.",
+    "Effective date reads 'Jan26+' and revisions list is inconsistent (07/01/2026 for NHNHRMC/Pender added).",
+    "Insured patients pay discount on patient responsibility minus copays; payment plan available for insured at 200-300% FPL."
+  ]
+}

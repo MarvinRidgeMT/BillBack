@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Children's Hospital Colorado",
+  "hospital_state": "CO",
+  "source": null,
+  "policy_effective_date": null,
+  "free_care": {
+    "fpl_max_percent": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 250.0,
+    "tiers": [
+      {
+        "fpl_min_percent": null,
+        "fpl_max_percent": 250.0,
+        "discount_type": "sliding_scale",
+        "value": null,
+        "description": "Charity care will typically result in a sliding-scale co-payment due from the family; eligibility requires Federal Poverty Level below 250%."
+      }
+    ],
+    "evidence": {
+      "quote": "Federal Poverty Level below 250%; accounting for household size, income, and liquid assets",
+      "page": 1,
+      "confidence": 0.7,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Charity care decision is based on review of income, assets and liabilities; general requirements account for liquid assets.",
+    "evidence": {
+      "quote": "The decision to provide charity care will, in most cases, be based on a review of the family’s income, assets and liabilities at the time of visit, and will typically result in a sliding-scale co-payment due from the family.",
+      "page": 1,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "Lives in the United States",
+    "evidence": {
+      "quote": "The Financial Assistance Program is available to all patients who do not have health insurance and live in the United States.",
+      "page": 1,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 365,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "Submission of required information within 365 days from the date that the first post-discharge billing statement for the care is provided",
+      "page": 1,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": false,
+  "presumptive_eligibility": null,
+  "how_to_apply": "Call Financial Counseling at 720-777-7001 (Anschutz Medical Campus, 13123 East 16th Avenue, Aurora, CO 80045) or 719-305-9993 (Colorado Springs, 4090 Briargate Parkway, Colorado Springs, CO 80920); application available at childrenscolorado.org.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "No 100% free-care threshold stated; only a sliding-scale co-payment is described.",
+    "Policy effective date not stated; document code mentions 2019-05.",
+    "Requirements are marked 'Exceptions may apply'.",
+    "Policy says program is for patients without health insurance, and ineligibility for other health insurance is required.",
+    "Discount tier values are not specified beyond sliding scale; AGB limit applies to eligible individuals."
+  ]
+}

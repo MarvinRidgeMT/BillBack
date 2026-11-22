@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Emory Healthcare",
+  "hospital_state": "GA",
+  "source": {
+    "url": "https://www.emoryhealthcare.org/-/media/Project/EH/Emory/ui/pdfs/financial-information/13-hospitals-policies-regarding-charity-care-reduced-cost-services/financial-assistance-policy-20260521.pdf",
+    "sha256": "8a08f6f7c0aa0384e9f779be5b98f5481adc7f7059b730f26b135e5539d10c5c",
+    "retrieved_at": "2026-11-22",
+    "page_count": 18
+  },
+  "policy_effective_date": "Effective 02/01/2026, updated 05/01/2026",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "If Family Income of a patient not enrolled in Medicaid is less than or equal to 200% of the Federal Poverty Guidelines, the patient will receive 100% charity care adjustment for Eligible Health Care Services (consistent with Indigent Care Trust Fund requirements).",
+      "page": 5,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 350.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 201.0,
+        "fpl_max_percent": 350.0,
+        "discount_type": "other",
+        "value": null,
+        "description": "Uninsured patients not enrolled in Medicaid receive 100% financial assistance for the patient's personal responsibility for Eligible Health Care Services. Charges are limited to AGB. Insured patients in this band are not clearly covered."
+      }
+    ],
+    "evidence": {
+      "quote": "If Family Income of a patient who is not enrolled in Medicaid and is uninsured is at least 201% but less than or equal to 350% of the Federal Poverty Guidelines, the patient will receive 100% financial assistance for the patient’s personal responsibility for Eligible Health Care Services.",
+      "page": 5,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.7,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "Patients will be allowed to apply for financial assistance for the later of 240 days after the",
+      "page": 6,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Medicaid beneficiaries are deemed presumptively eligible for 100% assistance on Medicaid non-covered charges, and an External Screening Process using public records can presumptively determine eligibility.",
+  "how_to_apply": "Apply electronically through MyChart, at the hospital Patient Access Office (Appendix C), or by mail to Emory Healthcare, P.O. Box 746699, Atlanta, GA 30374-6699. Telephone: (404) 778-7318.",
+  "needs_human_review": true,
+  "review_fields": [
+    "asset_test"
+  ],
+  "warnings": [
+    "The 201%-350% FPL band applies only to uninsured patients not enrolled in Medicaid. Insured patients are eligible for the up-to-200% free care band, and possibly for the Catastrophic Care Adjustment.",
+    "Free care at or below 200% FPL applies to patients not enrolled in Medicaid; Medicaid patients are covered for non-covered charges.",
+    "Patients above 350% FPL may get a 65% self-pay discount, which is explicitly not financial assistance under the policy.",
+    "A Catastrophic Care Adjustment is available above 225% FPL, case by case, capping the balance at 20% of annual Family Income.",
+    "Asset consideration is not addressed in policy rules, though the application form lists savings and checking accounts as income types and requests bank statements; bank statements are used for income verification.",
+    "The application form says approvals are valid for a maximum of 6 months while the policy says 12 months.",
+    "Application deadline is the later of 240 days after the first post-discharge billing statement or 30 days after written notice of intent to initiate extraordinary collection actions.",
+    "Policy covers multiple Emory hospitals in Georgia; the same rules appear to apply to all.",
+    "Policy mentions Temporary Visitor in the definitions but no residency requirement is stated in the rules."
+  ]
+}

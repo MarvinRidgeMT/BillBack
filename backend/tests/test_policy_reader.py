@@ -368,3 +368,13 @@ def test_raw_model_output_saved_and_revalidated_without_model(tmp_path):
     assert list((tmp_path / "raw").glob("*.raw.json"))
     rules = reader.revalidate_cached(pdf, cache_dir=tmp_path)
     assert rules is not None and rules.free_care.evidence.verified is True
+
+
+def test_missing_income_limits_always_need_review():
+    data = json.loads(FIXTURE.read_text())
+    for field in ("free_care", "discount"):
+        data[field] = {"fpl_max_percent": None, "evidence": {"quote": "", "page": 0, "confidence": 0.9, "status": "not_stated"}}
+    data["discount"]["tiers"] = []
+    rules = validate.post_validate(PolicyRules.model_validate(data), PAGES)
+    assert {"free_care", "discount"} <= set(rules.review_fields)
+    assert rules.needs_human_review

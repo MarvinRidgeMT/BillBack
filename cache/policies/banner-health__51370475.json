@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Banner Health",
+  "hospital_state": null,
+  "source": {
+    "url": "https://www.bannerhealth.com/-/media/Files/Project/BH/Patients-Visitors/Billing/Financial-Assistance/2025-documents/Banner-Health-Financial-Assistance-Policy-for-Hospital-Patients-770-v6092925100125.pdf",
+    "sha256": "51370475301f62ded01a428642ebb46612577f4f38ed42636f0b37e99463f836",
+    "retrieved_at": "2026-11-22",
+    "page_count": 10
+  },
+  "policy_effective_date": "07/01/2025",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "< 200% of 100% discount off AGB 100% discount off BAI",
+      "page": 4,
+      "confidence": 0.7,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 200.0,
+        "fpl_max_percent": 300.0,
+        "discount_type": "percent_off",
+        "value": 75.0,
+        "description": "Hospitals in states other than Colorado: 75% discount off AGB (uninsured) or off BAI (underinsured). Colorado hospitals: 75% discount for >250% to 300% FPL."
+      },
+      {
+        "fpl_min_percent": 300.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": 50.0,
+        "description": "50% discount off AGB (uninsured) or off BAI (underinsured), for >300% to 400% FPL."
+      }
+    ],
+    "evidence": {
+      "quote": "(1) their household income is 400% of the FPL or less;",
+      "page": 4,
+      "confidence": 0.85,
+      "status": "stated",
+      "verified": true
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Assets are not considered for the income-based discount. Only if a patient has no documented income or is not required to file taxes, BH may assess ability to pay by comparing debt to equity (liquid assets); a debt-to-equity ratio over 50% gets the Medically Indigent discount.",
+    "evidence": {
+      "quote": "Equity includes liquid assets (cash, stocks, bonds, and other assets that can be liquidated within 7 days) to cover outstanding bills.",
+      "page": 6,
+      "confidence": 0.6,
+      "status": "unclear",
+      "verified": true
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.9,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": null,
+    "counted_from": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Patients presumptively eligible based on household income need not apply and the Section III.C.i discounts are applied automatically.",
+  "how_to_apply": "Get an application in person at a Hospital or from the BH website, or request one by mail by calling 1-888-264-2127; deliver or mail to the address on the application form or submit per BH website instructions.",
+  "needs_human_review": true,
+  "review_fields": [
+    "free_care",
+    "asset_test",
+    "application_window"
+  ],
+  "warnings": [
+    "Policy covers many hospitals in AZ, CO, NE, WY, and NV; Colorado hospitals have different thresholds: 100% discount at or below 250% FPL, 75% for >250% to 300%, and 50% for >300% to 400%. Free care and tier values extracted are for non-Colorado hospitals.",
+    "Non-Colorado free care band is stated as '< 200%' and the 75% band starts at '200%'.",
+    "Banner Lassen Medical Center (California) is excluded and governed by a separate policy (No. 3658).",
+    "Hospital state not given because the policy covers multiple states.",
+    "The 400% FPL limit applies to income-based assistance; Medically Indigent Household status can give a 75% discount at any income level (including above 400% FPL).",
+    "Application deadline not stated; the 120-day Notification Period before extraordinary collection actions is not an application deadline.",
+    "No explicit residency requirement stated.",
+    "Discounts apply to uninsured and underinsured patients; the 'Underinsured' discount applies to the balance after insurance (BAI)."
+  ]
+}

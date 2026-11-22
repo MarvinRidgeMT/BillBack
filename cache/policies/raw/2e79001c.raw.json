@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "UCHealth",
+  "hospital_state": "CO",
+  "source": null,
+  "policy_effective_date": null,
+  "free_care": {
+    "fpl_max_percent": 250.0,
+    "evidence": {
+      "quote": "Patients approved for Financial Assistance with an annual Family Income of 250% of FPL guidelines or less will receive a 100% discount on gross charges for care covered by this policy.",
+      "page": 4,
+      "confidence": 0.97,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 251.0,
+        "fpl_max_percent": 300.0,
+        "discount_type": "percent_off",
+        "value": null,
+        "description": "Discount on gross charges varies by facility (e.g., 91%-95% at most facilities; 82% at Yampa Valley, 88% at Pikes Peak) per Appendix A."
+      },
+      {
+        "fpl_min_percent": 301.0,
+        "fpl_max_percent": 350.0,
+        "discount_type": "percent_off",
+        "value": null,
+        "description": "Discount on gross charges varies by facility (e.g., 77%-91%) per Appendix A."
+      },
+      {
+        "fpl_min_percent": 351.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": null,
+        "description": "Discount on gross charges varies by facility (e.g., 47%-86%) per Appendix A. Catastrophic balance discount mirrors this band."
+      }
+    ],
+    "evidence": {
+      "quote": "Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A.",
+      "page": 4,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Assets (Financial Resources) are considered only for Catastrophic Balance Financial Assistance, where the account balance is compared to Family Income and Financial Resources combined. Not considered for income-based assistance.",
+    "evidence": {
+      "quote": "Any applicant seeking to qualify for Catastrophic Balance Financial Assistance must also supply evidence of Financial Resources as requested in the application.",
+      "page": 3,
+      "confidence": 0.7,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "Resident of Colorado (exception possible for unscheduled emergency services at UCHealth's discretion)",
+    "evidence": {
+      "quote": "An individual must be a Resident of Colorado in order to qualify for Financial Assistance.",
+      "page": 1,
+      "confidence": 0.95,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 365,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "Applicants have the later of (a) 365 days from the date of the first post-discharge Billing Statement, or (b) 30 days after notice of the initiation of one or more Extraordinary Collection Actions (\"ECA\") has been provided,",
+      "page": 3,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Presumptive eligibility (100% discount) may apply for deceased patients with no estate, homeless patients, those qualifying for public programs, or estimated household FPL of 250% or less via a predictive model.",
+  "how_to_apply": "Call UCHealth Financial Counseling at 855.843.3547 (Mon-Fri 8-4 MST), visit financial counseling offices, apply in person, online or by mail; forms at https://www.uchealth.org/billing-and-pricing/financial-assistance.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Discount percentages for 251-400% FPL vary by facility; tier values left null. See Appendix A.",
+    "Policy covers multiple UCHealth facilities with different discount rates.",
+    "Insured eligibility: Under-insured patients are eligible; fully insured patients are not explicitly addressed.",
+    "Application window is the later of 365 days from first post-discharge bill or 30 days after ECA notice.",
+    "Policy effective date not stated; AGB percentages applicable as of 2/1/25.",
+    "Assets: Financial Resources only considered for Catastrophic Balance assistance.",
+    "Catastrophic balance assistance applies when balance exceeds 50% of Family Income plus Financial Resources."
+  ]
+}

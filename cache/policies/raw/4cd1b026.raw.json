@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Texas Health Resources (Texas Health)",
+  "hospital_state": "TX",
+  "source": null,
+  "policy_effective_date": "04/21/2026",
+  "free_care": {
+    "fpl_max_percent": 250.0,
+    "evidence": {
+      "quote": "Discount: 100% of balance due",
+      "page": 16,
+      "confidence": 0.8,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "discount": {
+    "fpl_max_percent": null,
+    "tiers": [
+      {
+        "fpl_min_percent": 251.0,
+        "fpl_max_percent": 500.0,
+        "discount_type": "percent_off",
+        "value": 95.0,
+        "description": "Tier 1 Medically Indigent: 95% discount if balance due is 5% or more of annual income; patient not billed more than AGB."
+      },
+      {
+        "fpl_min_percent": 501.0,
+        "fpl_max_percent": null,
+        "discount_type": "percent_off",
+        "value": 80.0,
+        "description": "Tier 2 Medically Indigent: income above 500% FPL and balance due 20% or more of annual income; 80% discount."
+      },
+      {
+        "fpl_min_percent": 251.0,
+        "fpl_max_percent": null,
+        "discount_type": "percent_off",
+        "value": 98.0,
+        "description": "Tier 3 Catastrophic: income above 250% FPL and balance due exceeds 100% of annual income; 98% discount."
+      }
+    ],
+    "evidence": {
+      "quote": "These Medically Indigent patients are eligible for a 95% discount as set forth in Attachment B.",
+      "page": 13,
+      "confidence": 0.6,
+      "status": "unclear",
+      "verified": null
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Assets are considered: cash, stocks, bonds and other financial assets that can be liquidated within 7 days; non-liquid assets generally not considered. Savings accounts, trust funds and life insurance may also be considered.",
+    "evidence": {
+      "quote": "For purposes of this policy, assets shall include cash, stocks, bonds and other financial assets that can be liquidated within 7 days.",
+      "page": 14,
+      "confidence": 0.92,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.85,
+      "status": "not_stated",
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 365,
+    "counted_from": "date_of_service",
+    "evidence": {
+      "quote": "Patients are given the opportunity to apply for financial assistance up to 365 days from the date of service.",
+      "page": 1,
+      "confidence": 0.9,
+      "status": "stated",
+      "verified": null
+    }
+  },
+  "income_basis": "both",
+  "uses_income_table": true,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Texas Health may screen uninsured patients using third-party data, and Medicaid, Project Access or Healing Hands patients are presumed eligible; uninsured patients with balance of $40,000 or more and vendor-estimated FPL over 250% may get an automatic 75% discount.",
+  "how_to_apply": "MyChart portal at www.texashealth.org/Costs-and-Billing/Financial-Assistance; paper application at www.TexasHealth.org/Financial-Assistance; CustomerService@TexasHealth.org; 1.800.890.6034; mail to 612 E. Lamar Blvd. 10th Floor, Arlington, TX 76011, Attention Financial Assistance Team; or in person at admissions offices.",
+  "needs_human_review": false,
+  "review_fields": [],
+  "warnings": [
+    "Discount tiers above 250% FPL depend on the balance due as a percentage of annual income (5%, 20%, or 100%); they are not purely income-based.",
+    "Tier 3 Catastrophic (98%) overlaps with Tier 1 and Tier 2 income ranges; section A-5.0 says 251% or greater while Attachment B says exceeds 250%.",
+    "Presumptive 75% discount (balance $40,000+, vendor FPL > 250%) and A-6.0 minimum patient responsibility of 25% also exist.",
+    "No upper FPL limit is given for discounts (Tier 2 applies above 500% FPL), so discount.fpl_max_percent is null.",
+    "Free care at 250% FPL is described as a discount equal to the balance less the amount deemed able to pay, and the patient must lack sufficient funds and assets; the 100% discount appears in the Attachment B table.",
+    "Policy section 4.2 also mentions facilities managed by the Texas Health Business Office; some covered entities are not managed by it (Attachment C).",
+    "Appeals are allowed during the first 365 days from the initial billing date.",
+    "The 90-day classification period applies to medically indigent classification.",
+    "Attachment B dollar table is based on Jan 2026 guidelines; the % of FPL is also stated.",
+    "Page 16 table has a minor inconsistency in dollar boundaries for Tier 2 ('Over $79,801' vs Tier 1 up to $79,800)."
+  ]
+}
