@@ -59,9 +59,11 @@ export function HospitalSelect({ value, onChange, matched, showRequired }: Hospi
               <span className="sr-only"> {t("result.new_tab")}</span>
             </a>
           </p>
-        ) : (
-          <p className="hint">{matched && value ? t("hospital.matched_hint") : t("hospital.pick_hint")}</p>
-        )}
+        ) : matched ? (
+          <p className="hint">{t("hospital.matched_hint")}</p>
+        ) : value === "" ? (
+          <p className="hint">{t("hospital.pick_hint")}</p>
+        ) : null}
       </div>
     </div>
   );

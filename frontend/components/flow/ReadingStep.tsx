@@ -112,8 +112,10 @@ function Confirm({
 
   const [edits, setEdits] = useState<Partial<Record<FieldName, string>>>({});
   const [revealed, setRevealed] = useState(reduce);
-  const [guess] = useState(() => matchHospital(data.fields.hospital_name.value));
+  const [guess, setGuess] = useState(() => matchHospital(data.fields.hospital_name.value));
   const [hospital, setHospital] = useState(guess?.slug ?? "");
+  // True once the patient has picked a hospital themselves. Their pick is never overwritten.
+  const [chosenByPatient, setChosenByPatient] = useState(false);
   const [showRequired, setShowRequired] = useState(false);
 
   useEffect(() => {
@@ -122,6 +124,16 @@ function Confirm({
     const timer = window.setTimeout(() => setRevealed(true), ms);
     return () => window.clearTimeout(timer);
   }, [reduce]);
+
+  function edit(name: FieldName, value: string) {
+    setEdits((prev) => ({ ...prev, [name]: value }));
+    // A corrected hospital name can point at a different policy, so our guess follows it.
+    if (name === "hospital_name") {
+      const next = matchHospital(value);
+      setGuess(next);
+      if (!chosenByPatient) setHospital(next?.slug ?? "");
+    }
+  }
 
   const valueOf = (name: FieldName) => edits[name] ?? displayField(name, data.fields[name], locale);
 
@@ -181,7 +193,7 @@ function Confirm({
                     id={id}
                     className="field-input v"
                     value={shown}
-                    onChange={(e) => setEdits((prev) => ({ ...prev, [name]: e.target.value }))}
+                    onChange={(e) => edit(name, e.target.value)}
                     aria-describedby={field.note ? `${id}-note` : undefined}
                     autoComplete="off"
                   />
@@ -213,9 +225,10 @@ function Confirm({
           value={hospital}
           onChange={(v) => {
             setHospital(v);
+            setChosenByPatient(true);
             setShowRequired(false);
           }}
-          matched={hospital !== "" && hospital === guess?.slug}
+          matched={!chosenByPatient && hospital !== "" && hospital === guess?.slug}
           showRequired={showRequired}
         />
         <div className="btn-row">

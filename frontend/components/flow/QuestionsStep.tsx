@@ -33,10 +33,11 @@ export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps
   const [showError, setShowError] = useState(false);
   const pop = useAnimationControls();
 
+  // The buttons use aria-disabled, not disabled, so focus stays put at the limits.
   function step(by: number) {
-    const next = Math.min(MAX_HOUSEHOLD, Math.max(MIN_HOUSEHOLD, household + by));
-    if (next === household) return;
-    setHousehold(next);
+    const next = household + by;
+    if (next < MIN_HOUSEHOLD || next > MAX_HOUSEHOLD) return;
+    setHousehold((n) => Math.min(MAX_HOUSEHOLD, Math.max(MIN_HOUSEHOLD, n + by)));
     if (!reduce) void pop.start({ scale: [1.4, 1], transition: SNAPPY });
   }
 
@@ -68,7 +69,7 @@ export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps
               type="button"
               aria-label={t("questions.fewer")}
               onClick={() => step(-1)}
-              disabled={household <= MIN_HOUSEHOLD}
+              aria-disabled={household <= MIN_HOUSEHOLD}
             >
               <Minus size={20} aria-hidden="true" />
             </button>
@@ -79,7 +80,7 @@ export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps
               type="button"
               aria-label={t("questions.more")}
               onClick={() => step(1)}
-              disabled={household >= MAX_HOUSEHOLD}
+              aria-disabled={household >= MAX_HOUSEHOLD}
             >
               <Plus size={20} aria-hidden="true" />
             </button>

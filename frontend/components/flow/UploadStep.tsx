@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type DragEvent } from "react";
+import { useEffect, useRef, useState, type DragEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { useT, type MessageKey } from "@/lib/i18n";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
@@ -40,9 +40,16 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
   const [over, setOver] = useState(false);
   const [error, setError] = useState<MessageKey | null>(null);
   const [loadingSample, setLoadingSample] = useState(false);
+  const alive = useRef(true);
+  useEffect(() => {
+    alive.current = true;
+    return () => {
+      alive.current = false;
+    };
+  }, []);
 
   function take(file: File | undefined) {
-    if (!file) return;
+    if (!file || loadingSample) return;
     const ok = acceptable(file);
     if (!ok) {
       setError("upload.bad_file");
@@ -65,8 +72,10 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
       const res = await fetch(SAMPLE_URL);
       if (!res.ok) throw new Error("sample missing");
       const blob = await res.blob();
+      if (!alive.current) return;
       onFile(new File([blob], "sample-bill.png", { type: "image/png" }));
     } catch {
+      if (!alive.current) return;
       setError("upload.sample_failed");
       setLoadingSample(false);
     }
@@ -105,7 +114,7 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
         </svg>
         <p className="mt-1.5 mb-0 font-medium">{t("upload.drop")}</p>
         <p className="hint mt-0.5 mb-3">{t("upload.formats")}</p>
-        <Button variant="ghost" onClick={() => input.current?.click()}>
+        <Button variant="ghost" onClick={() => input.current?.click()} disabled={loadingSample}>
           {t("upload.choose")}
         </Button>
         <input
@@ -131,7 +140,7 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
         <Button variant="coral" onClick={trySample} disabled={loadingSample}>
           {t("upload.sample")}
         </Button>
-        <Button variant="ghost" onClick={onManual}>
+        <Button variant="ghost" onClick={onManual} disabled={loadingSample}>
           {t("upload.manual")}
         </Button>
       </div>

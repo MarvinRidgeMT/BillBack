@@ -705,10 +705,10 @@
   place-items: center;
   transition: transform 0.12s var(--ease-out);
 }
-.stepper button:active {
+.stepper button:not([aria-disabled="true"]):active {
   transform: scale(0.9);
 }
-.stepper button:disabled {
+.stepper button[aria-disabled="true"] {
   color: var(--ink-2);
   opacity: 0.45;
   cursor: default;
@@ -797,6 +797,9 @@
 .mini-bill .stamp span {
   font-size: 9px;
 }
+.mini-bill .stamp[data-long="true"] b {
+  font-size: 15px;
+}
 .quote-box {
   font-size: 16px;
   line-height: 1.6;
@@ -822,9 +825,19 @@
 }
 .next-steps,
 .caveats {
+  list-style: disc;
   margin: 14px 0 0;
   padding-left: 20px;
   font-size: 16px;
+}
+.caveats {
+  margin-top: 6px;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+.next-steps li::marker,
+.caveats li::marker {
+  color: var(--ink-2);
 }
 .next-steps li,
 .caveats li {

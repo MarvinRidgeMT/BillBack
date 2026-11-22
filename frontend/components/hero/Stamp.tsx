@@ -20,6 +20,7 @@ export function Stamp({ top, bottom, show, reduce, from = 2.4 }: StampProps) {
   return (
     <motion.div
       className="stamp"
+      data-long={top.length > 2}
       initial={reduce ? false : away}
       animate={show ? landed : away}
       transition={reduce ? { duration: 0 } : SNAPPY}
