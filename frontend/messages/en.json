@@ -145,5 +145,8 @@
   "result.sample_banner": "Sample result: the eligibility service isn't connected yet.",
   "result.sample_note": "This is an example of a result. It isn't based on your answers.",
   "result.unavailable_title": "Not right now",
-  "result.unavailable": "We can't check eligibility right now. Try again in a minute."
+  "result.unavailable": "We can't check eligibility right now. Try again in a minute.",
+  "reading.found_title": "Check what we found",
+  "reading.edit": "Edit",
+  "reading.edit_field": "Edit {field}"
 }

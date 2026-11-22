@@ -145,5 +145,8 @@
   "result.sample_banner": "Resultado de ejemplo: el servicio de elegibilidad aún no está conectado.",
   "result.sample_note": "Este es un ejemplo de resultado. No se basa en sus respuestas.",
   "result.unavailable_title": "Ahora no",
-  "result.unavailable": "No podemos revisar la elegibilidad en este momento. Intente de nuevo en un minuto."
+  "result.unavailable": "No podemos revisar la elegibilidad en este momento. Intente de nuevo en un minuto.",
+  "reading.found_title": "Revise lo que encontramos",
+  "reading.edit": "Editar",
+  "reading.edit_field": "Editar {field}"
 }

@@ -60,7 +60,7 @@ export function ReadingStep(props: ReadingStepProps) {
   return (
     <StepCard step={2} entrance={entrance} reduce={reduce}>
       {sample && <p className="banner">{t("reading.sample_banner")}</p>}
-      <StepHeading>{t("reading.title")}</StepHeading>
+      <StepHeading>{t(state.phase === "ready" ? "reading.found_title" : "reading.title")}</StepHeading>
       {/* Always here, so a screen reader hears the change from "reading" to what was found. */}
       <p className="sr-only" role="status">
         {state.phase === "loading" && t("reading.status")}
@@ -125,6 +125,8 @@ function Confirm({
 
 
   const [edits, setEdits] = useState<Partial<Record<FieldName, string>>>({});
+  // Rows the patient opened with "Edit". Rows under 80% sure are open from the start.
+  const [opened, setOpened] = useState<Partial<Record<FieldName, boolean>>>({});
   const [revealed, setRevealed] = useState(reduce);
   const [guess, setGuess] = useState(() => matchHospital(data.fields.hospital_name.value));
   const [hospital, setHospital] = useState(guess?.slug ?? "");
@@ -188,18 +190,21 @@ function Confirm({
               animate={{ opacity: 1, x: 0 }}
               transition={{ ...SOFT, delay: (i + 1) * REVEAL_GAP_S }}
             >
-              {check ? (
+              {check || opened[name] ? (
                 <>
                   <label className="k" htmlFor={id}>
-                    {t(`field.${name}`)} · {t("reading.check_suffix")}
+                    {t(`field.${name}`)}
+                    {check && <> · {t("reading.check_suffix")}</>}
                   </label>
                   <input
                     id={id}
                     className="field-input v"
                     value={shown}
                     onChange={(e) => edit(name, e.target.value)}
-                    aria-describedby={field.note ? `${id}-note` : undefined}
+                    aria-describedby={check && field.note ? `${id}-note` : undefined}
                     autoComplete="off"
+                    // Opened by the patient pressing Edit, so the cursor follows them there.
+                    autoFocus={!check}
                   />
                 </>
               ) : (
@@ -209,6 +214,16 @@ function Confirm({
                 </>
               )}
               <span className="chip">{t("reading.sure", { pct: confidencePercent(field.confidence) })}</span>
+              {!check && !opened[name] && (
+                <button
+                  type="button"
+                  className="edit-btn"
+                  aria-label={t("reading.edit_field", { field: t(`field.${name}`) })}
+                  onClick={() => setOpened((prev) => ({ ...prev, [name]: true }))}
+                >
+                  {t("reading.edit")}
+                </button>
+              )}
               {check && field.note && (
                 <span className="note" id={`${id}-note`} lang={lang === "es" ? "en" : undefined}>
                   {field.note}
@@ -241,7 +256,9 @@ function Confirm({
               {t("result.start_over")}
             </Button>
           ) : (
-            <Button onClick={confirm}>{t("reading.ok")}</Button>
+            <Button variant="coral" onClick={confirm}>
+              {t("reading.ok")}
+            </Button>
           )}
         </div>
       </motion.div>
