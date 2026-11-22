@@ -148,5 +148,12 @@
   "result.unavailable": "We can't check eligibility right now. Try again in a minute.",
   "reading.found_title": "Check what we found",
   "reading.edit": "Edit",
-  "reading.edit_field": "Edit {field}"
+  "reading.edit_field": "Edit {field}",
+  "result.quote_lang": "",
+  "result.help_call": "Questions? Call the hospital's billing office",
+  "result.help_free": "Free help:",
+  "result.next_title": "What happens next",
+  "result.next_1": "Sign the letter.",
+  "result.next_2": "Attach the documents.",
+  "result.next_3": "Send it to the billing address on your bill, and follow up in 30 days."
 }

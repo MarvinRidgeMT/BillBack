@@ -223,7 +223,7 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
           <br />
           DUE
           <br />
-          {amount && (data.status === "likely_free" ? <s>{amount}</s> : amount)}
+          {amount && <span className="mini-amt">{data.status === "likely_free" ? <s>{amount}</s> : amount}</span>}
           {stamp && <Stamp top={stamp.top} bottom={stamp.bottom} show={stamped} reduce={reduce} from={2.6} />}
         </div>
         <div>
@@ -238,6 +238,11 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
           </p>
         </div>
       </div>
+
+      <p className="fine">
+        {fine}
+        {extraDisclaimer && <span lang={en}> {extraDisclaimer}</span>}
+      </p>
 
       {data.status === "likely_discounted" && data.tier?.description && (
         <p className="mt-3 mb-0" lang={en}>
@@ -260,6 +265,7 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
               {quote}
             </motion.span>
             {"”"}
+            {t("result.quote_lang") && <span className="quote-lang"> {t("result.quote_lang")}</span>}
           </p>
         ) : (
           <p>{t("result.no_quote")}</p>
@@ -323,9 +329,23 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
       </div>
       {canApply && sample && <p className="info-text">{t("result.app_sample")}</p>}
 
-      <p className="fine">
-        {fine}
-        {extraDisclaimer && <span lang={en}> {extraDisclaimer}</span>}
+      {canApply && !sample && (
+        <>
+          <p className="caveats-title">{t("result.next_title")}</p>
+          <ol className="next-list">
+            <li>{t("result.next_1")}</li>
+            <li>{t("result.next_2")}</li>
+            <li>{t("result.next_3")}</li>
+          </ol>
+        </>
+      )}
+
+      <p className="help-line">
+        {t("result.help_call")} · {t("result.help_free")}{" "}
+        <a className="text-link" href={DOLLAR_FOR_URL} target="_blank" rel="noopener noreferrer">
+          Dollar For
+          <span className="sr-only"> {t("result.new_tab")}</span>
+        </a>
       </p>
     </>
   );

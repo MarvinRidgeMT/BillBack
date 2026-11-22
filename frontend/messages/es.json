@@ -148,5 +148,12 @@
   "result.unavailable": "No podemos revisar la elegibilidad en este momento. Intente de nuevo en un minuto.",
   "reading.found_title": "Revise lo que encontramos",
   "reading.edit": "Editar",
-  "reading.edit_field": "Editar {field}"
+  "reading.edit_field": "Editar {field}",
+  "result.quote_lang": "(texto de la política del hospital, en inglés)",
+  "result.help_call": "¿Preguntas? Llame a la oficina de facturación del hospital",
+  "result.help_free": "Ayuda gratuita:",
+  "result.next_title": "Qué sigue",
+  "result.next_1": "Firme la carta.",
+  "result.next_2": "Adjunte los documentos.",
+  "result.next_3": "Envíela a la dirección de facturación que aparece en su factura y dé seguimiento en 30 días."
 }

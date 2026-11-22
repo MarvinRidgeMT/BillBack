@@ -471,6 +471,8 @@
   box-shadow: 0 30px 60px -30px rgba(14, 59, 46, 0.5);
   border: 1px solid var(--line);
   align-self: flex-start;
+  /* Money and percentages line up digit for digit. */
+  font-variant-numeric: tabular-nums;
 }
 .steps {
   display: flex;
@@ -813,16 +815,24 @@
   text-decoration-thickness: 1.5px;
 }
 /* Small stamp: coral fill behind dark text, so it passes AA (coral text on white doesn't). */
+/* The amount always shows whole: one line, shrunk a touch when it's long. */
+.mini-bill .mini-amt {
+  display: block;
+  white-space: nowrap;
+  font-weight: 700;
+  color: #20302a;
+  letter-spacing: -0.02em;
+}
 .mini-bill .stamp {
-  width: 62%;
-  right: -8%;
-  bottom: 4%;
+  width: 54%;
+  right: -16%;
+  bottom: -8%;
   border-width: 3px;
   background: var(--coral);
   color: var(--on-coral);
 }
 .mini-bill .stamp b {
-  font-size: 20px;
+  font-size: 18px;
 }
 .mini-bill .stamp span {
   font-size: 9px;
@@ -878,9 +888,32 @@
   margin: 16px 0 0;
 }
 .fine {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--ink-2);
-  margin: 14px 0 0;
+  margin: 12px 0 0;
+}
+.help-line {
+  font-size: 15px;
+  color: var(--ink-2);
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.next-list {
+  list-style: decimal;
+  margin: 6px 0 0;
+  padding-left: 22px;
+  font-size: 16px;
+}
+.next-list li {
+  margin: 4px 0;
+}
+.next-list li::marker {
+  font-weight: 700;
+}
+.quote-lang {
+  font-size: 14px;
+  color: var(--ink-2);
 }
 .text-link {
   color: var(--ink);
