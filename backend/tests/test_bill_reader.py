@@ -156,6 +156,18 @@ def test_api_bill_read_returns_fields(monkeypatch):
     assert data["fields"]["amount_due"]["normalized"] == 123456
 
 
+def test_invalid_model_output_never_logs_bill_values(monkeypatch, caplog):
+    # A number where a string belongs fails validation, and pydantic echoes the input value in its error text.
+    bad = model_json(account_number={"value": 98765432, "confidence": 0.9, "note": ""})
+    monkeypatch.setattr(reader, "default_client", lambda: FakeClient(bad))
+    pdf = (BILLS / "bill_a_text.pdf").read_bytes()
+    with caplog.at_level("DEBUG"):
+        resp = client.post("/api/bill/read", files={"file": ("bill.pdf", pdf, "application/pdf")})
+    assert resp.status_code == 502
+    assert "account_number" in caplog.text  # still says which field failed
+    assert "98765432" not in caplog.text and "98765432" not in resp.text
+
+
 def test_api_bill_read_rejects_wrong_type():
     resp = client.post("/api/bill/read", files={"file": ("x.txt", b"hello", "text/plain")})
     assert resp.status_code == 400

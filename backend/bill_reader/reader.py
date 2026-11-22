@@ -79,6 +79,14 @@ def _parse(text: str) -> BillModelOutput:
     return BillModelOutput.model_validate(json.loads(text))
 
 
+def _describe_invalid(exc: ValidationError | json.JSONDecodeError) -> str:
+    """Which fields failed and why, without the values (pydantic's own message echoes the bill's text)."""
+    if isinstance(exc, json.JSONDecodeError):
+        return f"not valid JSON ({exc.msg} at char {exc.pos})"
+    parts = [f"{'.'.join(str(x) for x in err['loc'])}: {err['type']}" for err in exc.errors()]
+    return f"{len(parts)} schema error(s): " + "; ".join(parts)
+
+
 def read_bill(data: bytes, content_type: str, *, client: Optional[ModelClient] = None) -> BillResult:
     if not data:
         raise BillReadError("the file is empty")
@@ -93,14 +101,15 @@ def read_bill(data: bytes, content_type: str, *, client: Optional[ModelClient] =
     try:
         raw = _parse(result.text)
     except (ValidationError, json.JSONDecodeError) as exc:
-        log.warning("bill output invalid, retrying once: %s", exc)
+        log.warning("bill output invalid, retrying once: %s", _describe_invalid(exc))
         result = client.generate(dataclasses.replace(prompt, correction=f"Invalid JSON for the schema: {exc}. Return corrected JSON only."))
         tokens_in += result.input_tokens
         tokens_out += result.output_tokens
         try:
             raw = _parse(result.text)
         except (ValidationError, json.JSONDecodeError) as exc2:
-            raise PolicyReaderError("model output for the bill was invalid after retry") from exc2
+            # 'from None': the chained pydantic error would put bill values into the server log's traceback.
+            raise PolicyReaderError(f"model output for the bill was invalid after retry: {_describe_invalid(exc2)}") from None
 
     fields = validate.validate_fields(raw, pdf_text)
     return BillResult(
