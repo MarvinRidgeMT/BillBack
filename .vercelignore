@@ -1,0 +1,12 @@
+frontend/
+node_modules
+.venv
+sample_bills/
+docs/
+.env
+.env.*
+!.env.example
+.playwright-mcp/
+.impeccable/
+.claude/
+**/__pycache__
