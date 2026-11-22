@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-multipart
+google-genai>=3.6
+pdfplumber
+pytesseract
+pdf2image
+httpx
+pydantic>=2
+rapidfuzz
+python-dotenv
+pytest

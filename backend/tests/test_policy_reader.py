@@ -1,0 +1,237 @@
+import json
+import os
+from pathlib import Path
+
+import pytest
+
+from backend.policy_reader import cache, extract_text, reader, validate
+from backend.policy_reader.schema import PolicyRules, llm_json_schema
+from backend.tests.pdf_factory import make_pdf
+
+FIXTURE = Path(__file__).parent / "fixtures" / "sample_rules.json"
+
+PAGES = {
+    1: "Example Community Hospital\nFinancial Assistance Policy",
+    2: (
+        "Patients with household income at or below 200% of the Federal Poverty\n"
+        "Guidelines will receive a 100% discount. Patients with household income\n"
+        "between 201% and 400% of the Federal Poverty Guidelines will receive a\n"
+        "discount according to the sliding scale below."
+    ),
+    3: "Assets are not considered when determining eligibility.\nApplicants must be residents of the State of Ohio.",
+    4: "Patients may apply up to 240 days after the first post-\ndischarge billing statement.",
+}
+
+
+def load_fixture() -> PolicyRules:
+    return PolicyRules.model_validate_json(FIXTURE.read_text())
+
+
+# ---------- schema ----------
+
+def test_schema_round_trip():
+    rules = load_fixture()
+    again = PolicyRules.model_validate_json(rules.model_dump_json())
+    assert again == rules
+    assert again.discount.tiers[0].value == 75
+
+
+def test_llm_schema_is_inlined_and_hides_server_fields():
+    schema = llm_json_schema()
+    text = json.dumps(schema)
+    assert "$ref" not in text and "$defs" not in text
+    assert "source" not in schema["properties"]
+    assert "needs_human_review" not in schema["properties"]
+    evidence = schema["properties"]["free_care"]["properties"]["evidence"]
+    assert "verified" not in evidence["properties"]
+
+
+# ---------- quote verification ----------
+
+def test_exact_quote_verifies():
+    ok, page = validate.find_quote("Assets are not considered when determining eligibility.", PAGES, 3)
+    assert ok and page == 3
+
+
+def test_invented_quote_fails():
+    ok, _ = validate.find_quote("Patients earning up to 600% FPL receive free care at no cost whatsoever.", PAGES, 2)
+    assert not ok
+
+
+def test_line_breaks_hyphens_and_curly_quotes_still_verify():
+    quote = "Patients may apply up to 240 days after the first post‑discharge billing statement."
+    ok, page = validate.find_quote(quote, PAGES, 4)
+    assert ok and page == 4
+    ok, _ = validate.find_quote(
+        "Patients with household income at or below 200% of the Federal Poverty Guidelines will receive a 100% discount.",
+        PAGES,
+        2,
+    )
+    assert ok
+
+
+def test_quote_on_wrong_page_is_found_and_page_corrected():
+    ok, page = validate.find_quote("Applicants must be residents of the State of Ohio.", PAGES, 1)
+    assert ok and page == 3
+
+
+def test_post_validate_clean_fixture_needs_no_review():
+    rules = validate.post_validate(load_fixture(), PAGES)
+    assert rules.free_care.evidence.verified is True
+    assert rules.needs_human_review is False
+    assert rules.warnings == []
+
+
+def test_post_validate_caps_confidence_for_unverified_quote():
+    bad = load_fixture().model_copy(deep=True)
+    bad.residency.evidence.quote = "Only residents of Mars may apply for assistance here."
+    rules = validate.post_validate(bad, PAGES)
+    assert rules.residency.evidence.verified is False
+    assert rules.residency.evidence.confidence <= 0.5
+    assert rules.needs_human_review is True
+    assert "residency" in rules.review_fields
+    assert any("residency" in w for w in rules.warnings)
+
+
+def test_post_validate_does_not_mutate_input():
+    original = load_fixture()
+    before = original.model_dump()
+    validate.post_validate(original, PAGES)
+    assert original.model_dump() == before
+
+
+def test_not_stated_field_is_low_confidence_not_unverified():
+    data = json.loads(FIXTURE.read_text())
+    data["asset_test"] = {"applies": None, "details": None, "evidence": {"quote": "", "page": None, "confidence": 0.2}}
+    rules = validate.post_validate(PolicyRules.model_validate(data), PAGES)
+    assert rules.asset_test.evidence.verified is None
+    assert "asset_test" in rules.review_fields
+
+
+# ---------- sanity checks ----------
+
+def test_sanity_flags_free_above_discount():
+    data = json.loads(FIXTURE.read_text())
+    data["free_care"]["fpl_max_percent"] = 500
+    rules = validate.post_validate(PolicyRules.model_validate(data), PAGES)
+    assert any("free_care" in w and "discount" in w for w in rules.warnings)
+    assert rules.needs_human_review
+
+
+def test_sanity_flags_overlapping_tiers():
+    data = json.loads(FIXTURE.read_text())
+    data["discount"]["tiers"][1]["fpl_min_percent"] = 250
+    rules = validate.post_validate(PolicyRules.model_validate(data), PAGES)
+    assert any("overlap" in w for w in rules.warnings)
+    assert rules.discount.evidence.confidence < 0.8
+
+
+def test_sanity_flags_out_of_range_window_and_percent():
+    data = json.loads(FIXTURE.read_text())
+    data["application_window"]["days"] = 5
+    data["free_care"]["fpl_max_percent"] = 2
+    rules = validate.post_validate(PolicyRules.model_validate(data), PAGES)
+    assert any("application_window" in w for w in rules.warnings)
+    assert any("free_care" in w and "range" in w for w in rules.warnings)
+
+
+# ---------- text extraction ----------
+
+def test_extract_text_pages_keep_numbers():
+    pdf = make_pdf(["Page one text about financial assistance policy rules here.", "Second page with more words in it for sure, well over fifty characters."])
+    doc = extract_text.extract_pages(pdf)
+    assert [p.number for p in doc.pages] == [1, 2]
+    assert "financial assistance" in doc.pages[0].text
+    assert "=== PAGE 2 ===" in extract_text.to_prompt_text(doc)
+    assert not doc.needs_raw_pdf
+
+
+def test_scanned_page_triggers_ocr(monkeypatch):
+    pdf = make_pdf(["Plenty of real selectable text on this first page of the policy.", ""])
+    calls = []
+    monkeypatch.setattr(extract_text, "ocr_available", lambda: True)
+
+    def fake_ocr(pdf_bytes, page_number):
+        calls.append(page_number)
+        return "OCR TEXT: patients with income at or below 250% of FPL receive free care."
+
+    monkeypatch.setattr(extract_text, "ocr_page", fake_ocr)
+    doc = extract_text.extract_pages(pdf)
+    assert calls == [2]
+    assert doc.pages[1].method == "ocr"
+    assert "250%" in doc.pages[1].text
+    assert not doc.needs_raw_pdf
+
+
+def test_scanned_page_without_ocr_falls_back_to_raw_pdf(monkeypatch):
+    pdf = make_pdf(["Plenty of real selectable text on this first page of the policy.", ""])
+    monkeypatch.setattr(extract_text, "ocr_available", lambda: False)
+    doc = extract_text.extract_pages(pdf)
+    assert doc.needs_raw_pdf
+    assert any("raw PDF" in w for w in doc.warnings)
+
+
+# ---------- reader + cache ----------
+
+class FakeClient:
+    def __init__(self, payload: str):
+        self.payload = payload
+        self.calls = 0
+
+    def generate(self, parts, schema):
+        self.calls += 1
+        return reader.ModelResult(text=self.payload, input_tokens=1000, output_tokens=200, seconds=0.01)
+
+
+def _policy_pdf() -> bytes:
+    return make_pdf([PAGES[1], PAGES[2], PAGES[3], PAGES[4]])
+
+
+def test_reader_validates_and_saves_to_cache(tmp_path):
+    client = FakeClient(FIXTURE.read_text())
+    result = reader.read_policy(_policy_pdf(), url="https://example.org/fap.pdf", client=client, cache_dir=tmp_path)
+    assert client.calls == 1
+    assert not result.cached
+    assert result.rules.source.page_count == 4
+    assert result.rules.source.url == "https://example.org/fap.pdf"
+    assert result.rules.free_care.evidence.verified is True
+    saved = list(tmp_path.glob("*.json"))
+    assert len(saved) == 1 and saved[0].name.startswith("example-community-hospital__")
+
+
+def test_cache_hit_skips_model(tmp_path):
+    pdf = _policy_pdf()
+    reader.read_policy(pdf, client=FakeClient(FIXTURE.read_text()), cache_dir=tmp_path)
+    second = FakeClient("this would fail to parse")
+    result = reader.read_policy(pdf, client=second, cache_dir=tmp_path)
+    assert result.cached
+    assert second.calls == 0
+    assert result.rules.hospital_name == "Example Community Hospital"
+
+
+def test_reader_retries_once_on_invalid_json(tmp_path):
+    class Flaky(FakeClient):
+        def generate(self, parts, schema):
+            self.calls += 1
+            text = "{not json" if self.calls == 1 else self.payload
+            return reader.ModelResult(text=text, input_tokens=10, output_tokens=10, seconds=0.0)
+
+    client = Flaky(FIXTURE.read_text())
+    result = reader.read_policy(_policy_pdf(), client=client, cache_dir=tmp_path, use_cache=False)
+    assert client.calls == 2
+    assert result.rules.hospital_name == "Example Community Hospital"
+
+
+def test_cache_lookup_miss_returns_none(tmp_path):
+    assert cache.lookup("0" * 64, tmp_path) is None
+
+
+@pytest.mark.live
+@pytest.mark.skipif(not os.getenv("GEMINI_API_KEY"), reason="GEMINI_API_KEY not set")
+def test_live_one_real_policy(tmp_path):
+    pdfs = sorted(Path("data/policies").glob("*.pdf"))
+    if not pdfs:
+        pytest.skip("no policies in data/policies")
+    result = reader.read_policy(pdfs[0].read_bytes(), cache_dir=tmp_path, use_cache=False)
+    assert result.rules.hospital_name
+    assert result.seconds < 120

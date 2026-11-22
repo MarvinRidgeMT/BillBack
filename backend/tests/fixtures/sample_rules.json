@@ -1,0 +1,58 @@
+{
+  "hospital_name": "Example Community Hospital",
+  "hospital_state": "OH",
+  "policy_effective_date": "2025-01-01",
+  "free_care": {
+    "fpl_max_percent": 200,
+    "evidence": {
+      "quote": "Patients with household income at or below 200% of the Federal Poverty Guidelines will receive a 100% discount.",
+      "page": 2,
+      "confidence": 0.95
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400,
+    "tiers": [
+      {"fpl_min_percent": 200.01, "fpl_max_percent": 300, "discount_type": "percent_off", "value": 75, "description": "75% off gross charges"},
+      {"fpl_min_percent": 300.01, "fpl_max_percent": 400, "discount_type": "amount_generally_billed", "value": null, "description": "Pays no more than AGB"}
+    ],
+    "evidence": {
+      "quote": "Patients with household income between 201% and 400% of the Federal Poverty Guidelines will receive a discount according to the sliding scale below.",
+      "page": 2,
+      "confidence": 0.9
+    }
+  },
+  "asset_test": {
+    "applies": false,
+    "details": null,
+    "evidence": {
+      "quote": "Assets are not considered when determining eligibility.",
+      "page": 3,
+      "confidence": 0.9
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "State of Ohio",
+    "evidence": {
+      "quote": "Applicants must be residents of the State of Ohio.",
+      "page": 3,
+      "confidence": 0.85
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "Patients may apply up to 240 days after the first post-discharge billing statement.",
+      "page": 4,
+      "confidence": 0.9
+    }
+  },
+  "income_basis": "fpl_percent",
+  "uses_income_table": false,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": null,
+  "how_to_apply": "Call 555-0100",
+  "warnings": []
+}
