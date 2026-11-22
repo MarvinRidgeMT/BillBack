@@ -23,8 +23,8 @@ Nonprofit hospitals must offer free/discounted care to low-income patients. AI r
 Don't touch B's rules engine or C's UI without asking. The **rules JSON schema** (below) is the contract between my policy reader and B's engine — change it only after telling B.
 
 ## Stack
-Python 3.11+, FastAPI, `google-genai` SDK (Gemini Flash, structured JSON output), pdfplumber, pytesseract + pdf2image (scanned PDFs), httpx, pydantic v2, pytest. Front end is Next.js (C). Deploy: Vercel.
-Model name comes from env `GEMINI_MODEL` — check the current Flash model id at https://ai.google.dev/gemini-api/docs/models before hardcoding anything. Temperature 0.
+Python 3.11+, FastAPI, `anthropic` SDK (default: **Claude Sonnet 5.5**, `claude-sonnet-5-5`, structured JSON output; `google-genai`/Gemini optional via `LLM_PROVIDER=gemini`), pdfplumber, pytesseract + pdf2image (scanned PDFs), httpx, pydantic v2, pytest. Front end is Next.js (C). Deploy: Vercel.
+Key in `.env` as `ANTHROPIC_API_KEY`; model from `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`), effort from `ANTHROPIC_EFFORT` (default `medium`). Sonnet 5.5 rejects `temperature`, so we don't send it. Gemini (optional): `GEMINI_API_KEY` + `GEMINI_MODEL`, temperature 0.
 
 ## Gates (times ET)
 - 11:00pm Gate 1 — one bill: photo → fields → hardcoded policy → result on screen
@@ -46,7 +46,7 @@ Record at least one honest failure for the README "Limits" section.
 - `superpowers:test-driven-development` — write the test first for schema validation, quote-verification, FPL math, caching
 - `superpowers:systematic-debugging` — when anything fails twice, stop guessing and use this
 - `superpowers:verification-before-completion` — run it for real before saying a gate passed
-- `prompt-design:prompt-design` — when writing/tuning the Gemini prompts
+- `prompt-design:prompt-design` — when writing/tuning the model prompts
 - `anthropic-skills:pdf-reading` — inspecting a policy PDF (scanned vs text, tables)
 - `codex-review:code` or `superpowers:requesting-code-review` — quick review before Gate 3 freeze
 - `zizi-skills:security-and-hardening` — before the repo goes public (keys, uploads, URL fetching)

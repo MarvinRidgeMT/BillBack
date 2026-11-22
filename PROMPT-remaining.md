@@ -26,7 +26,7 @@ Before stopping:
 - `python -m backend.policy_reader.cli --all data/policies/` → 20 JSONs in `cache/policies/`, committed.
 - Build `cache/policies/index.json`, which maps hospital name + aliases + city/state to the cache file. Bill → hospital matching uses it.
 - Hospital matching: fuzzy-match the bill's extracted hospital name + address against the index (`rapidfuzz` token_set_ratio, plus a state/city check). Return the top match and a score. Below the threshold → tell the UI "not in our list, paste the policy link" (that's live mode).
-- **Demo-safe mode:** env `DEMO_CACHE_ONLY=1` makes every endpoint serve only cached results and never call Gemini. We record the video with this on.
+- **Demo-safe mode:** env `DEMO_CACHE_ONLY=1` makes every endpoint serve only cached results and never call the model API (Claude or Gemini). We record the video with this on.
 
 **2b. Live mode**
 - `POST /api/policy/read` (file or `{url}`) already exists from Phase 1. Harden it:
@@ -41,7 +41,7 @@ Before stopping:
 Write `eval/` scripts that print markdown tables I can paste into the README:
 - `eval/bill_extraction.py`: run the bill reader on C's 10 sample bill photos against a hand-made `eval/bills_answer_key.csv` (fields: hospital_name, address, amount_due, service_date, account_number). Ask me or C for the true values if the key doesn't exist; don't invent them. Score per field with normalization (amounts to cents, dates to ISO, address fuzzy ≥ 90). Report X/50, broken down by photo condition (flat, angled, crumpled, dim).
 - **Low-confidence count:** how many extracted fields came back < 0.8 and were sent to the patient to confirm (bills + policies).
-- `eval/speed_cost.py`: average and max seconds per bill, end to end and per stage (bill read, match, policy read cached vs. live, rules, packet). Estimated $ per bill from the token counts in the API response × the current Gemini Flash price (look the price up; cite the page in a comment). Targets are < 60 s and < $0.05.
+- `eval/speed_cost.py`: average and max seconds per bill, end to end and per stage (bill read, match, policy read cached vs. live, rules, packet). Estimated $ per bill from the token counts in the API response × the real Anthropic price for Claude Sonnet 5.5: **$2 per 1M input tokens, $10 per 1M output tokens** (source: https://platform.claude.com/docs/en/about-claude/pricing, checked 2026-11-22; cite it in a code comment). Measured so far: policy read ≈ $0.043 (≈15.7k in / 1.2k out), bill read ≈ $0.006–0.011 (≈1.8–4k in / 0.2–0.3k out). Targets are < 60 s and < $0.05.
 - `eval/policy_reader.py`: if B's eval script doesn't already do this, score cached policy JSON against B's answer key (`20 policies × 6 fields`) → X/120 with a per-field breakdown and a list of every miss. If B already has one, just run it and collect the output.
 - Save all outputs to `eval/results/*.md` and commit.
 - Pick the single most instructive failure (e.g. an asset test buried in a footnote) and write it up in 3–4 sentences for the README Limits section.
@@ -74,7 +74,7 @@ Use `superpowers:writing-plans` for a quick outline, then `humanizer:humanizer` 
 - Map it to the judging rubric: fit to the prompt, problem + impact, technical execution, usability + accessibility, appropriate use of tech, video. Each section should give judges proof (numbers, the tests, the Spanish toggle, screen-reader support).
 
 **3c. "Built during the event" statement** (Devpost requires this; missing it risks disqualification):
-- List every pre-existing thing we used: libraries (generate from `requirements.txt` + `package.json`, direct deps only), APIs (Gemini), datasets (HHS 2026 poverty guidelines, the 20 public hospital FAPs), fonts/icons if any.
+- List every pre-existing thing we used: libraries (generate from `requirements.txt` + `package.json`, direct deps only), APIs (Anthropic Claude Sonnet 5.5; Gemini optional), datasets (HHS 2026 poverty guidelines, the 20 public hospital FAPs), fonts/icons if any.
 - State that all application code was written during the event, and point to the commit history: first commit timestamp → last commit. Get the real timestamps from `git log --reverse --format='%h %ad %an' | head -1` and `| tail -1`.
 - Put it in both the README and `DEVPOST.md`.
 
