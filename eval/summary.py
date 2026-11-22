@@ -54,22 +54,29 @@ def main() -> int:
     bill_low = sum(1 for b in bills for f in fields if b["fields"][f]["confidence"] < 0.8)
     bill_confirm = sum(len(b["fields_to_confirm"]) for b in bills)
     pr, hh, sc = load("policy_reader.json"), load("households.json"), load("speed_cost.json")
+    real_md = (RES / "b_real_policies.md").read_text()
+    REAL_READ = 17 if "17/20 real policies read" in real_md else int(real_md.split("/20 read")[0].split()[-1])
+    scorer_md = (RES / "b_scorer_on_reader_output.md").read_text()
+    SCORER_AVG = scorer_md.split("Average completeness/format score: ")[1].split(";")[0] if "Average completeness" in scorer_md else "not run"
     passed, failed, skipped, boundary = pytest_counts()
     ok = lambda cond: "✅ met" if cond else "❌ not met"  # noqa: E731
 
     rows = [
+        ("Rules engine vs. B's hand-calculated answers (10 test households, 2026 FPL)", f"{hh['households_status_ok_2026']}/{hh['households']} households", "10/10", ok(hh["households_status_ok_2026"] == hh["households"])),
         ("Bill extraction (10 fake bills × 5 fields)", f"{bill_ok}/{bill_n} ({100 * bill_ok / bill_n:.0f}%)", "≥ 90%", ok(bill_ok / bill_n >= 0.9)),
+        ("Rules engine, internal consistency (10 households × 20 synthetic policies)", f"{hh['status_ok_2026']}/{hh['n']} results", "all", ok(hh["status_ok_2026"] == hh["n"])),
+        ("…same, every detail incl. unresolved-rule notes", f"{hh['ok_2026']}/{hh['n']} ({hh['households_all_ok_2026']}/{hh['households']} households)", "—", "info (B to confirm 7 notes)"),
         ("Policy reader, hand spot-checks (2 real policies × 6 fields)", "11/12 (Boys Town 6/6, USA Health 5/6)", "≥ 90%", "✅ met (small sample, checked by hand)"),
         key_row(),
+        ("Real hospital policies read (B's list of 20)", f"{REAL_READ}/20 (incl. 250%, 300% and income-table policies)", "—", "info (3 sites blocked download or moved the policy)"),
+        ("B's scorer on those reads (completeness/format, not accuracy)", SCORER_AVG, "—", "info"),
         ("Policy quotes verified verbatim in the PDF", f"{pr['quotes_verified']}/{pr['stated']}", "all", ok(pr["quotes_verified"] == pr["stated"])),
         ("Policy re-run agreement (6 policies × 5 values)", f"{pr['agree']}/{pr['agree_total']}", "—", "info"),
-        ("End-to-end households, status (10 households × 20 policies, 2026 FPL)", f"{hh['households_status_ok_2026']}/{hh['households']} households ({hh['status_ok_2026']}/{hh['n']} results)", "10/10", ok(hh["households_status_ok_2026"] == hh["households"])),
-        ("…same, every detail incl. unresolved-rule notes", f"{hh['households_all_ok_2026']}/{hh['households']} households ({hh['ok_2026']}/{hh['n']})", "—", "info (B to confirm 7 notes)"),
         ("Rules-engine + backend tests", f"{passed} passed, {failed} failed, {skipped} skipped", "all pass", ok(failed == 0)),
         ("Speed, bill → result (cached policy)", f"avg {sc['e2e_cached_avg']:.1f} s, max {sc['e2e_cached_max']:.1f} s", "< 60 s", ok(sc["e2e_cached_max"] < 60)),
         ("Speed, first bill for a new hospital (live policy read)", f"avg {sc['e2e_live_avg']:.1f} s", "< 60 s", ok(sc["e2e_live_avg"] < 60)),
         ("Cost per bill (cached policy)", f"${sc['cost_cached']:.4f}", "< $0.05", ok(sc["cost_cached"] < 0.05)),
-        ("Cost, first bill for a new hospital", f"${sc['cost_live']:.4f}", "< $0.05", ok(sc["cost_live"] < 0.05)),
+        ("Cost, first bill for a new hospital", f"${sc['cost_live']:.4f}", "< $0.05", ok(sc["cost_live"] < 0.05) + " (kept; fix: skip non-policy pages)"),
         ("Bill fields sent to the patient to confirm", f"{bill_confirm}/{bill_n} (under 0.8 confidence: {bill_low})", "—", "info"),
         ("Policy fields sent to human review", f"{pr['review']}/{pr['fields']}", "—", "info"),
     ]
@@ -79,9 +86,10 @@ def main() -> int:
         "| Test | Measured | Target | Result |", "|---|---|---|---|",
         *[f"| {a} | {b} | {c} | {d} |" for a, b, c, d in rows], "",
         "**Boundary tests:** " + "; ".join(f"{k}: {v}" for k, v in boundary.items()) + ".", "",
-        f"In plain words: BillBack read all {bill_n} fields correctly on our 10 fake bills, including crumpled and dim photos, in about "
-        f"{sc['e2e_cached_avg']:.0f} seconds and about one cent per bill. The rules engine gave the expected answer for all "
-        f"{hh['households']} test households, using the real 2026 poverty guidelines. We could not measure the policy reader against a full "
+        f"In plain words: the rules engine (plain code, no AI) gave B's hand-calculated answer for all {hh['households']} test households, "
+        "using the real 2026 poverty guidelines. "
+        f"BillBack read all {bill_n} fields correctly on our 10 fake bills, including crumpled and dim photos, in about "
+        f"{sc['e2e_cached_avg']:.0f} seconds and about one cent per bill. We could not measure the policy reader against a full "
         "hand-labeled answer key; we checked two policies by hand (11 of 12 fields right), and every policy quote we show was found word for word in the hospital's PDF.",
     ]
     (RES / "SUMMARY.md").write_text("\n".join(lines) + "\n")

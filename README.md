@@ -44,6 +44,9 @@ flowchart LR
 4. **Two questions:** household size and yearly income.
 5. **Rules engine** (plain Python, tested) compares income with the policy's limits using the 2026 HHS poverty guidelines. AI is not involved in this step.
 6. **Result:** likely free, likely discounted, probably not eligible, or "we can't tell", with the exact policy quote, the page and a link to the hospital's PDF.
+7. **Application:** "Get my application" downloads a PDF built in memory (never saved): a request letter to the hospital's financial assistance office with the bill details, household size, income, % of the poverty line, the policy quote and page, and a request to pause collections, plus a checklist of documents to attach. Name, address and signature are left blank for the patient.
+
+The whole app, the result and the PDF are available in **English and Spanish**. Policy quotes stay in the policy's own language and are labeled as such.
 
 More detail: [docs/architecture.md](docs/architecture.md).
 
@@ -51,24 +54,27 @@ More detail: [docs/architecture.md](docs/architecture.md).
 
 | Test | Measured | Target | Result |
 |---|---|---|---|
+| Rules engine vs. B's hand-calculated answers (10 test households, 2026 FPL) | 10/10 households | 10/10 | ✅ met |
 | Bill extraction (10 fake bills × 5 fields) | 50/50 (100%) | ≥ 90% | ✅ met |
+| Rules engine, internal consistency (10 households × 20 synthetic policies) | 200/200 results | all | ✅ met |
+| …same, every detail incl. unresolved-rule notes | 193/200 (7/10 households) | — | info (B to confirm 7 notes) |
 | Policy reader, hand spot-checks (2 real policies × 6 fields) | 11/12 (Boys Town 6/6, USA Health 5/6) | ≥ 90% | ✅ met (small sample, checked by hand) |
-| Policy reader, 120-field answer key | not measured (no field-level key for real PDFs) | ≥ 90% | — not measured |
+| Policy reader, B's hand-checked key (6 real policies × 6 fields) | not measured yet (waiting for B to fill eval/answer_key_real_TODO.csv) | ≥ 90% | — pending |
+| Real hospital policies read (B's list of 20) | 17/20 (incl. 250%, 300% and income-table policies) | — | info (3 sites blocked download or moved the policy) |
+| B's scorer on those reads (completeness/format, not accuracy) | 86.2/100 | — | info |
 | Policy quotes verified verbatim in the PDF | 21/21 | all | ✅ met |
 | Policy re-run agreement (6 policies × 5 values) | 29/30 | — | info |
-| End-to-end households, status (10 households × 20 policies, 2026 FPL) | 10/10 households (200/200 results) | 10/10 | ✅ met |
-| …same, every detail incl. unresolved-rule notes | 7/10 households (193/200) | — | info (B to confirm 7 notes) |
-| Rules-engine + backend tests | 215 passed, 0 failed, 2 skipped | all pass | ✅ met |
+| Rules-engine + backend tests | 235 passed, 0 failed, 2 skipped | all pass | ✅ met |
 | Speed, bill → result (cached policy) | avg 2.6 s, max 3.3 s | < 60 s | ✅ met |
 | Speed, first bill for a new hospital (live policy read) | avg 10.9 s | < 60 s | ✅ met |
 | Cost per bill (cached policy) | $0.0096 | < $0.05 | ✅ met |
-| Cost, first bill for a new hospital | $0.0528 | < $0.05 | ❌ not met |
+| Cost, first bill for a new hospital | $0.0528 | < $0.05 | ❌ not met (kept; fix: skip non-policy pages) |
 | Bill fields sent to the patient to confirm | 2/50 (under 0.8 confidence: 2) | — | info |
 | Policy fields sent to human review | 4/30 | — | info |
 
 How these were measured: [eval/results/SUMMARY.md](eval/results/SUMMARY.md) (rebuild with `python -m eval.summary`). Per-bill misses, per-field tables and every changed answer are in `eval/results/`.
 
-**The policy reader was not measured against a full answer key.** Nobody hand-labeled real policy PDFs field by field, so the "90% of 120 fields" target was not tested. What we have: two policies checked by hand (11 of 12 fields right), every quote we show verified word for word in the PDF, and the same answers on 29 of 30 values when the reader ran twice.
+**The policy reader's 120-field answer key was not measured.** Nobody has hand-labeled real policy PDFs field by field yet. What we have: two policies checked by hand (11 of 12 fields right), every quote we show verified word for word in the PDF, the same answers on 29 of 30 values when the reader ran twice, and a 36-row key (6 real policies × 6 fields) that B is checking by hand now (`eval/answer_key_real_TODO.csv`; the score appears in SUMMARY.md only once every row is filled). The reader handled **17 of 20** real policies from B's list, including non-standard ones: free care up to 250% (BayCare, Texas Health, UCHealth) or 300% (Baptist Health South Florida, UW Medicine, Novant), and dollar income tables (Baptist Health South Florida, Texas Health, Fort HealthCare). B's scorer gives those reads 86.2/100 for completeness and format; that is not an accuracy number.
 
 ## Responsible use of AI
 
@@ -89,14 +95,16 @@ How these were measured: [eval/results/SUMMARY.md](eval/results/SUMMARY.md) (reb
 - **Form vs. policy.** The first read of Adena Health took an asset test from a checkbox on the application form, not from a policy rule. It was flagged at 0.6 confidence; after a prompt fix it is now marked "unclear".
 - **Run-to-run variation.** On a re-run, Fort HealthCare's 12-row discount table came back as one "sliding scale 201–400%" tier. The free-care limit was the same both times.
 - **Watermarks and scans.** pdfplumber mixed a "COPY" watermark into USA Health's text. OCR (tesseract) wasn't installed on our build machine, so scanned pages are sent to the model as a PDF and their quotes can't be verified.
-- **Source documents.** Two of the policy links we were given point to an application form (Duke) and a clinic sliding-fee schedule (Heartland), not a hospital policy. Both are flagged for review. 6 of 20 hospital links failed to download (403/404 or no PDF).
+- **Source documents.** Two of the policy links we were given point to an application form (Duke) and a clinic sliding-fee schedule (Heartland), not a hospital policy. Both are flagged for review. **3 of 20** real policies could not be read even after one retry: the hospital site blocked automated download or moved the policy (Adventist Health: HTTP 403; Mission Health and Ascension Michigan: no policy PDF).
 - **Not covered:** state charity-care laws, insurance statements (EOBs) and billing-error detection.
-- **Cost:** the first bill for a hospital we haven't read yet costs about $0.053, just over our $0.05 target, because the policy has to be read once.
+- **Cost:** the first bill for a hospital we haven't read yet costs about $0.053, just over our $0.05 target, because the policy has to be read once. We kept it; the fix is to skip pages with no financial-assistance words before sending the text.
+- **Reading a policy from a pasted link is beta** and off in the demo (`LIVE_MODE=0`). The demo uses only policies we already read and checked.
+- **Policy-reader accuracy** comes from hand spot-checks (2 policies), plus B's 36-row check once it is filled in. It is not a full 120-field measurement.
 - **Asset questions:** the app doesn't ask about savings yet, so hospitals with an asset test (USA Health, Boys Town) return "we can't tell" until it does. The API already accepts `assets_usd`.
 
 ## What's next
 
-Next, BillBack grows from 19 hospitals to every U.S. nonprofit hospital. Hospitals' own IRS tax filings (Form 990 [Schedule H](https://www.irs.gov/instructions/i990sh)) list the income limits each one uses, and [CMS's hospital list](https://data.cms.gov/provider-data/dataset/xubh-q36u) lets us match any bill to the right hospital. We'll check each saved policy against both, plus state charity-care laws (Washington, California, New York, Illinois, Maryland, Colorado, Oregon and New Jersey go further than federal rules). After that: help for insured patients (26% of adults *with* health insurance had medical debt, per the [Urban Institute](https://www.urban.org/research/publication/more-one-quarter-us-adults-had-medical-debt-2025)), comparing the bill to the insurance statement and requesting an itemized bill; reminders and appeal letters for the 240-day application window; and pilots with community health centers, 211 and legal aid. It stays free for patients and never sells data.
+Next, BillBack grows from 22 hospitals to every U.S. nonprofit hospital. Hospitals' own IRS tax filings (Form 990 [Schedule H](https://www.irs.gov/instructions/i990sh)) list the income limits each one uses, and [CMS's hospital list](https://data.cms.gov/provider-data/dataset/xubh-q36u) lets us match any bill to the right hospital. We'll check each saved policy against both, plus state charity-care laws (Washington, California, New York, Illinois, Maryland, Colorado, Oregon and New Jersey go further than federal rules). After that: help for insured patients (26% of adults *with* health insurance had medical debt, per the [Urban Institute](https://www.urban.org/research/publication/more-one-quarter-us-adults-had-medical-debt-2025)), comparing the bill to the insurance statement and requesting an itemized bill; reminders and appeal letters for the 240-day application window; and pilots with community health centers, 211 and legal aid. It stays free for patients and never sells data.
 
 The research behind this plan, with sources: [docs/research/expansion-research.md](docs/research/expansion-research.md).
 
@@ -152,6 +160,8 @@ All responses use `{"success": true, "data": ..., "error": null}`.
 | `POST /api/hospitals/match` | `{hospital_name, hospital_address}` → `{slug, score, matched}` (matched only if score ≥ 80) |
 | `POST /api/eligibility` | `{hospital_slug, household_size, annual_income, state, assets_usd?}` → status, tier, policy quote, caveats |
 | `POST /api/policy/read` | multipart `file` (policy PDF) or `{"url": ...}` (beta) → rules JSON with quotes |
+| `POST /api/packet` | `{bill, hospital_slug, household_size, annual_income, eligibility, lang: "en"\|"es"}` → application PDF (built in memory, never saved) |
+| `GET /api/config` | `{live_mode}`: whether "paste a policy link" is offered |
 | `GET /api/health` | liveness check |
 
 Example:
@@ -187,7 +197,7 @@ curl -s localhost:8000/api/eligibility -H 'content-type: application/json' \
   | USA Health | AL | [PDF](https://www.usahealthsystem.com/uploads/pdfs/financial-assistance/usa-financial-assistance-policy-202505.pdf) |
   | Baptist Memorial Health Care (system policy hosted on och.org) | MS | [PDF](https://www.och.org/wp-content/uploads/2025/10/S-FI-3025-15-Hospital-Financial-Assist-Policy-Final-05-25.pdf) |
   | Boys Town National Research Hospital | NE | [PDF](https://media.boystown.org/image/upload/v1755542976/Financial-Assistance-Policy.pdf) |
-  | Banner Health |  | [PDF](https://www.bannerhealth.com/-/media/Files/Project/BH/Patients-Visitors/Billing/Financial-Assistance/2025-documents/Banner-Health-Financial-Assistance-Policy-for-Hospital-Patients-770-v6092925100125.pdf) |
+  | Banner Health | AZ | [PDF](https://www.bannerhealth.com/-/media/Files/Project/BH/Patients-Visitors/Billing/Financial-Assistance/2025-documents/Banner-Health-Financial-Assistance-Policy-for-Hospital-Patients-770-v6092925100125.pdf) |
   | Baptist Health South Florida | FL | [PDF](https://baptisthealth.net/patient-resources/billing-and-financial-assistance/financial-assistance-program/-/media/Documents/Patient-Resources/Financial-Assistance/Feb-2025/BHSF35514--Financial-Assistance-Policy-ENG-9262024-FINAL-updated-income-levels-2025-v2.pdf) |
   | BayCare Health System | FL | [PDF](https://baycare.org/-/media/project/baycare/consumer-portal/billing-and-insurance/financial-assistance/financial-assistance-policies/26-12663-financial-full-policy-english.pdf) |
   | Children's Hospital Colorado | CO | [PDF](https://www.childrenscolorado.org/globalassets/your-visit/financial-assistance-payment-plan-english.pdf) |
@@ -200,12 +210,15 @@ curl -s localhost:8000/api/eligibility -H 'content-type: application/json' \
   | UCHealth | CO | [PDF](https://uchealth-wp-uploads.s3.amazonaws.com/wp-content/uploads/2025/04/07133352/Financial-Assistance-Policy_03-27-2025-English.pdf) |
   | UW Medicine (Harborview Medical Center, UW Medical Center, Airlift Northwest, UW Physicians, UW Medicine Primary Care) | WA | [PDF](https://doh.wa.gov/sites/default/files/2024-02/CCPUW.pdf) |
   | Washington Hospital Healthcare System | CA | [PDF](https://www.washingtonhealth.com/documents/financial-assistance-charity-care-policy-2026.pdf) |
+  | Los Angeles County Department of Health Services (LA General Medical Center) | CA | [PDF](https://file.lacounty.gov/SDSInter/dhs/1131808_PolicyDocument.pdf) |
+  | Mercy (Mercy Health, St. Louis) | MO | [PDF](https://www.mercy.net/content/dam/mercy/en/pdf/hospital-and-health-services-financial-assistance-program.pdf) |
+  | Ochsner Health | LA | [PDF](https://ochsner-craft.s3.amazonaws.com/www/static/English_OHS.REV.042-1-1-2025-09232025.pdf) |
 
 - **Synthetic data:** 20 synthetic policies, 10 households and the engine answer key (`data/policies/HOSP-*.json`, `data/households/`, `data/answer_key.json`), and 10 sample bills (`sample_bills/`). **All bills and households are fictional.**
 
 ## Built during EvoHacks II
 
-All application code in this repository was written during the event. The commit history is the proof: the first commit is `ffe1677 2026-11-22 00:11:53 (ET, UTC−5)`, and the last commit before this README is `abfdb1d 2026-11-22 11:14:39 (ET, UTC−5)`.
+All application code in this repository was written during the event. The commit history is the proof: the first commit is `ffe1677 2026-11-22 00:11:53 (ET, UTC−5)`, and the demo build is tagged `demo-freeze`.
 
 Things we used that existed before the event:
 - **Python libraries** (`requirements.txt`): FastAPI, Uvicorn, python-multipart, Anthropic SDK, Google GenAI SDK (optional provider), pdfplumber, pytesseract, pdf2image, httpx, pydantic, RapidFuzz, python-dotenv, pytest, ReportLab, Pillow, pillow-heif.
