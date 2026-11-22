@@ -5,7 +5,8 @@
       "hospital_name": "Adena Health System",
       "aliases": [
         "Adena Regional Medical Center",
-        "Adena Health"
+        "Adena Health",
+        "Sample General Hospital (Fictional)"
       ],
       "city": "Chillicothe",
       "state": "OH",
@@ -187,7 +188,8 @@
       "hospital_name": "Marshfield Clinic Health System",
       "aliases": [
         "Marshfield Clinic",
-        "Marshfield Medical Center"
+        "Marshfield Medical Center",
+        "Lakeside Pretend Medical Center"
       ],
       "city": "Marshfield",
       "state": "WI",

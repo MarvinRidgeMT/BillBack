@@ -43,6 +43,13 @@ ALIASES: dict[str, dict[str, Any]] = {
 }
 
 
+# Made-up hospitals on fictional demo bills -> a real cached policy in the same state, so the demo can finish.
+DEMO_ALIASES: dict[str, str] = {
+    "Lakeside Pretend Medical Center": "marshfield-clinic-health-system",  # frontend/public/samples/sample-bill.png (WI)
+    "Sample General Hospital (Fictional)": "adena-health-system",  # backend/tests/fixtures/bills/bill_a_text.pdf (OH)
+}
+
+
 def load_policy(slug: str, cache_dir: Path = DEFAULT_CACHE_DIR) -> tuple[PolicyRules, Path]:
     """Load cache/policies/<slug>__<sha8>.json. The slug is validated so it can't escape the folder."""
     if not isinstance(slug, str) or not _SLUG_RE.match(slug):
@@ -79,7 +86,7 @@ def build_index(cache_dir: Path = DEFAULT_CACHE_DIR) -> list[dict[str, Any]]:
             {
                 "slug": slug,
                 "hospital_name": rules.hospital_name,
-                "aliases": extra.get("aliases", []),
+                "aliases": extra.get("aliases", []) + [name for name, target in DEMO_ALIASES.items() if target == slug],
                 "city": extra.get("city"),
                 "state": rules.hospital_state,
                 "states": extra.get("states", [rules.hospital_state] if rules.hospital_state else []),

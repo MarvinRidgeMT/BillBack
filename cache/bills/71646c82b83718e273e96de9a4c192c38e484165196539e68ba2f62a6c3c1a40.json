@@ -1,0 +1,37 @@
+{
+  "fields": {
+    "hospital_name": {
+      "value": "LAKESIDE PRETEND MEDICAL CENTER",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": null
+    },
+    "hospital_address": {
+      "value": "42 Nowhere Rd, Madison, WI 53703",
+      "confidence": 0.95,
+      "note": "",
+      "normalized": null
+    },
+    "amount_due": {
+      "value": "$389.10",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": 38910
+    },
+    "service_date": {
+      "value": "2026-02-02",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": "2026-02-02"
+    },
+    "account_number": {
+      "value": "FAKE998877",
+      "confidence": 0.96,
+      "note": "",
+      "normalized": null
+    }
+  },
+  "fields_to_confirm": [],
+  "seconds": 3.07,
+  "model": "claude-sonnet-5-5"
+}
