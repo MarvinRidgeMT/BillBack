@@ -1,0 +1,20 @@
+{
+  "year": 2026,
+  "source_url": "https://www.federalregister.gov/documents/2026/01/15/2026-00755/annual-update-of-the-hhs-poverty-guidelines",
+  "source_note": "HHS Annual Update of the HHS Poverty Guidelines, Federal Register Vol. 91 No. 10, Jan 15, 2026 (doc 2026-00755). Cross-checked against ASPE detailed-guidelines-2026.pdf.",
+  "retrieved_at": "2026-11-22",
+  "tables": {
+    "contiguous": {
+      "base": {"1": 15960, "2": 21640, "3": 27320, "4": 33000, "5": 38680, "6": 44360, "7": 50040, "8": 55720},
+      "additional_person": 5680
+    },
+    "AK": {
+      "base": {"1": 19950, "2": 27050, "3": 34150, "4": 41250, "5": 48350, "6": 55450, "7": 62550, "8": 69650},
+      "additional_person": 7100
+    },
+    "HI": {
+      "base": {"1": 18360, "2": 24890, "3": 31420, "4": 37950, "5": 44480, "6": 51010, "7": 57540, "8": 64070},
+      "additional_person": 6530
+    }
+  }
+}
