@@ -3,15 +3,15 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, Literal
 
-from fastapi import FastAPI, HTTPException, Request, UploadFile
+from fastapi import FastAPI, HTTPException, Request, Response, UploadFile
 from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
 import hashlib
 
-from backend import demo_mode, fpl, policies
+from backend import demo_mode, fpl, packet, policies
 from backend.policy_reader import cache as policy_cache
 from backend.bill_reader import reader as bill_reader
 from backend.eligibility import eligibility_result_to_api_response, load_fpl_table_from_json, run_eligibility
@@ -148,6 +148,61 @@ def eligibility(req: EligibilityRequest) -> dict[str, Any]:
         residency_state=req.residency_state,
     )
     return _envelope(eligibility_result_to_api_response(result, rules, pct, policies.source_url_for(rules)))
+
+
+class PacketBill(BaseModel):
+    hospital_name: str = Field("", max_length=300)
+    hospital_address: str = Field("", max_length=500)
+    amount_due: str = Field("", max_length=40)
+    service_date: str = Field("", max_length=40)
+    account_number: str = Field("", max_length=60)
+
+
+class PacketEligibility(BaseModel):
+    status: str = Field(..., max_length=40)
+    percent_of_fpl: float = Field(..., ge=0, le=100_000)
+    quote: str = Field("", max_length=2000)
+    page: int | None = Field(None, ge=0, le=10_000)
+    fpl_year: int | None = Field(None, ge=2000, le=2100)
+
+
+class PacketRequest(BaseModel):
+    bill: PacketBill
+    hospital_slug: str = Field(..., max_length=60)
+    household_size: int = Field(..., ge=1, le=30)
+    annual_income: float = Field(..., ge=0, le=10_000_000)
+    eligibility: PacketEligibility
+    lang: Literal["en", "es"] = "en"
+
+
+@app.post("/api/packet")
+def packet_pdf(req: PacketRequest) -> Response:
+    """Request letter + checklist as a PDF, built in memory and streamed back. Never saved."""
+    try:
+        rules, _ = policies.load_policy(req.hospital_slug)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    pdf = packet.build_packet(
+        bill=req.bill.model_dump(),
+        hospital_name=req.bill.hospital_name or rules.hospital_name,
+        household_size=req.household_size,
+        annual_income=req.annual_income,
+        percent_of_fpl=req.eligibility.percent_of_fpl,
+        fpl_year=req.eligibility.fpl_year or 2026,
+        quote=req.eligibility.quote,
+        page=req.eligibility.page or None,
+        source_url=policies.source_url_for(rules),
+        how_to_apply=rules.how_to_apply,
+        lang=req.lang,
+    )
+    filename = f"BillBack-application-{req.hospital_slug}.pdf"
+    return Response(
+        content=pdf,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"', "Cache-Control": "no-store"},
+    )
 
 
 @app.get("/api/hospitals")

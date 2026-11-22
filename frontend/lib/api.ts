@@ -3,6 +3,7 @@ import {
   FIELD_NAMES,
   type BillField,
   type BillReadData,
+  type ConfirmedBill,
   type EligibilityData,
   type EligibilityRequest,
   type EligibilityStatus,
@@ -149,3 +150,39 @@ const STATUSES: readonly EligibilityStatus[] = [
 ];
 
 export const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
+
+export interface PacketRequest {
+  bill: ConfirmedBill["fields"];
+  hospital_slug: string;
+  household_size: number;
+  annual_income: number;
+  eligibility: { status: string; percent_of_fpl: number; quote: string; page: number | null; fpl_year: number | null };
+  lang: "en" | "es";
+}
+
+/** POST /api/packet. The PDF is built in memory on the backend and handed straight to the browser. */
+export async function downloadPacket(body: PacketRequest): Promise<void> {
+  let res: Response;
+  try {
+    res = await fetch("/api/packet", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(ELIGIBILITY_TIMEOUT_MS),
+    });
+  } catch {
+    throw new ApiError("unavailable", null);
+  }
+  if (!res.ok || !res.headers.get("content-type")?.includes("application/pdf")) {
+    throw new ApiError(res.status === 503 ? "unavailable" : "failed", res.status);
+  }
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `BillBack-application-${body.hospital_slug}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}

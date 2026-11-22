@@ -91,10 +91,11 @@
   "result.next.call": "Call the billing office and ask for a financial assistance application.",
   "result.fine": "Likely eligible, not a guarantee. The hospital makes the final decision.",
   "result.get_app": "Get my application",
-  "result.app_soon": "Your filled-in application is coming in the next version.",
   "result.start_over": "Start over",
   "result.sample_banner": "Sample result: the eligibility service isn't connected yet.",
   "result.sample_note": "This is an example of a result. It isn't based on your answers.",
   "result.unavailable_title": "Not right now",
-  "result.unavailable": "We can't check eligibility right now. Try again in a minute."
+  "result.unavailable": "We can't check eligibility right now. Try again in a minute.",
+  "result.app_working": "Preparando su solicitud…",
+  "result.app_failed": "No pudimos preparar la solicitud ahora. Inténtelo de nuevo en un minuto."
 }

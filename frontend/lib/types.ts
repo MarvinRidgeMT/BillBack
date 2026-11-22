@@ -65,6 +65,8 @@ export interface EligibilityData {
   hospital_name: string;
   source_url: string | null;
   engine: string;
+  /** Year of the HHS poverty guidelines the engine used. */
+  fpl_year?: number | null;
 }
 
 export interface EligibilityRequest {

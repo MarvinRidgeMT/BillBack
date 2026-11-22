@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Stamp } from "@/components/hero/Stamp";
 import { Button } from "@/components/ui/button";
-import { ApiError, DEMO_MODE } from "@/lib/api";
-import { useT, type MessageKey, type Translate } from "@/lib/i18n";
+import { ApiError, DEMO_MODE, downloadPacket } from "@/lib/api";
+import { useI18n, useT, type MessageKey, type Translate } from "@/lib/i18n";
 import { EASE_OUT, SNAPPY_SETTLE_MS } from "@/lib/motion";
 import { MOCK_ELIGIBILITY_DEFAULT } from "@/lib/mock";
 import {
@@ -39,11 +39,12 @@ interface ResultStepProps {
   checking: Promise<EligibilityData>;
   bill: ConfirmedBill;
   household: number;
+  income: number;
   onRetry: () => void;
   onStartOver: () => void;
 }
 
-export function ResultStep({ entrance, reduce, checking, bill, household, onRetry, onStartOver }: ResultStepProps) {
+export function ResultStep({ entrance, reduce, checking, bill, household, income, onRetry, onStartOver }: ResultStepProps) {
   const t = useT();
   const [state, setState] = useState<State>({ phase: "loading" });
 
@@ -100,6 +101,7 @@ export function ResultStep({ entrance, reduce, checking, bill, household, onRetr
           sample={state.sample}
           bill={bill}
           household={household}
+          income={income}
           reduce={reduce}
           onStartOver={onStartOver}
         />
@@ -140,15 +142,18 @@ interface VerdictProps {
   sample: boolean;
   bill: ConfirmedBill;
   household: number;
+  income: number;
   reduce: boolean;
   onStartOver: () => void;
 }
 
-function Verdict({ data, sample, bill, household, reduce, onStartOver }: VerdictProps) {
-  const t = useT();
+type PacketState = "idle" | "working" | "failed";
+
+function Verdict({ data, sample, bill, household, income, reduce, onStartOver }: VerdictProps) {
+  const { t, lang } = useI18n();
   const stamp = stampText(data, t);
   const [stamped, setStamped] = useState(reduce);
-  const [showSoon, setShowSoon] = useState(false);
+  const [packet, setPacket] = useState<PacketState>("idle");
 
   useEffect(() => {
     if (reduce || !stamp) return;
@@ -174,6 +179,29 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
   const extraDisclaimer = data.disclaimer && !plain(fine).includes(plain(data.disclaimer)) ? data.disclaimer : "";
   const amount = sample ? "" : bill.fields.amount_due;
   const canApply = data.status !== "probably_not_eligible";
+
+  async function getPacket() {
+    setPacket("working");
+    try {
+      await downloadPacket({
+        bill: bill.fields,
+        hospital_slug: bill.hospital.slug,
+        household_size: household,
+        annual_income: income,
+        eligibility: {
+          status: data.status,
+          percent_of_fpl: data.percent_of_fpl,
+          quote,
+          page: evidence.page,
+          fpl_year: data.fpl_year ?? null,
+        },
+        lang,
+      });
+      setPacket("idle");
+    } catch {
+      setPacket("failed");
+    }
+  }
 
   return (
     <>
@@ -266,16 +294,16 @@ function Verdict({ data, sample, bill, household, reduce, onStartOver }: Verdict
       )}
 
       <div className="btn-row">
-        {canApply && (
-          <Button variant="coral" onClick={() => setShowSoon(true)} aria-expanded={showSoon}>
-            {t("result.get_app")}
+        {canApply && !sample && (
+          <Button variant="coral" onClick={getPacket} disabled={packet === "working"}>
+            {packet === "working" ? t("result.app_working") : t("result.get_app")}
           </Button>
         )}
         <Button variant="ghost" onClick={onStartOver}>
           {t("result.start_over")}
         </Button>
       </div>
-      <div aria-live="polite">{showSoon && <p className="info-text">{t("result.app_soon")}</p>}</div>
+      <div aria-live="polite">{packet === "failed" && <p className="error-text">{t("result.app_failed")}</p>}</div>
 
       <p className="fine">
         {fine}
