@@ -237,7 +237,7 @@ curl -s localhost:8000/api/eligibility -H 'content-type: application/json' \
 
 ## Built during EvoHacks II
 
-All application code in this repository was written during the event. The commit history is the proof: the first commit is `ffe1677 2026-11-22 00:11:53 (ET, UTC−5)`, and the demo build is tagged `demo-freeze`.
+All application code in this repository was written during the event. The commit history is the proof: the first commit is `ffe1677 2026-11-22 00:11:53 (ET, UTC−5)`, the demo build is tagged `demo-freeze`, and the submitted version is tagged `v1.0-submission`.
 
 Things we used that existed before the event:
 - **Python libraries** (`requirements.txt`): FastAPI, Uvicorn, python-multipart, Anthropic SDK, Google GenAI SDK (optional provider), pdfplumber, pytesseract, pdf2image, httpx, pydantic, RapidFuzz, python-dotenv, pytest, ReportLab, Pillow, pillow-heif, pypdf.

@@ -10,7 +10,7 @@ Nonprofit hospitals must offer free/discounted care to low-income patients. AI r
 ## Non-negotiable rules
 1. **AI never decides eligibility.** AI only extracts (bill fields, policy rules). B's rules engine (plain Python, pytest) makes the call.
 2. **Every extracted value carries a confidence score and a verbatim source quote + page number.** Anything < 0.8 confidence goes to the patient to confirm — never used silently.
-3. **No real patient data, ever.** Bills are fake. Nothing is stored; requests are processed in memory.
+3. **No real patient data, ever.** Bills are fake. We don't save bills or answers; requests are processed in memory, and the bill image is sent to our AI provider to be read.
 4. **No API keys in git.** Keys live in `.env` (gitignored). Ship `.env.example`.
 5. Results say "Likely eligible — not a guarantee." Never phrase anything as legal/financial advice.
 6. Everything must be built during the event; commit early and often (commit history is our proof).

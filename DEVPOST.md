@@ -58,13 +58,13 @@ None.
 ---
 
 ## Built during the event (required statement)
-All application code in this repository was written during EvoHacks II. The commit history is the proof: the first commit is `ffe1677` (2026-11-22 00:11:53 ET) and the demo build is tagged `demo-freeze`.
+All application code in this repository was written during EvoHacks II. The commit history is the proof: the first commit is `ffe1677` (2026-11-22 00:11:53 ET), the demo build is tagged `demo-freeze`, and the submitted version is tagged `v1.0-submission`.
 
 Pre-existing things we used:
-- Python libraries from `requirements.txt`: FastAPI, Uvicorn, python-multipart, Anthropic SDK, Google GenAI SDK (optional provider), pdfplumber, pytesseract, pdf2image, httpx, pydantic, RapidFuzz, python-dotenv, pytest, ReportLab, Pillow, pillow-heif.
+- Python libraries from `requirements.txt`: FastAPI, Uvicorn, python-multipart, Anthropic SDK, Google GenAI SDK (optional provider), pdfplumber, pytesseract, pdf2image, httpx, pydantic, RapidFuzz, python-dotenv, pytest, ReportLab, Pillow, pillow-heif, pypdf.
 - Front-end libraries from `frontend/package.json`: Next.js, React, Tailwind CSS, Motion, Lucide icons, Base UI, shadcn, class-variance-authority, tw-animate-css; fonts Anton and DM Sans (Google Fonts).
-- API: Anthropic Claude API (Claude Sonnet 5.5).
-- Data: 2026 HHS poverty guidelines (Federal Register 2026-00755) and public hospital financial assistance policies.
+- APIs: Anthropic Claude API (Claude Sonnet 5.5); the browser's Web Speech API for "Read it to me" (no voice files bundled).
+- Data: 2026 HHS poverty guidelines (Federal Register 2026-00755); 22 public hospital financial assistance policies (links in the README); Marshfield Clinic's public application form; state charity-care laws from official sources (WA RCW 70.170.060, CA Hospital Fair Pricing Act via HCAI, MD Health-General §19-214.1, OR ORS 442.614, NJ N.J.A.C. 10:52).
 - Tools: we used Claude Code, an AI coding assistant, while building. Our prompts are in `docs/process/`.
 
 ## Team

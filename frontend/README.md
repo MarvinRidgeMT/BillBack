@@ -22,7 +22,7 @@ The browser only talks to Next.js. `next.config.ts` proxies `/api/*` to `BACKEND
 
 ## Notes
 
-- Nothing is stored. The bill and the answers live in React state and are gone on refresh.
+- We don't save your bill: the bill and the answers live in React state and are gone on refresh. The bill image is sent to our AI provider (via our backend) to be read.
 - No secrets here. Never put an API key in this folder.
 - `NEXT_PUBLIC_DEMO_MODE=1` lets the app offer a clearly labeled sample when the backend
   can't answer. A sample is never shown as a real result.
