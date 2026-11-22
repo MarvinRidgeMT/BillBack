@@ -155,3 +155,14 @@ right before the freeze; trimming non-FAP pages is the planned fix.
 - The packet PDF isn't built ("Get my application" shows "coming in the next version"). Fine for the demo.
 - **Video bill:** use `bill_10_crumpled_dim.jpg` (Fort HealthCare, WI). It's crumpled + dim, and its account number "FH 7735-0092" goes to the **confirm step** (it has a space, which our check rejects). With household 3 / $40,000 / WI it gives **Likely free care, 146% of FPL**, with the page 1 quote. `bill_09_text.pdf` (Marshfield) also gives a clean "likely free" result; I ran that one through the real UI.
 - Demo with no API at all: `BILL_CACHE_ONLY=1 DEMO_CACHE_ONLY=1` on the backend. The 10 sample bills are served from `cache/bills/`.
+
+## Wow features (session 2, branch `features-wow`, ~1:10pm)
+- Shipped: policy receipt (page image + boxed quote), what-if income slider, Read it to me (device voice), $0 finale,
+  deadline + .ics, optional SNAP/Medicaid/WIC question, state-law box (WA, CA, MD, OR, NJ only).
+- Cut (in README/DEVPOST "What's next"): appeal letter, charity-care tile map, filling Fort HealthCare's own form,
+  benefit letter on the packet checklist (needs `packet.py`), Kokoro voice.
+- **License decision for Anish:** Kokoro's web bundle includes espeak-ng (GPL-3.0); the repo is MIT. Not vendored.
+- State laws: NY (403), IL (TLS error) and CO (bill summary has no 250% figure) couldn't be confirmed on the official pages, so they're left out.
+- 6 of 50 cached policy quotes can't be located on their page (tables, odd text layers): the receipt says
+  "We couldn't box this line" and draws no box. LA County, Mercy and Ochsner have no PDF on disk, so the button is hidden.
+- Deadline date math tests: `node --test frontend/lib/deadline.test.mjs`.
