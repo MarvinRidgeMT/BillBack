@@ -81,3 +81,12 @@
   brew install tesseract poppler
   ```
   Until then, scanned PDFs go to the model as a PDF (works, but their quotes can't be verified).
+
+## From C (front end) — for A, 2:30am
+- **No CORS change needed.** The browser only talks to Next.js. `frontend/next.config.ts` rewrites `/api/:path*` → `${BACKEND_URL}/api/:path*` (default `http://localhost:8000`). For deploy, set `BACKEND_URL` on the front end host.
+- **Ask: `GET /api/hospitals`** → `{success, data: [{slug, name, state}], error}` for every cached policy. Right now the 6 hospitals are hardcoded in `frontend/lib/hospitals.ts`, so the list goes stale when B adds policies.
+- Things I saw in real `/api/eligibility` responses (the UI shows them as sent; I did not paper over them):
+  1. **Discount quote doesn't match the tier.** USA Health at 214% FPL returns `tier.value = 85` (so the stamp says "85% OFF") but `evidence.quote` is "300-400% 75% FAP adjustment applied". The patient sees two different numbers. Could the evidence be the matched tier's line?
+  2. **Caveats leak field names**, e.g. "Some policy details need confirming: application_window". Plain words would read better ("how long you have to apply").
+  3. Baptist Memorial: the cached policy says `hospital_state: "TN"`, the design doc and `sources.csv` say MS. I send MS. Same FPL row either way, but which is right?
+- The UI falls back to a clearly labeled **sample** (never shown as real) when `/api/eligibility` returns 503 or the backend is down, only if `NEXT_PUBLIC_DEMO_MODE=1`. It goes away by itself once `data/fpl_2026.json` exists.
