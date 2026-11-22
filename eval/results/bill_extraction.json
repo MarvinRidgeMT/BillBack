@@ -1,0 +1,486 @@
+[
+  {
+    "file": "bill_01_clean.jpg",
+    "condition": "clean",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "USA HEALTH",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$4,812.00",
+        "confidence": 0.99,
+        "note": "",
+        "normalized": 481200
+      },
+      "service_date": {
+        "value": "08/14/2026",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": "2026-08-14"
+      },
+      "account_number": {
+        "value": "UH-4471902",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [],
+    "seconds": 3.2823139580432326,
+    "cost": 0.010251999999999999,
+    "tokens_in": 4226,
+    "tokens_out": 180
+  },
+  {
+    "file": "bill_02_text.pdf",
+    "condition": "pdf",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "BOYS TOWN NATIONAL RESEARCH HOSPITAL",
+        "confidence": 0.95,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "5500 Larkspur Ave, Omaha, NE 68131",
+        "confidence": 0.9,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$1,955.25",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": 195525
+      },
+      "service_date": {
+        "value": "07/02/2026",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": "2026-07-02"
+      },
+      "account_number": {
+        "value": "BT-00938815",
+        "confidence": 0.95,
+        "note": "",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [],
+    "seconds": 2.401709415949881,
+    "cost": 0.005764,
+    "tokens_in": 1902,
+    "tokens_out": 196
+  },
+  {
+    "file": "bill_03_angled.jpg",
+    "condition": "angled",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "FORT HEALTHCARE",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "811 Cedar Bluff Rd, Fort Atkinson, WI 53538",
+        "confidence": 0.95,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$4,931.80",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": 493180
+      },
+      "service_date": {
+        "value": "09/21/2026",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": "2026-09-21"
+      },
+      "account_number": {
+        "value": "FH 7720-1145",
+        "confidence": 0.5,
+        "note": "account number should be 4-30 letters, digits or dashes",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [
+      "account_number"
+    ],
+    "seconds": 2.6878404170274734,
+    "cost": 0.01068,
+    "tokens_in": 4400,
+    "tokens_out": 188
+  },
+  {
+    "file": "bill_04_angled_blur.jpg",
+    "condition": "angled + slight blur",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "MARSHFIELD CLINIC HEALTH SYSTEM",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "302 Birchwood Lane, Marshfield, WI 54449",
+        "confidence": 0.95,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$2,530.00",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": 253000
+      },
+      "service_date": {
+        "value": "06/30/2026",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": "2026-06-30"
+      },
+      "account_number": {
+        "value": "MC-55203917",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [],
+    "seconds": 2.5329288330394775,
+    "cost": 0.010846,
+    "tokens_in": 4458,
+    "tokens_out": 193
+  },
+  {
+    "file": "bill_05_crumpled.jpg",
+    "condition": "crumpled",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "ADENA HEALTH SYSTEM",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "77 Ridgeline Pkwy, Chillicothe, OH 45601",
+        "confidence": 0.95,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$6,700.00",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": 670000
+      },
+      "service_date": {
+        "value": "10/03/2026",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": "2026-10-03"
+      },
+      "account_number": {
+        "value": "ADH-3309184",
+        "confidence": 0.96,
+        "note": "",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [],
+    "seconds": 2.198898500064388,
+    "cost": 0.010457999999999999,
+    "tokens_in": 4284,
+    "tokens_out": 189
+  },
+  {
+    "file": "bill_06_crumpled.jpg",
+    "condition": "crumpled",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "BAPTIST MEMORIAL HEALTH CARE",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "4100 Pecan Hollow Dr, Columbus, MS 39705",
+        "confidence": 0.95,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$2,412.40",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": 241240
+      },
+      "service_date": {
+        "value": "05/11/2026",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": "2026-05-11"
+      },
+      "account_number": {
+        "value": "BMH-20871466",
+        "confidence": 0.96,
+        "note": "",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [],
+    "seconds": 2.641667375108227,
+    "cost": 0.010624000000000001,
+    "tokens_in": 4342,
+    "tokens_out": 194
+  },
+  {
+    "file": "bill_07_dim.jpg",
+    "condition": "dim light",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "USA HEALTH",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+        "confidence": 0.93,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$8,001.00",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": 800100
+      },
+      "service_date": {
+        "value": "04/19/2026",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": "2026-04-19"
+      },
+      "account_number": {
+        "value": "UH-4489315",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [],
+    "seconds": 3.0830450002104044,
+    "cost": 0.010367999999999999,
+    "tokens_in": 4284,
+    "tokens_out": 180
+  },
+  {
+    "file": "bill_08_dim_angled.jpg",
+    "condition": "dim light + angled",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "BOYS TOWN NATIONAL RESEARCH HOSPITAL",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "5500 Larkspur Ave, Omaha, NE 68131",
+        "confidence": 0.93,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$2,250.00",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": 225000
+      },
+      "service_date": {
+        "value": "09/09/2026",
+        "confidence": 0.95,
+        "note": "",
+        "normalized": "2026-09-09"
+      },
+      "account_number": {
+        "value": "BT-01147722",
+        "confidence": 0.96,
+        "note": "",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [],
+    "seconds": 2.5339347498957068,
+    "cost": 0.010876,
+    "tokens_in": 4458,
+    "tokens_out": 196
+  },
+  {
+    "file": "bill_09_text.pdf",
+    "condition": "pdf",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "MARSHFIELD CLINIC HEALTH SYSTEM",
+        "confidence": 0.95,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "302 Birchwood Lane, Marshfield, WI 54449",
+        "confidence": 0.9,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$340.75",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": 34075
+      },
+      "service_date": {
+        "value": "03/03/2026",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": "2026-03-03"
+      },
+      "account_number": {
+        "value": "MC-55418820",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [],
+    "seconds": 2.2325714170001447,
+    "cost": 0.00569,
+    "tokens_in": 1890,
+    "tokens_out": 191
+  },
+  {
+    "file": "bill_10_crumpled_dim.jpg",
+    "condition": "crumpled + dim light",
+    "checks": {
+      "hospital_name": true,
+      "hospital_address": true,
+      "amount_due": true,
+      "service_date": true,
+      "account_number": true
+    },
+    "fields": {
+      "hospital_name": {
+        "value": "FORT HEALTHCARE",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": null
+      },
+      "hospital_address": {
+        "value": "811 Cedar Bluff Rd, Fort Atkinson, WI 53538",
+        "confidence": 0.95,
+        "note": "",
+        "normalized": null
+      },
+      "amount_due": {
+        "value": "$5,800.00",
+        "confidence": 0.98,
+        "note": "",
+        "normalized": 580000
+      },
+      "service_date": {
+        "value": "11/02/2026",
+        "confidence": 0.97,
+        "note": "",
+        "normalized": "2026-11-02"
+      },
+      "account_number": {
+        "value": "FH 7735-0092",
+        "confidence": 0.5,
+        "note": "account number should be 4-30 letters, digits or dashes",
+        "normalized": null
+      }
+    },
+    "fields_to_confirm": [
+      "account_number"
+    ],
+    "seconds": 1.9207132500596344,
+    "cost": 0.010447999999999999,
+    "tokens_in": 4284,
+    "tokens_out": 188
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "fields": {
+    "hospital_name": {
+      "value": "BAPTIST MEMORIAL HEALTH CARE",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": null
+    },
+    "hospital_address": {
+      "value": "4100 Pecan Hollow Dr, Columbus, MS 39705",
+      "confidence": 0.95,
+      "note": "",
+      "normalized": null
+    },
+    "amount_due": {
+      "value": "$2,412.40",
+      "confidence": 0.98,
+      "note": "",
+      "normalized": 241240
+    },
+    "service_date": {
+      "value": "05/11/2026",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": "2026-05-11"
+    },
+    "account_number": {
+      "value": "BMH-20871466",
+      "confidence": 0.96,
+      "note": "",
+      "normalized": null
+    }
+  },
+  "fields_to_confirm": [],
+  "seconds": 2.64,
+  "model": "claude-sonnet-5-5"
+}

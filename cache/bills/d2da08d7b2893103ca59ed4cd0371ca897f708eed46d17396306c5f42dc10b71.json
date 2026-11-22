@@ -1,0 +1,37 @@
+{
+  "fields": {
+    "hospital_name": {
+      "value": "USA HEALTH",
+      "confidence": 0.98,
+      "note": "",
+      "normalized": null
+    },
+    "hospital_address": {
+      "value": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": null
+    },
+    "amount_due": {
+      "value": "$4,812.00",
+      "confidence": 0.99,
+      "note": "",
+      "normalized": 481200
+    },
+    "service_date": {
+      "value": "08/14/2026",
+      "confidence": 0.98,
+      "note": "",
+      "normalized": "2026-08-14"
+    },
+    "account_number": {
+      "value": "UH-4471902",
+      "confidence": 0.98,
+      "note": "",
+      "normalized": null
+    }
+  },
+  "fields_to_confirm": [],
+  "seconds": 3.28,
+  "model": "claude-sonnet-5-5"
+}

@@ -1,0 +1,39 @@
+{
+  "fields": {
+    "hospital_name": {
+      "value": "FORT HEALTHCARE",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": null
+    },
+    "hospital_address": {
+      "value": "811 Cedar Bluff Rd, Fort Atkinson, WI 53538",
+      "confidence": 0.95,
+      "note": "",
+      "normalized": null
+    },
+    "amount_due": {
+      "value": "$4,931.80",
+      "confidence": 0.98,
+      "note": "",
+      "normalized": 493180
+    },
+    "service_date": {
+      "value": "09/21/2026",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": "2026-09-21"
+    },
+    "account_number": {
+      "value": "FH 7720-1145",
+      "confidence": 0.5,
+      "note": "account number should be 4-30 letters, digits or dashes",
+      "normalized": null
+    }
+  },
+  "fields_to_confirm": [
+    "account_number"
+  ],
+  "seconds": 2.69,
+  "model": "claude-sonnet-5-5"
+}

@@ -9,7 +9,10 @@ from fastapi import FastAPI, HTTPException, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
-from backend import fpl, policies
+import hashlib
+
+from backend import demo_mode, fpl, policies
+from backend.policy_reader import cache as policy_cache
 from backend.bill_reader import reader as bill_reader
 from backend.eligibility import eligibility_result_to_api_response, load_fpl_table_from_json, run_eligibility
 from backend.policy_reader.fetch import MAX_BYTES, FetchError, fetch_policy_pdf
@@ -55,7 +58,14 @@ async def _pdf_from_request(request: Request) -> tuple[bytes, str | None]:
 
 @app.post("/api/policy/read")
 async def policy_read(request: Request) -> dict[str, Any]:
+    if request.headers.get("content-type", "").startswith("application/json") and not demo_mode.live_mode():
+        raise HTTPException(403, "reading a policy from a link is turned off (LIVE_MODE=0)")
     pdf_bytes, url = await _pdf_from_request(request)
+    if demo_mode.demo_cache_only():
+        hit = policy_cache.lookup(policy_cache.sha256_bytes(pdf_bytes))
+        if hit is None:
+            raise HTTPException(409, "demo mode: this policy isn't cached, so it can't be read right now")
+        return _envelope({"rules": hit.model_dump(mode="json"), "cached": True, "seconds": 0.0, "beta": url is not None})
     try:
         result = await run_in_threadpool(read_policy, pdf_bytes, url=url)
     except PolicyReaderError as exc:
@@ -66,6 +76,7 @@ async def policy_read(request: Request) -> dict[str, Any]:
             "rules": result.rules.model_dump(mode="json"),
             "cached": result.cached,
             "seconds": round(result.seconds, 2),
+            "beta": url is not None,  # reading from a link (live mode) is beta
         }
     )
 
@@ -74,6 +85,11 @@ async def policy_read(request: Request) -> dict[str, Any]:
 async def bill_read(file: UploadFile) -> dict[str, Any]:
     """Multipart 'file' (photo or PDF). Read into memory only; never saved."""
     data = await file.read(bill_reader.MAX_BILL_BYTES + 1)
+    if demo_mode.bill_cache_only():
+        hit = demo_mode.cached_bill(hashlib.sha256(data).hexdigest())
+        if hit is None:
+            raise HTTPException(409, "demo mode: only the sample bills can be read right now")
+        return _envelope({**hit, "cached": True})
     try:
         result = await run_in_threadpool(bill_reader.read_bill, data, file.content_type or "")
     except bill_reader.BillReadError as exc:

@@ -1,0 +1,37 @@
+{
+  "fields": {
+    "hospital_name": {
+      "value": "ADENA HEALTH SYSTEM",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": null
+    },
+    "hospital_address": {
+      "value": "77 Ridgeline Pkwy, Chillicothe, OH 45601",
+      "confidence": 0.95,
+      "note": "",
+      "normalized": null
+    },
+    "amount_due": {
+      "value": "$6,700.00",
+      "confidence": 0.98,
+      "note": "",
+      "normalized": 670000
+    },
+    "service_date": {
+      "value": "10/03/2026",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": "2026-10-03"
+    },
+    "account_number": {
+      "value": "ADH-3309184",
+      "confidence": 0.96,
+      "note": "",
+      "normalized": null
+    }
+  },
+  "fields_to_confirm": [],
+  "seconds": 2.2,
+  "model": "claude-sonnet-5-5"
+}

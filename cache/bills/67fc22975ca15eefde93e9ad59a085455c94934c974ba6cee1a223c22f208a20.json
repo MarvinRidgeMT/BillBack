@@ -1,0 +1,37 @@
+{
+  "fields": {
+    "hospital_name": {
+      "value": "MARSHFIELD CLINIC HEALTH SYSTEM",
+      "confidence": 0.95,
+      "note": "",
+      "normalized": null
+    },
+    "hospital_address": {
+      "value": "302 Birchwood Lane, Marshfield, WI 54449",
+      "confidence": 0.9,
+      "note": "",
+      "normalized": null
+    },
+    "amount_due": {
+      "value": "$340.75",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": 34075
+    },
+    "service_date": {
+      "value": "03/03/2026",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": "2026-03-03"
+    },
+    "account_number": {
+      "value": "MC-55418820",
+      "confidence": 0.97,
+      "note": "",
+      "normalized": null
+    }
+  },
+  "fields_to_confirm": [],
+  "seconds": 2.23,
+  "model": "claude-sonnet-5-5"
+}
