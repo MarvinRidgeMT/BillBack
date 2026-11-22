@@ -331,6 +331,7 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
 
       {!sample && (
         <ReadAloud
+          key={lang}
           summary={[
             t(TITLES[data.status]) + ".",
             t(household === 1 ? "result.fpl_one" : "result.fpl_other", { pct: Math.round(data.percent_of_fpl), n: household }),

@@ -66,22 +66,25 @@ export function IncomeSlider({ slug, household, state, income, initial }: Income
     };
   }, [slug, household, state]);
 
-  useEffect(() => {
-    if (value === income) {
-      controller.current?.abort();
+  const timer = useRef<number | undefined>(undefined);
+  const latest = useRef(income);
+
+  /** Debounced: the newest value asks the engine; any earlier request is cancelled. */
+  function change(next: number) {
+    latest.current = next;
+    setValue(next);
+    window.clearTimeout(timer.current);
+    controller.current?.abort();
+    if (next === income) {
       setResult(initial);
       setBusy(false);
       return;
     }
     setBusy(true);
-    const timer = window.setTimeout(() => {
-      controller.current?.abort();
+    timer.current = window.setTimeout(() => {
       const ac = new AbortController();
       controller.current = ac;
-      whatIfEligibility(
-        { hospital_slug: slug, household_size: household, annual_income: value, state },
-        ac.signal,
-      ).then(
+      whatIfEligibility({ hospital_slug: slug, household_size: household, annual_income: next, state }, ac.signal).then(
         (data) => {
           if (ac.signal.aborted) return;
           setResult(data);
@@ -90,10 +93,15 @@ export function IncomeSlider({ slug, household, state, income, initial }: Income
         () => !ac.signal.aborted && setBusy(false),
       );
     }, DEBOUNCE_MS);
-    return () => window.clearTimeout(timer);
-  }, [value, income, initial, slug, household, state]);
+  }
 
-  useEffect(() => () => controller.current?.abort(), []);
+  useEffect(
+    () => () => {
+      window.clearTimeout(timer.current);
+      controller.current?.abort();
+    },
+    [],
+  );
 
   if (!limits) return null;
   const line = limits.poverty_line;
@@ -127,7 +135,7 @@ export function IncomeSlider({ slug, household, state, income, initial }: Income
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "PageUp" || e.key === "PageDown") {
       e.preventDefault();
-      setValue((v) => clamp(v + (e.key === "PageUp" ? PAGE_STEP : -PAGE_STEP)));
+      change(clamp(latest.current + (e.key === "PageUp" ? PAGE_STEP : -PAGE_STEP)));
     }
   }
 
@@ -176,7 +184,7 @@ export function IncomeSlider({ slug, household, state, income, initial }: Income
           max={max}
           step={STEP}
           value={value}
-          onChange={(e) => setValue(Number(e.target.value))}
+          onChange={(e) => change(Number(e.target.value))}
           onKeyDown={onKeyDown}
           aria-valuetext={t("wow.slider.valuetext", { amount: usd(value), pct, status: status.toLowerCase() })}
           aria-describedby={`${id}-scale`}
@@ -194,7 +202,7 @@ export function IncomeSlider({ slug, household, state, income, initial }: Income
       <div className="whatif-foot">
         <p>{t("wow.slider.note")}</p>
         {value !== income && (
-          <Button variant="ghost" className="min-h-10 px-4 py-2 text-[15px]" onClick={() => setValue(income)}>
+          <Button variant="ghost" className="min-h-10 px-4 py-2 text-[15px]" onClick={() => change(income)}>
             {t("wow.slider.reset")}
           </Button>
         )}
