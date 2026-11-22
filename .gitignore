@@ -10,3 +10,5 @@ node_modules/
 .DS_Store
 # real bills never go in the repo
 uploads/
+.vercel
+.env*
