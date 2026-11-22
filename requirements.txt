@@ -14,3 +14,4 @@ anthropic
 reportlab
 pillow
 pillow-heif
+pypdf

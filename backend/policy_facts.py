@@ -8,7 +8,7 @@ import json
 from functools import lru_cache
 from typing import Any, Optional
 
-from backend import fpl, policies, policy_page
+from backend import fpl, hospital_form, policies, policy_page
 from backend.policy_reader.cache import REPO_ROOT
 from backend.policy_reader.schema import PolicyRules
 
@@ -74,6 +74,7 @@ def facts(slug: str) -> dict[str, Any]:
         "application_window": {"days": window.days, "counted_from": window.counted_from, **_evidence(window.evidence)},
         "presumptive_eligibility": rules.presumptive_eligibility,
         "has_page_images": policy_page.pdf_path_for(slug) is not None,
+        "own_form": hospital_form.form_for(slug, "en") is not None,
         "source_url": policies.source_url_for(rules),
     }
 

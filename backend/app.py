@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 import hashlib
 
-from backend import demo_mode, fpl, packet, policies
+from backend import demo_mode, fpl, hospital_form, packet, policies
 from backend.policy_reader import cache as policy_cache
 from backend.bill_reader import reader as bill_reader
 from backend.eligibility import eligibility_result_to_api_response, load_fpl_table_from_json, run_eligibility
@@ -207,6 +207,7 @@ def packet_pdf(req: PacketRequest) -> Response:
                 "Cache-Control": "no-store",
             },
         )
+    own_form = hospital_form.form_for(req.hospital_slug, req.lang)
     pdf = packet.build_packet(
         bill=req.bill.model_dump(),
         hospital_name=req.bill.hospital_name or rules.hospital_name,
@@ -220,7 +221,10 @@ def packet_pdf(req: PacketRequest) -> Response:
         how_to_apply=rules.how_to_apply,
         lang=req.lang,
         benefits=req.benefits,
+        own_form_hospital=own_form.hospital if own_form else None,
     )
+    if own_form is not None:
+        pdf = hospital_form.append_form(pdf, own_form)
     filename = f"BillBack-application-{req.hospital_slug}.pdf"
     return Response(
         content=pdf,

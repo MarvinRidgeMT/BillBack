@@ -122,6 +122,8 @@ TEXT: dict[str, dict[str, str]] = {
 EXTRA_TEXT: dict[str, dict[str, str]] = {
     "en": {
         "doc_benefit": "Your SNAP, Medicaid or WIC benefit letter (it can qualify you faster)",
+        "doc_own_form": ("{hospital}'s own application form, included after this page. Fill in the rest and sign it. "
+                         "We filled in only the date."),
         "appeal_title": "Request to reconsider my financial assistance application",
         "appeal_re": "Re: Request to reconsider the decision on my financial assistance application",
         "decision_date": "Date of the decision",
@@ -140,6 +142,8 @@ EXTRA_TEXT: dict[str, dict[str, str]] = {
     },
     "es": {
         "doc_benefit": "Su carta del beneficio de SNAP, Medicaid o WIC (puede ayudarle a calificar más rápido)",
+        "doc_own_form": ("El formulario de solicitud de {hospital}, incluido después de esta página. Complete el resto "
+                         "y fírmelo."),
         "appeal_title": "Solicitud para reconsiderar mi solicitud de asistencia financiera",
         "appeal_re": "Asunto: Solicitud para reconsiderar la decisión sobre mi solicitud de asistencia financiera",
         "decision_date": "Fecha de la decisión",
@@ -225,6 +229,7 @@ def build_packet(
     lang: Lang = "en",
     today: Optional[date] = None,
     benefits: bool = False,
+    own_form_hospital: Optional[str] = None,
 ) -> bytes:
     """Return the packet as PDF bytes. Nothing touches the filesystem."""
     tx = {**TEXT[lang], **EXTRA_TEXT[lang]}
@@ -290,7 +295,8 @@ def build_packet(
     ]
     box = "[  ]"  # Helvetica has no ballot-box glyph
     for key in ("doc_id", "doc_income", "doc_bill", "doc_form") + (("doc_benefit",) if benefits else ()):
-        story.append(_p(f"{box}  {tx[key]}", st["check"]))
+        text = tx["doc_own_form"].format(hospital=own_form_hospital) if key == "doc_form" and own_form_hospital else tx[key]
+        story.append(_p(f"{box}  {text}", st["check"]))
     story.append(Spacer(1, 6))
     for key in ("fill_in", "copy", "send", "follow"):
         story.append(_p(f"{box}  {tx[key]}", st["check"]))

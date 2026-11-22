@@ -535,3 +535,12 @@
   opacity: 0.5;
   cursor: default;
 }
+.own-form-note {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.own-form-note svg {
+  flex: none;
+  margin-top: 3px;
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CalendarPlus, Scale } from "lucide-react";
+import { CalendarPlus, FileText, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { buildIcs, computeDeadline, reminderDate, type Deadline } from "@/lib/deadline";
 import { getFacts, type PolicyFacts } from "@/lib/extras";
@@ -49,6 +49,7 @@ export function ResultExtras({ data, bill, benefits, sample }: ResultExtrasProps
   const applies = data.status !== "probably_not_eligible";
   return (
     <>
+      {applies && facts.own_form && <OwnFormNote hospital={data.hospital_name || bill.hospital.name} />}
       {applies && <DeadlineCard facts={facts} bill={bill} data={data} />}
       {applies && benefits === "yes" && <BenefitsNote facts={facts} />}
       {facts.state_law && <StateLawBox facts={facts} />}
@@ -118,6 +119,15 @@ function DeadlineCard({ facts, bill, data }: { facts: PolicyFacts; bill: Confirm
         </div>
       )}
     </section>
+  );
+}
+
+function OwnFormNote({ hospital }: { hospital: string }) {
+  const { t } = useI18n();
+  return (
+    <p className="extra-box own-form-note">
+      <FileText aria-hidden="true" size={18} /> {t("wow.own_form.note", { hospital })}
+    </p>
   );
 }
 

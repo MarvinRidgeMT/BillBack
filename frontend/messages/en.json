@@ -215,5 +215,6 @@
   "map.col_state": "State",
   "map.col_free": "Free care up to",
   "map.col_discount": "Discounts up to",
-  "wow.appeal.link": "If they say no: get an appeal letter"
+  "wow.appeal.link": "If they say no: get an appeal letter",
+  "wow.own_form.note": "Your application also includes {hospital}'s own form. We filled in only the date; you fill in the rest and sign it."
 }

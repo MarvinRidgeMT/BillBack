@@ -215,5 +215,6 @@
   "map.col_state": "Estado",
   "map.col_free": "Gratis hasta",
   "map.col_discount": "Descuentos hasta",
-  "wow.appeal.link": "Si te dicen que no: descarga una carta de apelación"
+  "wow.appeal.link": "Si te dicen que no: descarga una carta de apelación",
+  "wow.own_form.note": "Tu solicitud también incluye el formulario de {hospital}. Tú completas el resto y lo firmas."
 }

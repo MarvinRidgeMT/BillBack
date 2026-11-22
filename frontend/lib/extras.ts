@@ -45,6 +45,8 @@ export interface PolicyFacts {
   application_window: { days: number | null; counted_from: CountedFrom | null; quote: string; page: number | null };
   presumptive_eligibility: string | null;
   has_page_images: boolean;
+  /** The packet also includes the hospital's own application form. */
+  own_form?: boolean;
   source_url: string | null;
 }
 

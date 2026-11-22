@@ -1,0 +1,23 @@
+{
+  "_note": "Hospitals' own public financial assistance application forms, added to the packet as published. Only fields we know for sure are filled; names, addresses, SSNs, income by source and signatures stay blank.",
+  "forms": {
+    "marshfield-clinic-health-system": {
+      "hospital": "Marshfield Clinic",
+      "en": {
+        "file": "marshfield-clinic-health-system-en.pdf",
+        "url": "https://www.marshfieldclinic.org/-/media/marshfieldclinic/files/shared/fa-application-english.pdf",
+        "sha256": "0a7fb88bf3f98e622b584e005307332b71536f58fd22eba4fd319224718362bf",
+        "fillable": true,
+        "fill": {"Text43": "month", "undefined": "day", "undefined_2": "year"}
+      },
+      "es": {
+        "file": "marshfield-clinic-health-system-es.pdf",
+        "url": "https://www.marshfieldclinic.org/-/media/marshfieldclinic/files/shared/spanish-fa-app.pdf",
+        "sha256": "8ab531c6152a8d0f164f02e0059578fbe8da82b5bae5da39af4b91f8de37a222",
+        "fillable": false,
+        "fill": {}
+      },
+      "retrieved": "2026-11-22"
+    }
+  }
+}

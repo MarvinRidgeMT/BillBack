@@ -160,8 +160,10 @@ right before the freeze; trimming non-FAP pages is the planned fix.
 - Shipped: policy receipt (page image + boxed quote), what-if income slider, Read it to me (device voice), $0 finale,
   deadline + .ics, optional SNAP/Medicaid/WIC question (+ benefit letter on the packet checklist), state-law box
   (WA, CA, MD, OR, NJ only), appeal letter (`kind: "appeal"` on `POST /api/packet`), charity-care tile map on home.
-- Skipped: filling Fort HealthCare's own form. Its policy PDF has no form fields, and its application is an online web form
-  (forthealthcare.com, Community Care page), not a fillable PDF.
+- Hospital's own form: Fort HealthCare has none as a PDF (its application is an online web form). Marshfield Clinic's is a fillable PDF,
+  so the packet for Marshfield now ends with Marshfield's own form (EN fillable, ES as published; `data/forms/`, checksums in
+  `sources.json`). We fill only the signature date; its fields don't cover account number, service date or household size, and its
+  income boxes are per person and per source, so we don't guess. New dependency: `pypdf` (fills and merges the form).
 - **Voice license, decided (Anish, Nov 22):** browser voice. Kokoro's web bundle includes espeak-ng (GPL-3.0), so nothing
   from Kokoro/espeak-ng is vendored and BillBack stays MIT. Read it to me uses speechSynthesis in EN and ES.
 - State laws: NY (403), IL (TLS error) and CO (bill summary has no 250% figure) couldn't be confirmed on the official pages, so they're left out.
