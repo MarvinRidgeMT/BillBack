@@ -42,6 +42,28 @@ def key_row() -> tuple[str, str, str, str]:
     return (label, f"{result['correct']}/{result['total']} ({pct:.0f}%)", "≥ 90%", "✅ met" if pct >= 90 else "❌ not met")
 
 
+def verified_rows() -> list[tuple[str, str, str, str]]:
+    """Person-verified benchmark (eval/verify/answer_key.csv, rows with verified_by) + the AI-key cross-check."""
+    from pathlib import Path
+
+    from eval.policy_benchmark import load_rows
+
+    rows = []
+    scored, _ = load_rows(REPO_ROOT / "eval" / "verify" / "answer_key.csv", require_verifier=True)
+    if scored:
+        n_pol = len({r["hospital"] for r in scored})
+        ok_n = sum(r["_correct"] for r in scored)
+        rows.append((f"Policy reader, person-verified answers ({n_pol} policies)", f"{ok_n} of {len(scored)} scored fields",
+                     "≥ 90%", "✅ met" if ok_n / len(scored) >= 0.9 else "❌ not met"))
+    else:
+        rows.append(("Policy reader vs. answers verified by a person", "pending: no person-verified key yet "
+                     "(verification pack for all 17 readable policies ready in eval/verify/)", "≥ 90%", "— pending"))
+    b = json.loads(Path(REPO_ROOT / "eval" / "cross_check" / "b_scoring_results.json").read_text())["summary"]
+    rows.append(("Automated cross-check: reader vs. an AI-written key (6 policies; not accuracy)",
+                 f"{b['correct']}/{b['scored']} agree", "—", "info (AI vs. AI, not independent)"))
+    return rows
+
+
 def load(name: str) -> dict:
     return json.loads((RES / name).read_text())
 
@@ -67,7 +89,8 @@ def main() -> int:
         ("Rules engine, internal consistency (10 households × 20 synthetic policies)", f"{hh['status_ok_2026']}/{hh['n']} results", "all", ok(hh["status_ok_2026"] == hh["n"])),
         ("…same, every detail incl. unresolved-rule notes", f"{hh['ok_2026']}/{hh['n']} ({hh['households_all_ok_2026']}/{hh['households']} households)", "—", "info (B to confirm 7 notes)"),
         ("Policy reader, hand spot-checks (2 real policies × 6 fields)", "11/12 (Boys Town 6/6, USA Health 5/6)", "≥ 90%", "✅ met (small sample, checked by hand)"),
-        key_row(),
+        *([key_row()] if key_row()[3] != "— pending" else []),
+        *verified_rows(),
         ("Real hospital policies read (B's list of 20)", f"{REAL_READ}/20 (incl. 250%, 300% and income-table policies)", "—", "info (3 sites blocked download or moved the policy)"),
         ("B's scorer on those reads (completeness/format, not accuracy)", SCORER_AVG, "—", "info"),
         ("Policy quotes verified verbatim in the PDF", f"{pr['quotes_verified']}/{pr['stated']}", "all", ok(pr["quotes_verified"] == pr["stated"])),
@@ -89,8 +112,11 @@ def main() -> int:
         f"In plain words: the rules engine (plain code, no AI) gave B's hand-calculated answer for all {hh['households']} test households, "
         "using the real 2026 poverty guidelines. "
         f"BillBack read all {bill_n} fields correctly on our 10 fake bills, including crumpled and dim photos, in about "
-        f"{sc['e2e_cached_avg']:.0f} seconds and about one cent per bill. We could not measure the policy reader against a full "
-        "hand-labeled answer key; we checked two policies by hand (11 of 12 fields right), and every policy quote we show was found word for word in the hospital's PDF.",
+        f"{sc['e2e_cached_avg']:.0f} seconds and about one cent per bill. We checked the policy reader by hand on two policies "
+        "(11 of 12 fields right), and every policy quote we show was found word for word in the hospital's PDF. "
+        "A larger benchmark needs answers a person verified from each PDF; that is not done yet.", "",
+        "**Next: the full 20-policy benchmark (120 fields).** 17 of 20 policies are already read (3 PDFs can't be downloaded); "
+        "none has an answer key verified by a person yet. The verification pack for those 17 is ready in `eval/verify/`.",
     ]
     (RES / "SUMMARY.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

@@ -1,6 +1,9 @@
 # Notes for the team
 
-## FOR B — please answer before 1:00pm (A, 12:25pm): who wrote `answer_key.json`?
+## FOR B — answered (A, 12:25pm): `answer_key.json` was written by an AI
+**Answer (Anish, 12:30pm): AI wrote it.** So it is reported only as an automated cross-check (35/36 agree; `eval/cross_check/`), not as accuracy. SUMMARY keeps 11/12 on 2 hand-checked policies; the person-verified benchmark is pending. B: if you have time later, `eval/verify/index.html` lets a person verify the 17 readable policies.
+
+Original question:
 Your push `264b386` (branch `person-b-eligibility`) reproduces exactly on my machine: **35/36** (`score_policies.py`,
 identical `scoring_results.json`). Scored on the six fields in our plan (free limit, discount limit, discount tiers,
 asset test, residency, window) instead of `source_url`, it's also **35/36**. The only miss: Marshfield `counted_from`.
@@ -57,23 +60,27 @@ Numbers C can say now (all from scripts; see `eval/results/SUMMARY.md`):
 - Households: **10 of 10** test households got the hand-calculated answer (rules engine, plain code, 2026 poverty guidelines).
 - Tests: **263 passed**, 0 failed (2 skipped: live-API tests).
 - Speed and cost: about **2.6 seconds** and about **one cent ($0.01)** per bill.
-- Policy reader score: **coming from B before 1pm** ("X of Y scored fields across six hospital policies"). Don't say "120 fields".
+- Policy reader: say **"we checked two policies by hand: 11 of 12 fields right"**. B's six-policy key was written by an AI, so its 35/36 is a cross-check, not accuracy: **don't say 35/36 as an accuracy number**, and don't say "120 fields".
 
-## FINAL NUMBERS FOR VIDEO (A, 11:10am — from `eval/results/SUMMARY.md`; say only these)
+## FINAL NUMBERS FOR VIDEO (A, 12:35pm — from `eval/results/SUMMARY.md`; say only these)
 | Test | Measured | Target | Result |
 |---|---|---|---|
+| Rules engine vs. B's hand-calculated answers (10 test households, 2026 FPL) | 10/10 households | 10/10 | ✅ met |
 | Bill extraction (10 fake bills × 5 fields) | 50/50 (100%) | ≥ 90% | ✅ met |
+| Rules engine, internal consistency (10 households × 20 synthetic policies) | 200/200 results | all | ✅ met |
+| …same, every detail incl. unresolved-rule notes | 193/200 (7/10 households) | — | info (B to confirm 7 notes) |
 | Policy reader, hand spot-checks (2 real policies × 6 fields) | 11/12 (Boys Town 6/6, USA Health 5/6) | ≥ 90% | ✅ met (small sample, checked by hand) |
-| Policy reader, 120-field answer key | not measured (no field-level key for real PDFs) | ≥ 90% | — not measured |
+| Policy reader vs. answers verified by a person | pending: no person-verified key yet (verification pack for all 17 readable policies ready in eval/verify/) | ≥ 90% | — pending |
+| Automated cross-check: reader vs. an AI-written key (6 policies; not accuracy) | 35/36 agree | — | info (AI vs. AI, not independent) |
+| Real hospital policies read (B's list of 20) | 17/20 (incl. 250%, 300% and income-table policies) | — | info (3 sites blocked download or moved the policy) |
+| B's scorer on those reads (completeness/format, not accuracy) | 86.2/100 | — | info |
 | Policy quotes verified verbatim in the PDF | 21/21 | all | ✅ met |
 | Policy re-run agreement (6 policies × 5 values) | 29/30 | — | info |
-| End-to-end households, status (10 households × 20 policies, 2026 FPL) | 10/10 households (200/200 results) | 10/10 | ✅ met |
-| …same, every detail incl. unresolved-rule notes | 7/10 households (193/200) | — | info (B to confirm 7 notes) |
-| Rules-engine + backend tests | 215 passed, 0 failed, 2 skipped | all pass | ✅ met |
+| Rules-engine + backend tests | 263 passed, 0 failed, 2 skipped | all pass | ✅ met |
 | Speed, bill → result (cached policy) | avg 2.6 s, max 3.3 s | < 60 s | ✅ met |
 | Speed, first bill for a new hospital (live policy read) | avg 10.9 s | < 60 s | ✅ met |
 | Cost per bill (cached policy) | $0.0096 | < $0.05 | ✅ met |
-| Cost, first bill for a new hospital | $0.0528 | < $0.05 | ❌ not met |
+| Cost, first bill for a new hospital | $0.0528 | < $0.05 | ❌ not met (kept; fix: skip non-policy pages) |
 | Bill fields sent to the patient to confirm | 2/50 (under 0.8 confidence: 2) | — | info |
 | Policy fields sent to human review | 4/30 | — | info |
 

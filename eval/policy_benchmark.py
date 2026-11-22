@@ -1,7 +1,7 @@
 """Policy reader benchmark: score the reader against answers a PERSON verified from each PDF.
 
     python -m eval.policy_benchmark eval/answer_key_real_TODO.csv --out eval/results/policy_benchmark_6.md
-    python -m eval.policy_benchmark eval/verify/answer_key_14.csv --require-verifier --out eval/results/policy_benchmark_verified.md
+    python -m eval.policy_benchmark eval/verify/answer_key.csv --require-verifier --out eval/results/policy_benchmark_verified.md
 
 A row is scored only when `is_correct` is yes/no (and, with --require-verifier, `verified_by` is filled in).
 `is_correct` = n/a (or "not applicable") leaves the row out of the denominator. Blank rows are never counted.

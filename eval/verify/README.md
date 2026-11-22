@@ -1,14 +1,15 @@
-# Verification pack: the rest of the 20-policy benchmark
+# Verification pack: the full policy-reader benchmark
 
-The full benchmark is 20 real policies × 6 fields. B hand-verified 6 policies (`eval/answer_key_real_TODO.csv`).
-This pack covers the other 14 so a person can verify them quickly. **Nothing here is filled in by AI**: the answers
-must come from a person reading the hospital's PDF, because our AI re-reading the PDF would not be independent of our AI reader.
+The full benchmark is B's 20 real policies × 6 fields (120 fields). **None of them has an answer key verified by a person yet.**
+(B's six-policy key on branch `person-b-eligibility` was written by an AI; it's kept as a cross-check in `eval/cross_check/`,
+not as accuracy.) This pack lets a person verify the reader quickly. **Nothing here is filled in by AI**: the answers must come
+from a person reading the hospital's PDF, because our AI re-reading the PDF would not be independent of our AI reader.
 
 | | policies | fields |
 |---|---|---|
-| Not scored by B | 14 | 84 |
+| B's list | 20 | 120 |
 | Policy PDF not reachable (left out of the denominator) | 3: HOSP-R001 Adventist Health (site returns 403 to downloads), HOSP-R015 Mission Health (policy is a web page, no PDF), HOSP-R020 Ascension MI (policy moved) | 18 |
-| **In this pack** | **11** | **66** |
+| **In this pack** | **17** | **102** |
 
 All three were retried once at 11:40am (one search on the official site for the current PDF); see `eval/results/b_real_policies.md`.
 
@@ -18,16 +19,18 @@ All three were retried once at 11:40am (one search on the official site for the 
 3. For each card: read the reader's value, its quote, and the page text around the keywords
    (free, 100%, poverty, FPL, discount, asset, resident, days, apply). Open the PDF if the snippet isn't enough.
 4. Click **Reader is right**, or type the correct value and click **Reader is wrong**. Progress is saved in your browser.
-5. Click **Export CSV** and save it over `eval/verify/answer_key_14.csv`.
-6. Score it (counts only rows with `verified_by` filled in):
+5. Click **Export CSV** and save it over `eval/verify/answer_key.csv`.
+6. Score it (counts only rows with `verified_by` filled in), then rebuild the summary:
    ```
-   .venv/bin/python -m eval.policy_benchmark eval/verify/answer_key_14.csv --require-verifier --out eval/results/policy_benchmark_verified.md
+   .venv/bin/python -m eval.policy_benchmark eval/verify/answer_key.csv --require-verifier --out eval/results/policy_benchmark_verified.md
+   .venv/bin/python -m eval.summary
    ```
+   The headline reads "X of Y scored fields correct across N hospital policies", where N counts only policies with verified rows.
 
 LA County, Mercy and Ochsner PDFs aren't saved in the repo; their cards link to the hospital's PDF instead of a local page.
 
 ## Files
-- `answer_key_14.csv`: one row per field. `correct_value`, `is_correct`, `verified_by` are BLANK.
+- `answer_key.csv`: one row per field. `correct_value`, `is_correct`, `verified_by` are BLANK.
 - `rows.js`: the same rows for `index.html`.
 - Rebuild both from the cached reader outputs (no AI calls): `.venv/bin/python -m eval.verify_pack`.
 

@@ -37,8 +37,8 @@
 </header>
 <main>
   <p class="meta">Open the PDF, read the page, then mark the reader right or wrong. Only rows with your name count in the benchmark.
-  When done, click <b>Export CSV</b> and save it over <code>eval/verify/answer_key_14.csv</code>, then run
-  <code>python -m eval.policy_benchmark eval/verify/answer_key_14.csv --require-verifier --out eval/results/policy_benchmark_verified.md</code>.</p>
+  When done, click <b>Export CSV</b> and save it over <code>eval/verify/answer_key.csv</code>, then run
+  <code>python -m eval.policy_benchmark eval/verify/answer_key.csv --require-verifier --out eval/results/policy_benchmark_verified.md</code>.</p>
   <div id="list"></div>
 </main>
 <script src="rows.js"></script>
@@ -97,7 +97,7 @@
     const csv = [cols.join(","), ...rows.map(r => cols.map(c => q(r[c])).join(","))].join("\n") + "\n";
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-    a.download = "answer_key_14.csv"; a.click();
+    a.download = "answer_key.csv"; a.click();
   });
   render();
 </script>

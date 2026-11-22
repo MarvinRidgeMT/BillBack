@@ -1,0 +1,432 @@
+{
+  "answer_key": [
+    {
+      "policy_id": "adena-health-system",
+      "hospital_name": "Adena Health System",
+      "hospital_state": "OH",
+      "free_care": {
+        "fpl_max_percent": 200.0,
+        "inclusivity": "inclusive",
+        "evidence": {
+          "quote": "The patient' s individual or family, if applicable, income is at or below 200% of the current Federal Poverty Income Guidelines for a 100% CCP discount.",
+          "page": 2
+        },
+        "confidence": 0.95
+      },
+      "discount": {
+        "fpl_max_percent": 400.0,
+        "tiers": [
+          {
+            "fpl_min_percent": 201.0,
+            "fpl_max_percent": 400.0,
+            "discount_type": "percent_off",
+            "value": 67.0,
+            "description": "67% CCP discount for income 201%-400% of FPL; charges limited to AGB for eligible patients."
+          }
+        ],
+        "evidence": {
+          "quote": "The patient's individual or family, if applicable, income is 201%-400% of the current Federal Poverty Income Guidelines for a 67% CCP discount.",
+          "page": 2
+        },
+        "confidence": 0.95
+      },
+      "asset_test": {
+        "applies": null,
+        "details": "Policy body does not explicitly state an asset test. Application asks for asset verification (bank statement) but NHSC clinics are stated to not require asset testing.",
+        "evidence": {
+          "quote": "NHSC certified Clinics: \"Asset testing is not required for financial assistance for NHSC facilities.",
+          "page": 6
+        },
+        "confidence": 0.4
+      },
+      "residency": {
+        "required": true,
+        "area": "Ohio counties: Adams, Athens, Clinton, Fayette, Gallia, Green, Highland, Hocking, Jackson, Madison, Pickaway, Pike, Ross, Scioto, Vinton (for CCP); HCAP requires Ohio residence; NHSC clinics exempt from county limits",
+        "evidence": {
+          "quote": "At the time of service, the patient resides, with the intent to remain, in one of the following fifteen Ohio counties: Adams, Athens, Clinton, Fayette, Gallia, Green, Highland, Hocking, Jackson, Madison, Pickaway, Pike, Ross, Scioto, or Vinton",
+          "page": 2
+        },
+        "confidence": 0.95
+      },
+      "application_window": {
+        "days": 240,
+        "counted_from": "first_follow_up_notice",
+        "evidence": {
+          "quote": "Applications for CCP assistance will be accepted for a period of 240 days from the first follow-up notice for payment sent to the patient.",
+          "page": 1
+        },
+        "confidence": 0.9
+      },
+      "source_url": {
+        "url": "https://www.adena.org/docs/default-source/default-document-library/financial-assistance-policy.pdf?sfvrsn=2b0b72c7_3",
+        "confidence": 1.0
+      }
+    },
+    {
+      "policy_id": "baptist-memorial-health-care-corporation",
+      "hospital_name": "Baptist Memorial Health Care Corporation",
+      "hospital_state": "TN",
+      "free_care": {
+        "fpl_max_percent": 200.0,
+        "inclusivity": "exclusive",
+        "evidence": {
+          "quote": "< 200% 100%",
+          "page": 8
+        },
+        "confidence": 0.9
+      },
+      "discount": {
+        "fpl_max_percent": 400.0,
+        "tiers": [
+          {
+            "fpl_min_percent": 201.0,
+            "fpl_max_percent": 250.0,
+            "discount_type": "percent_off",
+            "value": 95.0,
+            "description": "95% discount"
+          },
+          {
+            "fpl_min_percent": 251.0,
+            "fpl_max_percent": 300.0,
+            "discount_type": "percent_off",
+            "value": 90.0,
+            "description": "90% discount"
+          },
+          {
+            "fpl_min_percent": 301.0,
+            "fpl_max_percent": 350.0,
+            "discount_type": "percent_off",
+            "value": 85.0,
+            "description": "85% discount"
+          },
+          {
+            "fpl_min_percent": 351.0,
+            "fpl_max_percent": 400.0,
+            "discount_type": "percent_off",
+            "value": 80.0,
+            "description": "80% discount"
+          },
+          {
+            "fpl_min_percent": 401.0,
+            "fpl_max_percent": null,
+            "discount_type": "other",
+            "value": null,
+            "description": "Above 400%: discount varies by facility; uninsured get AGB-based Uninsured Discount"
+          }
+        ],
+        "evidence": {
+          "quote": "351-400% 80%",
+          "page": 8
+        },
+        "confidence": 0.85
+      },
+      "asset_test": {
+        "applies": null,
+        "details": "Not stated in policy",
+        "evidence": {
+          "quote": "",
+          "page": null
+        },
+        "confidence": 0.85
+      },
+      "residency": {
+        "required": null,
+        "area": null,
+        "evidence": {
+          "quote": "",
+          "page": null
+        },
+        "confidence": 0.8
+      },
+      "application_window": {
+        "days": 240,
+        "counted_from": "first_post_discharge_billing_statement",
+        "evidence": {
+          "quote": "The application period begins on the date medical care is provided (or earlier if the patient choses to apply) and ends on the later of 240 days after the first post-discharge billing statement or thirty days after the hospital (or an authorized third party) provides a written notice (final bill) to the patient outlining pending",
+          "page": 2
+        },
+        "confidence": 0.9
+      },
+      "source_url": {
+        "url": "https://www.och.org/wp-content/uploads/2025/10/S-FI-3025-15-Hospital-Financial-Assist-Policy-Final-05-25.pdf",
+        "confidence": 1.0
+      }
+    },
+    {
+      "policy_id": "boys-town-national-research-hospital",
+      "hospital_name": "Boys Town National Research Hospital",
+      "hospital_state": "NE",
+      "free_care": {
+        "fpl_max_percent": 200.0,
+        "inclusivity": "inclusive",
+        "evidence": {
+          "quote": "have a household income at or below 200% of Federal Poverty Guidelines (FPG) (shown in the table below) may receive free care (an 100% discount.)",
+          "page": 2
+        },
+        "confidence": 0.95
+      },
+      "discount": {
+        "fpl_max_percent": 400.0,
+        "tiers": [
+          {
+            "fpl_min_percent": 201.0,
+            "fpl_max_percent": 250.0,
+            "discount_type": "percent_off",
+            "value": 75.0,
+            "description": "75% discount of gross charges per table; patient not charged more than AGB"
+          },
+          {
+            "fpl_min_percent": 251.0,
+            "fpl_max_percent": 300.0,
+            "discount_type": "percent_off",
+            "value": 50.0,
+            "description": "50% discount of gross charges per table; patient not charged more than AGB"
+          },
+          {
+            "fpl_min_percent": 301.0,
+            "fpl_max_percent": 400.0,
+            "discount_type": "percent_off",
+            "value": 25.0,
+            "description": "25% discount of gross charges per table; patient not charged more than AGB"
+          }
+        ],
+        "evidence": {
+          "quote": "Individuals that do not have the necessary available funds to pay for services, with annual household incomes between 201% and 400% FPG will be eligible for up to a 75% discount of gross charges, as illustrated by the table below.",
+          "page": 2
+        },
+        "confidence": 0.9
+      },
+      "asset_test": {
+        "applies": true,
+        "details": "Patients with verified available cash on hand (liquid assets) to pay hospital balances are not eligible; cash on hand is verified using application documentation and considered in addition to income and family size.",
+        "evidence": {
+          "quote": "Patients who have verified available cash on hand (liquid assets) to pay hospital owed balances will not be eligible for financial assistance, per this FAP.",
+          "page": 2
+        },
+        "confidence": 0.95
+      },
+      "residency": {
+        "required": null,
+        "area": null,
+        "evidence": {
+          "quote": "",
+          "page": null
+        },
+        "confidence": 0.85
+      },
+      "application_window": {
+        "days": 240,
+        "counted_from": "other",
+        "evidence": {
+          "quote": "Financial assistance will be considered at any point in the billing cycle, up to 240 days from the 1st billed date, post discharge date or date of service.",
+          "page": 3
+        },
+        "confidence": 0.7
+      },
+      "source_url": {
+        "url": "https://media.boystown.org/image/upload/v1755542976/Financial-Assistance-Policy.pdf",
+        "confidence": 1.0
+      }
+    },
+    {
+      "policy_id": "fort-healthcare-inc",
+      "hospital_name": "Fort HealthCare, Inc.",
+      "hospital_state": "WI",
+      "free_care": {
+        "fpl_max_percent": 200.0,
+        "inclusivity": "inclusive",
+        "evidence": {
+          "quote": "Persons whose income is at or up to 200% of the guidelines will be considered for complete forgiveness of their outstanding bill.",
+          "page": 1
+        },
+        "confidence": 0.95
+      },
+      "discount": {
+        "fpl_max_percent": 400.0,
+        "tiers": [
+          {
+            "fpl_min_percent": 201.0,
+            "fpl_max_percent": 400.0,
+            "discount_type": "sliding_scale",
+            "value": null,
+            "description": "Reduced basis per Attachment 1 table: 90% discount at 210% FPG, declining stepwise (80% at 220%, 70% at 230%, 60% at 240%, 50% at 250%, 40% at 260%, 35% at 270%, 30% at 280%, 25% at 290%, 20% at 300-320%, 15% at 340-360%, 10% at 380-400%)."
+          }
+        ],
+        "evidence": {
+          "quote": "Persons whose income is greater than 200% of the guidelines, but not more than 400% of the guidelines, shall be eligible for Community Care on a reduced basis.",
+          "page": 1
+        },
+        "confidence": 0.9
+      },
+      "asset_test": {
+        "applies": null,
+        "details": "Not explicitly stated; patients must use HSA/HRA/FSA funds before approval; patients above 200% FPL may be considered based on expenses exceeding income.",
+        "evidence": {
+          "quote": "",
+          "page": null
+        },
+        "confidence": 0.85
+      },
+      "residency": {
+        "required": true,
+        "area": "Primary and secondary service areas (non-residents without insurance receive only the self-pay discount and must pay in advance)",
+        "evidence": {
+          "quote": "Community Care write-offs are available to eligible persons residing in our primary and secondary service areas requiring medically necessary treatment, but who are unable to pay for these services.",
+          "page": 1
+        },
+        "confidence": 0.85
+      },
+      "application_window": {
+        "days": 240,
+        "counted_from": "first_post_discharge_billing_statement",
+        "evidence": {
+          "quote": "Financial Assistance applications will be accepted by agency if (a) within 240 days from date of first post-discharged bill or (b) if later, 30 days from the date of ECA notification.",
+          "page": 4
+        },
+        "confidence": 0.85
+      },
+      "source_url": {
+        "url": "https://www.forthealthcare.com/wp-content/uploads/2025/03/Financial-Assistance-Policy-2025-Final-English-1.pdf",
+        "confidence": 1.0
+      }
+    },
+    {
+      "policy_id": "marshfield-clinic-health-system",
+      "hospital_name": "Marshfield Clinic Health System",
+      "hospital_state": "WI",
+      "free_care": {
+        "fpl_max_percent": 200.0,
+        "inclusivity": "inclusive",
+        "evidence": {
+          "quote": "Free Care: The gross (undiscounted) charge amount for eligible services will be waived for applicants whose total Income is at or below 200% of the current federal poverty level, shown on Appendix A.",
+          "page": 6
+        },
+        "confidence": 0.95
+      },
+      "discount": {
+        "fpl_max_percent": 400.0,
+        "tiers": [
+          {
+            "fpl_min_percent": 201.0,
+            "fpl_max_percent": 300.0,
+            "discount_type": "percent_off",
+            "value": 75.0,
+            "description": "75% discount for income 201%-300% FPL per Appendix A table"
+          },
+          {
+            "fpl_min_percent": 301.0,
+            "fpl_max_percent": 400.0,
+            "discount_type": "percent_off",
+            "value": 65.0,
+            "description": "65% discount for income 301%-400% FPL per Appendix A table"
+          }
+        ],
+        "evidence": {
+          "quote": "Clinics (Marshfield Clinic- freestanding clinic locations | 100% | 75% | 65% |",
+          "page": 11
+        },
+        "confidence": 0.9
+      },
+      "asset_test": {
+        "applies": null,
+        "details": "Not explicitly stated; only qualified health accounts (HSA/FSA) are expected to be used, and account statements may be requested as income documentation.",
+        "evidence": {
+          "quote": "",
+          "page": null
+        },
+        "confidence": 0.8
+      },
+      "residency": {
+        "required": true,
+        "area": "MCHS service area (State of Wisconsin and the Upper Peninsula of Michigan) for non-emergent medically necessary services; not required for emergency services",
+        "evidence": {
+          "quote": "Financial assistance is available for services required for an Emergency Medical Condition regardless of whether a patient resides within Marshfield Clinic Health System's service area.",
+          "page": 5
+        },
+        "confidence": 0.85
+      },
+      "application_window": {
+        "days": 240,
+        "counted_from": "first_billing_statement",
+        "evidence": {
+          "quote": "MCHS will accept a financial assistance application for at least 240 days following the patient/guarantor's first billing statement or as deemed reasonable.",
+          "page": 7
+        },
+        "confidence": 0.85
+      },
+      "source_url": {
+        "url": "https://www.marshfieldclinic.org/-/media/marshfieldclinic/files/shared/financial-assistance-policy-english.pdf",
+        "confidence": 1.0
+      }
+    },
+    {
+      "policy_id": "usa-health",
+      "hospital_name": "USA Health",
+      "hospital_state": "AL",
+      "free_care": {
+        "fpl_max_percent": 200.0,
+        "inclusivity": "inclusive",
+        "evidence": {
+          "quote": "up to 200% 100% FAP adjustment applied",
+          "page": 4
+        },
+        "confidence": 0.9
+      },
+      "discount": {
+        "fpl_max_percent": 400.0,
+        "tiers": [
+          {
+            "fpl_min_percent": 200.0,
+            "fpl_max_percent": 300.0,
+            "discount_type": "percent_off",
+            "value": 85.0,
+            "description": "85% FAP adjustment applied"
+          },
+          {
+            "fpl_min_percent": 300.0,
+            "fpl_max_percent": 400.0,
+            "discount_type": "percent_off",
+            "value": 75.0,
+            "description": "75% FAP adjustment applied"
+          }
+        ],
+        "evidence": {
+          "quote": "300-400% 75% FAP adjustment applied",
+          "page": 4
+        },
+        "confidence": 0.85
+      },
+      "asset_test": {
+        "applies": true,
+        "details": "Asset Test: a patient with assets exceeding 25% of household income amount may not be eligible; only assets accessible without penalty are considered.",
+        "evidence": {
+          "quote": "A patient with such assets that exceed 25% of such patient's household income amount may not be eligible for financial assistance.",
+          "page": 5
+        },
+        "confidence": 0.9
+      },
+      "residency": {
+        "required": null,
+        "area": null,
+        "evidence": {
+          "quote": "",
+          "page": null
+        },
+        "confidence": 0.8
+      },
+      "application_window": {
+        "days": 240,
+        "counted_from": "date_of_service",
+        "evidence": {
+          "quote": "Patient applications can be submitted for consideration for up to 240 days past the date of service",
+          "page": 4
+        },
+        "confidence": 0.6
+      },
+      "source_url": {
+        "url": "https://www.usahealthsystem.com/uploads/pdfs/financial-assistance/usa-financial-assistance-policy-202505.pdf",
+        "confidence": 1.0
+      }
+    }
+  ]
+}

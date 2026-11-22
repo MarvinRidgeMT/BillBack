@@ -1,6 +1,6 @@
-"""Build the human verification pack for the policies B did not score.
+"""Build the human verification pack for B's 20 real policies (17 reachable).
 
-    python -m eval.verify_pack     -> eval/verify/answer_key_14.csv  (+ eval/verify/rows.js for index.html)
+    python -m eval.verify_pack     -> eval/verify/answer_key.csv  (+ eval/verify/rows.js for index.html)
 
 One row per (policy, field) with the reader's value, its quote + page, and the page text around keywords
 (pulled with pdfplumber) so a person can check each field quickly. `correct_value`, `is_correct` and `verified_by`
@@ -20,12 +20,18 @@ from backend.policy_reader.cache import REPO_ROOT
 from eval.answer_key_real import _fields, _load
 
 OUT_DIR = REPO_ROOT / "eval" / "verify"
-CSV_PATH = OUT_DIR / "answer_key_14.csv"
+CSV_PATH = OUT_DIR / "answer_key.csv"
 COLUMNS = ["policy_id", "hospital", "field", "reader_value", "reader_quote", "page", "evidence", "pdf_path", "pdf_url",
            "correct_value", "is_correct", "verified_by"]
-# B's 20 real policies minus the 6 B scored (HOSP-R003/7/9/10/12/13). slug None = policy PDF not reachable.
+# B's 20 real policies. None has a person-verified key yet. slug None = policy PDF not reachable.
 POLICIES = [
     ("HOSP-R001", "Adventist Health", None),
+    ("HOSP-R003", "baptist-health-south-florida", "baptist-health-south-florida"),
+    ("HOSP-R007", "texas-health", "texas-health-resources-texas-health"),
+    ("HOSP-R009", "uw-medicine", "uw-medicine-harborview-medical-center-uw-medical-center-airl"),
+    ("HOSP-R010", "uchealth", "uchealth"),
+    ("HOSP-R012", "emory", "emory-healthcare"),
+    ("HOSP-R013", "banner", "banner-health"),
     ("HOSP-R002", "los-angeles-county-department-of-health-services", "los-angeles-county-department-of-health-services"),
     ("HOSP-R004", "baycare-health-system", "baycare-health-system"),
     ("HOSP-R005", "heartland-health-services", "heartland-health-services"),
@@ -99,7 +105,7 @@ def _evidence(pages: list[str], page: str, field: str) -> str:
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     rows, unreachable = [], []
-    for pid, name, slug in POLICIES:
+    for pid, name, slug in sorted(POLICIES):
         if slug is None:
             unreachable.append((pid, name))
             continue

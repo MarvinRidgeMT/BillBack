@@ -72,12 +72,13 @@ More detail: [docs/architecture.md](docs/architecture.md).
 | Rules engine, internal consistency (10 households × 20 synthetic policies) | 200/200 results | all | ✅ met |
 | …same, every detail incl. unresolved-rule notes | 193/200 (7/10 households) | — | info (B to confirm 7 notes) |
 | Policy reader, hand spot-checks (2 real policies × 6 fields) | 11/12 (Boys Town 6/6, USA Health 5/6) | ≥ 90% | ✅ met (small sample, checked by hand) |
-| Policy reader, B's hand-checked key (6 real policies × 6 fields) | not measured yet (waiting for B to fill eval/answer_key_real_TODO.csv) | ≥ 90% | — pending |
+| Policy reader vs. answers verified by a person | pending: no person-verified key yet (verification pack for all 17 readable policies ready in eval/verify/) | ≥ 90% | — pending |
+| Automated cross-check: reader vs. an AI-written key (6 policies; not accuracy) | 35/36 agree | — | info (AI vs. AI, not independent) |
 | Real hospital policies read (B's list of 20) | 17/20 (incl. 250%, 300% and income-table policies) | — | info (3 sites blocked download or moved the policy) |
 | B's scorer on those reads (completeness/format, not accuracy) | 86.2/100 | — | info |
 | Policy quotes verified verbatim in the PDF | 21/21 | all | ✅ met |
 | Policy re-run agreement (6 policies × 5 values) | 29/30 | — | info |
-| Rules-engine + backend tests | 235 passed, 0 failed, 2 skipped | all pass | ✅ met |
+| Rules-engine + backend tests | 263 passed, 0 failed, 2 skipped | all pass | ✅ met |
 | Speed, bill → result (cached policy) | avg 2.6 s, max 3.3 s | < 60 s | ✅ met |
 | Speed, first bill for a new hospital (live policy read) | avg 10.9 s | < 60 s | ✅ met |
 | Cost per bill (cached policy) | $0.0096 | < $0.05 | ✅ met |
@@ -87,7 +88,7 @@ More detail: [docs/architecture.md](docs/architecture.md).
 
 How these were measured: [eval/results/SUMMARY.md](eval/results/SUMMARY.md) (rebuild with `python -m eval.summary`). Per-bill misses, per-field tables and every changed answer are in `eval/results/`.
 
-**The policy reader's 120-field answer key was not measured.** Nobody has hand-labeled real policy PDFs field by field yet. What we have: two policies checked by hand (11 of 12 fields right), every quote we show verified word for word in the PDF, the same answers on 29 of 30 values when the reader ran twice, and a 36-row key (6 real policies × 6 fields) that B is checking by hand now (`eval/answer_key_real_TODO.csv`; the score appears in SUMMARY.md only once every row is filled). The reader handled **17 of 20** real policies from B's list, including non-standard ones: free care up to 250% (BayCare, Texas Health, UCHealth) or 300% (Baptist Health South Florida, UW Medicine, Novant), and dollar income tables (Baptist Health South Florida, Texas Health, Fort HealthCare). B's scorer gives those reads 86.2/100 for completeness and format; that is not an accuracy number.
+**Policy reader accuracy: what we can and can't claim.** We checked two policies by hand against the PDF (11 of 12 fields right). Every quote we show was verified word for word in the PDF, and the reader gave the same answers on 29 of 30 values when run twice. A teammate also built a six-policy answer key, but it was written by an AI, so we report its 35/36 agreement only as an automated cross-check, not as accuracy ([eval/cross_check/](eval/cross_check/README.md)). **A full 20-policy benchmark (120 fields) is next:** the reader handled **17 of 20** real policies from B's list, and the answer key for them needs verification by a person; the pack to do that (102 fields, about 20 seconds each) is ready in [eval/verify/](eval/verify/README.md). The 17 include non-standard policies: free care up to 250% (BayCare, Texas Health, UCHealth) or 300% (Baptist Health South Florida, UW Medicine, Novant), and dollar income tables (Baptist Health South Florida, Texas Health, Fort HealthCare). B's scorer gives those reads 86.2/100 for completeness and format; that is not an accuracy number either.
 
 ## Responsible use of AI
 
@@ -103,16 +104,16 @@ How these were measured: [eval/results/SUMMARY.md](eval/results/SUMMARY.md) (reb
 - **"Likely", not a guarantee.** Policies have exceptions (insurance status, which services, which facility), and the hospital decides.
 - **Asking to pause collections is a request, not a guarantee.** Federal rules ([IRS §501(r)(6)](https://www.irs.gov/charities-non-profits/billing-and-collections-section-501r6)) limit "extraordinary collection actions" while an application is pending, but routine billing contact may continue. The letter *asks* for a hold.
 - **Credit reports:** the federal CFPB rule removing medical debt from credit reports was vacated by a court in July 2025 and isn't in effect ([CFPB](https://www.consumerfinance.gov/ask-cfpb/do-medical-bills-affect-my-credit-and-where-do-i-find-out-whats-in-my-medical-payment-history-en-1837/)). BillBack does not promise credit removal.
-- **State laws vary** and aren't applied yet. Washington, California, New York, Illinois, Maryland, Colorado, Oregon and New Jersey go further than federal rules (see [the research notes](docs/research/expansion-research.md#22-state-charity-care-protections-beyond-the-federal-floor)). The result uses the hospital's own policy only.
+- **State laws vary** and aren't applied to the result. We show a state-law box for Washington, California, Maryland, Oregon and New Jersey; New York, Illinois and Colorado also go further than federal rules (see [the research notes](docs/research/expansion-research.md#22-state-charity-care-protections-beyond-the-federal-floor)). The result uses the hospital's own policy only.
 - **Policies contradict themselves.** USA Health's policy gives the application deadline as 240 days after the first bill in one section and 240 days after the date of service in another. BillBack flags this for review instead of picking one silently.
 - **Form vs. policy.** The first read of Adena Health took an asset test from a checkbox on the application form, not from a policy rule. It was flagged at 0.6 confidence; after a prompt fix it is now marked "unclear".
 - **Run-to-run variation.** On a re-run, Fort HealthCare's 12-row discount table came back as one "sliding scale 201–400%" tier. The free-care limit was the same both times.
 - **Watermarks and scans.** pdfplumber mixed a "COPY" watermark into USA Health's text. OCR (tesseract) wasn't installed on our build machine, so scanned pages are sent to the model as a PDF and their quotes can't be verified.
 - **Source documents.** Two of the policy links we were given point to an application form (Duke) and a clinic sliding-fee schedule (Heartland), not a hospital policy. Both are flagged for review. **3 of 20** real policies could not be read even after one retry: the hospital site blocked automated download or moved the policy (Adventist Health: HTTP 403; Mission Health and Ascension Michigan: no policy PDF).
-- **Not covered:** state charity-care laws, insurance statements (EOBs) and billing-error detection.
+- **Not covered:** applying state charity-care laws to the result, insurance statements (EOBs) and billing-error detection.
 - **Cost:** the first bill for a hospital we haven't read yet costs about $0.053, just over our $0.05 target, because the policy has to be read once. We kept it; the fix is to skip pages with no financial-assistance words before sending the text.
 - **Reading a policy from a pasted link is beta** and off in the demo (`LIVE_MODE=0`). The demo uses only policies we already read and checked.
-- **Policy-reader accuracy** comes from hand spot-checks (2 policies), plus B's 36-row check once it is filled in. It is not a full 120-field measurement.
+- **Policy-reader accuracy** comes from hand spot-checks of 2 policies (11 of 12 fields). The full 20-policy benchmark needs a person to verify the answer key; it isn't done yet.
 - **Asset questions:** the app doesn't ask about savings yet, so hospitals with an asset test (USA Health, Boys Town) return "we can't tell" until it does. The API already accepts `assets_usd`.
 
 ## What's next
@@ -120,6 +121,8 @@ How these were measured: [eval/results/SUMMARY.md](eval/results/SUMMARY.md) (reb
 Next, BillBack grows from 22 hospitals to every U.S. nonprofit hospital. Hospitals' own IRS tax filings (Form 990 [Schedule H](https://www.irs.gov/instructions/i990sh)) list the income limits each one uses, and [CMS's hospital list](https://data.cms.gov/provider-data/dataset/xubh-q36u) lets us match any bill to the right hospital. We'll check each saved policy against both, plus state charity-care laws (we already show Washington, California, Maryland, Oregon and New Jersey; New York, Illinois and Colorado come next, once we've confirmed them against the official text). After that: help for insured patients (26% of adults *with* health insurance had medical debt, per the [Urban Institute](https://www.urban.org/research/publication/more-one-quarter-us-adults-had-medical-debt-2025)), comparing the bill to the insurance statement and requesting an itemized bill; adding more hospitals' own application forms to the packet, and a higher-quality on-device English voice; and pilots with community health centers, 211 and legal aid. It stays free for patients and never sells data.
 
 The research behind this plan, with sources: [docs/research/expansion-research.md](docs/research/expansion-research.md).
+
+**Ready-to-run benchmark:** the full 20-policy, 120-field policy-reader benchmark is set up in [eval/verify/](eval/verify/README.md). 17 of 20 policies are read (3 hospital sites block download or moved the policy); a person marks each of the 102 fields right or wrong on a local page, and `python -m eval.policy_benchmark` scores only the rows they verified.
 
 Need help now? [Dollar For](https://dollarfor.org) helps people apply for free, or call the hospital's billing office and ask for a financial assistance application.
 
@@ -237,10 +240,11 @@ curl -s localhost:8000/api/eligibility -H 'content-type: application/json' \
 All application code in this repository was written during the event. The commit history is the proof: the first commit is `ffe1677 2026-11-22 00:11:53 (ET, UTC−5)`, and the demo build is tagged `demo-freeze`.
 
 Things we used that existed before the event:
-- **Python libraries** (`requirements.txt`): FastAPI, Uvicorn, python-multipart, Anthropic SDK, Google GenAI SDK (optional provider), pdfplumber, pytesseract, pdf2image, httpx, pydantic, RapidFuzz, python-dotenv, pytest, ReportLab, Pillow, pillow-heif.
+- **Python libraries** (`requirements.txt`): FastAPI, Uvicorn, python-multipart, Anthropic SDK, Google GenAI SDK (optional provider), pdfplumber, pytesseract, pdf2image, httpx, pydantic, RapidFuzz, python-dotenv, pytest, ReportLab, Pillow, pillow-heif, pypdf.
 - **Front-end libraries** (`frontend/package.json`): Next.js, React, Tailwind CSS, Motion, Lucide icons, Base UI, shadcn, class-variance-authority, tw-animate-css; fonts Anton and DM Sans (Google Fonts via `next/font`).
 - **APIs:** Anthropic Claude API (Claude Sonnet 5.5) for reading bills and policies.
-- **Data:** the 2026 HHS poverty guidelines and public hospital financial assistance policies (listed above).
+- **Data:** the 2026 HHS poverty guidelines, public hospital financial assistance policies (listed above), Marshfield Clinic's public application form (EN/ES, `data/forms/`), and state charity-care laws from official sources (`data/state_laws.json`: WA RCW 70.170.060, CA Hospital Fair Pricing Act via HCAI, MD Health-General §19-214.1, OR ORS 442.614, NJ Charity Care Program N.J.A.C. 10:52).
+- **Browser features:** the Web Speech API (speechSynthesis) for "Read it to me"; no voice files are bundled.
 - **Tools:** we used Claude Code (an AI coding assistant) while building. The prompts we gave it are in `docs/process/`.
 
 ## Team
