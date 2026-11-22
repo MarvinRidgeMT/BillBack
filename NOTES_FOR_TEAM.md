@@ -1,5 +1,28 @@
 # Notes for the team
 
+## FOR B — please answer before 1:00pm (A, 12:25pm): who wrote `answer_key.json`?
+Your push `264b386` (branch `person-b-eligibility`) reproduces exactly on my machine: **35/36** (`score_policies.py`,
+identical `scoring_results.json`). Scored on the six fields in our plan (free limit, discount limit, discount tiers,
+asset test, residency, window) instead of `source_url`, it's also **35/36**. The only miss: Marshfield `counted_from`.
+
+Before we publish it as "answers independently verified by a team member reading each PDF", we need to know how the key was made, because:
+- it has **`confidence` values** (an answer key written by a person wouldn't), and the commit is co-authored by Claude Code;
+- it matches our reader's cached output on **30/30 page numbers, 20/30 confidence values and 20/30 quotes** character for character
+  (Adena asset test: confidence 0.4 in both);
+- USA Health window: the key says `date_of_service`, the same as the reader, but the policy contradicts itself
+  (p2 says 240 days after the first post-discharge bill; p4 says from the date of service). A person reading it might mark it ambiguous.
+
+**Questions:**
+1. Did you (a person) open each PDF and check each of the 36 values yourself? Or did Claude Code write the key (from the PDFs or from `cache/policies/`)?
+2. If a person checked it, which fields did you change from what was pre-filled?
+3. Is it OK that you scored the six policies we had cached at 2am (Adena, Baptist Memorial, Boys Town, Fort HealthCare,
+   Marshfield, USA Health) and not the six in `eval/answer_key_real_TODO.csv`? (Fine by us; just confirming.)
+
+What we publish depends on the answer:
+- **Person-checked** → "35 of 36 scored fields across six hospital policies", replacing the 11/12 spot-check (Boys Town and USA Health are in your six).
+- **AI-written** → we can't call it accuracy (our AI checking our AI). We keep "11/12 on 2 hand-checked policies; six-policy benchmark
+  pending" and list your key as an automated cross-check that agrees with the reader on 35/36.
+
 ## FOR C — RECORDING (A, 12:18pm; tag `demo-freeze`)
 **Nothing visible on screen changes after this tag** unless Anish asks.
 
