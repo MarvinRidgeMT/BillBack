@@ -52,8 +52,11 @@ flowchart LR
 - **Read it to me:** reads the result aloud, plus a short script for calling the billing office (EN/ES), using the voice already on the device.
 - **$0 finale:** for "likely free", the mini bill flips, the $0 OWED stamp lands and the bill scraps burst. With reduced motion, the stamp just appears.
 - **Deadline + calendar:** "Apply by…" from the policy's application window (conservative when it counts from the first bill), a days-left chip, and an `.ics` reminder built in the browser.
-- **SNAP, Medicaid or WIC (optional question):** points to the policy's presumptive-eligibility line when there is one, and suggests including the benefit letter.
+- **SNAP, Medicaid or WIC (optional question):** points to the policy's presumptive-eligibility line when there is one, and adds the benefit letter to the application checklist.
+- **If they say no:** a link downloads an appeal letter ("Request to reconsider…", EN/ES) with the policy quote and page, asking for the decision and its reasons in writing.
 - **State law box:** for hospitals in Washington, California, Maryland, Oregon and New Jersey, a one-line summary of the state's charity-care law with a link. Each was checked against the official page on Nov 22, 2026. Information only, not legal advice.
+
+**On the home page:** "Same bill, very different rules", a tile map of the U.S. with a dot for each hospital we've read, colored by its free-care limit (200% to 400% of the poverty line), with a screen-reader table of the same data.
 
 The whole app, the result and the PDF are available in **English and Spanish**. Policy quotes stay in the policy's own language and are labeled as such.
 
@@ -113,7 +116,7 @@ How these were measured: [eval/results/SUMMARY.md](eval/results/SUMMARY.md) (reb
 
 ## What's next
 
-Next, BillBack grows from 22 hospitals to every U.S. nonprofit hospital. Hospitals' own IRS tax filings (Form 990 [Schedule H](https://www.irs.gov/instructions/i990sh)) list the income limits each one uses, and [CMS's hospital list](https://data.cms.gov/provider-data/dataset/xubh-q36u) lets us match any bill to the right hospital. We'll check each saved policy against both, plus state charity-care laws (we already show Washington, California, Maryland, Oregon and New Jersey; New York, Illinois and Colorado come next, once we've confirmed them against the official text). After that: help for insured patients (26% of adults *with* health insurance had medical debt, per the [Urban Institute](https://www.urban.org/research/publication/more-one-quarter-us-adults-had-medical-debt-2025)), comparing the bill to the insurance statement and requesting an itemized bill; an appeal letter if the hospital says no, filling in each hospital's own application form, a map of how free-care limits differ by state, and a more natural on-device voice; and pilots with community health centers, 211 and legal aid. It stays free for patients and never sells data.
+Next, BillBack grows from 22 hospitals to every U.S. nonprofit hospital. Hospitals' own IRS tax filings (Form 990 [Schedule H](https://www.irs.gov/instructions/i990sh)) list the income limits each one uses, and [CMS's hospital list](https://data.cms.gov/provider-data/dataset/xubh-q36u) lets us match any bill to the right hospital. We'll check each saved policy against both, plus state charity-care laws (we already show Washington, California, Maryland, Oregon and New Jersey; New York, Illinois and Colorado come next, once we've confirmed them against the official text). After that: help for insured patients (26% of adults *with* health insurance had medical debt, per the [Urban Institute](https://www.urban.org/research/publication/more-one-quarter-us-adults-had-medical-debt-2025)), comparing the bill to the insurance statement and requesting an itemized bill; filling in each hospital's own application form, and a more natural on-device voice; and pilots with community health centers, 211 and legal aid. It stays free for patients and never sells data.
 
 The research behind this plan, with sources: [docs/research/expansion-research.md](docs/research/expansion-research.md).
 
@@ -165,11 +168,11 @@ All responses use `{"success": true, "data": ..., "error": null}`.
 | Route | What it does |
 |---|---|
 | `POST /api/bill/read` | multipart `file` (JPG/PNG/HEIC/PDF, ≤ 15 MB) → 5 fields with confidence, `fields_to_confirm`, `seconds`, `model` |
-| `GET /api/hospitals` | every hospital with a read policy: `[{slug, name, state}]` |
+| `GET /api/hospitals` | every hospital with a read policy: `[{slug, name, state, source_url, free_max_percent, discount_max_percent}]` |
 | `POST /api/hospitals/match` | `{hospital_name, hospital_address}` → `{slug, score, matched}` (matched only if score ≥ 80) |
 | `POST /api/eligibility` | `{hospital_slug, household_size, annual_income, state, assets_usd?}` → status, tier, policy quote, caveats |
 | `POST /api/policy/read` | multipart `file` (policy PDF) or `{"url": ...}` (beta) → rules JSON with quotes |
-| `POST /api/packet` | `{bill, hospital_slug, household_size, annual_income, eligibility, lang: "en"\|"es"}` → application PDF (built in memory, never saved) |
+| `POST /api/packet` | `{bill, hospital_slug, household_size, annual_income, eligibility, lang: "en"\|"es", kind?: "application"\|"appeal", benefits?: bool}` → application or appeal PDF (built in memory, never saved) |
 | `GET /api/policy/page?slug=&page=&quote=` | one page of the public policy PDF as a PNG + a box per line of the quote (`found: false` → no box) |
 | `GET /api/policy/thresholds?slug=&household_size=&state=` | poverty line and the policy's free/discount zones (for the what-if slider) |
 | `GET /api/policy/facts?slug=` | application window, presumptive-eligibility text, hospital state and state-law summary |

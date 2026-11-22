@@ -156,12 +156,14 @@ right before the freeze; trimming non-FAP pages is the planned fix.
 - **Video bill:** use `bill_10_crumpled_dim.jpg` (Fort HealthCare, WI). It's crumpled + dim, and its account number "FH 7735-0092" goes to the **confirm step** (it has a space, which our check rejects). With household 3 / $40,000 / WI it gives **Likely free care, 146% of FPL**, with the page 1 quote. `bill_09_text.pdf` (Marshfield) also gives a clean "likely free" result; I ran that one through the real UI.
 - Demo with no API at all: `BILL_CACHE_ONLY=1 DEMO_CACHE_ONLY=1` on the backend. The 10 sample bills are served from `cache/bills/`.
 
-## Wow features (session 2, branch `features-wow`, ~1:10pm)
+## Wow features (session 2, branch `features-wow`)
 - Shipped: policy receipt (page image + boxed quote), what-if income slider, Read it to me (device voice), $0 finale,
-  deadline + .ics, optional SNAP/Medicaid/WIC question, state-law box (WA, CA, MD, OR, NJ only).
-- Cut (in README/DEVPOST "What's next"): appeal letter, charity-care tile map, filling Fort HealthCare's own form,
-  benefit letter on the packet checklist (needs `packet.py`), Kokoro voice.
-- **License decision for Anish:** Kokoro's web bundle includes espeak-ng (GPL-3.0); the repo is MIT. Not vendored.
+  deadline + .ics, optional SNAP/Medicaid/WIC question (+ benefit letter on the packet checklist), state-law box
+  (WA, CA, MD, OR, NJ only), appeal letter (`kind: "appeal"` on `POST /api/packet`), charity-care tile map on home.
+- Skipped: filling Fort HealthCare's own form. Its policy PDF has no form fields, and its application is an online web form
+  (forthealthcare.com, Community Care page), not a fillable PDF.
+- **License decision for Anish:** Kokoro's web bundle includes espeak-ng (GPL-3.0); the repo is MIT. Not vendored;
+  Read it to me uses the device's own voice (speechSynthesis) in EN and ES.
 - State laws: NY (403), IL (TLS error) and CO (bill summary has no 250% figure) couldn't be confirmed on the official pages, so they're left out.
 - 6 of 50 cached policy quotes can't be located on their page (tables, odd text layers): the receipt says
   "We couldn't box this line" and draws no box. LA County, Mercy and Ochsner have no PDF on disk, so the button is hidden.
