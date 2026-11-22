@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Adena Health System",
+  "hospital_state": "OH",
+  "source": {
+    "url": null,
+    "sha256": "98aeefd8ed1f16d1e23a6102a0db9a96ebf6858e18976ff79539e9c3b9356eeb",
+    "retrieved_at": "2026-11-22",
+    "page_count": 7
+  },
+  "policy_effective_date": "05/2021",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "The patient' s individual or family, if applicable, income is at or below 200% of the current Federal Poverty Income Guidelines for a 100% CCP discount.",
+      "page": 2,
+      "confidence": 0.95,
+      "verified": true
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 201.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": 67.0,
+        "description": "67% CCP discount for income 201%-400% of FPL"
+      }
+    ],
+    "evidence": {
+      "quote": "The patient's individual or family, if applicable, income is 201%-400% of the current Federal Poverty Income Guidelines for a 67% CCP discount.",
+      "page": 2,
+      "confidence": 0.95,
+      "verified": true
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Application asks for asset verification such as a bank statement; the summary lists a bank statement as required. Asset testing is not required at NHSC-certified clinics (Greenfield, Hillsboro, Washington Courthouse).",
+    "evidence": {
+      "quote": "Please check income AND asset verification attached:",
+      "page": 5,
+      "confidence": 0.6,
+      "verified": true
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "Ohio counties: Adams, Athens, Clinton, Fayette, Gallia, Green, Highland, Hocking, Jackson, Madison, Pickaway, Pike, Ross, Scioto, Vinton (exceptions for NHSC clinics); HCAP requires Ohio residency",
+    "evidence": {
+      "quote": "At the time of service, the patient resides, with the intent to remain, in one of the following fifteen Ohio counties: Adams, Athens, Clinton, Fayette, Gallia, Green, Highland, Hocking, Jackson, Madison, Pickaway, Pike, Ross, Scioto, or Vinton, and is not receiving",
+      "page": 2,
+      "confidence": 0.9,
+      "verified": true
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "other",
+    "evidence": {
+      "quote": "Applications for CCP assistance will be accepted for a period of 240 days from the first follow-up notice for payment sent to the patient.",
+      "page": 1,
+      "confidence": 0.9,
+      "verified": true
+    }
+  },
+  "income_basis": "both",
+  "uses_income_table": true,
+  "insured_patients_eligible": null,
+  "presumptive_eligibility": null,
+  "how_to_apply": "Call 855-275-7408 or (740) 779-8786; email FinancialCounselingTeam@adena.org; mail/return to Adena Health System, Financial Counselor, 272 Hospital Rd Suite 240, Chillicothe, OH 45601; fax 740-779-8257; www.adena.org",
+  "needs_human_review": true,
+  "review_fields": [
+    "asset_test"
+  ],
+  "warnings": [
+    "Policy conflicts: the Plain Language Summary says you cannot be a Medicaid recipient, and the policy requires applying for Medicaid and being denied, except at NHSC clinics.",
+    "The HCAP program (Ohio) is for income below 100% FPL with 100% discount; the CCP program is the hospital's own, so the 200% free care limit is for CCP.",
+    "Application window counts from the first follow-up notice for payment; HCAP applications are accepted for three years from date of service.",
+    "The policy covers multiple entities: ARMC, AGMC, APMC, AMG, AFMC; rules are stated to apply uniformly.",
+    "Plain Language Summary table labels the 301-400% band as 67% and the 101-200% band as 100%, and the summary states income must be below 400% FPL.",
+    "Insured patient eligibility is not clearly stated; policy refers to uninsured self-pay discount and Medicaid denial requirement.",
+    "Policy expiration listed as 05/2022."
+  ]
+}

@@ -17,7 +17,8 @@ QUOTE_MATCH_THRESHOLD = 90
 UNVERIFIED_CONFIDENCE_CAP = 0.5
 SANITY_CONFIDENCE_CAP = 0.6
 REVIEW_CONFIDENCE_THRESHOLD = 0.8
-MIN_QUOTE_CHARS = 12
+MIN_QUOTE_CHARS = 6
+FUZZY_MIN_QUOTE_CHARS = 25  # shorter quotes (table rows) must match exactly
 FPL_PERCENT_RANGE = (100, 1000)
 WINDOW_DAYS_RANGE = (30, 730)
 
@@ -41,6 +42,8 @@ def _matches(quote_n: str, page_text: str) -> bool:
     page_n = normalize(page_text)
     if quote_n in page_n:
         return True
+    if len(quote_n) < FUZZY_MIN_QUOTE_CHARS:
+        return False
     return fuzz.partial_ratio(quote_n, page_n) >= QUOTE_MATCH_THRESHOLD
 
 

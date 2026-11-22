@@ -269,3 +269,39 @@ def test_raw_pdf_attached_only_when_pages_lack_text(tmp_path, monkeypatch):
     reader.read_policy(_policy_pdf(), client=Recorder(FIXTURE.read_text()), cache_dir=tmp_path, use_cache=False)
     assert seen[0].pdf_bytes is None
     assert "=== PAGE 3 ===" in seen[0].policy_text
+
+
+def test_blank_strings_and_zero_page_days_become_null():
+    data = json.loads(FIXTURE.read_text())
+    data["hospital_state"] = ""
+    data["how_to_apply"] = "  "
+    data["residency"]["area"] = ""
+    data["application_window"]["days"] = 0
+    data["asset_test"]["evidence"]["page"] = 0
+    rules = PolicyRules.model_validate(data)
+    assert rules.hospital_state is None and rules.how_to_apply is None
+    assert rules.residency.area is None
+    assert rules.application_window.days is None
+    assert rules.asset_test.evidence.page is None
+
+
+def test_strict_schema_fits_claude_union_limit():
+    from backend.policy_reader.schema import strict_json_schema
+
+    def count(node):
+        if isinstance(node, dict):
+            here = 1 if ("anyOf" in node or isinstance(node.get("type"), list)) else 0
+            return here + sum(count(v) for v in node.values())
+        if isinstance(node, list):
+            return sum(count(v) for v in node)
+        return 0
+
+    assert count(strict_json_schema()) <= 12
+
+
+def test_short_table_row_quotes_verify_exactly_but_not_fuzzily():
+    pages = {8: "Baptist FAP Discount Summary\n< 200% 100%\n201-250% 95%\n351-400% 80%"}
+    assert validate.find_quote("< 200% 100%", pages, 8) == (True, 8)
+    assert validate.find_quote("351-400% 80%", pages, 8) == (True, 8)
+    assert validate.find_quote("< 250% 100%", pages, 8)[0] is False
+    assert validate.find_quote("80%", pages, 8)[0] is False

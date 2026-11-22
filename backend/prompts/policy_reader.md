@@ -20,7 +20,7 @@ Also fill: hospital_name (the hospital or health system that issued the policy),
 
 Evidence rules:
 - Every one of the 6 fields needs evidence: copy the exact sentence(s) from the policy text, verbatim, character for character, under 60 words, and give the page number it appears on. Do not paraphrase, merge sentences from different places, fix typos, or add words. For a table row, copy the row text as it appears.
-- If the policy does not state something, set the value(s) to null, quote to "", page to null, and confidence 0.0-0.3. Never guess or fill in typical values (do not assume 200%/400% FPL or 240 days because they are common).
+- If the policy does not state something, set the value(s) to null (where the schema has no null: "" for text, 0 for a number of days), quote to "", page to 0, and confidence 0.0-0.3. Never guess or fill in typical values (do not assume 200%/400% FPL or 240 days because they are common).
 - confidence: 0.9-1.0 = stated explicitly in one place; 0.6-0.89 = needed light interpretation (for example combining a table header with a row); below 0.6 = unclear or inferred.
 
 Interpretation rules:

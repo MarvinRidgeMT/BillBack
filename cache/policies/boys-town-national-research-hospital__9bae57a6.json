@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Boys Town National Research Hospital",
+  "hospital_state": "NE",
+  "source": {
+    "url": null,
+    "sha256": "9bae57a6f61a7b35a4dfb09c66927f5ff3fc4faad63bbf8f1c1e02cb4b24677e",
+    "retrieved_at": "2026-11-22",
+    "page_count": 5
+  },
+  "policy_effective_date": "02/1/23",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "Patients who are uninsured or underinsured that do not have the necessary available funds to pay for services, and have a household income at or below 200% of Federal Poverty Guidelines (FPG) (shown in the table below) may receive free care (an 100% discount.)",
+      "page": 2,
+      "confidence": 0.95,
+      "verified": true
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 201.0,
+        "fpl_max_percent": 250.0,
+        "discount_type": "percent_off",
+        "value": 75.0,
+        "description": "75% discount off gross charges per table; patient will not pay more than AGB"
+      },
+      {
+        "fpl_min_percent": 251.0,
+        "fpl_max_percent": 300.0,
+        "discount_type": "percent_off",
+        "value": 50.0,
+        "description": "50% discount off gross charges per table; patient will not pay more than AGB"
+      },
+      {
+        "fpl_min_percent": 301.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": 25.0,
+        "description": "25% discount off gross charges per table; patient will not pay more than AGB"
+      }
+    ],
+    "evidence": {
+      "quote": "Individuals that do not have the necessary available funds to pay for services, with annual household incomes between 201% and 400% FPG will be eligible for up to a 75% discount of gross charges, as illustrated by the table below.",
+      "page": 2,
+      "confidence": 0.85,
+      "verified": true
+    }
+  },
+  "asset_test": {
+    "applies": true,
+    "details": "Patients with verified available cash on hand (liquid assets) to pay hospital balances are not eligible; cash on hand is considered in addition to income and family size.",
+    "evidence": {
+      "quote": "Patients who have verified available cash on hand (liquid assets) to pay hospital owed balances will not be eligible for financial assistance, per this FAP.",
+      "page": 2,
+      "confidence": 0.9,
+      "verified": true
+    }
+  },
+  "residency": {
+    "required": null,
+    "area": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.1,
+      "verified": null
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "Financial assistance will be considered at any point in the billing cycle, up to 240 days from the 1st billed date, post discharge date or date of service.",
+      "page": 3,
+      "confidence": 0.7,
+      "verified": true
+    }
+  },
+  "income_basis": "both",
+  "uses_income_table": true,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": null,
+  "how_to_apply": "Submit a complete application in person or by mail to BTNRH at 555 North 30th Street, Omaha, NE 68131; by phone call 531-355-8195; applications are also available at East and West Admissions and online.",
+  "needs_human_review": true,
+  "review_fields": [
+    "residency",
+    "application_window"
+  ],
+  "warnings": [
+    "Policy purpose statement says household income between 100% and 400% FPG, while the eligibility section gives free care at or below 200% FPG; the eligibility section was used.",
+    "Discount text says 'up to a 75% discount' for 201%-400%, while the table gives 75%, 50%, 25% tiers by band; the table was used.",
+    "Underinsured patients (insured with out-of-pocket costs) are eligible, but patients must have no sufficient available funds/cash on hand.",
+    "Application window counted from '1st billed date, post discharge date or date of service' is ambiguous.",
+    "Eligible only for emergency or medically necessary care."
+  ]
+}

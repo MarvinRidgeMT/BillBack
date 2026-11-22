@@ -9,7 +9,7 @@ from __future__ import annotations
 import copy
 from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 SCHEMA_VERSION = "1.0"
 
@@ -31,6 +31,21 @@ IncomeBasis = Literal["fpl_percent", "income_table", "both", "unclear"]
 
 class _Model(BaseModel):
     model_config = ConfigDict(extra="ignore")
+
+    @model_validator(mode="before")
+    @classmethod
+    def _unset_markers_to_none(cls, data: Any) -> Any:
+        """Strict model output can't use many nulls, so "" (text) and 0 (page/days) mean "not stated"."""
+        if not isinstance(data, dict):
+            return data
+        out = dict(data)
+        for name, info in cls.model_fields.items():
+            value = out.get(name)
+            if info.annotation == Optional[str] and isinstance(value, str) and not value.strip():
+                out[name] = None
+            elif info.annotation == Optional[int] and value == 0 and not isinstance(value, bool):
+                out[name] = None
+        return out
 
 
 class Evidence(_Model):
@@ -163,11 +178,29 @@ def llm_json_schema() -> dict[str, Any]:
 _UNSUPPORTED_STRICT_KEYWORDS = ("minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum", "minLength", "maxLength")
 
 
+_COLLAPSIBLE_TYPES = {"string": '"" if not stated', "integer": "0 if not stated"}
+
+
+def _collapse_nullable(node: dict[str, Any]) -> dict[str, Any]:
+    """anyOf[string|integer, null] -> plain type ("" / 0 = not stated) to stay under Claude's union limit."""
+    options = node.get("anyOf")
+    if not isinstance(options, list) or len(options) != 2 or {"type": "null"} not in options:
+        return node
+    (real,) = [o for o in options if o != {"type": "null"}]
+    if real.get("type") not in _COLLAPSIBLE_TYPES or "enum" in real:
+        return node
+    rest = {k: v for k, v in node.items() if k != "anyOf"}
+    note = _COLLAPSIBLE_TYPES[real["type"]]
+    description = f"{rest.get('description', '')} Use {note}.".strip()
+    return {**real, **rest, "description": description}
+
+
 def _strict(node: Any) -> Any:
     if isinstance(node, list):
         return [_strict(item) for item in node]
     if not isinstance(node, dict):
         return node
+    node = _collapse_nullable(node)
     out = {k: _strict(v) for k, v in node.items() if k not in _UNSUPPORTED_STRICT_KEYWORDS}
     if out.get("type") == "object" and "properties" in out:
         out["additionalProperties"] = False

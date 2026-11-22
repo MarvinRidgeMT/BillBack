@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "hospital_name": "Fort HealthCare, Inc.",
+  "hospital_state": "WI",
+  "source": {
+    "url": null,
+    "sha256": "5cc2d46b75d0d9cb5ec6649bb244aa88bcbe9f102eef0816b166872b44634781",
+    "retrieved_at": "2026-11-22",
+    "page_count": 10
+  },
+  "policy_effective_date": "01/01/2025",
+  "free_care": {
+    "fpl_max_percent": 200.0,
+    "evidence": {
+      "quote": "Persons whose income is at or up to 200% of the guidelines will be considered for complete forgiveness of their outstanding bill.",
+      "page": 1,
+      "confidence": 0.95,
+      "verified": true
+    }
+  },
+  "discount": {
+    "fpl_max_percent": 400.0,
+    "tiers": [
+      {
+        "fpl_min_percent": 201.0,
+        "fpl_max_percent": 210.0,
+        "discount_type": "percent_off",
+        "value": 90.0,
+        "description": "Table: 210% FPG gets 90% discount (table lists in 10% steps; bands approximate)"
+      },
+      {
+        "fpl_min_percent": 211.0,
+        "fpl_max_percent": 220.0,
+        "discount_type": "percent_off",
+        "value": 80.0,
+        "description": "Table: 220% FPG gets 80% discount"
+      },
+      {
+        "fpl_min_percent": 221.0,
+        "fpl_max_percent": 230.0,
+        "discount_type": "percent_off",
+        "value": 70.0,
+        "description": "Table: 230% FPG gets 70% discount"
+      },
+      {
+        "fpl_min_percent": 231.0,
+        "fpl_max_percent": 240.0,
+        "discount_type": "percent_off",
+        "value": 60.0,
+        "description": "Table: 240% FPG gets 60% discount"
+      },
+      {
+        "fpl_min_percent": 241.0,
+        "fpl_max_percent": 250.0,
+        "discount_type": "percent_off",
+        "value": 50.0,
+        "description": "Table: 250% FPG gets 50% discount"
+      },
+      {
+        "fpl_min_percent": 251.0,
+        "fpl_max_percent": 260.0,
+        "discount_type": "percent_off",
+        "value": 40.0,
+        "description": "Table: 260% FPG gets 40% discount"
+      },
+      {
+        "fpl_min_percent": 261.0,
+        "fpl_max_percent": 270.0,
+        "discount_type": "percent_off",
+        "value": 35.0,
+        "description": "Table: 270% FPG gets 35% discount"
+      },
+      {
+        "fpl_min_percent": 271.0,
+        "fpl_max_percent": 280.0,
+        "discount_type": "percent_off",
+        "value": 30.0,
+        "description": "Table: 280% FPG gets 30% discount"
+      },
+      {
+        "fpl_min_percent": 281.0,
+        "fpl_max_percent": 290.0,
+        "discount_type": "percent_off",
+        "value": 25.0,
+        "description": "Table: 290% FPG gets 25% discount"
+      },
+      {
+        "fpl_min_percent": 291.0,
+        "fpl_max_percent": 320.0,
+        "discount_type": "percent_off",
+        "value": 20.0,
+        "description": "Table: 300% and 320% FPG get 20% discount"
+      },
+      {
+        "fpl_min_percent": 321.0,
+        "fpl_max_percent": 360.0,
+        "discount_type": "percent_off",
+        "value": 15.0,
+        "description": "Table: 340% and 360% FPG get 15% discount"
+      },
+      {
+        "fpl_min_percent": 361.0,
+        "fpl_max_percent": 400.0,
+        "discount_type": "percent_off",
+        "value": 10.0,
+        "description": "Table: 380% and 400% FPG get 10% discount"
+      }
+    ],
+    "evidence": {
+      "quote": "Persons whose income is greater than 200% of the guidelines, but not more than 400% of the guidelines, shall be eligible for Community Care on a reduced basis.",
+      "page": 1,
+      "confidence": 0.9,
+      "verified": true
+    }
+  },
+  "asset_test": {
+    "applies": null,
+    "details": null,
+    "evidence": {
+      "quote": "",
+      "page": null,
+      "confidence": 0.2,
+      "verified": null
+    }
+  },
+  "residency": {
+    "required": true,
+    "area": "Primary and secondary service areas for Community Care; non-residents without insurance get only a self-pay discount",
+    "evidence": {
+      "quote": "Community Care write-offs are available to eligible persons residing in our primary and secondary service areas requiring medically necessary treatment, but who are unable to pay for these services.",
+      "page": 1,
+      "confidence": 0.85,
+      "verified": true
+    }
+  },
+  "application_window": {
+    "days": 240,
+    "counted_from": "first_post_discharge_billing_statement",
+    "evidence": {
+      "quote": "Financial Assistance applications will be accepted by agency if (a) within 240 days from date of first post- discharged bill or (b) if later, 30 days from the date of ECA notification.",
+      "page": 4,
+      "confidence": 0.85,
+      "verified": true
+    }
+  },
+  "income_basis": "both",
+  "uses_income_table": true,
+  "insured_patients_eligible": true,
+  "presumptive_eligibility": "Electronic screening may grant presumptive eligibility for groups such as incarcerated, homeless, Medicaid eligible but not on the date of service, or deceased with no estate.",
+  "how_to_apply": "Complete the signed Financial Questionnaire (Attachment 2) returned by mail or online at www.forthealthcare.com; an appointment with the Patient Financial Advocate is available.",
+  "needs_human_review": true,
+  "review_fields": [
+    "asset_test"
+  ],
+  "warnings": [
+    "Policy refers to Community Services Administration poverty guidelines and FPL/FPG interchangeably.",
+    "Uninsured self-pay patients get an automatic 68% self-pay discount (AGB) separate from Community Care.",
+    "Discount tiers come from the table, which lists 10% steps; boundaries between table rows are inferred and the policy does not state them.",
+    "Patients above 200% FPL must apply for Medicaid or Marketplace coverage before the application is processed.",
+    "Patients with HSA, HRA or FSA are expected to use those funds first.",
+    "Balances older than 240 days from date of service sent to collections are not eligible.",
+    "Catastrophic adjustment may apply for expenses exceeding income.",
+    "Services not covered include cosmetic, bariatric, fertility, and retail services.",
+    "Policy text says application is accepted 240 days from first post-discharge bill or, if later, 30 days after ECA notification.",
+    "Asset test is not stated, so the value is null."
+  ]
+}
