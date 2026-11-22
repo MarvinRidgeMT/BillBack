@@ -1,0 +1,11 @@
+file,condition,hospital_slug,state,hospital_name,hospital_address,amount_due,amount_due_cents,service_date,account_number
+bill_01_clean.jpg,clean,usa-health,AL,USA Health,"1200 Magnolia Grove Blvd, Mobile, AL 36617",4812.00,481200,2026-08-14,UH-4471902
+bill_02_text.pdf,pdf,boys-town-national-research-hospital,NE,Boys Town National Research Hospital,"5500 Larkspur Ave, Omaha, NE 68131",1955.25,195525,2026-07-02,BT-00938815
+bill_03_angled.jpg,angled,fort-healthcare-inc,WI,Fort HealthCare,"811 Cedar Bluff Rd, Fort Atkinson, WI 53538",4931.80,493180,2026-09-21,FH 7720-1145
+bill_04_angled_blur.jpg,angled + slight blur,marshfield-clinic-health-system,WI,Marshfield Clinic Health System,"302 Birchwood Lane, Marshfield, WI 54449",2530.00,253000,2026-06-30,MC-55203917
+bill_05_crumpled.jpg,crumpled,adena-health-system,OH,Adena Health System,"77 Ridgeline Pkwy, Chillicothe, OH 45601",6700.00,670000,2026-10-03,ADH-3309184
+bill_06_crumpled.jpg,crumpled,baptist-memorial-health-care-corporation,MS,Baptist Memorial Health Care,"4100 Pecan Hollow Dr, Columbus, MS 39705",2412.40,241240,2026-05-11,BMH-20871466
+bill_07_dim.jpg,dim light,usa-health,AL,USA Health,"1200 Magnolia Grove Blvd, Mobile, AL 36617",8001.00,800100,2026-04-19,UH-4489315
+bill_08_dim_angled.jpg,dim light + angled,boys-town-national-research-hospital,NE,Boys Town National Research Hospital,"5500 Larkspur Ave, Omaha, NE 68131",2250.00,225000,2026-09-09,BT-01147722
+bill_09_text.pdf,pdf,marshfield-clinic-health-system,WI,Marshfield Clinic Health System,"302 Birchwood Lane, Marshfield, WI 54449",340.75,34075,2026-03-03,MC-55418820
+bill_10_crumpled_dim.jpg,crumpled + dim light,fort-healthcare-inc,WI,Fort HealthCare,"811 Cedar Bluff Rd, Fort Atkinson, WI 53538",5800.00,580000,2026-11-02,FH 7735-0092
