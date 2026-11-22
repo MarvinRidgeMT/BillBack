@@ -1035,6 +1035,18 @@
   .how ol {
     grid-template-columns: 1fr;
   }
+  /* Footer: one item per line, no dots left hanging at the start of a line. */
+  .site-footer ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .site-footer li {
+    min-height: 0;
+    padding: 4px 0;
+  }
+  .site-footer li + li::before {
+    content: none;
+  }
   .verdict {
     gap: 22px;
   }

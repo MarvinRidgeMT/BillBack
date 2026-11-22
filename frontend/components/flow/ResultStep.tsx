@@ -342,7 +342,7 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
 
       <p className="help-line">
         {t("result.help_call")} · {t("result.help_free")}{" "}
-        <a className="text-link" href={DOLLAR_FOR_URL} target="_blank" rel="noopener noreferrer">
+        <a className="text-link tap" href={DOLLAR_FOR_URL} target="_blank" rel="noopener noreferrer">
           Dollar For
           <span className="sr-only"> {t("result.new_tab")}</span>
         </a>
