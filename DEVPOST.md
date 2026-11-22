@@ -1,0 +1,74 @@
+# Devpost submission text (copy and paste each field)
+
+All numbers come from `eval/results/SUMMARY.md`. Replace `TODO_VIDEO_URL`, `TODO_DEMO_URL` and `TODO_NAME` before submitting.
+
+---
+
+## Project name
+BillBack
+
+## Tagline (≤ 60 characters)
+You may not owe this bill. Find out in 60 seconds.
+
+## Links
+- Video: TODO_VIDEO_URL
+- Demo: TODO_DEMO_URL (or run locally: see the README)
+- Code: https://github.com/MarvinRidgeMT/BillBack
+
+---
+
+## Inspiration
+Nonprofit hospitals have to offer free or discounted care to low-income patients, but the rules sit in long PDFs that few patients ever read. KFF Health News found hospitals sent $2.7 billion in bills over one year to patients who probably qualified for that help ([source](https://kffhealthnews.org/news/patients-eligible-for-charity-care-instead-get-big-bills/)). The nonprofit Dollar For has helped file more than 17,000 applications and get more than $60 million relieved, and its staff read each hospital policy by hand ([source](https://pmc.ncbi.nlm.nih.gov/articles/PMC12230784/)). We wanted a patient to get that answer from a photo of their bill, in about a minute.
+
+## What it does
+You take a photo of a hospital bill. BillBack reads the hospital name, address, amount due, service date and account number, and asks you to confirm anything it isn't sure about. It finds that hospital's financial assistance policy and asks two questions: household size and yearly income. Then it tells you whether you're likely to get free care, a discount, or neither, and it quotes the exact sentence and page of the hospital's own policy, with a link to the PDF. Every result says "Likely eligible, not a guarantee." The app works in English and Spanish.
+
+## How we built it
+The backend is Python and FastAPI. Claude Sonnet 5.5 does two extraction jobs, and nothing else: reading the bill (vision) and turning each hospital policy PDF into structured rules, where every rule has a word-for-word quote, a page number and a confidence score. Code then checks the model's work: every quote has to be found in the PDF text, amounts have to parse to cents, dates have to be real, and anything under 0.8 confidence goes to the patient or to review. The eligibility decision is a plain-Python rules engine with tests, using the 2026 HHS poverty guidelines from the Federal Register. The front end is Next.js, with a confirm step for unsure fields and a result screen that shows the policy quote.
+
+## Challenges we ran into
+Hospital policies contradict themselves. USA Health's policy gives two different start dates for its 240-day application window, so we added an "unclear" status that sends the field to review instead of picking one. Claude's structured output allows at most 16 nullable fields and our schema had 21, so unstated text comes back as "" and unstated page or day numbers as 0, and code turns them back into null. Our first eligibility integration quietly used 2024 poverty numbers instead of 2026; a regression test now pins the year. Several hospital links from our list pointed to an application form, a clinic fee schedule or a dead page, and we report each of those failures instead of hiding them.
+
+## Accomplishments that we're proud of
+On our 10 fake test bills (clean, angled, crumpled, dim), BillBack read 50 of 50 fields correctly, in about 2.6 seconds and about one cent per bill. Every policy quote it shows was found word for word in the hospital's PDF (21 of 21). The rules engine gave the expected answer for all 10 test households, and 215 automated tests pass. We read 19 real policy documents from hospital websites, including policies with 250%, 300% and 400% free-care limits.
+
+## What we learned
+Getting the model to extract was the easy part; proving it extracted correctly took most of the work. Asking for a word-for-word quote plus a page number, then checking it in code, catches made-up answers cheaply. "The policy doesn't say" and "the policy is unclear" have to be different answers, or every hospital looks uncertain. And we couldn't measure everything: nobody hand-labeled real policies field by field, so we report two hand spot-checks (11 of 12 fields right) instead of claiming a bigger accuracy number.
+
+## What's next
+Build the filled-in application packet (the button is there; the PDF isn't yet), and ask about savings so hospitals with an asset test get a full answer. Grow from 19 policies toward national coverage, with a human reviewing every policy before it goes live. Add state charity-care laws, which often go further than the federal rules, and track deadlines so an eligible bill doesn't turn into debt first. Pilot with community health centers and navigators, and measure dollars actually forgiven. BillBack will stay free for patients, and it will never sell their data or let a partner change an eligibility result.
+
+## Built with
+python, fastapi, anthropic, claude, pydantic, pdfplumber, rapidfuzz, pillow, reportlab, pytest, next.js, react, typescript, tailwindcss
+
+## Sponsor tools
+None.
+
+---
+
+## Built during the event (required statement)
+All application code in this repository was written during EvoHacks II. The commit history is the proof: the first commit is `ffe1677` (2026-11-22 00:11:53 ET) and the code was finished at `abfdb1d` (2026-11-22 11:14:39 ET), before the docs and submission commits.
+
+Pre-existing things we used:
+- Python libraries from `requirements.txt`: FastAPI, Uvicorn, python-multipart, Anthropic SDK, Google GenAI SDK (optional provider), pdfplumber, pytesseract, pdf2image, httpx, pydantic, RapidFuzz, python-dotenv, pytest, ReportLab, Pillow, pillow-heif.
+- Front-end libraries from `frontend/package.json`: Next.js, React, Tailwind CSS, Motion, Lucide icons, Base UI, shadcn, class-variance-authority, tw-animate-css; fonts Anton and DM Sans (Google Fonts).
+- API: Anthropic Claude API (Claude Sonnet 5.5).
+- Data: 2026 HHS poverty guidelines (Federal Register 2026-00755) and public hospital financial assistance policies.
+- Tools: we used Claude Code, an AI coding assistant, while building. Our prompts are in `docs/process/`.
+
+## Team
+- TODO_NAME: AI and backend (policy reader, bill reader, poverty-line math, integration, evals)
+- TODO_NAME: eligibility rules engine, policies, answer key, households
+- TODO_NAME: front end, sample bills, design, video
+
+---
+
+## How we meet the judging criteria
+| Criterion | Where to look |
+|---|---|
+| Fit to the prompt | A tool that helps people facing medical bills claim help the law already gives them |
+| Problem and impact | $2.7B billed to likely-eligible patients in one year (KFF); Dollar For's 17,000+ applications done by hand (Health Affairs) |
+| Technical execution | Two AI readers with code checks, a tested rules engine, 215 passing tests, evals in `eval/results/SUMMARY.md` |
+| Usability and accessibility | Photo in, answer out in seconds; two questions; confirm step for unsure fields; English and Spanish; plain-language result |
+| Appropriate use of tech | AI only extracts; plain code decides; every rule cites quote + page; low confidence goes to a person; honest limits in the README |
+| Video | TODO_VIDEO_URL: a crumpled, dim bill → confirm step → "Likely free care" with the policy quote |
