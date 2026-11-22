@@ -58,6 +58,7 @@
   "manual.amount_hint": "For example 4,812.00",
   "manual.date_hint": "For example Aug 14, 2026",
   "manual.next": "Next",
+  "manual.back": "Add a photo instead",
   "questions.title": "Two quick questions",
   "questions.sub": "Hospitals decide using household size and yearly income.",
   "questions.household": "People in your household",

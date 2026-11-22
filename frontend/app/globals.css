@@ -113,6 +113,8 @@
   }
 }
 
+/* Component styles sit in the components layer so Tailwind utilities can still override them. */
+@layer components {
 /* ---------- Stage, sky, nav ---------- */
 .stage {
   position: relative;
@@ -587,7 +589,7 @@
   background: var(--coral);
   color: var(--on-coral);
 }
-.text-input {
+.field-input {
   font: inherit;
   font-weight: 500;
   border: 1.5px solid var(--line);
@@ -599,10 +601,10 @@
   min-height: 44px;
   transition: border-color 0.2s ease;
 }
-.field-row.check .text-input {
+.field-row.check .field-input {
   border-color: color-mix(in srgb, var(--coral) 55%, var(--line));
 }
-.text-input::placeholder {
+.field-input::placeholder {
   color: var(--ink-2);
   font-weight: 400;
 }
@@ -625,6 +627,14 @@
   font-weight: 500;
   color: var(--ink);
   background: var(--coral-bg);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 10px 0 0;
+}
+.info-text {
+  font-size: 15px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--mint) 35%, transparent);
   border-radius: 8px;
   padding: 8px 12px;
   margin: 10px 0 0;
@@ -691,8 +701,8 @@
   border-radius: 999px;
   background: none;
   color: var(--ink);
-  font-size: 22px;
-  line-height: 1;
+  display: grid;
+  place-items: center;
   transition: transform 0.12s var(--ease-out);
 }
 .stepper button:active {
@@ -764,6 +774,16 @@
   font: 10px/1.5 var(--font-mono);
   color: #5b6b65;
   overflow-wrap: anywhere;
+}
+.mini-bill .mini-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.mini-bill s {
+  text-decoration-color: var(--coral);
+  text-decoration-thickness: 1.5px;
 }
 .mini-bill .stamp {
   width: 62%;
@@ -887,4 +907,5 @@
   * {
     transition: none !important;
   }
+}
 }
