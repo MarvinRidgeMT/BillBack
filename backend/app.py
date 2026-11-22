@@ -9,6 +9,9 @@ from fastapi import FastAPI, HTTPException, Request, UploadFile
 from fastapi.concurrency import run_in_threadpool
 
 
+from pydantic import BaseModel, Field
+
+from backend import eligibility_stub, fpl
 from backend.bill_reader import reader as bill_reader
 from backend.policy_reader.fetch import MAX_BYTES, FetchError, fetch_policy_pdf
 from backend.policy_reader.reader import PolicyReaderError, read_policy
@@ -80,3 +83,35 @@ async def bill_read(file: UploadFile) -> dict[str, Any]:
         log.exception("bill reader failed")
         raise HTTPException(502, "could not read that bill; please try again") from exc
     return _envelope(result.to_dict())
+
+
+class EligibilityRequest(BaseModel):
+    hospital_slug: str = Field(..., max_length=60)
+    household_size: int = Field(..., ge=1, le=30)
+    annual_income: float = Field(..., ge=0, le=10_000_000)
+    state: str = Field(..., min_length=2, max_length=2)
+
+
+@app.post("/api/eligibility")
+def eligibility(req: EligibilityRequest) -> dict[str, Any]:
+    """STUB engine until B's rules engine lands. Policy chosen by cached hospital slug."""
+    try:
+        rules, _ = eligibility_stub.load_policy(req.hospital_slug)
+        pct = fpl.percent_of_fpl(req.annual_income, req.household_size, req.state)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except LookupError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except FileNotFoundError as exc:
+        log.error("FPL table missing: %s", exc)
+        raise HTTPException(503, "poverty guideline table is not loaded yet") from exc
+    decision = eligibility_stub.decide(pct, rules)
+    return _envelope(
+        {
+            **decision,
+            "percent_of_fpl": round(pct, 2),
+            "hospital_name": rules.hospital_name,
+            "source_url": eligibility_stub.source_url(rules),
+            "engine": "stub",
+        }
+    )
