@@ -124,6 +124,7 @@
 .sky {
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
 }
 .sky-layer {
@@ -171,6 +172,18 @@
   opacity: 0.95;
   transform: rotate(var(--r));
   animation: tumble 30s ease-in-out infinite alternate;
+}
+.scrap-layer {
+  transition: opacity 0.5s ease;
+}
+/* A step card is open: the scraps hold still and fade back, so nothing moves next to the form. */
+.sky.calm .scrap {
+  animation-play-state: paused;
+}
+.sky.calm .scrap-layer {
+  opacity: 0.35;
+  /* Also drops the pointer parallax that Motion sets inline. */
+  transform: none !important;
 }
 .scrap svg {
   display: block;
