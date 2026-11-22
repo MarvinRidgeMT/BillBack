@@ -1,0 +1,14 @@
+{
+  "household_id": "HH-006",
+  "description": "Couple, just over 200% FPL, under 300% (tests tier progression)",
+  "household_size": 2,
+  "annual_income_usd": "45000",
+  "residency_state": "CO",
+  "residency_county": "Denver",
+  "assets_usd": "20000",
+  "insurance_status": "uninsured",
+  "facility_name": null,
+  "service_type": "inpatient",
+  "patient_age": 31,
+  "patient_citizenship": "legal_resident"
+}

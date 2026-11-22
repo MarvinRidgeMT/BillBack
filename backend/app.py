@@ -12,6 +12,11 @@ from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
 from backend import eligibility_stub, fpl
+from backend.eligibility import (
+    run_eligibility,
+    eligibility_result_to_api_response,
+    load_fpl_table_from_json,
+)
 from backend.bill_reader import reader as bill_reader
 from backend.policy_reader.fetch import MAX_BYTES, FetchError, fetch_policy_pdf
 from backend.policy_reader.reader import PolicyReaderError, read_policy
@@ -90,14 +95,19 @@ class EligibilityRequest(BaseModel):
     household_size: int = Field(..., ge=1, le=30)
     annual_income: float = Field(..., ge=0, le=10_000_000)
     state: str = Field(..., min_length=2, max_length=2)
+    assets_usd: float | None = Field(None, ge=0, description="Total household assets (optional)")
+    insurance_status: str | None = Field(None, description="Insurance status: uninsured, insured, underinsured (optional)")
+    residency_state: str | None = Field(None, min_length=2, max_length=2, description="State of residency if different from state (optional)")
 
 
 @app.post("/api/eligibility")
 def eligibility(req: EligibilityRequest) -> dict[str, Any]:
-    """STUB engine until B's rules engine lands. Policy chosen by cached hospital slug."""
+    """Real rules engine (Person B's EligibilityEngine). Policy chosen by cached hospital slug."""
     try:
         rules, _ = eligibility_stub.load_policy(req.hospital_slug)
-        pct = fpl.percent_of_fpl(req.annual_income, req.household_size, req.state)
+        # Use the same FPL table for both percent calculation and resolver
+        fpl_table = fpl._default_table()
+        pct = fpl.percent_of_fpl(req.annual_income, req.household_size, req.state, table=fpl_table)
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
     except LookupError as exc:
@@ -105,13 +115,25 @@ def eligibility(req: EligibilityRequest) -> dict[str, Any]:
     except FileNotFoundError as exc:
         log.error("FPL table missing: %s", exc)
         raise HTTPException(503, "poverty guideline table is not loaded yet") from exc
-    decision = eligibility_stub.decide(pct, rules)
-    return _envelope(
-        {
-            **decision,
-            "percent_of_fpl": round(pct, 2),
-            "hospital_name": rules.hospital_name,
-            "source_url": eligibility_stub.source_url(rules),
-            "engine": "stub",
-        }
+
+    # Load FPL resolver from the same table used for percent_of_fpl
+    try:
+        fpl_resolver = load_fpl_table_from_json(fpl_table)
+    except FileNotFoundError:
+        # Fallback: create synthetic resolver for testing
+        from billback.eligibility import create_synthetic_resolver
+        fpl_resolver = create_synthetic_resolver()
+
+    result = run_eligibility(
+        rules=rules,
+        household_size=req.household_size,
+        annual_income=req.annual_income,
+        state=req.state,
+        fpl_resolver=fpl_resolver,
+        assets_usd=req.assets_usd,
+        insurance_status=req.insurance_status,
+        residency_state=req.residency_state,
     )
+
+    response = eligibility_result_to_api_response(result, rules, pct)
+    return _envelope(response)

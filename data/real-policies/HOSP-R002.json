@@ -1,0 +1,75 @@
+{
+  "policy_id": "HOSP-R002",
+  "hospital_name": "Los Angeles General Medical Center",
+  "facility_names": ["Los Angeles General Medical Center"],
+  "state": "CA",
+  "source_url": "https://cobijohealth.org/hospital/los-angeles-general-medical-center",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "contiguous",
+  "verification_status": "unverified",
+  "verification_notes": "Web page found, no direct PDF link; need to locate official FAP PDF",
+  "tiers": [
+    {
+      "tier_id": "free-200",
+      "name": "Free Care - 200% FPL",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Los Angeles County resident",
+          "required": true,
+          "verified_value": "CA",
+          "evidence_ref": "UNVERIFIED - need to check PDF section"
+        },
+        {
+          "name": "asset_test",
+          "description": "Assets under threshold",
+          "required": true,
+          "verified_value": "UNVERIFIED",
+          "evidence_ref": "UNVERIFIED - need to check PDF section"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "UNVERIFIED - need to check PDF page/section",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-350",
+      "name": "Discounted Care - 350% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "350",
+      "inclusivity": "inclusive",
+      "discount_percent": "UNVERIFIED",
+      "discount_formula": "UNVERIFIED",
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Los Angeles County resident",
+          "required": true,
+          "verified_value": "CA",
+          "evidence_ref": "UNVERIFIED - need to check PDF section"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "UNVERIFIED - need to check PDF page/section",
+      "priority": 1
+    }
+  ],
+  "key_fields": {
+    "free_cutoff_fpl_percent": {"value": "200", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "discount_cutoff_fpl_percent": {"value": "350", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "discount_amount_or_formula": {"value": "UNVERIFIED", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "asset_test": {"value": "UNVERIFIED", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "residency_rule": {"value": "Los Angeles County resident required", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "application_deadline": {"value": "UNVERIFIED", "verified": false, "source": "UNVERIFIED - need to check PDF"}
+  }
+}

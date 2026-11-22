@@ -1,0 +1,76 @@
+{
+  "generated_date": "2026-11-22",
+  "total_households": 10,
+  "households": [
+    {
+      "household_id": "HH-001",
+      "description": "Single person, low income, qualifies for free care at most hospitals",
+      "household_size": 1,
+      "annual_income_usd": "18000",
+      "residency_state": "CA"
+    },
+    {
+      "household_id": "HH-002",
+      "description": "Couple, moderate income, near 200% FPL boundary",
+      "household_size": 2,
+      "annual_income_usd": "40000",
+      "residency_state": "NY"
+    },
+    {
+      "household_id": "HH-003",
+      "description": "Family of 4, income above free tier but qualifies for discount",
+      "household_size": 4,
+      "annual_income_usd": "65000",
+      "residency_state": "TX"
+    },
+    {
+      "household_id": "HH-004",
+      "description": "Large family (6), high income, likely not eligible",
+      "household_size": 6,
+      "annual_income_usd": "120000",
+      "residency_state": "FL"
+    },
+    {
+      "household_id": "HH-005",
+      "description": "Single person, exactly at 200% FPL for household of 2 (testing inclusive)",
+      "household_size": 2,
+      "annual_income_usd": "40880",
+      "residency_state": "WA"
+    },
+    {
+      "household_id": "HH-006",
+      "description": "Couple, just over 200% FPL, under 300% (tests tier progression)",
+      "household_size": 2,
+      "annual_income_usd": "45000",
+      "residency_state": "CO"
+    },
+    {
+      "household_id": "HH-007",
+      "description": "Family of 3, missing residency info (tests needs_more_info)",
+      "household_size": 3,
+      "annual_income_usd": "35000",
+      "residency_state": null
+    },
+    {
+      "household_id": "HH-008",
+      "description": "Single person in Alaska, tests AK FPL region",
+      "household_size": 1,
+      "annual_income_usd": "30000",
+      "residency_state": "AK"
+    },
+    {
+      "household_id": "HH-009",
+      "description": "Couple in Hawaii, tests HI FPL region",
+      "household_size": 2,
+      "annual_income_usd": "45000",
+      "residency_state": "HI"
+    },
+    {
+      "household_id": "HH-010",
+      "description": "Family of 5 with assets over limit (tests asset test failure)",
+      "household_size": 5,
+      "annual_income_usd": "40000",
+      "residency_state": "MA"
+    }
+  ]
+}

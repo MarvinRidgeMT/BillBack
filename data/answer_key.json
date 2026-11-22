@@ -1,0 +1,2333 @@
+{
+  "generated_date": "2026-11-22",
+  "total_combinations": 200,
+  "results": {
+    "HOSP-001": {
+      "HH-001": {
+        "status": "likely_free",
+        "matching_tier": "free-200",
+        "matching_tier_name": "Free Care - 200% FPL",
+        "matching_tier_type": "free",
+        "discount_percent": null,
+        "explanation": "Household income ($18,000) qualifies for free care under 'Free Care - 200% FPL' (threshold: at or below $30,120.00 (200% FPL)). All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $81,760.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $124,800.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $167,840.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $81,760.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $81,760.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '50% Discount - 400% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $60,240.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $81,760.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $146,320.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "asset_test",
+          "residency"
+        ]
+      }
+    },
+    "HOSP-002": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "60% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '60% Discount - 400% FPL' (threshold: below $60,240.00 (400% FPL)) with 60% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_free",
+        "matching_tier": "free-300",
+        "matching_tier_name": "Free Care - 300% FPL",
+        "matching_tier_type": "free",
+        "discount_percent": null,
+        "explanation": "Household income ($40,000) qualifies for free care under 'Free Care - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)). All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "60% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '60% Discount - 400% FPL' (threshold: below $124,800.00 (400% FPL)) with 60% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "60% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '60% Discount - 400% FPL' (threshold: below $167,840.00 (400% FPL)) with 60% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "60% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '60% Discount - 400% FPL' (threshold: below $81,760.00 (400% FPL)) with 60% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "60% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '60% Discount - 400% FPL' (threshold: below $81,760.00 (400% FPL)) with 60% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '60% Discount - 400% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "60% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '60% Discount - 400% FPL' (threshold: below $60,240.00 (400% FPL)) with 60% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "60% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '60% Discount - 400% FPL' (threshold: below $81,760.00 (400% FPL)) with 60% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "60% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '60% Discount - 400% FPL' (threshold: below $146,320.00 (400% FPL)) with 60% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-003": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($18,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: 100 - (income / threshold * 50)). All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($40,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: 100 - (income / threshold * 50)). All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($65,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: 100 - (income / threshold * 50)). All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($120,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: 100 - (income / threshold * 50)). All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($40,880) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: 100 - (income / threshold * 50)). All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: 100 - (income / threshold * 50)). All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for 'Sliding Scale Discount' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($30,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: 100 - (income / threshold * 50)). All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: 100 - (income / threshold * 50)). All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($40,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: 100 - (income / threshold * 50)). All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-004": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "40% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "40",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '40% Discount - 350% FPL' (threshold: at or below $52,710.00 (350% FPL)) with 40% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "40% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "40",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '40% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 40% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "insurance",
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-250",
+        "matching_tier_name": "80% Discount - 250% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "80",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '80% Discount - 250% FPL' (threshold: at or below $78,000.00 (250% FPL)) with 80% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "40% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "40",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '40% Discount - 350% FPL' (threshold: at or below $146,860.00 (350% FPL)) with 40% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "40% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "40",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '40% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 40% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "40% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "40",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '40% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 40% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '40% Discount - 350% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "40% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "40",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '40% Discount - 350% FPL' (threshold: at or below $52,710.00 (350% FPL)) with 40% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "40% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "40",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '40% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 40% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "40% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "40",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '40% Discount - 350% FPL' (threshold: at or below $128,030.00 (350% FPL)) with 40% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-005": {
+      "HH-001": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $18,000. FPL reference: $15,060 (2024 contiguous, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $65,000. FPL reference: $31,200 (2024 contiguous, household size 4). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($120,000) exceeds all assistance thresholds in this policy. FPL reference: $41,960 (2024 contiguous, household size 6).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,880. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_free",
+        "matching_tier": "free-250",
+        "matching_tier_name": "Free Care - 250% FPL",
+        "matching_tier_type": "free",
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) qualifies for free care under 'Free Care - 250% FPL' (threshold: at or below $51,100.00 (250% FPL)). All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $35,000. FPL reference: $25,820 (2024 contiguous, household size 3). Missing facts: residency. Unresolved rules: none.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $30,000. FPL reference: $15,060 (2024 contiguous, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $45,000. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $36,580 (2024 contiguous, household size 5). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-006": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "70% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "70",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '70% Discount - 300% FPL' (threshold: at or below $45,180.00 (300% FPL)) with 70% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "70% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "70",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '70% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 70% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "70% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "70",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '70% Discount - 300% FPL' (threshold: at or below $93,600.00 (300% FPL)) with 70% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "70% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "70",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '70% Discount - 300% FPL' (threshold: at or below $125,880.00 (300% FPL)) with 70% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_free",
+        "matching_tier": "free-200",
+        "matching_tier_name": "Free Care - 200% FPL",
+        "matching_tier_type": "free",
+        "discount_percent": null,
+        "explanation": "Household income ($40,880) qualifies for free care under 'Free Care - 200% FPL' (threshold: at or below $40,880.00 (200% FPL)). All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "70% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "70",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '70% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 70% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '70% Discount - 300% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "70% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "70",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '70% Discount - 300% FPL' (threshold: at or below $45,180.00 (300% FPL)) with 70% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "70% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "70",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '70% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 70% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "70% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "70",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '70% Discount - 300% FPL' (threshold: at or below $109,740.00 (300% FPL)) with 70% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-007": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-500",
+        "matching_tier_name": "25% Discount - 500% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "25",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '25% Discount - 500% FPL' (threshold: below $75,300.00 (500% FPL)) with 25% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-500",
+        "matching_tier_name": "25% Discount - 500% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "25",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '25% Discount - 500% FPL' (threshold: below $102,200.00 (500% FPL)) with 25% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-500",
+        "matching_tier_name": "25% Discount - 500% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "25",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '25% Discount - 500% FPL' (threshold: below $156,000.00 (500% FPL)) with 25% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-500",
+        "matching_tier_name": "25% Discount - 500% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "25",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '25% Discount - 500% FPL' (threshold: below $209,800.00 (500% FPL)) with 25% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "asset_test",
+          "residency"
+        ]
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-500",
+        "matching_tier_name": "25% Discount - 500% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "25",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '25% Discount - 500% FPL' (threshold: below $102,200.00 (500% FPL)) with 25% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-500",
+        "matching_tier_name": "25% Discount - 500% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "25",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '25% Discount - 500% FPL' (threshold: below $102,200.00 (500% FPL)) with 25% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '25% Discount - 500% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-500",
+        "matching_tier_name": "25% Discount - 500% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "25",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '25% Discount - 500% FPL' (threshold: below $75,300.00 (500% FPL)) with 25% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-500",
+        "matching_tier_name": "25% Discount - 500% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "25",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '25% Discount - 500% FPL' (threshold: below $102,200.00 (500% FPL)) with 25% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $146,320.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "asset_test"
+        ]
+      }
+    },
+    "HOSP-008": {
+      "HH-001": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $18,000. FPL reference: $15,060 (2024 contiguous, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($40,000) exceeds all assistance thresholds in this policy. FPL reference: $20,440 (2024 contiguous, household size 2).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-003": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($65,000) exceeds all assistance thresholds in this policy. FPL reference: $31,200 (2024 contiguous, household size 4).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-004": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $120,000. FPL reference: $41,960 (2024 contiguous, household size 6). Missing facts: threshold_determination: No table entry for household size 6. Unresolved rules: threshold_determination: No table entry for household size 6.",
+        "missing_facts": [
+          "threshold_determination: No table entry for household size 6"
+        ],
+        "unresolved_rules": [
+          "threshold_determination: No table entry for household size 6"
+        ]
+      },
+      "HH-005": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($40,880) exceeds all assistance thresholds in this policy. FPL reference: $20,440 (2024 contiguous, household size 2).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-006": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) exceeds all assistance thresholds in this policy. FPL reference: $20,440 (2024 contiguous, household size 2).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $35,000. FPL reference: $25,820 (2024 contiguous, household size 3). Missing facts: residency. Unresolved rules: none.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($30,000) exceeds all assistance thresholds in this policy. FPL reference: $15,060 (2024 contiguous, household size 1).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-009": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) exceeds all assistance thresholds in this policy. FPL reference: $20,440 (2024 contiguous, household size 2).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-010": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $36,580 (2024 contiguous, household size 5). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-009": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "60% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '60% Discount - 300% FPL' (threshold: at or below $56,430.00 (300% FPL)) with 60% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "60% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '60% Discount - 300% FPL' (threshold: at or below $76,620.00 (300% FPL)) with 60% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "60% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '60% Discount - 300% FPL' (threshold: at or below $117,000.00 (300% FPL)) with 60% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "60% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '60% Discount - 300% FPL' (threshold: at or below $157,380.00 (300% FPL)) with 60% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "60% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '60% Discount - 300% FPL' (threshold: at or below $76,620.00 (300% FPL)) with 60% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "60% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '60% Discount - 300% FPL' (threshold: at or below $76,620.00 (300% FPL)) with 60% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '60% Discount - 300% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_free",
+        "matching_tier": "free-200",
+        "matching_tier_name": "Free Care - 200% FPL (Alaska)",
+        "matching_tier_type": "free",
+        "discount_percent": null,
+        "explanation": "Household income ($30,000) qualifies for free care under 'Free Care - 200% FPL (Alaska)' (threshold: at or below $37,620.00 (200% FPL)). All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "60% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '60% Discount - 300% FPL' (threshold: at or below $76,620.00 (300% FPL)) with 60% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "60% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '60% Discount - 300% FPL' (threshold: at or below $137,190.00 (300% FPL)) with 60% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-010": {
+      "HH-001": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $18,000. FPL reference: $17,310 (2024 hawaii, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $23,500 (2024 hawaii, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $65,000. FPL reference: $35,880 (2024 hawaii, household size 4). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $120,000. FPL reference: $48,260 (2024 hawaii, household size 6). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-005": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,880. FPL reference: $23,500 (2024 hawaii, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $45,000. FPL reference: $23,500 (2024 hawaii, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $35,000. FPL reference: $29,690 (2024 hawaii, household size 3). Missing facts: residency. Unresolved rules: none.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $30,000. FPL reference: $17,310 (2024 hawaii, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_free",
+        "matching_tier": "free-250",
+        "matching_tier_name": "Free Care - 250% FPL (Hawaii)",
+        "matching_tier_type": "free",
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) qualifies for free care under 'Free Care - 250% FPL (Hawaii)' (threshold: at or below $58,750.00 (250% FPL)). All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-010": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $42,070 (2024 hawaii, household size 5). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-011": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $45,180.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $93,600.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $125,880.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '75% Discount - 300% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $45,180.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $109,740.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-012": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-250",
+        "matching_tier_name": "80% Discount - 250% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "80",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '80% Discount - 250% FPL' (threshold: at or below $37,650.00 (250% FPL)) with 80% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-250",
+        "matching_tier_name": "80% Discount - 250% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "80",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '80% Discount - 250% FPL' (threshold: at or below $51,100.00 (250% FPL)) with 80% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-250",
+        "matching_tier_name": "80% Discount - 250% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "80",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '80% Discount - 250% FPL' (threshold: at or below $78,000.00 (250% FPL)) with 80% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-004": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($120,000) exceeds all assistance thresholds in this policy. FPL reference: $41,960 (2024 contiguous, household size 6).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-250",
+        "matching_tier_name": "80% Discount - 250% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "80",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '80% Discount - 250% FPL' (threshold: at or below $51,100.00 (250% FPL)) with 80% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-250",
+        "matching_tier_name": "80% Discount - 250% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "80",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '80% Discount - 250% FPL' (threshold: at or below $51,100.00 (250% FPL)) with 80% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '80% Discount - 250% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-250",
+        "matching_tier_name": "80% Discount - 250% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "80",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '80% Discount - 250% FPL' (threshold: at or below $37,650.00 (250% FPL)) with 80% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-250",
+        "matching_tier_name": "80% Discount - 250% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "80",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '80% Discount - 250% FPL' (threshold: at or below $51,100.00 (250% FPL)) with 80% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-250",
+        "matching_tier_name": "80% Discount - 250% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "80",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '80% Discount - 250% FPL' (threshold: at or below $91,450.00 (250% FPL)) with 80% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-013": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($18,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: max(0, 100 - (income - threshold) / threshold * 25)). All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($40,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: max(0, 100 - (income - threshold) / threshold * 25)). All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($65,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: max(0, 100 - (income - threshold) / threshold * 25)). All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($120,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: max(0, 100 - (income - threshold) / threshold * 25)). All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($40,880) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: max(0, 100 - (income - threshold) / threshold * 25)). All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: max(0, 100 - (income - threshold) / threshold * 25)). All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for 'Sliding Scale Discount' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($30,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: max(0, 100 - (income - threshold) / threshold * 25)). All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: max(0, 100 - (income - threshold) / threshold * 25)). All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-table",
+        "matching_tier_name": "Sliding Scale Discount",
+        "matching_tier_type": "discounted",
+        "discount_percent": null,
+        "explanation": "Household income ($40,000) qualifies for discounted care under 'Sliding Scale Discount' (threshold: fixed income table (HH=1)) (discount: max(0, 100 - (income - threshold) / threshold * 25)). All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-014": {
+      "HH-001": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $18,000. FPL reference: $15,060 (2024 contiguous, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: insurance, residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "insurance",
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $65,000. FPL reference: $31,200 (2024 contiguous, household size 4). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $120,000. FPL reference: $41,960 (2024 contiguous, household size 6). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-005": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,880. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $45,000. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $35,000. FPL reference: $25,820 (2024 contiguous, household size 3). Missing facts: residency. Unresolved rules: none.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $30,000. FPL reference: $15,060 (2024 contiguous, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $45,000. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $36,580 (2024 contiguous, household size 5). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-015": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "60% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '60% Discount - 350% FPL' (threshold: at or below $52,710.00 (350% FPL)) with 60% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "60% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '60% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 60% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "60% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '60% Discount - 350% FPL' (threshold: at or below $109,200.00 (350% FPL)) with 60% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "60% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '60% Discount - 350% FPL' (threshold: at or below $146,860.00 (350% FPL)) with 60% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "60% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '60% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 60% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "60% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '60% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 60% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '60% Discount - 350% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "60% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '60% Discount - 350% FPL' (threshold: at or below $52,710.00 (350% FPL)) with 60% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "60% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '60% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 60% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "60% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "60",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '60% Discount - 350% FPL' (threshold: at or below $128,030.00 (350% FPL)) with 60% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-016": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $60,240.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $81,760.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $124,800.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $167,840.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $81,760.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $81,760.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '50% Discount - 400% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $60,240.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-400",
+        "matching_tier_name": "50% Discount - 400% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "50",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '50% Discount - 400% FPL' (threshold: at or below $81,760.00 (400% FPL)) with 50% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "likely_free",
+        "matching_tier": "free-300",
+        "matching_tier_name": "Free Care - 300% FPL",
+        "matching_tier_type": "free",
+        "discount_percent": null,
+        "explanation": "Household income ($40,000) qualifies for free care under 'Free Care - 300% FPL' (threshold: at or below $109,740.00 (300% FPL)). All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      }
+    },
+    "HOSP-017": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $45,180.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $93,600.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $125,880.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($40,880) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '75% Discount - 300% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $45,180.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "75% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "75",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '75% Discount - 300% FPL' (threshold: at or below $109,740.00 (300% FPL)) with 75% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-018": {
+      "HH-001": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $18,000. FPL reference: $15,060 (2024 contiguous, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($40,000) exceeds all assistance thresholds in this policy. FPL reference: $20,440 (2024 contiguous, household size 2).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-003": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($65,000) exceeds all assistance thresholds in this policy. FPL reference: $31,200 (2024 contiguous, household size 4).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-004": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $120,000. FPL reference: $41,960 (2024 contiguous, household size 6). Missing facts: threshold_determination: No table entry for household size 6. Unresolved rules: threshold_determination: No table entry for household size 6.",
+        "missing_facts": [
+          "threshold_determination: No table entry for household size 6"
+        ],
+        "unresolved_rules": [
+          "threshold_determination: No table entry for household size 6"
+        ]
+      },
+      "HH-005": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($40,880) exceeds all assistance thresholds in this policy. FPL reference: $20,440 (2024 contiguous, household size 2).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-006": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) exceeds all assistance thresholds in this policy. FPL reference: $20,440 (2024 contiguous, household size 2).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $35,000. FPL reference: $25,820 (2024 contiguous, household size 3). Missing facts: residency. Unresolved rules: none.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($30,000) exceeds all assistance thresholds in this policy. FPL reference: $15,060 (2024 contiguous, household size 1).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-009": {
+        "status": "probably_not_eligible",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($45,000) exceeds all assistance thresholds in this policy. FPL reference: $20,440 (2024 contiguous, household size 2).",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-010": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $36,580 (2024 contiguous, household size 5). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    },
+    "HOSP-019": {
+      "HH-001": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $18,000. FPL reference: $15,060 (2024 contiguous, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $65,000. FPL reference: $31,200 (2024 contiguous, household size 4). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $120,000. FPL reference: $41,960 (2024 contiguous, household size 6). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-005": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,880. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-300",
+        "matching_tier_name": "70% Discount - 300% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "70",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '70% Discount - 300% FPL' (threshold: at or below $61,320.00 (300% FPL)) with 70% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $35,000. FPL reference: $25,820 (2024 contiguous, household size 3). Missing facts: residency. Unresolved rules: none.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $30,000. FPL reference: $15,060 (2024 contiguous, household size 1). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $45,000. FPL reference: $20,440 (2024 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Cannot determine eligibility with current information. Household income: $40,000. FPL reference: $36,580 (2024 contiguous, household size 5). Missing facts: none. Unresolved rules: asset_test, residency.",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "asset_test",
+          "residency"
+        ]
+      }
+    },
+    "HOSP-020": {
+      "HH-001": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "65% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "65",
+        "explanation": "Household income ($18,000) qualifies for discounted care under '65% Discount - 350% FPL' (threshold: at or below $52,710.00 (350% FPL)) with 65% discount. All verified conditions satisfied. Income: 18000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-002": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "65% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "65",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '65% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 65% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-003": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "65% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "65",
+        "explanation": "Household income ($65,000) qualifies for discounted care under '65% Discount - 350% FPL' (threshold: at or below $109,200.00 (350% FPL)) with 65% discount. All verified conditions satisfied. Income: 65000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-004": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "65% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "65",
+        "explanation": "Household income ($120,000) qualifies for discounted care under '65% Discount - 350% FPL' (threshold: at or below $146,860.00 (350% FPL)) with 65% discount. All verified conditions satisfied. Income: 120000",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-005": {
+        "status": "likely_free",
+        "matching_tier": "free-250",
+        "matching_tier_name": "Free Care - 250% FPL",
+        "matching_tier_type": "free",
+        "discount_percent": null,
+        "explanation": "Household income ($40,880) qualifies for free care under 'Free Care - 250% FPL' (threshold: at or below $51,100.00 (250% FPL)). All verified conditions satisfied. Income: 40880",
+        "missing_facts": [],
+        "unresolved_rules": []
+      },
+      "HH-006": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "65% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "65",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '65% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 65% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-007": {
+        "status": "needs_more_information",
+        "matching_tier": null,
+        "matching_tier_name": null,
+        "matching_tier_type": null,
+        "discount_percent": null,
+        "explanation": "Household income ($35,000) qualifies for '65% Discount - 350% FPL' but a higher-priority tier may still apply if missing information is provided. Missing facts: residency.",
+        "missing_facts": [
+          "residency"
+        ],
+        "unresolved_rules": []
+      },
+      "HH-008": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "65% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "65",
+        "explanation": "Household income ($30,000) qualifies for discounted care under '65% Discount - 350% FPL' (threshold: at or below $52,710.00 (350% FPL)) with 65% discount. All verified conditions satisfied. Income: 30000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-009": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "65% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "65",
+        "explanation": "Household income ($45,000) qualifies for discounted care under '65% Discount - 350% FPL' (threshold: at or below $71,540.00 (350% FPL)) with 65% discount. All verified conditions satisfied. Income: 45000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      },
+      "HH-010": {
+        "status": "likely_discounted",
+        "matching_tier": "discount-350",
+        "matching_tier_name": "65% Discount - 350% FPL",
+        "matching_tier_type": "discounted",
+        "discount_percent": "65",
+        "explanation": "Household income ($40,000) qualifies for discounted care under '65% Discount - 350% FPL' (threshold: at or below $128,030.00 (350% FPL)) with 65% discount. All verified conditions satisfied. Income: 40000",
+        "missing_facts": [],
+        "unresolved_rules": [
+          "residency"
+        ]
+      }
+    }
+  }
+}

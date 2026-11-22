@@ -1,0 +1,71 @@
+{
+  "policy_id": "HOSP-013",
+  "hospital_name": "Desert Medical Center",
+  "facility_names": [
+    "Desert Medical Center",
+    "DMC Phoenix"
+  ],
+  "state": "AZ",
+  "source_url": "https://example.com/desert-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "contiguous",
+  "tiers": [
+    {
+      "tier_id": "free-table",
+      "name": "Free Care - Income Table",
+      "type": "free",
+      "threshold_type": "fixed_income_table",
+      "threshold_value": "1",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "AZ resident",
+          "required": true,
+          "verified_value": "AZ",
+          "evidence_ref": "Sec 1"
+        }
+      ],
+      "scope": {
+        "income_table": {
+          "1": "26000",
+          "2": "35000",
+          "3": "44000",
+          "4": "53000",
+          "5": "62000",
+          "6": "71000"
+        }
+      },
+      "evidence_ref": "Page 3, Table 1",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-table",
+      "name": "Sliding Scale Discount",
+      "type": "discounted",
+      "threshold_type": "fixed_income_table",
+      "threshold_value": "1",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": "max(0, 100 - (income - threshold) / threshold * 25)",
+      "conditions": [],
+      "scope": {
+        "income_table": {
+          "1": "52000",
+          "2": "70000",
+          "3": "88000",
+          "4": "106000",
+          "5": "124000",
+          "6": "142000"
+        }
+      },
+      "evidence_ref": "Page 4, Table 2",
+      "priority": 1
+    }
+  ]
+}

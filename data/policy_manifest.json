@@ -1,0 +1,186 @@
+{
+  "generated_date": "2026-11-22",
+  "total_policies": 20,
+  "policies": [
+    {
+      "policy_id": "HOSP-001",
+      "hospital_name": "General Medical Center",
+      "state": "CA",
+      "facility_count": 2,
+      "tier_count": 3,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-002",
+      "hospital_name": "Metro Health System",
+      "state": "NY",
+      "facility_count": 2,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-003",
+      "hospital_name": "Sunshine State Hospital",
+      "state": "FL",
+      "facility_count": 1,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-004",
+      "hospital_name": "Lone Star Medical Center",
+      "state": "TX",
+      "facility_count": 2,
+      "tier_count": 3,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-005",
+      "hospital_name": "Mountain View Regional",
+      "state": "CO",
+      "facility_count": 1,
+      "tier_count": 1,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-006",
+      "hospital_name": "Pacific Northwest Health",
+      "state": "WA",
+      "facility_count": 2,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-007",
+      "hospital_name": "New England Medical Center",
+      "state": "MA",
+      "facility_count": 2,
+      "tier_count": 3,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-008",
+      "hospital_name": "Great Lakes Hospital",
+      "state": "IL",
+      "facility_count": 3,
+      "tier_count": 1,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-009",
+      "hospital_name": "Alaska Regional Hospital",
+      "state": "AK",
+      "facility_count": 1,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "alaska"
+    },
+    {
+      "policy_id": "HOSP-010",
+      "hospital_name": "Aloha Medical Center",
+      "state": "HI",
+      "facility_count": 2,
+      "tier_count": 1,
+      "default_fpl_year": 2024,
+      "default_region": "hawaii"
+    },
+    {
+      "policy_id": "HOSP-011",
+      "hospital_name": "Midwest Community Hospital",
+      "state": "OH",
+      "facility_count": 1,
+      "tier_count": 3,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-012",
+      "hospital_name": "Southern Health Alliance",
+      "state": "GA",
+      "facility_count": 2,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-013",
+      "hospital_name": "Desert Medical Center",
+      "state": "AZ",
+      "facility_count": 2,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-014",
+      "hospital_name": "Capital Region Medical",
+      "state": "VA",
+      "facility_count": 1,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-015",
+      "hospital_name": "North Star Hospital",
+      "state": "MN",
+      "facility_count": 2,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-016",
+      "hospital_name": "Bay State Health",
+      "state": "MA",
+      "facility_count": 2,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-017",
+      "hospital_name": "Prairie Medical Center",
+      "state": "KS",
+      "facility_count": 1,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-018",
+      "hospital_name": "Gulf Coast Medical",
+      "state": "AL",
+      "facility_count": 2,
+      "tier_count": 1,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-019",
+      "hospital_name": "Rocky Mountain Health",
+      "state": "CO",
+      "facility_count": 2,
+      "tier_count": 2,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    },
+    {
+      "policy_id": "HOSP-020",
+      "hospital_name": "Emerald City Hospital",
+      "state": "WA",
+      "facility_count": 2,
+      "tier_count": 3,
+      "default_fpl_year": 2024,
+      "default_region": "contiguous"
+    }
+  ]
+}

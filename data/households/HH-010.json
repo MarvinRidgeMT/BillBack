@@ -1,0 +1,14 @@
+{
+  "household_id": "HH-010",
+  "description": "Family of 5 with assets over limit (tests asset test failure)",
+  "household_size": 5,
+  "annual_income_usd": "40000",
+  "residency_state": "MA",
+  "residency_county": "Suffolk",
+  "assets_usd": "60000",
+  "insurance_status": "uninsured",
+  "facility_name": null,
+  "service_type": "emergency",
+  "patient_age": 41,
+  "patient_citizenship": "citizen"
+}

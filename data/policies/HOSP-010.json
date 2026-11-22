@@ -1,0 +1,39 @@
+{
+  "policy_id": "HOSP-010",
+  "hospital_name": "Aloha Medical Center",
+  "facility_names": [
+    "Aloha Medical Center",
+    "AMC Maui"
+  ],
+  "state": "HI",
+  "source_url": "https://example.com/aloha-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "hawaii",
+  "tiers": [
+    {
+      "tier_id": "free-250",
+      "name": "Free Care - 250% FPL (Hawaii)",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "250",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "HI resident",
+          "required": true,
+          "verified_value": "HI",
+          "evidence_ref": "Sec 1"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 2, Section 1",
+      "priority": 0
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "household_id": "HH-004",
+  "description": "Large family (6), high income, likely not eligible",
+  "household_size": 6,
+  "annual_income_usd": "120000",
+  "residency_state": "FL",
+  "residency_county": "Miami-Dade",
+  "assets_usd": "50000",
+  "insurance_status": "insured",
+  "facility_name": null,
+  "service_type": "elective",
+  "patient_age": 45,
+  "patient_citizenship": "citizen"
+}

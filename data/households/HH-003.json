@@ -1,0 +1,14 @@
+{
+  "household_id": "HH-003",
+  "description": "Family of 4, income above free tier but qualifies for discount",
+  "household_size": 4,
+  "annual_income_usd": "65000",
+  "residency_state": "TX",
+  "residency_county": "Harris",
+  "assets_usd": "25000",
+  "insurance_status": "insured",
+  "facility_name": null,
+  "service_type": "outpatient",
+  "patient_age": 38,
+  "patient_citizenship": "citizen"
+}

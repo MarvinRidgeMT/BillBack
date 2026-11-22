@@ -1,0 +1,53 @@
+{
+  "policy_id": "HOSP-016",
+  "hospital_name": "Bay State Health",
+  "facility_names": [
+    "Bay State Hospital",
+    "BSH Cape Cod"
+  ],
+  "state": "MA",
+  "source_url": "https://example.com/baystate-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "contiguous",
+  "tiers": [
+    {
+      "tier_id": "free-300",
+      "name": "Free Care - 300% FPL",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "MA resident",
+          "required": true,
+          "verified_value": "MA",
+          "evidence_ref": "Sec 1"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 2, Section 1",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-400",
+      "name": "50% Discount - 400% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "400",
+      "inclusivity": "inclusive",
+      "discount_percent": "50",
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {},
+      "evidence_ref": "Page 3, Section 2",
+      "priority": 1
+    }
+  ]
+}

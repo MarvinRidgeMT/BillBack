@@ -1,0 +1,82 @@
+{
+  "policy_id": "HOSP-001",
+  "hospital_name": "General Medical Center",
+  "facility_names": [
+    "General Medical Center Main",
+    "GMC West Campus"
+  ],
+  "state": "CA",
+  "source_url": "https://example.com/gmc-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "contiguous",
+  "tiers": [
+    {
+      "tier_id": "free-200",
+      "name": "Free Care - 200% FPL",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "California resident",
+          "required": true,
+          "verified_value": "CA",
+          "evidence_ref": "Sec 2.1"
+        },
+        {
+          "name": "asset_test",
+          "description": "Assets under $50,000",
+          "required": true,
+          "verified_value": "50000",
+          "evidence_ref": "Sec 2.2"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 3, Section 2",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-300",
+      "name": "75% Discount - 300% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300",
+      "inclusivity": "inclusive",
+      "discount_percent": "75",
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "California resident",
+          "required": true,
+          "verified_value": "CA",
+          "evidence_ref": "Sec 3.1"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 4, Section 3",
+      "priority": 1
+    },
+    {
+      "tier_id": "discount-400",
+      "name": "50% Discount - 400% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "400",
+      "inclusivity": "inclusive",
+      "discount_percent": "50",
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {},
+      "evidence_ref": "Page 4, Section 4",
+      "priority": 2
+    }
+  ]
+}

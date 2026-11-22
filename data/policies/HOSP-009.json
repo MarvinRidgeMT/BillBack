@@ -1,0 +1,52 @@
+{
+  "policy_id": "HOSP-009",
+  "hospital_name": "Alaska Regional Hospital",
+  "facility_names": [
+    "Alaska Regional Hospital"
+  ],
+  "state": "AK",
+  "source_url": "https://example.com/ak-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "alaska",
+  "tiers": [
+    {
+      "tier_id": "free-200",
+      "name": "Free Care - 200% FPL (Alaska)",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "AK resident",
+          "required": true,
+          "verified_value": "AK",
+          "evidence_ref": "Sec 1"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 2, Section 1",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-300",
+      "name": "60% Discount - 300% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300",
+      "inclusivity": "inclusive",
+      "discount_percent": "60",
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {},
+      "evidence_ref": "Page 3, Section 2",
+      "priority": 1
+    }
+  ]
+}

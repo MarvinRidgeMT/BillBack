@@ -1,0 +1,68 @@
+{
+  "policy_id": "HOSP-019",
+  "hospital_name": "Rocky Mountain Health",
+  "facility_names": [
+    "Rocky Mountain Hospital",
+    "RMH Colorado Springs"
+  ],
+  "state": "CO",
+  "source_url": "https://example.com/rocky-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "contiguous",
+  "tiers": [
+    {
+      "tier_id": "free-200",
+      "name": "Free Care - 200% FPL",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "CO resident",
+          "required": true,
+          "verified_value": "CO",
+          "evidence_ref": "Sec 1"
+        },
+        {
+          "name": "asset_test",
+          "description": "Assets under $30,000",
+          "required": true,
+          "verified_value": "30000",
+          "evidence_ref": "Sec 2"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 2, Section 1-2",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-300",
+      "name": "70% Discount - 300% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300",
+      "inclusivity": "inclusive",
+      "discount_percent": "70",
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "CO resident",
+          "required": true,
+          "verified_value": "CO",
+          "evidence_ref": "Sec 3"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 3, Section 3",
+      "priority": 1
+    }
+  ]
+}

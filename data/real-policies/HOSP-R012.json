@@ -1,0 +1,75 @@
+{
+  "policy_id": "HOSP-R012",
+  "hospital_name": "Emory Healthcare",
+  "facility_names": ["Emory University Hospital", "Emory University Hospital Midtown", "Emory Johns Creek Hospital", "Emory Saint Joseph's Hospital", "Emory Decatur Hospital", "Emory Hillandale Hospital"],
+  "state": "GA",
+  "source_url": "https://www.emoryhealthcare.org/-/media/Project/EH/Emory/ui/pdfs/financial-information/13-hospitals-policies-regarding-charity-care-reduced-cost-services/financial-assistance-policy-20260521.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "2026-05-21",
+  "version": "2026.1",
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "unverified",
+  "verification_notes": "PDF not opened; all fields below are placeholders and need verification against the actual policy document",
+  "tiers": [
+    {
+      "tier_id": "free-200",
+      "name": "Free Care - 200% FPL",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Georgia resident",
+          "required": true,
+          "verified_value": "GA",
+          "evidence_ref": "UNVERIFIED - need to check PDF section"
+        },
+        {
+          "name": "asset_test",
+          "description": "Assets under threshold",
+          "required": true,
+          "verified_value": "UNVERIFIED",
+          "evidence_ref": "UNVERIFIED - need to check PDF section"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "UNVERIFIED - need to check PDF page/section",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-300",
+      "name": "Discounted Care - 300% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300",
+      "inclusivity": "inclusive",
+      "discount_percent": "UNVERIFIED",
+      "discount_formula": "UNVERIFIED",
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Georgia resident",
+          "required": true,
+          "verified_value": "GA",
+          "evidence_ref": "UNVERIFIED - need to check PDF section"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "UNVERIFIED - need to check PDF page/section",
+      "priority": 1
+    }
+  ],
+  "key_fields": {
+    "free_cutoff_fpl_percent": {"value": "200", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "discount_cutoff_fpl_percent": {"value": "300", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "discount_amount_or_formula": {"value": "UNVERIFIED", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "asset_test": {"value": "UNVERIFIED", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "residency_rule": {"value": "Georgia resident required", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "application_deadline": {"value": "UNVERIFIED", "verified": false, "source": "UNVERIFIED - need to check PDF"}
+  }
+}

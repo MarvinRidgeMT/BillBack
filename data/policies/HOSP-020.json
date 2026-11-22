@@ -1,0 +1,67 @@
+{
+  "policy_id": "HOSP-020",
+  "hospital_name": "Emerald City Hospital",
+  "facility_names": [
+    "Emerald City Hospital",
+    "ECH Bellevue"
+  ],
+  "state": "WA",
+  "source_url": "https://example.com/emerald-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "contiguous",
+  "tiers": [
+    {
+      "tier_id": "free-250",
+      "name": "Free Care - 250% FPL",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "250",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "WA resident",
+          "required": true,
+          "verified_value": "WA",
+          "evidence_ref": "Sec 1"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 2, Section 1",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-350",
+      "name": "65% Discount - 350% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "350",
+      "inclusivity": "inclusive",
+      "discount_percent": "65",
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {},
+      "evidence_ref": "Page 3, Section 2",
+      "priority": 1
+    },
+    {
+      "tier_id": "discount-450",
+      "name": "30% Discount - 450% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "450",
+      "inclusivity": "exclusive",
+      "discount_percent": "30",
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {},
+      "evidence_ref": "Page 3, Section 3",
+      "priority": 2
+    }
+  ]
+}

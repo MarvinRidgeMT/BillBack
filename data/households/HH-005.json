@@ -1,0 +1,14 @@
+{
+  "household_id": "HH-005",
+  "description": "Single person, exactly at 200% FPL for household of 2 (testing inclusive)",
+  "household_size": 2,
+  "annual_income_usd": "40880",
+  "residency_state": "WA",
+  "residency_county": "King",
+  "assets_usd": "10000",
+  "insurance_status": "uninsured",
+  "facility_name": null,
+  "service_type": "emergency",
+  "patient_age": 29,
+  "patient_citizenship": "citizen"
+}

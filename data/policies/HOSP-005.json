@@ -1,0 +1,38 @@
+{
+  "policy_id": "HOSP-005",
+  "hospital_name": "Mountain View Regional",
+  "facility_names": [
+    "Mountain View Regional Hospital"
+  ],
+  "state": "CO",
+  "source_url": "https://example.com/mtnview-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "contiguous",
+  "tiers": [
+    {
+      "tier_id": "free-250",
+      "name": "Free Care - 250% FPL",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "250",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "CO resident",
+          "required": true,
+          "verified_value": "CO",
+          "evidence_ref": "Sec 2"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 2, Section 2",
+      "priority": 0
+    }
+  ]
+}
