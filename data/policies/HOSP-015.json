@@ -1,0 +1,53 @@
+{
+  "policy_id": "HOSP-015",
+  "hospital_name": "North Star Hospital",
+  "facility_names": [
+    "North Star Hospital",
+    "NSH Duluth"
+  ],
+  "state": "MN",
+  "source_url": "https://example.com/northstar-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "contiguous",
+  "tiers": [
+    {
+      "tier_id": "free-275",
+      "name": "Free Care - 275% FPL",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "275",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "MN resident",
+          "required": true,
+          "verified_value": "MN",
+          "evidence_ref": "Sec 1"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 2, Section 1",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-350",
+      "name": "60% Discount - 350% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "350",
+      "inclusivity": "inclusive",
+      "discount_percent": "60",
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {},
+      "evidence_ref": "Page 3, Section 2",
+      "priority": 1
+    }
+  ]
+}

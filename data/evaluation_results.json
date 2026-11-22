@@ -1,0 +1,1615 @@
+{
+  "summary": {
+    "total_combinations": 200,
+    "matched": 200,
+    "mismatched": 0,
+    "status_distribution": {
+      "likely_free": 8,
+      "likely_discounted": 120,
+      "needs_more_information": 58,
+      "probably_not_eligible": 14
+    }
+  },
+  "details": {
+    "HOSP-001-HH-001": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_free",
+      "actual_status": "likely_free",
+      "diffs": []
+    },
+    "HOSP-001-HH-002": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-001-HH-003": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-001-HH-004": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-001-HH-005": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-001-HH-006": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-001-HH-007": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-001-HH-008": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-001-HH-009": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-001-HH-010": {
+      "policy_id": "HOSP-001",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-002-HH-001": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-002-HH-002": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_free",
+      "actual_status": "likely_free",
+      "diffs": []
+    },
+    "HOSP-002-HH-003": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-002-HH-004": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-002-HH-005": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-002-HH-006": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-002-HH-007": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-002-HH-008": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-002-HH-009": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-002-HH-010": {
+      "policy_id": "HOSP-002",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-003-HH-001": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-003-HH-002": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-003-HH-003": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-003-HH-004": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-003-HH-005": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-003-HH-006": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-003-HH-007": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-003-HH-008": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-003-HH-009": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-003-HH-010": {
+      "policy_id": "HOSP-003",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-004-HH-001": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-004-HH-002": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-004-HH-003": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-004-HH-004": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-004-HH-005": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-004-HH-006": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-004-HH-007": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-004-HH-008": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-004-HH-009": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-004-HH-010": {
+      "policy_id": "HOSP-004",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-005-HH-001": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-005-HH-002": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-005-HH-003": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-005-HH-004": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-005-HH-005": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-005-HH-006": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_free",
+      "actual_status": "likely_free",
+      "diffs": []
+    },
+    "HOSP-005-HH-007": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-005-HH-008": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-005-HH-009": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-005-HH-010": {
+      "policy_id": "HOSP-005",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-006-HH-001": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-006-HH-002": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-006-HH-003": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-006-HH-004": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-006-HH-005": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_free",
+      "actual_status": "likely_free",
+      "diffs": []
+    },
+    "HOSP-006-HH-006": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-006-HH-007": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-006-HH-008": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-006-HH-009": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-006-HH-010": {
+      "policy_id": "HOSP-006",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-007-HH-001": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-007-HH-002": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-007-HH-003": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-007-HH-004": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-007-HH-005": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-007-HH-006": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-007-HH-007": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-007-HH-008": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-007-HH-009": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-007-HH-010": {
+      "policy_id": "HOSP-007",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-008-HH-001": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-008-HH-002": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-008-HH-003": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-008-HH-004": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-008-HH-005": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-008-HH-006": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-008-HH-007": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-008-HH-008": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-008-HH-009": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-008-HH-010": {
+      "policy_id": "HOSP-008",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-009-HH-001": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-009-HH-002": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-009-HH-003": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-009-HH-004": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-009-HH-005": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-009-HH-006": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-009-HH-007": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-009-HH-008": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_free",
+      "actual_status": "likely_free",
+      "diffs": []
+    },
+    "HOSP-009-HH-009": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-009-HH-010": {
+      "policy_id": "HOSP-009",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-010-HH-001": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-010-HH-002": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-010-HH-003": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-010-HH-004": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-010-HH-005": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-010-HH-006": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-010-HH-007": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-010-HH-008": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-010-HH-009": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_free",
+      "actual_status": "likely_free",
+      "diffs": []
+    },
+    "HOSP-010-HH-010": {
+      "policy_id": "HOSP-010",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-011-HH-001": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-011-HH-002": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-011-HH-003": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-011-HH-004": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-011-HH-005": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-011-HH-006": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-011-HH-007": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-011-HH-008": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-011-HH-009": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-011-HH-010": {
+      "policy_id": "HOSP-011",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-012-HH-001": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-012-HH-002": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-012-HH-003": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-012-HH-004": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-012-HH-005": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-012-HH-006": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-012-HH-007": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-012-HH-008": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-012-HH-009": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-012-HH-010": {
+      "policy_id": "HOSP-012",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-013-HH-001": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-013-HH-002": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-013-HH-003": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-013-HH-004": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-013-HH-005": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-013-HH-006": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-013-HH-007": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-013-HH-008": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-013-HH-009": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-013-HH-010": {
+      "policy_id": "HOSP-013",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-014-HH-001": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-014-HH-002": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-014-HH-003": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-014-HH-004": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-014-HH-005": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-014-HH-006": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-014-HH-007": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-014-HH-008": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-014-HH-009": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-014-HH-010": {
+      "policy_id": "HOSP-014",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-015-HH-001": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-015-HH-002": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-015-HH-003": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-015-HH-004": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-015-HH-005": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-015-HH-006": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-015-HH-007": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-015-HH-008": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-015-HH-009": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-015-HH-010": {
+      "policy_id": "HOSP-015",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-016-HH-001": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-016-HH-002": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-016-HH-003": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-016-HH-004": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-016-HH-005": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-016-HH-006": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-016-HH-007": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-016-HH-008": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-016-HH-009": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-016-HH-010": {
+      "policy_id": "HOSP-016",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_free",
+      "actual_status": "likely_free",
+      "diffs": []
+    },
+    "HOSP-017-HH-001": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-017-HH-002": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-017-HH-003": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-017-HH-004": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-017-HH-005": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-017-HH-006": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-017-HH-007": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-017-HH-008": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-017-HH-009": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-017-HH-010": {
+      "policy_id": "HOSP-017",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-018-HH-001": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-018-HH-002": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-018-HH-003": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-018-HH-004": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-018-HH-005": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-018-HH-006": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-018-HH-007": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-018-HH-008": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-018-HH-009": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "probably_not_eligible",
+      "actual_status": "probably_not_eligible",
+      "diffs": []
+    },
+    "HOSP-018-HH-010": {
+      "policy_id": "HOSP-018",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-019-HH-001": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-019-HH-002": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-019-HH-003": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-019-HH-004": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-019-HH-005": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-019-HH-006": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-019-HH-007": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-019-HH-008": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-019-HH-009": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-019-HH-010": {
+      "policy_id": "HOSP-019",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-020-HH-001": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-001",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-020-HH-002": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-002",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-020-HH-003": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-003",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-020-HH-004": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-004",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-020-HH-005": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-005",
+      "match": true,
+      "expected_status": "likely_free",
+      "actual_status": "likely_free",
+      "diffs": []
+    },
+    "HOSP-020-HH-006": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-006",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-020-HH-007": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-007",
+      "match": true,
+      "expected_status": "needs_more_information",
+      "actual_status": "needs_more_information",
+      "diffs": []
+    },
+    "HOSP-020-HH-008": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-008",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-020-HH-009": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-009",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    },
+    "HOSP-020-HH-010": {
+      "policy_id": "HOSP-020",
+      "household_id": "HH-010",
+      "match": true,
+      "expected_status": "likely_discounted",
+      "actual_status": "likely_discounted",
+      "diffs": []
+    }
+  }
+}

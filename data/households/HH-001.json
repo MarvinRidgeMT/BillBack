@@ -1,0 +1,14 @@
+{
+  "household_id": "HH-001",
+  "description": "Single person, low income, qualifies for free care at most hospitals",
+  "household_size": 1,
+  "annual_income_usd": "18000",
+  "residency_state": "CA",
+  "residency_county": "Los Angeles",
+  "assets_usd": "5000",
+  "insurance_status": "uninsured",
+  "facility_name": null,
+  "service_type": "emergency",
+  "patient_age": 35,
+  "patient_citizenship": "citizen"
+}

@@ -1,0 +1,75 @@
+{
+  "policy_id": "HOSP-R010",
+  "hospital_name": "UCHealth",
+  "facility_names": ["University of Colorado Hospital", "UCHealth Medical Center of the Rockies", "UCHealth Memorial Hospital", "UCHealth Greeley Hospital", "UCHealth Longs Peak Hospital"],
+  "state": "CO",
+  "source_url": "https://uchealth-wp-uploads.s3.amazonaws.com/wp-content/uploads/2025/04/07133352/Financial-Assistance-Policy_03-27-2025-English.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "2025-03-27",
+  "version": "2025.1",
+  "default_fpl_year": 2025,
+  "default_region": "contiguous",
+  "verification_status": "unverified",
+  "verification_notes": "PDF not opened; all fields below are placeholders and need verification against the actual policy document",
+  "tiers": [
+    {
+      "tier_id": "free-200",
+      "name": "Free Care - 200% FPL",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Colorado resident",
+          "required": true,
+          "verified_value": "CO",
+          "evidence_ref": "UNVERIFIED - need to check PDF section"
+        },
+        {
+          "name": "asset_test",
+          "description": "Assets under threshold",
+          "required": true,
+          "verified_value": "UNVERIFIED",
+          "evidence_ref": "UNVERIFIED - need to check PDF section"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "UNVERIFIED - need to check PDF page/section",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-300",
+      "name": "Discounted Care - 300% FPL",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300",
+      "inclusivity": "inclusive",
+      "discount_percent": "UNVERIFIED",
+      "discount_formula": "UNVERIFIED",
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Colorado resident",
+          "required": true,
+          "verified_value": "CO",
+          "evidence_ref": "UNVERIFIED - need to check PDF section"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "UNVERIFIED - need to check PDF page/section",
+      "priority": 1
+    }
+  ],
+  "key_fields": {
+    "free_cutoff_fpl_percent": {"value": "200", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "discount_cutoff_fpl_percent": {"value": "300", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "discount_amount_or_formula": {"value": "UNVERIFIED", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "asset_test": {"value": "UNVERIFIED", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "residency_rule": {"value": "Colorado resident required", "verified": false, "source": "UNVERIFIED - need to check PDF"},
+    "application_deadline": {"value": "UNVERIFIED", "verified": false, "source": "UNVERIFIED - need to check PDF"}
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "policy_id": "HOSP-003",
+  "hospital_name": "Sunshine State Hospital",
+  "facility_names": [
+    "Sunshine State Hospital"
+  ],
+  "state": "FL",
+  "source_url": "https://example.com/sunshine-policy.pdf",
+  "retrieval_date": "2024-01-15",
+  "effective_date": "2024-01-01",
+  "version": "2024.1",
+  "default_fpl_year": 2024,
+  "default_region": "contiguous",
+  "tiers": [
+    {
+      "tier_id": "free-table",
+      "name": "Free Care - Income Table",
+      "type": "free",
+      "threshold_type": "fixed_income_table",
+      "threshold_value": "1",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "FL resident",
+          "required": true,
+          "verified_value": "FL",
+          "evidence_ref": "Sec 1"
+        }
+      ],
+      "scope": {
+        "income_table": {
+          "1": "25000",
+          "2": "34000",
+          "3": "43000",
+          "4": "52000",
+          "5": "61000",
+          "6": "70000"
+        }
+      },
+      "evidence_ref": "Page 3, Table 1",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-table",
+      "name": "Sliding Scale Discount",
+      "type": "discounted",
+      "threshold_type": "fixed_income_table",
+      "threshold_value": "1",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": "100 - (income / threshold * 50)",
+      "conditions": [],
+      "scope": {
+        "income_table": {
+          "1": "50000",
+          "2": "68000",
+          "3": "86000",
+          "4": "104000",
+          "5": "122000",
+          "6": "140000"
+        }
+      },
+      "evidence_ref": "Page 4, Table 2",
+      "priority": 1
+    }
+  ]
+}

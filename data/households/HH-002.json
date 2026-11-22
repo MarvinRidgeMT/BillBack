@@ -1,0 +1,14 @@
+{
+  "household_id": "HH-002",
+  "description": "Couple, moderate income, near 200% FPL boundary",
+  "household_size": 2,
+  "annual_income_usd": "40000",
+  "residency_state": "NY",
+  "residency_county": "Kings",
+  "assets_usd": "15000",
+  "insurance_status": "underinsured",
+  "facility_name": null,
+  "service_type": "inpatient",
+  "patient_age": 42,
+  "patient_citizenship": "legal_resident"
+}

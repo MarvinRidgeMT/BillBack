@@ -1,0 +1,14 @@
+{
+  "household_id": "HH-007",
+  "description": "Family of 3, missing residency info (tests needs_more_info)",
+  "household_size": 3,
+  "annual_income_usd": "35000",
+  "residency_state": null,
+  "residency_county": null,
+  "assets_usd": "8000",
+  "insurance_status": "uninsured",
+  "facility_name": null,
+  "service_type": "emergency",
+  "patient_age": 34,
+  "patient_citizenship": "citizen"
+}
