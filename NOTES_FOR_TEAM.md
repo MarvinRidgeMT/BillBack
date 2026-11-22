@@ -1,6 +1,6 @@
 # Notes for the team
 
-## FOR C — RECORDING (A, 12:35pm; tag `demo-freeze`)
+## FOR C — RECORDING (A, 12:18pm; tag `demo-freeze`)
 **Nothing visible on screen changes after this tag** unless Anish asks.
 
 Start (two terminals, from the repo root):
@@ -10,7 +10,7 @@ cd frontend && npm run build && npm start        # production build on :3000, no
 ```
 No API key or network needed: bills and policies come from `cache/`.
 
-Checked at 12:15–12:35 at 1440×900 and 390×844, EN and ES: no blockers. Shot order (what I clicked):
+Checked at 12:15 at 1440×900 and 390×844, EN and ES: no blockers. Shot order (what I clicked):
 1. Home: "YOU MAY NOT OWE THIS BILL" hero → scroll to the tile map ("Same bill, very different rules") → **CHECK MY BILL**.
 2. **Try a sample bill** (it's `bill_10_crumpled_dim.jpg`, Fort HealthCare, WI). "Check what we found" appears in ~2 s.
 3. The **Account number** box is red ("Please check this"). Click it, change `FH 7735-0092` to `FH7735-0092` → "✓ Checked".
