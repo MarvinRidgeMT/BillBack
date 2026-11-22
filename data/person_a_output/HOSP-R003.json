@@ -1,0 +1,46 @@
+{
+  "policy_id": "HOSP-R003",
+  "hospital_name": "Baptist Health South Florida",
+  "facility_names": [],
+  "state": "FL",
+  "source_url": "https://baptisthealth.net/patient-resources/billing-and-financial-assistance/financial-assistance-program/-/media/Documents/Patient-Resources/Financial-Assistance/Feb-2025/BHSF35514--Financial-Assistance-Policy-ENG-9262024-FINAL-updated-income-levels-2025-v2.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "09/26/2024",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: Miami-Dade County; Broward County (only for services at listed providers located in Broward); Palm Beach County; Monroe County north of mile marker 25. Alternatively, patients who received or need emergent or urgent services for an acute event.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "FL",
+          "evidence_ref": "Page 2: The allocation of BHSF financial assistance resources will be limited to patients who:"
+        },
+        {
+          "name": "unresolved_savings_rule",
+          "description": "Policy is unclear about whether savings or property count; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: Other financial information such as assets and hospital charges may be considered."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 3: Special needs financial assistance Vice President of Revenue Management Family income of 200 to 300% FPL (not to exceed $75,000) 100%",
+      "priority": 0
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

@@ -1,0 +1,14 @@
+{
+  "policy_id": "HOSP-R016",
+  "hospital_name": "Duke University Health System",
+  "facility_names": [],
+  "state": "NC",
+  "source_url": "https://www.dukehealth.org/sites/default/files/general_page/DUHSFinancialAssistanceApplication-English_2021.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": null,
+  "version": null,
+  "tiers": [],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

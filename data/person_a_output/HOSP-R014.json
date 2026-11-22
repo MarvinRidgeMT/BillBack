@@ -1,0 +1,88 @@
+{
+  "policy_id": "HOSP-R014",
+  "hospital_name": "Novant Health (North Carolina Hospitals, Provider-based clinics)",
+  "facility_names": [],
+  "state": "NC",
+  "source_url": "https://www.novanthealth.org/globalassets/buttons-and-documents-ctaslinks/documents-pdfs/financial-assistance-policy-nc-hospitals.pdf?v=2",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "Jan26+",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: All North Carolina residents, and non-NC residents within Horry, Lancaster and York Counties, SC. Insured discounts are for NC residents only.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "NC",
+          "evidence_ref": "Page 1: All North Carolina residents and non-North Carolina residents within the following South Carolina counties are eligible to apply for financial assistance as defined in this Policy."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 2: Uninsured Patients meeting the requirements above and any uninsured patients presumed to be eligible to receive Financial Assistance under this Policy will obtain a 100% adjustment to any charges for ",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-0",
+      "name": "Insured NC residents only: 75% discount on patient responsibility (minus copays) for income between 200%-250% of FPL. Uninsured patients get 100% adjustment up to 300% FPL.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "250.0",
+      "inclusivity": "inclusive",
+      "discount_percent": "75.0",
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: All North Carolina residents, and non-NC residents within Horry, Lancaster and York Counties, SC. Insured discounts are for NC residents only.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "NC",
+          "evidence_ref": "Page 1: All North Carolina residents and non-North Carolina residents within the following South Carolina counties are eligible to apply for financial assistance as defined in this Policy."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 200.0
+      },
+      "evidence_ref": "Page 2: Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
+      "priority": 1
+    },
+    {
+      "tier_id": "discount-1",
+      "name": "Insured NC residents only: 50% discount on patient responsibility (minus copays) for income between 250%-300% FPL. Uninsured patients get 100% adjustment.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300.0",
+      "inclusivity": "inclusive",
+      "discount_percent": "50.0",
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: All North Carolina residents, and non-NC residents within Horry, Lancaster and York Counties, SC. Insured discounts are for NC residents only.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "NC",
+          "evidence_ref": "Page 1: All North Carolina residents and non-North Carolina residents within the following South Carolina counties are eligible to apply for financial assistance as defined in this Policy."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 250.0
+      },
+      "evidence_ref": "Page 2: Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
+      "priority": 2
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

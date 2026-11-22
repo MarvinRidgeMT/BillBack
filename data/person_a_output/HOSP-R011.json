@@ -1,0 +1,46 @@
+{
+  "policy_id": "HOSP-R011",
+  "hospital_name": "Children's Hospital Colorado",
+  "facility_names": [],
+  "state": "CO",
+  "source_url": "https://www.childrenscolorado.org/globalassets/your-visit/financial-assistance-payment-plan-english.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": null,
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "discount-0",
+      "name": "Charity care will typically result in a sliding-scale co-payment due from the family; eligibility requires Federal Poverty Level below 250%.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "250.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": "Sliding scale",
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: Lives in the United States",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "CO",
+          "evidence_ref": "Page 1: The Financial Assistance Program is available to all patients who do not have health insurance and live in the United States."
+        },
+        {
+          "name": "asset_test",
+          "description": "Charity care decision is based on review of income, assets and liabilities; general requirements account for liquid assets.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 1: The decision to provide charity care will, in most cases, be based on a review of the family\u2019s income, assets and liabilities at the time of visit, and will typically result in a sliding-scale co-paym"
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 1: Federal Poverty Level below 250%; accounting for household size, income, and liquid assets",
+      "priority": 1
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

@@ -1,0 +1,45 @@
+{
+  "policy_id": "HOSP-R012",
+  "hospital_name": "Emory Healthcare",
+  "facility_names": [],
+  "state": "GA",
+  "source_url": "https://www.emoryhealthcare.org/-/media/Project/EH/Emory/ui/pdfs/financial-information/13-hospitals-policies-regarding-charity-care-reduced-cost-services/financial-assistance-policy-20260521.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "Effective 02/01/2026, updated 05/01/2026",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {},
+      "evidence_ref": "Page 5: If Family Income of a patient not enrolled in Medicaid is less than or equal to 200% of the Federal Poverty Guidelines, the patient will receive 100% charity care adjustment for Eligible Health Care S",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-0",
+      "name": "Uninsured patients not enrolled in Medicaid receive 100% financial assistance for the patient's personal responsibility for Eligible Health Care Services. Charges are limited to AGB. Insured patients in this band are not clearly covered.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "350.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": "Uninsured patients not enrolled in Medicaid receive 100% financial assistance for the patient's personal responsibility for Eligible Health Care Services. Charges are limited to AGB. Insured patients in this band are not clearly covered.",
+      "conditions": [],
+      "scope": {
+        "fpl_min_percent": 201.0
+      },
+      "evidence_ref": "Page 5: If Family Income of a patient who is not enrolled in Medicaid and is uninsured is at least 201% but less than or equal to 350% of the Federal Poverty Guidelines, the patient will receive 100% financia",
+      "priority": 1
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

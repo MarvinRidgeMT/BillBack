@@ -1,0 +1,63 @@
+{
+  "policy_id": "HOSP-R017",
+  "hospital_name": "Fort HealthCare, Inc.",
+  "facility_names": [],
+  "state": "WI",
+  "source_url": "https://www.forthealthcare.com/wp-content/uploads/2025/03/Financial-Assistance-Policy-2025-Final-English-1.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "01/01/2025",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: Primary and secondary service areas (non-residents without insurance receive only the self-pay discount and must pay in advance)",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "WI",
+          "evidence_ref": "Page 1: Community Care write-offs are available to eligible persons residing in our primary and secondary service areas requiring medically necessary treatment, but who are unable to pay for these services."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 1: Persons whose income is at or up to 200% of the guidelines will be considered for complete forgiveness of their outstanding bill.",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-0",
+      "name": "Reduced basis per Attachment 1 table: 90% discount at 210% FPG, declining stepwise (80% at 220%, 70% at 230%, 60% at 240%, 50% at 250%, 40% at 260%, 35% at 270%, 30% at 280%, 25% at 290%, 20% at 300-320%, 15% at 340-360%, 10% at 380-400%).",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "400.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": "Sliding scale",
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: Primary and secondary service areas (non-residents without insurance receive only the self-pay discount and must pay in advance)",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "WI",
+          "evidence_ref": "Page 1: Community Care write-offs are available to eligible persons residing in our primary and secondary service areas requiring medically necessary treatment, but who are unable to pay for these services."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 201.0
+      },
+      "evidence_ref": "Page 1: Persons whose income is greater than 200% of the guidelines, but not more than 400% of the guidelines, shall be eligible for Community Care on a reduced basis.",
+      "priority": 1
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

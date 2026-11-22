@@ -1,0 +1,145 @@
+{
+  "policy_id": "HOSP-R010",
+  "hospital_name": "UCHealth",
+  "facility_names": [],
+  "state": "CO",
+  "source_url": "https://uchealth-wp-uploads.s3.amazonaws.com/wp-content/uploads/2025/04/07133352/Financial-Assistance-Policy_03-27-2025-English.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": null,
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "250.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: Resident of Colorado (exception possible for unscheduled emergency services at UCHealth's discretion)",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "CO",
+          "evidence_ref": "Page 1: An individual must be a Resident of Colorado in order to qualify for Financial Assistance."
+        },
+        {
+          "name": "unresolved_savings_rule",
+          "description": "Policy is unclear about whether savings or property count; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: Any applicant seeking to qualify for Catastrophic Balance Financial Assistance must also supply evidence of Financial Resources as requested in the application."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 4: Patients approved for Financial Assistance with an annual Family Income of 250% of FPL guidelines or less will receive a 100% discount on gross charges for care covered by this policy.",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-0",
+      "name": "Discount on gross charges varies by facility (e.g., 91%-95% at most facilities; 82% at Yampa Valley, 88% at Pikes Peak) per Appendix A.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: Resident of Colorado (exception possible for unscheduled emergency services at UCHealth's discretion)",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "CO",
+          "evidence_ref": "Page 1: An individual must be a Resident of Colorado in order to qualify for Financial Assistance."
+        },
+        {
+          "name": "unresolved_savings_rule",
+          "description": "Policy is unclear about whether savings or property count; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: Any applicant seeking to qualify for Catastrophic Balance Financial Assistance must also supply evidence of Financial Resources as requested in the application."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 251.0
+      },
+      "evidence_ref": "Page 4: Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A.",
+      "priority": 1
+    },
+    {
+      "tier_id": "discount-1",
+      "name": "Discount on gross charges varies by facility (e.g., 77%-91%) per Appendix A.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "350.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: Resident of Colorado (exception possible for unscheduled emergency services at UCHealth's discretion)",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "CO",
+          "evidence_ref": "Page 1: An individual must be a Resident of Colorado in order to qualify for Financial Assistance."
+        },
+        {
+          "name": "unresolved_savings_rule",
+          "description": "Policy is unclear about whether savings or property count; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: Any applicant seeking to qualify for Catastrophic Balance Financial Assistance must also supply evidence of Financial Resources as requested in the application."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 301.0
+      },
+      "evidence_ref": "Page 4: Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A.",
+      "priority": 2
+    },
+    {
+      "tier_id": "discount-2",
+      "name": "Discount on gross charges varies by facility (e.g., 47%-86%) per Appendix A. Catastrophic balance discount mirrors this band.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "400.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "residency",
+          "description": "Residency required: Resident of Colorado (exception possible for unscheduled emergency services at UCHealth's discretion)",
+          "required": true,
+          "state": "unknown",
+          "verified_value": "CO",
+          "evidence_ref": "Page 1: An individual must be a Resident of Colorado in order to qualify for Financial Assistance."
+        },
+        {
+          "name": "unresolved_savings_rule",
+          "description": "Policy is unclear about whether savings or property count; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: Any applicant seeking to qualify for Catastrophic Balance Financial Assistance must also supply evidence of Financial Resources as requested in the application."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 351.0
+      },
+      "evidence_ref": "Page 4: Patients approved for Financial Assistance with an annual Family Income between 251% and 400% of FPL guidelines will receive a discount on gross charges as outlined in Appendix A.",
+      "priority": 3
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

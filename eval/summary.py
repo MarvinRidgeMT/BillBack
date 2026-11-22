@@ -30,6 +30,18 @@ def pytest_counts() -> tuple[int, int, int, dict[str, str]]:
     return nums.get("passed", 0), nums.get("failed", 0) + nums.get("error", 0), nums.get("skipped", 0), boundary
 
 
+def key_row() -> tuple[str, str, str, str]:
+    """B's hand-checked key on 6 real policies x 6 fields (eval/answer_key_real_TODO.csv). Reported only once fully filled."""
+    from eval.answer_key_real import score
+
+    result = score()
+    label = "Policy reader, B's hand-checked key (6 real policies × 6 fields)"
+    if result is None:
+        return (label, "not measured yet (waiting for B to fill eval/answer_key_real_TODO.csv)", "≥ 90%", "— pending")
+    pct = 100 * result["correct"] / result["total"]
+    return (label, f"{result['correct']}/{result['total']} ({pct:.0f}%)", "≥ 90%", "✅ met" if pct >= 90 else "❌ not met")
+
+
 def load(name: str) -> dict:
     return json.loads((RES / name).read_text())
 
@@ -48,7 +60,7 @@ def main() -> int:
     rows = [
         ("Bill extraction (10 fake bills × 5 fields)", f"{bill_ok}/{bill_n} ({100 * bill_ok / bill_n:.0f}%)", "≥ 90%", ok(bill_ok / bill_n >= 0.9)),
         ("Policy reader, hand spot-checks (2 real policies × 6 fields)", "11/12 (Boys Town 6/6, USA Health 5/6)", "≥ 90%", "✅ met (small sample, checked by hand)"),
-        ("Policy reader, 120-field answer key", "not measured (no field-level key for real PDFs)", "≥ 90%", "— not measured"),
+        key_row(),
         ("Policy quotes verified verbatim in the PDF", f"{pr['quotes_verified']}/{pr['stated']}", "all", ok(pr["quotes_verified"] == pr["stated"])),
         ("Policy re-run agreement (6 policies × 5 values)", f"{pr['agree']}/{pr['agree_total']}", "—", "info"),
         ("End-to-end households, status (10 households × 20 policies, 2026 FPL)", f"{hh['households_status_ok_2026']}/{hh['households']} households ({hh['status_ok_2026']}/{hh['n']} results)", "10/10", ok(hh["households_status_ok_2026"] == hh["households"])),

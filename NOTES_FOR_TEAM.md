@@ -25,6 +25,25 @@ Say it like this (all true, all measured):
 - Don't say "90% of 120 policy fields": we didn't measure that. Do say "we checked two policies by hand: 11 of 12 fields right".
 
 
+## For B — 3 things before the video (A, 11:45am)
+1. **B: fill `correct_value` for these 36 rows by 12:10; Anish reruns `eval/policy_reader.py`.**
+   File: `eval/answer_key_real_TODO.csv` (6 real policies × 6 fields: Baptist Health FL, Texas Health TX, UW Medicine WA,
+   UCHealth CO, Emory GA, Banner AZ). For each row open `pdf_url`, go to `page`, write the right value in `correct_value`
+   and `yes`/`no` in `is_correct`. We did **not** fill any of it. Once every row has `is_correct`,
+   `python -m eval.answer_key_real` prints the score and `python -m eval.summary` puts it in SUMMARY.md
+   (until then SUMMARY says "pending").
+2. **Your handoff's example `fpl_2026.json` has 2024 numbers.** The repo file `data/fpl_2026.json` is correct
+   (2026 HHS: 15,960 + 5,680 per extra person; AK 19,950; HI 18,360). Nothing to change in the repo; just don't copy the example.
+3. **Please confirm the 7 household detail notes** (193/200 detail match with 2026 numbers; status still 200/200).
+   List: `eval/results/households.md`. Mostly an extra "unresolved residency rule" note.
+
+Also new: `eval/results/b_scorer_on_reader_output.md` — your scorer on our 14 real reads converted to your
+`HospitalPolicy` format (`data/person_a_output/`). **Completeness/format score, not accuracy:** avg 85.4/100, 0/14 pass,
+because our schema has no `version` field (and 5 policies state no effective date). We left those null instead of guessing.
+
+Cost note: a new hospital still costs **$0.0528** (target < $0.05, not met). We kept it rather than re-read policies
+right before the freeze; trimming non-FAP pages is the planned fix.
+
 ## For B — rules JSON contract (policy reader → rules engine)
 - Pydantic models: `backend/policy_reader/schema.py` (`PolicyRules`). Example: `backend/tests/fixtures/sample_rules.json`.
   Load with `PolicyRules.model_validate_json(path.read_text())`, or just `json.load` it.

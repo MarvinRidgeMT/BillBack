@@ -6,12 +6,12 @@ Every number below comes from a script in `eval/` (run `python -m eval.summary` 
 |---|---|---|---|
 | Bill extraction (10 fake bills × 5 fields) | 50/50 (100%) | ≥ 90% | ✅ met |
 | Policy reader, hand spot-checks (2 real policies × 6 fields) | 11/12 (Boys Town 6/6, USA Health 5/6) | ≥ 90% | ✅ met (small sample, checked by hand) |
-| Policy reader, 120-field answer key | not measured (no field-level key for real PDFs) | ≥ 90% | — not measured |
+| Policy reader, B's hand-checked key (6 real policies × 6 fields) | not measured yet (waiting for B to fill eval/answer_key_real_TODO.csv) | ≥ 90% | — pending |
 | Policy quotes verified verbatim in the PDF | 21/21 | all | ✅ met |
 | Policy re-run agreement (6 policies × 5 values) | 29/30 | — | info |
 | End-to-end households, status (10 households × 20 policies, 2026 FPL) | 10/10 households (200/200 results) | 10/10 | ✅ met |
 | …same, every detail incl. unresolved-rule notes | 7/10 households (193/200) | — | info (B to confirm 7 notes) |
-| Rules-engine + backend tests | 215 passed, 0 failed, 2 skipped | all pass | ✅ met |
+| Rules-engine + backend tests | 223 passed, 0 failed, 2 skipped | all pass | ✅ met |
 | Speed, bill → result (cached policy) | avg 2.6 s, max 3.3 s | < 60 s | ✅ met |
 | Speed, first bill for a new hospital (live policy read) | avg 10.9 s | < 60 s | ✅ met |
 | Cost per bill (cached policy) | $0.0096 | < $0.05 | ✅ met |

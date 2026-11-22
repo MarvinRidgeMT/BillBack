@@ -1,0 +1,63 @@
+{
+  "policy_id": "HOSP-R006",
+  "hospital_name": "Deaconess Regional Healthcare Services Illinois, Inc. (Heartland Regional Medical Center)",
+  "facility_names": [],
+  "state": "IL",
+  "source_url": "https://redbudregional.com/wp-content/uploads/2025/12/DRHSI-Financial-Assistance-Policy-102725-final.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "October 27, 2025",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "asset_test",
+          "description": "Policy says to consider the patient's available assets and all other financial resources; assets defined as banking accounts, cash on hand, CDs, securities, real estate, vehicles, and financial settlements, with supporting documentation required.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: Consider the patient\u2019s available assets and all other financial resources available to the patient."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 3: Patients whose family income is at or below 200% of the FPL are eligible to receive free care.",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-0",
+      "name": "Income above 200% and up to 350% of FPL eligible for services at a discount rate; qualifying patients not charged more than AGB. Uninsured patients receive an automatic uninsured discount (facility-specific, 63.64% to 81%).",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "350.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": "Amount Generally Billed (AGB)",
+      "conditions": [
+        {
+          "name": "asset_test",
+          "description": "Policy says to consider the patient's available assets and all other financial resources; assets defined as banking accounts, cash on hand, CDs, securities, real estate, vehicles, and financial settlements, with supporting documentation required.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: Consider the patient\u2019s available assets and all other financial resources available to the patient."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 200.0
+      },
+      "evidence_ref": "Page 3: Patients whose family income is above 200% and up to 350% of the FPL are eligible to receive services at a discount rate.",
+      "priority": 1
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

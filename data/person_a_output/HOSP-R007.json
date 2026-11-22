@@ -1,0 +1,63 @@
+{
+  "policy_id": "HOSP-R007",
+  "hospital_name": "Texas Health Resources (Texas Health)",
+  "facility_names": [],
+  "state": "TX",
+  "source_url": "https://www.texashealth.org/-/media/Project/THR/shared/Documents/PDFs/Business-Office/Financial-Assistance/Financial-Assistance-Policy/Financial-Assistance-THR-System-Policy.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "04/21/2026",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "250.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "asset_test",
+          "description": "Assets are considered: cash, stocks, bonds and other financial assets that can be liquidated within 7 days; non-liquid assets generally not considered. Savings accounts, trust funds and life insurance may also be considered.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 14: For purposes of this policy, assets shall include cash, stocks, bonds and other financial assets that can be liquidated within 7 days."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 16: Discount: 100% of balance due",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-0",
+      "name": "Tier 1 Medically Indigent: 95% discount if balance due is 5% or more of annual income; patient not billed more than AGB.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "500.0",
+      "inclusivity": "inclusive",
+      "discount_percent": "95.0",
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "asset_test",
+          "description": "Assets are considered: cash, stocks, bonds and other financial assets that can be liquidated within 7 days; non-liquid assets generally not considered. Savings accounts, trust funds and life insurance may also be considered.",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 14: For purposes of this policy, assets shall include cash, stocks, bonds and other financial assets that can be liquidated within 7 days."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 251.0
+      },
+      "evidence_ref": "Page 13: These Medically Indigent patients are eligible for a 95% discount as set forth in Attachment B.",
+      "priority": 1
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

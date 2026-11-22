@@ -1,0 +1,88 @@
+{
+  "policy_id": "HOSP-R013",
+  "hospital_name": "Banner Health",
+  "facility_names": [],
+  "state": "XX",
+  "source_url": "https://www.bannerhealth.com/-/media/Files/Project/BH/Patients-Visitors/Billing/Financial-Assistance/2025-documents/Banner-Health-Financial-Assistance-Policy-for-Hospital-Patients-770-v6092925100125.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "07/01/2025",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "200.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "unresolved_savings_rule",
+          "description": "Policy is unclear about whether savings or property count; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 6: Equity includes liquid assets (cash, stocks, bonds, and other assets that can be liquidated within 7 days) to cover outstanding bills."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 4: < 200% of 100% discount off AGB 100% discount off BAI",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-0",
+      "name": "Hospitals in states other than Colorado: 75% discount off AGB (uninsured) or off BAI (underinsured). Colorado hospitals: 75% discount for >250% to 300% FPL.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300.0",
+      "inclusivity": "inclusive",
+      "discount_percent": "75.0",
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "unresolved_savings_rule",
+          "description": "Policy is unclear about whether savings or property count; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 6: Equity includes liquid assets (cash, stocks, bonds, and other assets that can be liquidated within 7 days) to cover outstanding bills."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 200.0
+      },
+      "evidence_ref": "Page 4: (1) their household income is 400% of the FPL or less;",
+      "priority": 1
+    },
+    {
+      "tier_id": "discount-1",
+      "name": "50% discount off AGB (uninsured) or off BAI (underinsured), for >300% to 400% FPL.",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "400.0",
+      "inclusivity": "inclusive",
+      "discount_percent": "50.0",
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "unresolved_savings_rule",
+          "description": "Policy is unclear about whether savings or property count; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 6: Equity includes liquid assets (cash, stocks, bonds, and other assets that can be liquidated within 7 days) to cover outstanding bills."
+        }
+      ],
+      "scope": {
+        "fpl_min_percent": 300.0
+      },
+      "evidence_ref": "Page 4: (1) their household income is 400% of the FPL or less;",
+      "priority": 2
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

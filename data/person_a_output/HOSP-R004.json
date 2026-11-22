@@ -1,0 +1,46 @@
+{
+  "policy_id": "HOSP-R004",
+  "hospital_name": "BayCare Health System",
+  "facility_names": [],
+  "state": "FL",
+  "source_url": "https://baycare.org/-/media/project/baycare/consumer-portal/billing-and-insurance/financial-assistance/financial-assistance-policies/26-12663-financial-full-policy-english.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "January 1, 2026",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "250.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [
+        {
+          "name": "unresolved_home_area_rule",
+          "description": "Policy is unclear about where you need to live; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: Non-Florida residents seeking financial assistance while visiting Florida for planned services"
+        },
+        {
+          "name": "unresolved_savings_rule",
+          "description": "Policy is unclear about whether savings or property count; a person needs to check",
+          "required": true,
+          "state": "unknown",
+          "verified_value": null,
+          "evidence_ref": "Page 3: If available liquid assets are over $50,000 for the household, the patient may not be eligible for financial assistance."
+        }
+      ],
+      "scope": {},
+      "evidence_ref": "Page 2: Patients who have submitted a financial assistance application with complete information and who have qualified for financial assistance will receive a 100 percent discount.",
+      "priority": 0
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}

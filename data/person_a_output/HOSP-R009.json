@@ -1,0 +1,61 @@
+{
+  "policy_id": "HOSP-R009",
+  "hospital_name": "UW Medicine (Harborview Medical Center, UW Medical Center, Airlift Northwest, UW Physicians, UW Medicine Primary Care)",
+  "facility_names": [],
+  "state": "WA",
+  "source_url": "https://doh.wa.gov/sites/default/files/2024-02/CCPUW.pdf",
+  "retrieval_date": "2026-11-22",
+  "effective_date": "v12 8/2026",
+  "version": null,
+  "tiers": [
+    {
+      "tier_id": "free",
+      "name": "Free Care",
+      "type": "free",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "300.0",
+      "inclusivity": "inclusive",
+      "discount_percent": null,
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {},
+      "evidence_ref": "Page 4: 0% - 300% of the Federal Poverty Level (FPL) for a 100% financial assistance discount",
+      "priority": 0
+    },
+    {
+      "tier_id": "discount-0",
+      "name": "Facility services only with discharge dates on or after July 1, 2022, at Harborview Medical Center and UW Medical Center; 75% financial assistance discount",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "350.0",
+      "inclusivity": "inclusive",
+      "discount_percent": "75.0",
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {
+        "fpl_min_percent": 301.0
+      },
+      "evidence_ref": "Page 4: 351% - 400% of the Federal Poverty Level (FPL) for a 50% financial assistance discount",
+      "priority": 1
+    },
+    {
+      "tier_id": "discount-1",
+      "name": "Facility services only with discharge dates on or after July 1, 2022, at Harborview Medical Center and UW Medical Center; 50% financial assistance discount",
+      "type": "discounted",
+      "threshold_type": "fpl_percentage",
+      "threshold_value": "400.0",
+      "inclusivity": "inclusive",
+      "discount_percent": "50.0",
+      "discount_formula": null,
+      "conditions": [],
+      "scope": {
+        "fpl_min_percent": 351.0
+      },
+      "evidence_ref": "Page 4: 351% - 400% of the Federal Poverty Level (FPL) for a 50% financial assistance discount",
+      "priority": 2
+    }
+  ],
+  "default_fpl_year": 2026,
+  "default_region": "contiguous",
+  "verification_status": "read_by_policy_reader"
+}
