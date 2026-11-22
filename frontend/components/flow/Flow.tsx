@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, MotionConfig } from "motion/react";
+import { Footer } from "@/components/Footer";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/hero/Hero";
@@ -135,7 +136,7 @@ function FlowInner() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="stage">
+      <div className={step === "hero" ? "stage" : "stage in-step"}>
         <Sky parallax={parallax} />
         <Nav />
         <main>
@@ -201,6 +202,7 @@ function FlowInner() {
         </main>
       </div>
       <HowItWorks />
+      <Footer />
     </MotionConfig>
   );
 }

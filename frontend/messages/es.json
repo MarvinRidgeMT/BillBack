@@ -113,7 +113,7 @@
   "how.trust_title": "¿Por qué confiar en esto?",
   "how.trust": "BillBack lee la política del propio hospital y te muestra la línea exacta. Una regla, no una suposición de la IA, toma la decisión. No guardamos tu factura.",
   "footer.built": "Hecho en EvoHacks II",
-  "footer.no_store": "Nunca guardamos tu factura",
+  "footer.no_store": "No guardamos tu factura",
   "footer.not_advice": "No es asesoría legal ni financiera",
   "footer.free_help": "Ayuda gratis:",
   "footer.github": "GitHub",
@@ -139,5 +139,7 @@
   "plain.missing_assets": "cuánto tienes en ahorros o propiedades",
   "plain.missing_state": "en qué estado vives",
   "plain.unclear_home_area": "la regla de zona de residencia de la política (no está clara)",
-  "plain.unclear_savings": "la regla de ahorros de la política (no está clara)"
+  "plain.unclear_savings": "la regla de ahorros de la política (no está clara)",
+  "result.mini_due": "A PAGAR",
+  "meta.title": "BillBack: quizás no debes esta factura"
 }

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ApiError, DEMO_MODE, downloadPacket } from "@/lib/api";
 import { useI18n, useT, type MessageKey, type Translate } from "@/lib/i18n";
 import { EASE_OUT, SNAPPY_SETTLE_MS } from "@/lib/motion";
+import { plainCaveat } from "@/lib/caveats";
 import { MOCK_ELIGIBILITY_DEFAULT } from "@/lib/mock";
 import {
   CONFIRM_THRESHOLD,
@@ -18,6 +19,8 @@ import { StepCard, StepHeading, type Entrance } from "./StepCard";
 
 const DOLLAR_FOR_URL = "https://dollarfor.org";
 const STAMP_DELAY_MS = 200;
+const STRIKE_DELAY_MS = 250;
+const STRIKE_MS = 550;
 const SWEEP_DELAY_S = 0.5;
 
 const TITLES: Record<EligibilityStatus, MessageKey> = {
@@ -135,7 +138,12 @@ function safeUrl(url: string | null): string | null {
   }
 }
 
-const plain = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const TONE: Record<EligibilityStatus, string> = {
+  likely_free: "tone-free",
+  likely_discounted: "tone-discount",
+  probably_not_eligible: "tone-neutral",
+  cannot_determine: "tone-neutral",
+};
 
 interface VerdictProps {
   data: EligibilityData;
@@ -155,11 +163,15 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
   const [stamped, setStamped] = useState(reduce);
   const [packet, setPacket] = useState<PacketState>("idle");
 
+  const free = data.status === "likely_free";
+  // For "likely free" the amount is struck through first, then the stamp lands: about 1s, once.
+  const stampDelayMs = free ? STRIKE_DELAY_MS + STRIKE_MS : STAMP_DELAY_MS;
+  const hasStamp = stamp !== null;
   useEffect(() => {
-    if (reduce || !stamp) return;
-    const timer = window.setTimeout(() => setStamped(true), STAMP_DELAY_MS);
+    if (reduce || !hasStamp) return;
+    const timer = window.setTimeout(() => setStamped(true), stampDelayMs);
     return () => window.clearTimeout(timer);
-  }, [reduce, stamp]);
+  }, [reduce, hasStamp, stampDelayMs]);
 
   const { evidence } = data;
   const quote = evidence.quote?.trim() ?? "";
@@ -173,10 +185,8 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
       : t("result.quote_lead", { hospital: hospitalName });
 
   // The coral highlight sweeps after the stamp has landed, or shortly after the card when there's no stamp.
-  const sweepDelay = (stamp ? (STAMP_DELAY_MS + SNAPPY_SETTLE_MS) / 1000 : 0) + SWEEP_DELAY_S;
-
-  const fine = t("result.fine");
-  const extraDisclaimer = data.disclaimer && !plain(fine).includes(plain(data.disclaimer)) ? data.disclaimer : "";
+  const sweepDelay = (stamp ? (stampDelayMs + SNAPPY_SETTLE_MS) / 1000 : 0) + SWEEP_DELAY_S;
+  const caveats = data.caveats.map((c) => plainCaveat(c, t));
   const amount = sample ? "" : bill.fields.amount_due;
   const canApply = data.status !== "probably_not_eligible";
 
@@ -203,17 +213,37 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
     }
   }
 
+  const helpLine = (
+    <p className="help-line">
+      {t("result.help")} · {t("result.free_help")}{" "}
+      <a className="text-link" href={DOLLAR_FOR_URL} target="_blank" rel="noopener noreferrer">
+        Dollar For
+        <span className="sr-only"> {t("result.new_tab")}</span>
+      </a>
+    </p>
+  );
+
   return (
     <>
       {sample && <p className="banner">{t("result.sample_banner")}</p>}
 
-      <div className="verdict">
+      <div className={`verdict ${TONE[data.status]}`}>
         <div className="mini-bill" aria-hidden="true">
           <span className="mini-name">{(sample ? data.hospital_name : bill.hospital.name).toUpperCase()}</span>
-          <br />
-          DUE
-          <br />
-          {amount && (data.status === "likely_free" ? <s>{amount}</s> : amount)}
+          <span className="mini-due">{t("result.mini_due")}</span>
+          {amount && (
+            <span className="mini-amount">
+              {amount}
+              {free && (
+                <motion.span
+                  className="strike"
+                  initial={reduce ? false : { scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: STRIKE_MS / 1000, ease: EASE_OUT, delay: STRIKE_DELAY_MS / 1000 }}
+                />
+              )}
+            </span>
+          )}
           {stamp && <Stamp top={stamp.top} bottom={stamp.bottom} show={stamped} reduce={reduce} from={2.6} />}
         </div>
         <div>
@@ -226,17 +256,21 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
                   n: household,
                 })}
           </p>
+          <p className="disclaimer">{t("result.fine")}</p>
         </div>
       </div>
 
       {data.status === "likely_discounted" && data.tier?.description && (
-        <p className="mt-3 mb-0">{data.tier.description}</p>
+        <p className="mt-3 mb-0" lang="en">
+          {data.tier.description}
+        </p>
       )}
 
       <div className="quote-box">
         <p className="lead">{lead}</p>
+        {lang === "es" && quote && <p className="quote-lang">{t("result.policy_text_label")}</p>}
         {quote ? (
-          <p>
+          <p lang="en">
             {"“"}
             <motion.span
               className="hl"
@@ -255,7 +289,7 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
           <p className="more">
             {quote && doubleCheck && <>{t("result.double_check")} </>}
             {policyUrl && (
-              <a className="text-link" href={policyUrl} target="_blank" rel="noopener noreferrer">
+              <a className="text-link policy-link" href={policyUrl} target="_blank" rel="noopener noreferrer">
                 {t("result.read_policy")}
                 <span className="sr-only"> {t("result.new_tab")}</span>
               </a>
@@ -263,6 +297,17 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
           </p>
         )}
       </div>
+
+      {canApply && !sample && (
+        <>
+          <p className="caveats-title">{t("result.next_title")}</p>
+          <ol className="what-next">
+            <li>{t("result.next_1")}</li>
+            <li>{t("result.next_2")}</li>
+            <li>{t("result.next_3")}</li>
+          </ol>
+        </>
+      )}
 
       {data.status === "probably_not_eligible" && (
         <ul className="next-steps">
@@ -282,12 +327,20 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
         </ul>
       )}
 
-      {data.caveats.length > 0 && (
+      {caveats.length > 0 && (
         <>
           <p className="caveats-title">{t("result.caveats_title")}</p>
           <ul className="caveats">
-            {data.caveats.map((c) => (
-              <li key={c}>{c}</li>
+            {caveats.map((c) => (
+              <li key={c.text}>
+                {c.text}
+                {c.wording && (
+                  <details className="wording">
+                    <summary>{t("result.policy_wording")}</summary>
+                    <span lang="en">{c.wording}</span>
+                  </details>
+                )}
+              </li>
             ))}
           </ul>
         </>
@@ -305,10 +358,7 @@ function Verdict({ data, sample, bill, household, income, reduce, onStartOver }:
       </div>
       <div aria-live="polite">{packet === "failed" && <p className="error-text">{t("result.app_failed")}</p>}</div>
 
-      <p className="fine">
-        {fine}
-        {extraDisclaimer && <> {extraDisclaimer}</>}
-      </p>
+      {helpLine}
     </>
   );
 }

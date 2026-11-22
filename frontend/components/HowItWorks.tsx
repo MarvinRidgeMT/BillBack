@@ -22,6 +22,9 @@ export function HowItWorks() {
           <p>{t("how.3_body")}</p>
         </li>
       </ol>
+      <p className="trust">
+        <strong>{t("how.trust_title")}</strong> {t("how.trust")}
+      </p>
     </section>
   );
 }

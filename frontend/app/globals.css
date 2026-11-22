@@ -120,6 +120,8 @@
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  /* clip, not just hidden: focus and scrollIntoView can't scroll the sky sideways on phones */
+  overflow: clip;
 }
 .sky {
   position: absolute;
@@ -763,7 +765,7 @@
 }
 .mini-bill {
   position: relative;
-  width: 96px;
+  width: 116px;
   flex: none;
   aspect-ratio: 0.78;
   background: #fff;
@@ -972,5 +974,154 @@
   border: 0;
   padding: 4px 2px;
   cursor: pointer;
+}
+/* Result screen */
+.verdict {
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 0 -16px 6px;
+}
+.verdict.tone-free {
+  background: color-mix(in srgb, #2f9e6b 16%, transparent);
+}
+.verdict.tone-discount {
+  background: color-mix(in srgb, #e9a23b 20%, transparent);
+}
+.verdict.tone-neutral {
+  background: color-mix(in srgb, var(--ink-2) 10%, transparent);
+}
+.disclaimer {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 6px 0 0;
+}
+.mini-bill .mini-due,
+.mini-bill .mini-amount {
+  display: block;
+}
+.mini-bill .mini-amount {
+  position: relative;
+  width: fit-content;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+  color: #26332e;
+  font-variant-numeric: tabular-nums;
+}
+.mini-bill .strike {
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 50%;
+  height: 2px;
+  background: var(--coral);
+  transform-origin: left center;
+}
+.sub,
+.quote-box,
+.disclaimer {
+  font-variant-numeric: tabular-nums;
+}
+.quote-lang {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.policy-link {
+  display: inline-block;
+  padding: 4px 0;
+  min-height: 24px;
+  line-height: 1.6;
+}
+.what-next {
+  list-style: decimal;
+  margin: 6px 0 0;
+  padding-left: 22px;
+  font-size: 16px;
+}
+.what-next li {
+  margin: 4px 0;
+}
+.wording {
+  font-size: 14px;
+  margin-top: 2px;
+}
+.wording summary {
+  cursor: pointer;
+  text-decoration: underline;
+  min-height: 24px;
+  padding: 2px 0;
+}
+.help-line {
+  font-size: 15px;
+  color: var(--ink-2);
+  margin: 16px 0 0;
+}
+/* Hero layout (desktop): headline left, bill right, CTA beside the bill so it is on the first screen */
+.side.r p {
+  margin: 0;
+}
+.side-source {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--ink-2);
+  text-decoration: underline;
+}
+@media (min-width: 701px) {
+  .hero h1 {
+    font-size: clamp(64px, 9.4vw, 150px);
+  }
+  .bill-anchor {
+    left: 79%;
+    top: 46%;
+    width: clamp(220px, 22vw, 310px);
+  }
+  .cta-wrap {
+    right: auto;
+    bottom: auto;
+    left: 57%;
+    top: 58%;
+    translate: -50% -50%;
+  }
+  .side.r {
+    right: max(5vw, 16px);
+  }
+}
+/* Steps 1-4: the scraps stay behind the card, and step aside on small phones */
+.sky {
+  z-index: 0;
+}
+@media (max-width: 640px) {
+  .stage.in-step .scrap {
+    display: none;
+  }
+  .hero {
+    padding-bottom: 24px;
+    min-height: 664px;
+  }
+}
+.trust {
+  max-width: 720px;
+  margin: 28px 0 0;
+  font-size: 17px;
+  line-height: 1.55;
+}
+.site-footer {
+  padding: 28px max(5vw, 16px) 40px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.site-footer p {
+  margin: 0;
+  line-height: 1.8;
+}
+.site-footer .data-line {
+  margin-top: 6px;
+  font-size: 13px;
 }
 }

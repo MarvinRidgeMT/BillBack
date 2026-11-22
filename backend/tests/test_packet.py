@@ -69,7 +69,7 @@ def test_english_letter_asks_to_pause_collections_and_has_checklist():
     assert "pause all collection activity" in letter
     assert "110%" in letter and "Financial Assistance Policy" in letter
     assert "Patient name" in letter
-    for item in ("photo ID", "pay stubs", "copy of this bill", "Make a copy", "30 days"):
+    for item in ("photo ID", "pay stubs", "copy of this bill", "application form", "Make a copy", "30 days", "Dollar For"):
         assert item in checklist
     assert "Likely eligible, not a guarantee. The hospital makes the final decision. Made with BillBack." in letter
     assert "Made with BillBack" in checklist

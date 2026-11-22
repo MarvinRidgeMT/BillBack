@@ -113,7 +113,7 @@
   "how.trust_title": "Why trust this?",
   "how.trust": "BillBack reads the hospital's own policy and shows you the exact line. A rule, not an AI guess, makes the call. We don't save your bill.",
   "footer.built": "Built at EvoHacks II",
-  "footer.no_store": "We never store your bill",
+  "footer.no_store": "We don't save your bill",
   "footer.not_advice": "Not legal or financial advice",
   "footer.free_help": "Free help:",
   "footer.github": "GitHub",
@@ -139,5 +139,7 @@
   "plain.missing_assets": "how much you have in savings or property",
   "plain.missing_state": "which state you live in",
   "plain.unclear_home_area": "the policy's home-area rule (unclear in the policy)",
-  "plain.unclear_savings": "the policy's savings rule (unclear in the policy)"
+  "plain.unclear_savings": "the policy's savings rule (unclear in the policy)",
+  "result.mini_due": "DUE",
+  "meta.title": "BillBack: you may not owe this bill"
 }

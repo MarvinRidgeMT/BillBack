@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useId, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { NOT_LISTED, useHospitals, useLiveMode } from "@/lib/hospitals";
@@ -29,11 +29,6 @@ export function HospitalSelect({ value, onChange, matched, matchFailed = false, 
   const liveMode = useLiveMode();
   const [changing, setChanging] = useState(false);
   const current = hospitals.find((h) => h.slug === value);
-
-  // A new match (e.g. after the patient fixes the hospital name) shows the short summary again.
-  useEffect(() => {
-    if (matched) setChanging(false);
-  }, [matched, value]);
 
   if (matched && current && !changing) {
     return (

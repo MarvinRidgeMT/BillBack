@@ -59,6 +59,8 @@ TEXT: dict[str, dict[str, str]] = {
         "doc_id": "A photo ID (driver's license, state ID or passport)",
         "doc_income": "Proof of income: recent pay stubs, your last tax return, or benefit letters (Social Security, unemployment, SNAP)",
         "doc_bill": "A copy of this bill",
+        "doc_form": "The hospital's own financial assistance application form, if it has one (ask the billing office)",
+        "dollarfor": "Free help with your application: Dollar For, https://dollarfor.org",
         "fill_in": "Fill in your name, address and phone, and sign the letter",
         "copy": "Make a copy of everything for yourself",
         "follow": "Follow up in 30 days if you hear nothing",
@@ -102,6 +104,8 @@ TEXT: dict[str, dict[str, str]] = {
         "doc_id": "Una identificación con foto (licencia de conducir, identificación estatal o pasaporte)",
         "doc_income": "Comprobante de ingresos: talones de pago recientes, su última declaración de impuestos o cartas de beneficios (Seguro Social, desempleo, SNAP)",
         "doc_bill": "Una copia de esta factura",
+        "doc_form": "El formulario de solicitud de asistencia financiera del propio hospital, si tiene uno (pídalo en la oficina de facturación)",
+        "dollarfor": "Ayuda gratis con su solicitud: Dollar For, https://dollarfor.org",
         "fill_in": "Escriba su nombre, dirección y teléfono, y firme la carta",
         "copy": "Guarde una copia de todo para usted",
         "follow": "Si no recibe respuesta en 30 días, vuelva a llamar",
@@ -243,7 +247,7 @@ def build_packet(
         _p(tx["attach"], st["h2"]),
     ]
     box = "[  ]"  # Helvetica has no ballot-box glyph
-    for key in ("doc_id", "doc_income", "doc_bill"):
+    for key in ("doc_id", "doc_income", "doc_bill", "doc_form"):
         story.append(_p(f"{box}  {tx[key]}", st["check"]))
     story.append(Spacer(1, 6))
     for key in ("fill_in", "copy", "send", "follow"):
@@ -255,6 +259,7 @@ def build_packet(
             story.append(_p(tx["phone"].format(phone=phone), st["base"]))
         if how_to_apply:
             story.append(_p(how_to_apply, st["small"]))
+    story += [Spacer(1, 10), _p(tx["dollarfor"], st["base"])]
 
     def footer(canvas, doc) -> None:  # noqa: ANN001 - ReportLab callback signature
         canvas.saveState()

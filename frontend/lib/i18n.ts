@@ -34,6 +34,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = lang;
+    document.title = MESSAGES[lang]["meta.title"];
   }, [lang]);
 
   const t = useCallback<Translate>(
