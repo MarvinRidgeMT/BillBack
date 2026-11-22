@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ApiError, DEMO_MODE } from "@/lib/api";
 import { confidencePercent, displayField } from "@/lib/format";
 import { hospitalBySlug, matchHospital, NOT_LISTED } from "@/lib/hospitals";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, type MessageKey, type Translate } from "@/lib/i18n";
 import { SOFT } from "@/lib/motion";
 import {
   CONFIRM_THRESHOLD,
@@ -14,6 +14,7 @@ import {
   type BillReadData,
   type ConfirmedBill,
   type FieldName,
+  type Hospital,
 } from "@/lib/types";
 import { HospitalSelect } from "./HospitalSelect";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
@@ -60,7 +61,9 @@ export function ReadingStep(props: ReadingStepProps) {
   return (
     <StepCard step={2} entrance={entrance} reduce={reduce}>
       {sample && <p className="banner">{t("reading.sample_banner")}</p>}
-      <StepHeading>{t("reading.title")}</StepHeading>
+      <StepHeading key={state.phase === "ready" ? "check" : "reading"}>
+        {state.phase === "ready" ? t("reading.check_title") : t("reading.title")}
+      </StepHeading>
 
       {state.phase === "loading" && (
         <p className="status-line" role="status">
@@ -95,6 +98,15 @@ export function ReadingStep(props: ReadingStepProps) {
   );
 }
 
+/** Reader notes come from backend code in English. Known ones are shown in the patient's language. */
+const KNOWN_NOTES: Record<string, MessageKey> = {
+  "account number should be 4-30 letters, digits or dashes": "note.account_format",
+};
+function noteText(note: string, t: Translate): string {
+  const key = KNOWN_NOTES[note.trim().toLowerCase()];
+  return key ? t(key) : note;
+}
+
 /** The five fields, revealed one by one, with anything under 80% sure handed to the patient to fix. */
 function Confirm({
   data,
@@ -112,11 +124,32 @@ function Confirm({
 
   const [edits, setEdits] = useState<Partial<Record<FieldName, string>>>({});
   const [revealed, setRevealed] = useState(reduce);
-  const [guess, setGuess] = useState(() => matchHospital(data.fields.hospital_name.value));
-  const [hospital, setHospital] = useState(guess?.slug ?? "");
+  const [guess, setGuess] = useState<Hospital | null>(null);
+  const [matchDone, setMatchDone] = useState(false);
+  const [hospital, setHospital] = useState("");
   // True once the patient has picked a hospital themselves. Their pick is never overwritten.
   const [chosenByPatient, setChosenByPatient] = useState(false);
   const [showRequired, setShowRequired] = useState(false);
+  const [editing, setEditing] = useState<ReadonlySet<FieldName>>(new Set());
+  const [confirmed, setConfirmed] = useState<ReadonlySet<FieldName>>(new Set());
+  const unresolved = toCheck.filter((n) => !confirmed.has(n) && edits[n] === undefined);
+
+  const startEditing = (name: FieldName) => setEditing((prev) => new Set([...prev, name]));
+  const markConfirmed = (name: FieldName) => setConfirmed((prev) => new Set([...prev, name]));
+
+  // Ask the backend which cached policy this bill belongs to. Only a preselection: the patient can change it.
+  useEffect(() => {
+    let live = true;
+    matchHospital(data.fields.hospital_name.value, data.fields.hospital_address.value).then((m) => {
+      if (!live) return;
+      setGuess(m);
+      setMatchDone(true);
+      setHospital((current) => (current === "" && m ? m.slug : current));
+    });
+    return () => {
+      live = false;
+    };
+  }, [data]);
 
   useEffect(() => {
     if (reduce) return;
@@ -129,9 +162,10 @@ function Confirm({
     setEdits((prev) => ({ ...prev, [name]: value }));
     // A corrected hospital name can point at a different policy, so our guess follows it.
     if (name === "hospital_name") {
-      const next = matchHospital(value);
-      setGuess(next);
-      if (!chosenByPatient) setHospital(next?.slug ?? "");
+      matchHospital(value, valueOf("hospital_address")).then((next) => {
+        setGuess(next);
+        if (!chosenByPatient) setHospital(next?.slug ?? "");
+      });
     }
   }
 
@@ -174,28 +208,33 @@ function Confirm({
         {FIELD_NAMES.map((name, i) => {
           const field = data.fields[name];
           const check = needsCheck(name);
+          const resolved = !check || confirmed.has(name) || edits[name] !== undefined;
+          const open = check || editing.has(name);
           const id = `${baseId}-${name}`;
           const shown = valueOf(name);
+          const note = check && field.note ? noteText(field.note, t) : "";
           return (
             <motion.div
               key={name}
-              className={check ? "field-row check" : "field-row"}
+              className={check && !resolved ? "field-row check" : check ? "field-row checked" : "field-row"}
               initial={reduce ? false : { opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ ...SOFT, delay: (i + 1) * REVEAL_GAP_S }}
             >
-              {check ? (
+              {open ? (
                 <>
                   <label className="k" htmlFor={id}>
-                    {t(`field.${name}`)} · {t("reading.check_suffix")}
+                    {t(`field.${name}`)}
+                    {check && !resolved && <> · <strong>{t("reading.check_suffix")}</strong></>}
                   </label>
                   <input
                     id={id}
                     className="field-input v"
                     value={shown}
                     onChange={(e) => edit(name, e.target.value)}
-                    aria-describedby={field.note ? `${id}-note` : undefined}
+                    aria-describedby={note ? `${id}-note` : undefined}
                     autoComplete="off"
+                    autoFocus={!check && editing.has(name)}
                   />
                 </>
               ) : (
@@ -205,11 +244,29 @@ function Confirm({
                 </>
               )}
               <span className="chip">{t("reading.sure", { pct: confidencePercent(field.confidence) })}</span>
-              {check && field.note && (
+              {note && (
                 <span className="note" id={`${id}-note`}>
-                  {field.note}
+                  {note}
                 </span>
               )}
+              <span className="row-actions">
+                {check && !resolved && (
+                  <button type="button" className="mini-btn primary" onClick={() => markConfirmed(name)}>
+                    {t("reading.its_right")}
+                  </button>
+                )}
+                {check && resolved && <span className="checked-label">✓ {t("reading.checked")}</span>}
+                {!check && !editing.has(name) && (
+                  <button
+                    type="button"
+                    className="mini-btn"
+                    onClick={() => startEditing(name)}
+                    aria-label={`${t("reading.edit")}: ${t(`field.${name}`)}`}
+                  >
+                    {t("reading.edit")}
+                  </button>
+                )}
+              </span>
             </motion.div>
           );
         })}
@@ -229,15 +286,19 @@ function Confirm({
             setShowRequired(false);
           }}
           matched={!chosenByPatient && hospital !== "" && hospital === guess?.slug}
+          matchFailed={matchDone && !guess}
           showRequired={showRequired}
         />
+        {unresolved.length > 0 && hospital !== NOT_LISTED && <p className="hint mt-4 mb-0">{t("reading.check_first")}</p>}
         <div className="btn-row">
           {hospital === NOT_LISTED ? (
             <Button variant="ghost" onClick={onStartOver}>
               {t("result.start_over")}
             </Button>
           ) : (
-            <Button onClick={confirm}>{t("reading.ok")}</Button>
+            <Button variant="coral" onClick={confirm} disabled={unresolved.length > 0}>
+              {t("reading.ok")}
+            </Button>
           )}
         </div>
       </motion.div>

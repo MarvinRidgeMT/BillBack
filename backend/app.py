@@ -205,6 +205,12 @@ def packet_pdf(req: PacketRequest) -> Response:
     )
 
 
+@app.get("/api/config")
+def config() -> dict[str, Any]:
+    """What the UI may offer. live_mode=False hides "paste a link to the policy"."""
+    return _envelope({"live_mode": demo_mode.live_mode()})
+
+
 @app.get("/api/hospitals")
 def hospitals() -> dict[str, Any]:
     """Every hospital with a cached policy: [{slug, name, state}]."""

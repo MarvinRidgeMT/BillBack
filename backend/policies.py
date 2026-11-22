@@ -40,6 +40,9 @@ ALIASES: dict[str, dict[str, Any]] = {
     "marshfield-clinic-health-system": {"aliases": ["Marshfield Clinic", "Marshfield Medical Center"],
                                         "city": "Marshfield", "states": ["WI", "MI"]},
     "adena-health-system": {"aliases": ["Adena Regional Medical Center", "Adena Health"], "city": "Chillicothe", "states": ["OH"]},
+    # The policy names no state; Banner is headquartered in Phoenix and runs hospitals in these states.
+    "banner-health": {"aliases": ["Banner University Medical Center", "Banner Desert Medical Center"],
+                      "city": "Phoenix", "state": "AZ", "states": ["AZ", "CO", "NE", "WY", "CA", "NV"]},
 }
 
 
@@ -88,7 +91,7 @@ def build_index(cache_dir: Path = DEFAULT_CACHE_DIR) -> list[dict[str, Any]]:
                 "hospital_name": rules.hospital_name,
                 "aliases": extra.get("aliases", []) + [name for name, target in DEMO_ALIASES.items() if target == slug],
                 "city": extra.get("city"),
-                "state": rules.hospital_state,
+                "state": rules.hospital_state or extra.get("state"),
                 "states": extra.get("states", [rules.hospital_state] if rules.hospital_state else []),
                 "file": path.name,
                 "source_url": (rules.source.url if rules.source else None) or src.get("url"),

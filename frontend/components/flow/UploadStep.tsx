@@ -16,7 +16,7 @@ const TYPE_BY_EXTENSION: Record<string, string> = {
 };
 const ALLOWED_TYPES = new Set(Object.values(TYPE_BY_EXTENSION));
 const ACCEPT = ".jpg,.jpeg,.png,.heic,.heif,.pdf,image/jpeg,image/png,image/heic,image/heif,application/pdf";
-const SAMPLE_URL = "/samples/sample-bill.png";
+const SAMPLE_URL = "/samples/sample-bill.jpg";
 
 /** Returns a file the backend will accept, or null. Checked here so a bad file never gets uploaded. */
 function acceptable(file: File): File | null {
@@ -73,7 +73,7 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
       if (!res.ok) throw new Error("sample missing");
       const blob = await res.blob();
       if (!alive.current) return;
-      onFile(new File([blob], "sample-bill.png", { type: "image/png" }));
+      onFile(new File([blob], "sample-bill.jpg", { type: "image/jpeg" }));
     } catch {
       if (!alive.current) return;
       setError("upload.sample_failed");

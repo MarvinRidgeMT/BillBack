@@ -21,10 +21,20 @@
     {
       "slug": "banner-health",
       "hospital_name": "Banner Health",
-      "aliases": [],
-      "city": null,
-      "state": null,
-      "states": [],
+      "aliases": [
+        "Banner University Medical Center",
+        "Banner Desert Medical Center"
+      ],
+      "city": "Phoenix",
+      "state": "AZ",
+      "states": [
+        "AZ",
+        "CO",
+        "NE",
+        "WY",
+        "CA",
+        "NV"
+      ],
       "file": "banner-health__51370475.json",
       "source_url": "https://www.bannerhealth.com/-/media/Files/Project/BH/Patients-Visitors/Billing/Financial-Assistance/2025-documents/Banner-Health-Financial-Assistance-Policy-for-Hospital-Patients-770-v6092925100125.pdf",
       "downloaded": "2026-11-22",
