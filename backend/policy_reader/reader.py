@@ -44,10 +44,13 @@ def _raw_path(cache_dir: Path, sha: str) -> Path:
     return Path(cache_dir) / "raw" / f"{sha[:8]}.raw.json"
 
 
-def _finish(raw: PolicyRules, doc: extract_text.ExtractedDoc, sha: str, url: Optional[str]) -> PolicyRules:
+def _finish(
+    raw: PolicyRules, doc: extract_text.ExtractedDoc, sha: str, url: Optional[str], retrieved_at: Optional[str] = None
+) -> PolicyRules:
     with_source = raw.model_copy(
         update={
-            "source": Source(url=url, sha256=sha, retrieved_at=date.today().isoformat(), page_count=doc.page_count),
+            "source": Source(url=url, sha256=sha, retrieved_at=retrieved_at or date.today().isoformat(),
+                             page_count=doc.page_count),
             "warnings": list(doc.warnings) + list(raw.warnings),
         }
     )
@@ -64,7 +67,9 @@ def revalidate_cached(
         return None
     previous = cache.lookup(sha, cache_dir)
     url = url or (previous.source.url if previous and previous.source else None)
-    rules = _finish(PolicyRules.model_validate_json(raw_file.read_text()), extract_text.extract_pages(pdf_bytes), sha, url)
+    retrieved = previous.source.retrieved_at if previous and previous.source else None  # keep the download date
+    raw = PolicyRules.model_validate_json(raw_file.read_text())
+    rules = _finish(raw, extract_text.extract_pages(pdf_bytes), sha, url, retrieved_at=retrieved)
     cache.save(rules, cache_dir)
     return rules
 
