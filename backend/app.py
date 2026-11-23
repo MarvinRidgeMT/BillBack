@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from typing import Any, Literal
 
 from fastapi import FastAPI, HTTPException, Request, Response, UploadFile
@@ -11,7 +12,9 @@ from pydantic import BaseModel, Field
 
 import hashlib
 
-from backend import demo_mode, fpl, hospital_form, packet, policies
+from backend import demo_mode, errors, fpl, hospital_form, packet, policies
+from backend.errors import AppError
+from backend.llm_retry import ModelUnavailable
 from backend.policy_reader import cache as policy_cache
 from backend.bill_reader import reader as bill_reader
 from backend.eligibility import eligibility_result_to_api_response, load_fpl_table_from_json, run_eligibility
@@ -20,6 +23,8 @@ from backend.policy_reader.reader import PolicyReaderError, read_policy
 
 log = logging.getLogger("billback")
 app = FastAPI(title="BillBack API")
+errors.install(app)
+MAX_HOUSEHOLD = 20  # API and UI agree: 1-20 people
 
 
 def _envelope(data: Any = None, error: str | None = None) -> dict[str, Any]:
@@ -88,21 +93,26 @@ async def bill_read(file: UploadFile) -> dict[str, Any]:
     if demo_mode.bill_cache_only():
         hit = demo_mode.cached_bill(hashlib.sha256(data).hexdigest())
         if hit is None:
-            raise HTTPException(409, "demo mode: only the sample bills can be read right now")
+            raise AppError("demo_only", "demo mode: only the sample bills can be read right now")
         return _envelope({**hit, "cached": True})
+    if len(data) > bill_reader.MAX_BILL_BYTES:
+        raise AppError("too_large", "file is larger than 15 MB")
     try:
         result = await run_in_threadpool(bill_reader.read_bill, data, file.content_type or "")
     except bill_reader.BillReadError as exc:
-        raise HTTPException(400, str(exc)) from exc
+        raise AppError("bad_file", str(exc)) from exc
+    except ModelUnavailable as exc:
+        log.warning("bill reader: model unavailable after retries: %s", exc)
+        raise AppError("ai_unavailable", "the bill reader is busy right now; type the details in instead") from exc
     except PolicyReaderError as exc:
         log.exception("bill reader failed")
-        raise HTTPException(502, "could not read that bill; please try again") from exc
+        raise AppError("ai_invalid", "could not read that bill; please try again") from exc
     return _envelope(result.to_dict())
 
 
 class EligibilityRequest(BaseModel):
     hospital_slug: str = Field(..., max_length=60)
-    household_size: int = Field(..., ge=1, le=30)
+    household_size: int = Field(..., ge=1, le=MAX_HOUSEHOLD)
     annual_income: float = Field(..., ge=0, le=10_000_000)
     state: str = Field(..., min_length=2, max_length=2, description="Household's state (picks the FPL row)")
     assets_usd: float | None = Field(None, ge=0, description="Total household assets (optional)")
@@ -124,6 +134,7 @@ def _fpl_resolver(table: dict[str, Any]):
 @app.post("/api/eligibility")
 def eligibility(req: EligibilityRequest) -> dict[str, Any]:
     """B's rules engine (plain code, no AI) on a cached policy, with the 2026 HHS poverty guidelines."""
+    started = time.perf_counter()
     try:
         rules, _ = policies.load_policy(req.hospital_slug)
         table = fpl._default_table()
@@ -147,7 +158,8 @@ def eligibility(req: EligibilityRequest) -> dict[str, Any]:
         insurance_status=req.insurance_status,
         residency_state=req.residency_state,
     )
-    return _envelope(eligibility_result_to_api_response(result, rules, pct, policies.source_url_for(rules)))
+    data = eligibility_result_to_api_response(result, rules, pct, policies.source_url_for(rules))
+    return _envelope({**data, "timings": {"rules_s": round(time.perf_counter() - started, 4)}})
 
 
 class PacketBill(BaseModel):
@@ -169,7 +181,7 @@ class PacketEligibility(BaseModel):
 class PacketRequest(BaseModel):
     bill: PacketBill
     hospital_slug: str = Field(..., max_length=60)
-    household_size: int = Field(..., ge=1, le=30)
+    household_size: int = Field(..., ge=1, le=MAX_HOUSEHOLD)
     annual_income: float = Field(..., ge=0, le=10_000_000)
     eligibility: PacketEligibility
     lang: Literal["en", "es"] = "en"
@@ -180,6 +192,7 @@ class PacketRequest(BaseModel):
 @app.post("/api/packet")
 def packet_pdf(req: PacketRequest) -> Response:
     """Request letter + checklist as a PDF, built in memory and streamed back. Never saved."""
+    started = time.perf_counter()
     try:
         rules, _ = policies.load_policy(req.hospital_slug)
     except ValueError as exc:
@@ -229,7 +242,8 @@ def packet_pdf(req: PacketRequest) -> Response:
     return Response(
         content=pdf,
         media_type="application/pdf",
-        headers={"Content-Disposition": f'attachment; filename="{filename}"', "Cache-Control": "no-store"},
+        headers={"Content-Disposition": f'attachment; filename="{filename}"', "Cache-Control": "no-store",
+                 "X-Packet-Seconds": f"{time.perf_counter() - started:.3f}"},
     )
 
 
@@ -279,8 +293,8 @@ def policy_page_image(slug: str, page: int, quote: str = "") -> dict[str, Any]:
 
 @app.get("/api/policy/thresholds")
 def policy_thresholds(slug: str, household_size: int, state: str) -> dict[str, Any]:
-    if not 1 <= household_size <= 30:
-        raise HTTPException(400, "household_size must be 1-30")
+    if not 1 <= household_size <= MAX_HOUSEHOLD:
+        raise AppError("invalid_input", f"household_size must be 1-{MAX_HOUSEHOLD}")
     return _envelope(_policy_lookup(policy_facts.thresholds, slug, household_size, state))
 
 

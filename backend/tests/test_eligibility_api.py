@@ -46,7 +46,7 @@ def test_fixture_policy_ohio_boundary_direct():
     assert r.status.value == "likely_discounted" and r.matching_tier.discount_percent == 75
 
 
-@pytest.mark.parametrize("size,state,expected", [(1, "WI", "15960"), (9, "WI", "61400"), (1, "AK", "19950"), (1, "HI", "18360"), (30, "WI", "180680")])
+@pytest.mark.parametrize("size,state,expected", [(1, "WI", "15960"), (9, "WI", "61400"), (1, "AK", "19950"), (1, "HI", "18360"), (20, "WI", "123880")])
 def test_fpl_used_for_size_and_state(size, state, expected):
     _, body = post(household_size=size, state=state, annual_income=1000)
     assert body["data"]["fpl_used"] == expected

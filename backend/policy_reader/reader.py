@@ -74,8 +74,14 @@ def revalidate_cached(
     return rules
 
 
+def _generate(client: ModelClient, prompt: PromptInput) -> ModelResult:
+    from backend.llm_retry import POLICY_TOTAL_TIMEOUT_S, generate_with_retry
+
+    return generate_with_retry(client, prompt, total_timeout_s=POLICY_TOTAL_TIMEOUT_S)
+
+
 def _parse_with_retry(client: ModelClient, prompt: PromptInput) -> tuple[PolicyRules, ModelResult, int, int]:
-    result = client.generate(prompt)
+    result = _generate(client, prompt)
     tokens_in, tokens_out = result.input_tokens, result.output_tokens
     try:
         return PolicyRules.model_validate_json(result.text), result, tokens_in, tokens_out
@@ -85,7 +91,7 @@ def _parse_with_retry(client: ModelClient, prompt: PromptInput) -> tuple[PolicyR
             prompt,
             correction=f"Your previous answer was not valid for the schema. Error:\n{exc}\nReturn the corrected JSON only.",
         )
-    result = client.generate(retry)
+    result = _generate(client, retry)
     tokens_in += result.input_tokens
     tokens_out += result.output_tokens
     try:
