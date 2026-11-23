@@ -93,3 +93,82 @@ export interface ConfirmedBill {
   fields: Record<FieldName, string>;
   hospital: Hospital;
 }
+
+export const EOB_FIELD_NAMES = [
+  "service_date",
+  "provider",
+  "billed_amount",
+  "allowed_amount",
+  "plan_paid",
+  "patient_responsibility",
+  "deductible",
+  "copay",
+  "coinsurance",
+] as const;
+export type EobFieldName = (typeof EOB_FIELD_NAMES)[number];
+
+export interface EobField {
+  value: string;
+  confidence: number;
+  location: string;
+  note: string;
+  normalized: number | string | null;
+}
+
+export interface EobRemark {
+  code: string;
+  text: string;
+  confidence: number;
+  location: string;
+}
+
+export interface EobClaim {
+  service_date: EobField;
+  provider: EobField;
+  billed_amount: EobField;
+  allowed_amount: EobField;
+  plan_paid: EobField;
+  patient_responsibility: EobField;
+  deductible: EobField;
+  copay: EobField;
+  coinsurance: EobField;
+  status: "paid" | "denied" | "pending" | "unknown";
+  status_confidence: number;
+  status_location: string;
+  remark_codes: EobRemark[];
+}
+
+export interface EobDocument {
+  plan_name: EobField;
+  claims: EobClaim[];
+}
+
+export interface EobReadData {
+  document: EobDocument;
+  fields_to_confirm: string[];
+  seconds: number;
+  model: string;
+}
+
+export interface Discrepancy {
+  code:
+    | "more_than_patient_responsibility"
+    | "claim_denied"
+    | "claim_pending"
+    | "missing_insurance_adjustment"
+    | "duplicate_looking_charge"
+    | "no_itemization"
+    | "no_matching_claim";
+  severity: "check" | "important";
+  bill_value: string;
+  eob_value: string;
+  bill_source: string;
+  eob_source: string;
+  claim_index: number | null;
+}
+
+export interface ReconciliationData {
+  matched_claim_index: number | null;
+  match_score: number;
+  discrepancies: Discrepancy[];
+}

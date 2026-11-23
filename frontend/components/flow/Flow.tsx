@@ -8,27 +8,31 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/hero/Hero";
 import { Sky } from "@/components/hero/Sky";
-import { checkEligibility, readBill } from "@/lib/api";
+import { checkEligibility, readBill, readEob } from "@/lib/api";
 import { I18nProvider } from "@/lib/i18n";
-import { MOCK_BILL_READ } from "@/lib/mock";
+import { MOCK_BILL_READ, MOCK_EOB_READ } from "@/lib/mock";
 import { useParallax, useReducedMotionPref } from "@/lib/motion";
-import type { BillReadData, ConfirmedBill, EligibilityData, EligibilityRequest } from "@/lib/types";
+import type { BillReadData, ConfirmedBill, EligibilityData, EligibilityRequest, EobDocument, EobReadData } from "@/lib/types";
 import type { Benefits } from "./BenefitsQuestion";
 import { ManualEntry } from "./ManualEntry";
+import { InsuranceStep } from "./InsuranceStep";
 import { QuestionsStep, type Answers } from "./QuestionsStep";
 import { ReadingStep } from "./ReadingStep";
 import { ResultStep } from "./ResultStep";
 import type { Entrance } from "./StepCard";
 import { UploadStep } from "./UploadStep";
 
-type Step = "hero" | "upload" | "reading" | "manual" | "questions" | "result";
+type Step = "hero" | "upload" | "reading" | "insurance" | "manual" | "questions" | "result";
 
 interface Reading {
   attempt: number;
   /** Kept in memory only, so "Try again" can resend it. Null for the sample reading. */
   file: File | null;
+  eobFile: File | null;
   promise: Promise<BillReadData>;
+  eobPromise: Promise<EobReadData> | null;
   sample: boolean;
+  sampleInsurance: boolean;
 }
 
 interface Checking {
@@ -57,6 +61,7 @@ function FlowInner() {
   const [entrance, setEntrance] = useState<Entrance>("hero");
   const [reading, setReading] = useState<Reading | null>(null);
   const [bill, setBill] = useState<ConfirmedBill | null>(null);
+  const [eob, setEob] = useState<EobDocument | null>(null);
   const [checking, setChecking] = useState<Checking | null>(null);
   const attempts = useRef(0);
   const visited = useRef(false);
@@ -82,18 +87,35 @@ function FlowInner() {
   }, [step, reduce]);
 
   const startReading = useCallback(
-    (file: File | null) => {
+    (file: File | null, eobFile: File | null = null) => {
       attempts.current += 1;
       setReading({
         attempt: attempts.current,
         file,
+        eobFile,
         sample: file === null,
+        sampleInsurance: false,
         promise: quiet(file ? readBill(file) : Promise.resolve(MOCK_BILL_READ)),
+        eobPromise: eobFile ? quiet(readEob(eobFile)) : null,
       });
       go("reading");
     },
     [go],
   );
+
+  const startSampleInsurance = useCallback(() => {
+    attempts.current += 1;
+    setReading({
+      attempt: attempts.current,
+      file: null,
+      eobFile: null,
+      sample: true,
+      sampleInsurance: true,
+      promise: Promise.resolve(MOCK_BILL_READ),
+      eobPromise: Promise.resolve(MOCK_EOB_READ),
+    });
+    go("reading");
+  }, [go]);
 
   const startChecking = useCallback(
     (request: EligibilityRequest, benefits: Benefits = "skip") => {
@@ -113,10 +135,33 @@ function FlowInner() {
   const onConfirm = useCallback(
     (confirmed: ConfirmedBill) => {
       setBill(confirmed);
-      go("questions");
+      go(reading?.eobPromise ? "insurance" : "questions");
     },
-    [go],
+    [go, reading],
   );
+
+  const confirmInsurance = useCallback((confirmed: EobDocument) => {
+    setEob(confirmed);
+    go("questions");
+  }, [go]);
+
+  const skipInsurance = useCallback(() => {
+    setEob(null);
+    go("questions");
+  }, [go]);
+
+  const retryInsurance = useCallback(() => {
+    if (!reading?.eobFile) {
+      skipInsurance();
+      return;
+    }
+    attempts.current += 1;
+    setReading((current) => current ? {
+      ...current,
+      attempt: attempts.current,
+      eobPromise: quiet(readEob(current.eobFile as File)),
+    } : current);
+  }, [reading, skipInsurance]);
 
   const onAnswers = useCallback(
     ({ household, income, benefits }: Answers) => {
@@ -134,6 +179,7 @@ function FlowInner() {
   const startOver = useCallback(() => {
     setReading(null);
     setBill(null);
+    setEob(null);
     setChecking(null);
     go("hero");
   }, [go]);
@@ -159,7 +205,20 @@ function FlowInner() {
                 entrance={entrance}
                 reduce={reduce}
                 onFile={startReading}
+                onSampleInsurance={startSampleInsurance}
                 onManual={() => go("manual")}
+              />
+            )}
+            {step === "insurance" && reading?.eobPromise && (
+              <InsuranceStep
+                key={`insurance-${reading.attempt}`}
+                entrance={entrance}
+                reduce={reduce}
+                reading={reading.eobPromise}
+                sample={reading.sampleInsurance}
+                onConfirm={confirmInsurance}
+                onRetry={retryInsurance}
+                onSkip={skipInsurance}
               />
             )}
             {step === "reading" && reading && (
@@ -199,6 +258,7 @@ function FlowInner() {
                 household={checking.household}
                 income={checking.request.annual_income}
                 benefits={checking.benefits}
+                eob={eob}
                 onRetry={() => startChecking(checking.request, checking.benefits)}
                 onStartOver={startOver}
               />

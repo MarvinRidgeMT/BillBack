@@ -12,11 +12,13 @@ import { MOCK_ELIGIBILITY_DEFAULT } from "@/lib/mock";
 import {
   CONFIRM_THRESHOLD,
   type ConfirmedBill,
+  type EobDocument,
   type EligibilityData,
   type EligibilityStatus,
 } from "@/lib/types";
 import type { Benefits } from "./BenefitsQuestion";
 import { IncomeSlider } from "./IncomeSlider";
+import { InsuranceReview } from "./InsuranceReview";
 import { PolicyReceipt } from "./PolicyReceipt";
 import { ReadAloud } from "./ReadAloud";
 import { ResultExtras } from "./ResultExtras";
@@ -50,11 +52,12 @@ interface ResultStepProps {
   household: number;
   income: number;
   benefits?: Benefits;
+  eob?: EobDocument | null;
   onRetry: () => void;
   onStartOver: () => void;
 }
 
-export function ResultStep({ entrance, reduce, checking, bill, household, income, benefits = "skip", onRetry, onStartOver }: ResultStepProps) {
+export function ResultStep({ entrance, reduce, checking, bill, household, income, benefits = "skip", eob = null, onRetry, onStartOver }: ResultStepProps) {
   const t = useT();
   const [state, setState] = useState<State>({ phase: "loading" });
 
@@ -113,6 +116,7 @@ export function ResultStep({ entrance, reduce, checking, bill, household, income
           household={household}
           income={income}
           benefits={benefits}
+          eob={eob}
           reduce={reduce}
           onStartOver={onStartOver}
         />
@@ -160,13 +164,14 @@ interface VerdictProps {
   household: number;
   income: number;
   benefits: Benefits;
+  eob: EobDocument | null;
   reduce: boolean;
   onStartOver: () => void;
 }
 
 type PacketState = "idle" | "working" | "failed";
 
-function Verdict({ data, sample, bill, household, income, benefits, reduce, onStartOver }: VerdictProps) {
+function Verdict({ data, sample, bill, household, income, benefits, eob, reduce, onStartOver }: VerdictProps) {
   const { t, lang } = useI18n();
   const stamp = stampText(data, t);
   const [stamped, setStamped] = useState(reduce);
@@ -378,6 +383,8 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
       )}
 
       <ResultExtras data={data} bill={bill} benefits={benefits} sample={sample} />
+
+      {eob && <InsuranceReview bill={bill} eob={eob} />}
 
       {caveats.length > 0 && (
         <>

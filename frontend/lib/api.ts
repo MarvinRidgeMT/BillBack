@@ -8,7 +8,10 @@ import {
   type EligibilityRequest,
   type EligibilityStatus,
   type Envelope,
+  type EobDocument,
+  type EobReadData,
   type Evidence,
+  type ReconciliationData,
 } from "./types";
 
 /**
@@ -104,6 +107,86 @@ export async function readBill(file: File): Promise<BillReadData> {
     fields_to_confirm: Array.isArray(data.fields_to_confirm) ? data.fields_to_confirm : [],
     seconds: typeof data.seconds === "number" ? data.seconds : 0,
   };
+}
+
+/** POST /api/eob/read. The insurer statement is read in memory and is never saved. */
+export async function readEob(file: File): Promise<EobReadData> {
+  const form = new FormData();
+  form.append("file", file, file.name);
+  const data = await request<EobReadData>("/api/eob/read", { method: "POST", body: form }, READ_TIMEOUT_MS);
+  if (!data.document || !Array.isArray(data.document.claims) || data.document.claims.length === 0) {
+    throw new ApiError("failed", 200);
+  }
+  return { ...data, fields_to_confirm: Array.isArray(data.fields_to_confirm) ? data.fields_to_confirm : [] };
+}
+
+function cents(value: string): number | null {
+  const clean = value.replace(/[^0-9.-]/g, "");
+  const parsed = Number(clean);
+  return Number.isFinite(parsed) && parsed >= 0 ? Math.round(parsed * 100) : null;
+}
+
+function isoDate(value: string): string {
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.valueOf()) ? value : parsed.toISOString().slice(0, 10);
+}
+
+export async function compareEob(bill: ConfirmedBill, eob: EobDocument): Promise<ReconciliationData> {
+  return request<ReconciliationData>(
+    "/api/eob/compare",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        bill: {
+          provider: bill.fields.hospital_name,
+          service_date: isoDate(bill.fields.service_date),
+          amount_due_cents: cents(bill.fields.amount_due),
+          itemized: false,
+          line_items: [],
+        },
+        eob,
+      }),
+    },
+    ELIGIBILITY_TIMEOUT_MS,
+  );
+}
+
+export interface InsuranceLetterRequest {
+  kind: "itemized_bill" | "billing_hold";
+  lang: "en" | "es";
+  hospital: string;
+  account_number: string;
+  service_date: string;
+  bill_amount: string;
+  eob_patient_responsibility: string;
+  claim_status: string;
+}
+
+export async function downloadInsuranceLetter(body: InsuranceLetterRequest): Promise<void> {
+  let res: Response;
+  try {
+    res = await fetch("/api/eob/letter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(ELIGIBILITY_TIMEOUT_MS),
+    });
+  } catch {
+    throw new ApiError("unavailable", null);
+  }
+  if (!res.ok || !res.headers.get("content-type")?.includes("application/pdf")) {
+    throw new ApiError(res.status === 503 ? "unavailable" : "failed", res.status);
+  }
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `BillBack-${body.kind.replace("_", "-")}.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 /** POST /api/eligibility. Plain code on the backend makes the call; the front end only shows it. */

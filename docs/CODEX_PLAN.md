@@ -7,7 +7,7 @@
 
 - **Add:** `backend/eob_reader/{schema,reader,compare}.py`, `backend/prompts/eob_reader.md`, `backend/tests/test_eob_*.py`, fictional EOB fixtures and `frontend/components/flow/Insurance*` components.
 - **Small shared insertions:** `backend/app.py`, `frontend/lib/{types,api}.ts`, `Flow.tsx`, `UploadStep.tsx`, `ResultStep.tsx`, `en.json`, `es.json`.
-- **API:** `POST /api/eob/read` (multipart `file`) returns structured fields/claims, confidence, location, and `fields_to_confirm`; `POST /api/eob/compare` accepts confirmed bill + confirmed EOB and returns deterministic discrepancy records with both source values; `POST /api/insurance-letter` returns an in-memory EN/ES PDF for `itemized_bill` or `billing_hold`.
+- **API:** `POST /api/eob/read` (multipart `file`) returns structured fields/claims, confidence, location, and `fields_to_confirm`; `POST /api/eob/compare` accepts confirmed bill + confirmed EOB and returns deterministic discrepancy records with both source values; `POST /api/eob/letter` returns an in-memory EN/ES PDF for `itemized_bill` or `billing_hold`.
 - **Tests:** strict schema/privacy, one retry on invalid JSON, confidence threshold, amount/date normalization, exact/rounded/missing/multiple-claim comparison, denial/pending/adjustment/duplicate/itemization flags, EN/ES PDFs, no writes.
 - **Risks:** false accusations and bad matching. Call findings “discrepancies,” show both sources, require confirmation below 0.8, and never change charity-care eligibility.
 - **Video:** upload the fictional bill plus discrepancy EOB, confirm one low-confidence field, and show the side-by-side discrepancy and letters. Supports **Multimodal AI** and **Health & Wellness**.

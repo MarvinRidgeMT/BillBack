@@ -14,6 +14,10 @@ import hashlib
 from backend import demo_mode, fpl, hospital_form, packet, policies
 from backend.policy_reader import cache as policy_cache
 from backend.bill_reader import reader as bill_reader
+from backend.eob_reader import reader as eob_reader
+from backend.eob_reader.compare import BillSnapshot, reconcile
+from backend.eob_reader.letters import build_insurance_letter
+from backend.eob_reader.schema import EobDocument
 from backend.eligibility import eligibility_result_to_api_response, load_fpl_table_from_json, run_eligibility
 from backend.policy_reader.fetch import MAX_BYTES, FetchError, fetch_policy_pdf
 from backend.policy_reader.reader import PolicyReaderError, read_policy
@@ -98,6 +102,56 @@ async def bill_read(file: UploadFile) -> dict[str, Any]:
         log.exception("bill reader failed")
         raise HTTPException(502, "could not read that bill; please try again") from exc
     return _envelope(result.to_dict())
+
+
+@app.post("/api/eob/read")
+async def eob_read(file: UploadFile) -> dict[str, Any]:
+    """Read an insurer's statement in memory. Patient/member identifiers are not extracted."""
+    data = await file.read(eob_reader.MAX_EOB_BYTES + 1)
+    try:
+        result = await run_in_threadpool(eob_reader.read_eob, data, file.content_type or "")
+    except eob_reader.EobReadError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except PolicyReaderError as exc:
+        log.exception("insurance statement reader failed")
+        raise HTTPException(502, "could not read that insurance statement; please try again") from exc
+    return _envelope(result.to_dict())
+
+
+class EobCompareRequest(BaseModel):
+    bill: BillSnapshot
+    eob: EobDocument
+
+
+@app.post("/api/eob/compare")
+def eob_compare(req: EobCompareRequest) -> dict[str, Any]:
+    """Compare already-confirmed bill/EOB values using plain deterministic code."""
+    return _envelope(reconcile(req.bill, req.eob).model_dump(mode="json"))
+
+
+class InsuranceLetterRequest(BaseModel):
+    kind: Literal["itemized_bill", "billing_hold"]
+    lang: Literal["en", "es"] = "en"
+    hospital: str = Field("", max_length=300)
+    account_number: str = Field("", max_length=60)
+    service_date: str = Field("", max_length=40)
+    bill_amount: str = Field("", max_length=40)
+    eob_patient_responsibility: str = Field("", max_length=40)
+    claim_status: str = Field("", max_length=40)
+
+
+@app.post("/api/eob/letter")
+def insurance_letter(req: InsuranceLetterRequest) -> Response:
+    """Create an editable request letter in memory and stream it to the browser."""
+    pdf = build_insurance_letter(**req.model_dump())
+    return Response(
+        content=pdf,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="BillBack-{req.kind.replace("_", "-")}.pdf"',
+            "Cache-Control": "no-store",
+        },
+    )
 
 
 class EligibilityRequest(BaseModel):

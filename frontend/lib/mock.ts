@@ -2,7 +2,7 @@
 // Used only when NEXT_PUBLIC_DEMO_MODE=1 and the backend can't answer, and always
 // shown under a "Sample" banner. Never present any of this as a real result.
 
-import type { BillReadData, EligibilityData, EligibilityStatus } from "./types";
+import type { BillReadData, EligibilityData, EligibilityStatus, EobField, EobReadData } from "./types";
 
 const SAMPLE_HOSPITAL = "Sample Hospital";
 
@@ -22,6 +22,40 @@ export const MOCK_BILL_READ: BillReadData = {
   fields_to_confirm: ["account_number"],
   seconds: 2.6,
   model: "sample",
+};
+
+const eobField = (value: string, normalized: number | string | null, location: string): EobField => ({
+  value,
+  normalized,
+  location,
+  confidence: 0.96,
+  note: "",
+});
+
+export const MOCK_EOB_READ: EobReadData = {
+  document: {
+    plan_name: eobField("Sample Health Plan (fictional)", null, "page 1, Plan"),
+    claims: [
+      {
+        service_date: eobField("08/14/2026", "2026-08-14", "page 1, Service date"),
+        provider: eobField("Sample General Hospital (fictional)", null, "page 1, Provider"),
+        billed_amount: eobField("$4,812.00", 481200, "page 1, Provider billed"),
+        allowed_amount: eobField("$3,050.00", 305000, "page 1, Plan allowed"),
+        plan_paid: eobField("$2,430.00", 243000, "page 1, Plan paid"),
+        patient_responsibility: eobField("$620.00", 62000, "page 1, Your responsibility"),
+        deductible: eobField("$200.00", 20000, "page 1, Deductible"),
+        copay: eobField("$20.00", 2000, "page 1, Copay"),
+        coinsurance: eobField("$400.00", 40000, "page 1, Coinsurance"),
+        status: "paid",
+        status_confidence: 0.98,
+        status_location: "page 1, Claim status",
+        remark_codes: [],
+      },
+    ],
+  },
+  fields_to_confirm: [],
+  seconds: 1.8,
+  model: "fictional sample",
 };
 
 const base = {
