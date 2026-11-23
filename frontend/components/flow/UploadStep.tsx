@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type DragEvent } from "react";
 import { Button } from "@/components/ui/button";
+import { StatusBanner } from "@/components/ui/StatusBanner";
 import { useT, type MessageKey } from "@/lib/i18n";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 
@@ -32,13 +33,21 @@ interface UploadStepProps {
   reduce: boolean;
   onFile: (file: File) => void;
   onManual: () => void;
+  /** Start with this message showing (the /states page). */
+  initialError?: UploadError | null;
 }
 
-export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepProps) {
+type UploadError = "upload.bad_file" | "upload.sample_failed";
+const ERROR_TITLES: Record<UploadError, MessageKey> = {
+  "upload.bad_file": "upload.bad_file_title",
+  "upload.sample_failed": "upload.sample_failed_title",
+};
+
+export function UploadStep({ entrance, reduce, onFile, onManual, initialError = null }: UploadStepProps) {
   const t = useT();
   const input = useRef<HTMLInputElement>(null);
   const [over, setOver] = useState(false);
-  const [error, setError] = useState<MessageKey | null>(null);
+  const [error, setError] = useState<UploadError | null>(initialError);
   const [loadingSample, setLoadingSample] = useState(false);
   const alive = useRef(true);
   useEffect(() => {
@@ -131,9 +140,9 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
       </div>
 
       {error && (
-        <p className="error-text" role="alert">
-          {t(error)}
-        </p>
+        <StatusBanner key={error} variant="error" title={t(ERROR_TITLES[error])}>
+          <p>{t(error)}</p>
+        </StatusBanner>
       )}
 
       <div className="btn-row">

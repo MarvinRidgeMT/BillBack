@@ -66,6 +66,25 @@
   --coral-bg: light-dark(#ffe3db, #4a1a10);
   --cloud: light-dark(#ffffff, #2a5a4d);
   --radius: 12px;
+
+  /* Status banners (components/ui/StatusBanner.tsx). Text (-fg) is at least 10:1 on its -bg,
+     icons at least 5:1 and borders at least 3:1 against the card, in light and dark. */
+  --status-info-bg: light-dark(#e8f2fc, #102c42);
+  --status-info-border: light-dark(#4f86bf, #4b7fae);
+  --status-info-fg: light-dark(#0b2f4f, #dcedfd);
+  --status-info-icon: light-dark(#1d5a92, #8fc3f2);
+  --status-warning-bg: light-dark(#fff3d1, #3a2c06);
+  --status-warning-border: light-dark(#a8780c, #a07a1e);
+  --status-warning-fg: light-dark(#422d00, #fbe8b8);
+  --status-warning-icon: light-dark(#875600, #f2c55c);
+  --status-error-bg: light-dark(#ffe3db, #4a1a10);
+  --status-error-border: light-dark(#e0583a, #d4664c);
+  --status-error-fg: light-dark(#561404, #ffe1d8);
+  --status-error-icon: light-dark(#b1301a, #ff9d84);
+  --status-success-bg: light-dark(#dcf4e6, #12402e);
+  --status-success-border: light-dark(#3a9a6c, #48ab7c);
+  --status-success-fg: light-dark(#0b3528, #dcf6e8);
+  --status-success-icon: light-dark(#1a7349, #80d6a8);
 }
 
 @layer base {
@@ -506,15 +525,108 @@
   color: var(--ink-2);
   margin: 0 0 20px;
 }
-.banner {
-  border: 1.5px solid var(--coral);
-  background: var(--coral-bg);
-  color: var(--ink);
+/* ---------- Status banners: one layout, four tones ---------- */
+.status {
+  --s-bg: var(--status-info-bg);
+  --s-border: var(--status-info-border);
+  --s-fg: var(--status-info-fg);
+  --s-icon: var(--status-info-icon);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px 12px;
+  align-items: start;
+  border: 1.5px solid var(--s-border);
+  background: var(--s-bg);
+  color: var(--s-fg);
   border-radius: 12px;
-  padding: 10px 14px;
+  padding: 12px 14px;
+  margin: 14px 0;
   font-size: 15px;
+  line-height: 1.5;
+}
+.status[data-variant="warning"] {
+  --s-bg: var(--status-warning-bg);
+  --s-border: var(--status-warning-border);
+  --s-fg: var(--status-warning-fg);
+  --s-icon: var(--status-warning-icon);
+}
+.status[data-variant="error"] {
+  --s-bg: var(--status-error-bg);
+  --s-border: var(--status-error-border);
+  --s-fg: var(--status-error-fg);
+  --s-icon: var(--status-error-icon);
+}
+.status[data-variant="success"] {
+  --s-bg: var(--status-success-bg);
+  --s-border: var(--status-success-border);
+  --s-fg: var(--status-success-fg);
+  --s-icon: var(--status-success-icon);
+}
+.status > .status-icon {
+  grid-row: 1 / span 3;
+  color: var(--s-icon);
+  margin-top: 1px;
+}
+.status .status-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin: 0;
+}
+.status .status-body {
+  margin: 0;
+}
+.status .status-body > p {
+  margin: 0;
+}
+.status .status-body > p + p,
+.status .status-body > ul {
+  margin-top: 6px;
+}
+.status .status-body .text-link {
+  color: var(--s-fg);
+}
+.status .status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.status:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--ink);
+}
+.status:focus:not(:focus-visible) {
+  outline: none;
+}
+.status[data-size="compact"] {
+  padding: 7px 12px;
+  margin: 8px 0 0;
+  gap: 0 8px;
+  border-radius: 8px;
   font-weight: 500;
-  margin-bottom: 18px;
+}
+.status[data-size="compact"] > .status-icon {
+  grid-row: 1;
+}
+/* "Needs checking" and similar small labels */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1.5px solid var(--status-warning-border);
+  background: var(--status-warning-bg);
+  color: var(--status-warning-fg);
+  white-space: nowrap;
+}
+.badge[data-tone="ok"] {
+  border-color: var(--status-success-border);
+  background: var(--status-success-bg);
+  color: var(--status-success-fg);
 }
 .drop {
   border: 2px dashed var(--line);
@@ -624,45 +736,305 @@
   color: var(--ink-2);
   margin: 6px 0 0;
 }
-.error-text {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ink);
-  background: var(--coral-bg);
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin: 10px 0 0;
-}
-.info-text {
-  font-size: 15px;
-  color: var(--ink);
-  background: color-mix(in srgb, var(--mint) 35%, transparent);
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin: 10px 0 0;
-}
-.select-wrap {
+/* ---------- Hospital search combobox ---------- */
+.combo-input {
   position: relative;
 }
-.select-wrap select {
-  appearance: none;
+.combo-input input {
   font: inherit;
   font-weight: 500;
   width: 100%;
   min-height: 48px;
-  padding: 10px 44px 10px 14px;
+  padding: 10px 14px 10px 44px;
   border: 1.5px solid var(--line);
   border-radius: 12px;
   background: var(--card);
   color: var(--ink);
 }
-.select-wrap svg {
+.combo-input input::placeholder {
+  color: var(--ink-2);
+  font-weight: 400;
+}
+.combo-input input[aria-invalid="true"] {
+  border-color: var(--status-error-border);
+}
+.combo-input svg {
   position: absolute;
-  right: 14px;
+  left: 14px;
   top: 50%;
   translate: 0 -50%;
   pointer-events: none;
   color: var(--ink-2);
+}
+.combo-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 4px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  max-height: 320px;
+  overflow-y: auto;
+  box-shadow: 0 16px 30px -22px rgba(14, 59, 46, 0.6);
+}
+.combo-list li {
+  display: flex;
+  flex-direction: column;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  min-height: 44px;
+  justify-content: center;
+}
+.combo-list li small {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.combo-list li[aria-selected="true"] {
+  background: color-mix(in srgb, var(--mint) 65%, transparent);
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+@media (hover: hover) {
+  .combo-list li:hover {
+    background: color-mix(in srgb, var(--mint) 40%, transparent);
+  }
+}
+.combo-list li.not-listed {
+  border-top: 1px solid var(--line);
+  margin-top: 4px;
+  font-weight: 500;
+}
+.combo-list li.empty {
+  cursor: default;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+/* "My hospital isn't listed": three numbered paths */
+.paths {
+  list-style: none;
+  counter-reset: path;
+  padding: 0;
+  margin: 20px 0 0;
+}
+.paths > li {
+  counter-increment: path;
+  position: relative;
+  padding-left: 44px;
+  margin: 0 0 24px;
+}
+.paths > li::before {
+  content: counter(path);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--card);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+.paths h3,
+.manual-limits h3 {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 2px 0 8px;
+}
+.find-list {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+.find-list li {
+  margin: 4px 0;
+}
+.manual-limits {
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+  margin-top: 4px;
+}
+.manual-limits h3:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+}
+.state-input {
+  max-width: 6ch;
+  text-transform: uppercase;
+}
+.percent-input {
+  max-width: 12ch;
+}
+/* Live policy: one fact per row, with its quote */
+.grounded {
+  margin: 16px 0 0;
+}
+.grounded-row {
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 10px 0;
+}
+.grounded-row[data-check="true"] {
+  border-color: var(--status-warning-border);
+}
+.g-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+}
+.g-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.g-value {
+  font-weight: 500;
+  margin: 4px 0 0;
+}
+.g-source {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin: 6px 0 0;
+}
+.g-quote {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--mint) 35%, transparent);
+  font-size: 15px;
+}
+.g-quote figcaption {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.g-quote blockquote {
+  margin: 2px 0 0;
+}
+.g-problems {
+  list-style: disc;
+  margin: 8px 0 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--status-warning-fg);
+}
+.result-live-note {
+  font-size: 14px;
+  color: var(--ink-2);
+  margin: 10px 0 0;
+}
+/* Dev panel (?dev=1): timings and the low-confidence counter */
+.dev-panel {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 50;
+  width: min(320px, calc(100vw - 24px));
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px dashed var(--ink-2);
+  background: var(--card);
+  color: var(--ink);
+  font: 13px/1.5 var(--font-mono);
+  box-shadow: 0 16px 30px -18px rgba(14, 59, 46, 0.6);
+}
+.dev-panel .dev-title {
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+.dev-panel dl {
+  margin: 0 0 6px;
+}
+.dev-panel dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.dev-panel dt {
+  color: var(--ink-2);
+}
+.dev-panel dd {
+  margin: 0;
+  text-align: right;
+}
+.dev-panel .dev-note {
+  margin: 6px 0 0;
+  color: var(--ink-2);
+}
+.dev-panel.static {
+  position: static;
+  width: auto;
+}
+/* /states: every message, EN and ES side by side (dev only) */
+.states-page {
+  padding: 28px 16px 60px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.states-head h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.05;
+  margin: 0 0 6px;
+}
+.states-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.states-grid {
+  display: grid;
+  gap: 24px;
+  margin-top: 24px;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 1180px) {
+  .states-grid[data-cols="2"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.states-section > h2 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin: 28px 0 8px;
+}
+.states-section .app {
+  padding: 0 0 16px;
+}
+.states-card {
+  margin: 0 auto 16px;
+}
+.states-code code {
+  font: 12px/1.4 var(--font-mono);
+  color: var(--ink-2);
+}
+.states-code .status {
+  margin-top: 4px;
+}
+/* Manual form: a field we weren't sure about */
+.form-field.check {
+  border: 1.5px solid var(--coral);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 14px -12px;
+  background: var(--coral-bg);
+}
+.form-field.check .check-note {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 6px;
 }
 .status-line {
   display: flex;
@@ -715,12 +1087,23 @@
   opacity: 0.45;
   cursor: default;
 }
-.stepper output {
-  min-width: 44px;
+.stepper .stepper-input {
+  width: 3.2ch;
+  min-width: 48px;
+  min-height: 44px;
   text-align: center;
+  font: inherit;
   font-weight: 700;
   font-size: 20px;
   font-variant-numeric: tabular-nums;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink);
+}
+.stepper[data-invalid="true"] {
+  border-color: var(--status-error-border);
+  background: var(--status-error-bg);
 }
 .money {
   display: flex;
@@ -735,8 +1118,8 @@
   border-color: var(--ink);
 }
 .money[data-invalid="true"] {
-  border-color: var(--coral);
-  background: var(--coral-bg);
+  border-color: var(--status-error-border);
+  background: var(--status-error-bg);
 }
 .money > span {
   color: var(--ink-2);

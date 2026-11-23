@@ -22,6 +22,9 @@ export const MOCK_BILL_READ: BillReadData = {
   fields_to_confirm: ["account_number"],
   seconds: 2.6,
   model: "sample",
+  quality: { ok: true, checked: false, reasons: [] },
+  unreadable: false,
+  weak_fields: [],
 };
 
 const base = {

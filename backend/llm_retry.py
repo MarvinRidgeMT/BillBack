@@ -62,9 +62,10 @@ def generate_with_retry(
         except TransientModelError as exc:
             last = exc
             delay = base_delay_s * 2 ** (attempt - 1)
-            log.warning("model call failed (try %s/%s): %s; retrying in %.1fs", attempt, tries, exc, delay)
             if attempt == tries or deadline - clock() - delay < MIN_TRY_S:
+                log.warning("model call failed (try %s/%s): %s; giving up", attempt, tries, exc)
                 break
+            log.warning("model call failed (try %s/%s): %s; retrying in %.1fs", attempt, tries, exc, delay)
             sleep(delay)
     reason = str(last) if last else "no time left in the budget"
     raise ModelUnavailable(f"model unavailable after retries: {reason}") from last
