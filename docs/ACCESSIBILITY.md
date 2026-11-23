@@ -1,7 +1,7 @@
 # BillBack accessibility audit
 
-Audit date: 2026-11-23  
-Tooling: Playwright 1.57.0 + axe-core 4.10.2, Google Chrome, automated fixtures only  
+Audit date: 2026-11-23
+Tooling: Playwright 1.57.0 + axe-core 4.10.2, Google Chrome, automated fixtures only
 Scope: hero, upload, bill confirmation, insurance confirmation, questions, and result in English and Spanish; desktop and 390×844 phone viewports; reduced-motion preference; easy-read mode at 200% zoom; keyboard focus.
 
 ## Results

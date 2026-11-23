@@ -125,4 +125,3 @@ def eob_strict_schema() -> dict[str, Any]:
         "required": ["plan_name", "claims"],
         "additionalProperties": False,
     }
-

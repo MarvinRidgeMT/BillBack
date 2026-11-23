@@ -82,4 +82,3 @@ def test_missing_eob_amount_does_not_invent_overcharge():
     eob = document()
     eob.claims[0].patient_responsibility.normalized = None
     assert "more_than_patient_responsibility" not in codes(reconcile(bill(), eob))
-

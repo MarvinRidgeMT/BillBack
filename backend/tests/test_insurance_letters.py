@@ -54,4 +54,3 @@ def test_hold_letter_is_request_not_guarantee():
     )
     value = text(pdf)
     assert "asking" in value and "request" in value and "not a statement" in value and "guaranteed" in value
-

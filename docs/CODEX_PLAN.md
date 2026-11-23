@@ -1,6 +1,6 @@
 # Codex product-expansion plan
 
-**Branch/worktree:** `codex/expansion` in `~/BillBack-codex`  
+**Branch/worktree:** `codex/expansion` in `~/BillBack-codex`
 **Guardrails:** AI extracts only; deterministic code compares/decides; uploads and case state stay in memory; low-confidence values require confirmation; user-facing copy is localized; no edits to Claude Code's evaluation/rubric work.
 
 ## F1 — Insurance statement (EOB) reconciliation
@@ -71,4 +71,3 @@
 2. Red/green tests per backend module; focused front-end tests plus full commands before each commit.
 3. Run backend on `:8002` and front end on `:3002`; manually exercise EN/ES, 390px, keyboard-only, and reduced motion.
 4. Rebase `origin/main`, rerun everything, update `docs/CODEX_LOG.md`, push `codex/expansion`, and open a PR for Anish to merge.
-

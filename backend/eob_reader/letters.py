@@ -131,4 +131,3 @@ def build_insurance_letter(
     )
     doc.build(story, onFirstPage=footer, onLaterPages=footer)
     return buf.getvalue()
-

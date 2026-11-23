@@ -183,4 +183,3 @@ def read_eob(data: bytes, content_type: str, *, client: ModelClient | None = Non
         input_tokens=input_tokens,
         output_tokens=output_tokens,
     )
-

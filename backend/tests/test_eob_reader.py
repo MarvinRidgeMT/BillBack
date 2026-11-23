@@ -86,4 +86,3 @@ def test_invalid_schema_twice_fails_cleanly_without_values():
 def test_wrong_file_type_is_rejected():
     with pytest.raises(reader.EobReadError):
         reader.read_eob(b"hello", "text/plain", client=FakeClient(payload()))
-

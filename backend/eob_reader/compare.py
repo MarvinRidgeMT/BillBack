@@ -220,4 +220,3 @@ def reconcile(bill: BillSnapshot, eob: EobDocument) -> ReconciliationResult:
         )
     discrepancies.extend(_duplicates(bill, eob))
     return ReconciliationResult(matched_claim_index=best_index if best_score >= 30 else None, match_score=best_score, discrepancies=discrepancies)
-
