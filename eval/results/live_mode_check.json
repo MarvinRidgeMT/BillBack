@@ -1,7 +1,84 @@
 {
-  "generated_at": "2026-11-23T20:16:29+00:00",
+  "generated_at": "2026-11-23T22:27:33+00:00",
   "model": "claude-sonnet-5-5",
-  "git_commit": "838ea31",
-  "status": "pending: no unseen policy URLs given yet",
-  "rows": []
+  "git_commit": "537cd5d+uncommitted",
+  "rows": [
+    {
+      "url": "http://madriverhospital.com/wp-content/uploads/2026/11/Financial_Assistance_Charity_Care_CLEAN.pdf",
+      "kind": "pdf",
+      "hospital": "Mad River Community Hospital",
+      "state": "CA",
+      "seconds": 9.082429707981646,
+      "cost_usd": 0.031402,
+      "fields": {
+        "free_care": {
+          "value": "400.0",
+          "page": 1,
+          "confidence": 0.95,
+          "verified": true,
+          "needs_checking": false,
+          "problems": [],
+          "source_quote": "Self-pay patients and patients with High Medical Costs whose Family Income is at or below 400% of the Federal Poverty Level are eligible for Charity Care under this Policy when the applicable eligibility requirements are met."
+        },
+        "discount": {
+          "value": "max 400.0% []",
+          "page": 3,
+          "confidence": 0.8,
+          "verified": true,
+          "needs_checking": false,
+          "problems": [],
+          "source_quote": "Patients at or below 400% FPL are eligible for the statutory Discount Payment if they are not receiving the more generous Charity Care benefit."
+        },
+        "asset_test": {
+          "value": "applies=False, details=Monetary assets are not considered when determining eligibility.",
+          "page": 4,
+          "confidence": 0.95,
+          "verified": true,
+          "needs_checking": false,
+          "problems": [],
+          "source_quote": "Monetary assets will not be considered when determining eligibility."
+        },
+        "residency": {
+          "value": "not stated",
+          "page": null,
+          "confidence": 0.88,
+          "verified": null,
+          "needs_checking": false,
+          "problems": [],
+          "source_quote": ""
+        },
+        "application_window": {
+          "value": "not stated",
+          "page": 5,
+          "confidence": 0.9,
+          "verified": true,
+          "needs_checking": false,
+          "problems": [],
+          "source_quote": "MRCH will not impose an application deadline; eligibility may be determined whenever MRCH receives the documentation required to establish eligibility."
+        }
+      }
+    }
+  ],
+  "error_codes": [
+    "ai_invalid",
+    "ai_unavailable",
+    "bad_file",
+    "bad_url",
+    "demo_only",
+    "fetch_failed",
+    "fetch_timeout",
+    "invalid_input",
+    "live_off",
+    "no_pdf_link",
+    "not_found",
+    "not_pdf",
+    "not_policy",
+    "pdf_empty",
+    "pdf_encrypted",
+    "rate_limited",
+    "server_error",
+    "too_large",
+    "too_short",
+    "unsupported"
+  ]
 }

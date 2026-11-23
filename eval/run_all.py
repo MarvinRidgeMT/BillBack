@@ -354,7 +354,16 @@ def write_results(step_errors: dict[str, Optional[str]]) -> str:
              "## 9. Live mode on hospitals we hadn't seen", ""]
     if live and live.get("rows"):
         lines += [stamp(live), "", "Extracted rules for a person to check: `eval/results/live_mode_check.csv`.", ""]
-        lines += [f"- {r['url']}: {r.get('hospital') or 'error: ' + r.get('error', '')}" for r in live["rows"]]
+        for r in live["rows"]:
+            if "error" in r:
+                lines += [f"- {r['url']}: error `{r.get('code', '')}`: {r['error']}", ""]
+                continue
+            lines += [f"**{r['hospital']}** ({r.get('state') or '?'}), read in {secs(r.get('seconds'))} for {money(r.get('cost_usd'))} "
+                      f"from {r['url']}", "",
+                      "| Rule | What the reader found | Page | Quote found in the document | Needs checking | Checked by a person |",
+                      "|---|---|---|---|---|---|",
+                      *[f"| {k} | {f['value']} | {f['page'] or '—'} | {f['verified'] if f['verified'] is not None else '—'} | "
+                        f"{'yes' if f['needs_checking'] else 'no'} | {TODO} |" for k, f in r["fields"].items()], ""]
     else:
         lines += [f"Pending: {TODO} add 2–3 policy links for hospitals not in our set to `eval/live_mode_check.py`, run it, "
                   "and fill in the hand-check column.", ""]

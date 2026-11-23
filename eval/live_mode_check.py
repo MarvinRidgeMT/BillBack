@@ -25,9 +25,11 @@ from backend.policy_reader.llm_clients import PolicyReaderError
 from backend.policy_reader.reader import read_policy, read_policy_text
 from eval.common import RESULTS, run_meta, save_result
 
-# TODO(team, A): put 2-3 public financial-assistance-policy links for hospitals that are NOT in cache/policies here
-# (the script refuses curated ones). Pick at least one that is a web page rather than a PDF.
-UNSEEN_POLICY_URLS: list[str] = []
+# Hospitals NOT in cache/policies (the script refuses curated ones). Mad River was found with a web search on
+# 2026-11-23 and also run through the app by hand. TODO(team, A): add 1-2 more, at least one a web page, not a PDF.
+UNSEEN_POLICY_URLS: list[str] = [
+    "http://madriverhospital.com/wp-content/uploads/2026/11/Financial_Assistance_Charity_Care_CLEAN.pdf",
+]
 
 
 def _value_text(value: Any) -> str:

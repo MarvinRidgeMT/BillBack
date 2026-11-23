@@ -169,5 +169,17 @@ Text is Unicode-normalized, case-folded and whitespace-collapsed before comparin
 
 ## 9. Live mode on hospitals we hadn't seen
 
-Pending: TODO(team) add 2–3 policy links for hospitals not in our set to `eval/live_mode_check.py`, run it, and fill in the hand-check column.
+_Run 2026-11-23T22:27:33+00:00, model `claude-sonnet-5-5`, commit `537cd5d+uncommitted`._
+
+Extracted rules for a person to check: `eval/results/live_mode_check.csv`.
+
+**Mad River Community Hospital** (CA), read in 9.1 s for $0.0314 from http://madriverhospital.com/wp-content/uploads/2026/11/Financial_Assistance_Charity_Care_CLEAN.pdf
+
+| Rule | What the reader found | Page | Quote found in the document | Needs checking | Checked by a person |
+|---|---|---|---|---|---|
+| free_care | 400.0 | 1 | True | no | TODO(team) |
+| discount | max 400.0% [] | 3 | True | no | TODO(team) |
+| asset_test | applies=False, details=Monetary assets are not considered when determining eligibility. | 4 | True | no | TODO(team) |
+| residency | not stated | — | — | no | TODO(team) |
+| application_window | not stated | 5 | True | no | TODO(team) |
 
