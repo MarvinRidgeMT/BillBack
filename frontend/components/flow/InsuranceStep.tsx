@@ -132,7 +132,7 @@ function ConfirmInsurance({ data, onConfirm, onSkip }: Pick<InsuranceStepProps, 
 
       {document.claims.map((claim, index) => (
         <section className="insurance-claim" key={`${claim.provider.value}-${index}`} aria-labelledby={`claim-${index}`}>
-          <h3 id={`claim-${index}`}>{t("insurance.claim", { n: index + 1 })}</h3>
+          <h2 id={`claim-${index}`}>{t("insurance.claim", { n: index + 1 })}</h2>
           {EOB_FIELD_NAMES.map((name) => {
             const field = claim[name];
             const path = `claims.${index}.${name}`;

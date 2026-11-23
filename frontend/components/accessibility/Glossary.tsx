@@ -10,7 +10,7 @@ export function Glossary() {
   const id = useId();
   return (
     <section className="glossary" aria-labelledby={`${id}-title`}>
-      <h3 id={`${id}-title`}>{t("glossary.title")}</h3>
+      <h2 id={`${id}-title`}>{t("glossary.title")}</h2>
       <p>{t("glossary.sub")}</p>
       <div className="glossary-terms">
         {TERMS.map((term) => (

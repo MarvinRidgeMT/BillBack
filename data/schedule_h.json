@@ -1,0 +1,168 @@
+{
+  "generated_date": "2026-11-23",
+  "records": [
+    {
+      "discounted_care_fpl_percent": 400,
+      "ein": "314379443",
+      "filing_url": "https://apps.irs.gov/pub/epostcard/990/xml/2025/2025_TEOS_XML_11B.zip",
+      "free_care_fpl_percent": 200,
+      "hospital_name": "Adena Health System",
+      "hospital_slug": "adena-health-system",
+      "irs_index_url": "https://apps.irs.gov/pub/epostcard/990/xml/2025/index_2025.csv",
+      "matched_city": "Chillicothe",
+      "matched_name": "Adena Health System",
+      "matched_state": "OH",
+      "name_similarity": 1.0,
+      "object_id": "202543189349314469",
+      "policy_discounted_care_fpl_percent": 400,
+      "policy_free_care_fpl_percent": 200,
+      "rendered_schedule_h_url": "https://projects.propublica.org/nonprofits/full_text/202543189349314469/IRS990ScheduleH",
+      "retrieved_date": "2026-11-23",
+      "search_url": "https://projects.propublica.org/nonprofits/api/v2/search.json?q=Adena%20Health%20System",
+      "status": "agree",
+      "tax_period": "202412",
+      "value_source": "propublica_rendered_schedule_h",
+      "values": {
+        "discounted_care": [
+          {
+            "percent": 400,
+            "verbatim": "400.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[1]/FPGFamilyIncmLmtDscntCarePct[1]"
+          }
+        ],
+        "free_care": [
+          {
+            "percent": 200,
+            "verbatim": "200.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[1]/FPGFamilyIncmLmtFreeCarePct[1]"
+          }
+        ]
+      },
+      "xml_path": "202543189349314469_public.xml"
+    },
+    {
+      "discounted_care_fpl_percent": 200,
+      "ein": "450233470",
+      "filing_url": "https://apps.irs.gov/pub/epostcard/990/xml/2025/2025_TEOS_XML_11B.zip",
+      "free_care_fpl_percent": 200,
+      "hospital_name": "Banner Health",
+      "hospital_slug": "banner-health",
+      "irs_index_url": "https://apps.irs.gov/pub/epostcard/990/xml/2025/index_2025.csv",
+      "matched_city": "Phoenix",
+      "matched_name": "Banner Health",
+      "matched_state": "AZ",
+      "name_similarity": 1.0,
+      "object_id": "202533219349314283",
+      "policy_discounted_care_fpl_percent": 400,
+      "policy_free_care_fpl_percent": 200,
+      "rendered_schedule_h_url": "https://projects.propublica.org/nonprofits/full_text/202533219349314283/IRS990ScheduleH",
+      "retrieved_date": "2026-11-23",
+      "search_url": "https://projects.propublica.org/nonprofits/api/v2/search.json?q=Banner%20Health",
+      "status": "conflict",
+      "tax_period": "202412",
+      "value_source": "propublica_rendered_schedule_h",
+      "values": {
+        "discounted_care": [
+          {
+            "percent": 200,
+            "verbatim": "200.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[1]/FPGFamilyIncmLmtDscntCarePct[1]"
+          },
+          {
+            "percent": 200,
+            "verbatim": "200.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[2]/FPGFamilyIncmLmtDscntCarePct[1]"
+          },
+          {
+            "percent": 200,
+            "verbatim": "200.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[3]/FPGFamilyIncmLmtDscntCarePct[1]"
+          },
+          {
+            "percent": 200,
+            "verbatim": "200.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[4]/FPGFamilyIncmLmtDscntCarePct[1]"
+          }
+        ],
+        "free_care": [
+          {
+            "percent": 200,
+            "verbatim": "200.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[1]/FPGFamilyIncmLmtFreeCarePct[1]"
+          },
+          {
+            "percent": 200,
+            "verbatim": "200.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[2]/FPGFamilyIncmLmtFreeCarePct[1]"
+          },
+          {
+            "percent": 200,
+            "verbatim": "200.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[3]/FPGFamilyIncmLmtFreeCarePct[1]"
+          },
+          {
+            "percent": 200,
+            "verbatim": "200.0",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[4]/FPGFamilyIncmLmtFreeCarePct[1]"
+          }
+        ]
+      },
+      "xml_path": "202533219349314283_public.xml"
+    },
+    {
+      "discounted_care_fpl_percent": 500,
+      "ein": "752702388",
+      "filing_url": "https://apps.irs.gov/pub/epostcard/990/xml/2025/2025_TEOS_XML_11B.zip",
+      "free_care_fpl_percent": 250,
+      "hospital_name": "Texas Health Resources (Texas Health)",
+      "hospital_slug": "texas-health-resources-texas-health",
+      "irs_index_url": "https://apps.irs.gov/pub/epostcard/990/xml/2025/index_2025.csv",
+      "matched_city": "Arlington",
+      "matched_name": "Texas Health Resources",
+      "matched_state": "TX",
+      "name_similarity": 1.0,
+      "object_id": "202543149349306069",
+      "policy_discounted_care_fpl_percent": null,
+      "policy_free_care_fpl_percent": 250,
+      "rendered_schedule_h_url": "https://projects.propublica.org/nonprofits/full_text/202543149349306069/IRS990ScheduleH",
+      "retrieved_date": "2026-11-23",
+      "search_url": "https://projects.propublica.org/nonprofits/api/v2/search.json?q=Texas%20Health%20Resources%20%28Texas%20Health%29",
+      "status": "agree",
+      "tax_period": "202412",
+      "value_source": "propublica_rendered_schedule_h",
+      "values": {
+        "discounted_care": [
+          {
+            "percent": 500,
+            "verbatim": "500.",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[1]/FPGFamilyIncmLmtDscntCarePct[1]"
+          },
+          {
+            "percent": 500,
+            "verbatim": "500.",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[2]/FPGFamilyIncmLmtDscntCarePct[1]"
+          }
+        ],
+        "free_care": [
+          {
+            "percent": 250,
+            "verbatim": "250.",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[1]/FPGFamilyIncmLmtFreeCarePct[1]"
+          },
+          {
+            "percent": 250,
+            "verbatim": "250.",
+            "xml_path": "/AppData/SubmissionHeaderAndDocument/SubmissionDocument/IRS990ScheduleH[1]/HospitalFcltyPoliciesPrctcGrp[2]/FPGFamilyIncmLmtFreeCarePct[1]"
+          }
+        ]
+      },
+      "xml_path": "202543149349306069_public.xml"
+    }
+  ],
+  "schema_version": 1,
+  "sources": {
+    "irs_downloads": "https://www.irs.gov/charities-non-profits/form-990-series-downloads",
+    "propublica_api": "https://projects.propublica.org/nonprofits/api/",
+    "schedule_h_instructions": "https://www.irs.gov/instructions/i990sh"
+  }
+}

@@ -296,5 +296,14 @@
   "language.label": "Idioma",
   "language.ai_notice": "Traducción hecha por IA; pide al hospital la versión oficial en tu idioma.",
   "language.letters_notice": "Las cartas y los PDF están disponibles por ahora solo en inglés o español.",
-  "language.official_notice": "Los hospitales deben traducir los documentos de ayuda financiera para ciertos grupos locales grandes con dominio limitado del inglés. Pide la versión oficial."
+  "language.official_notice": "Los hospitales deben traducir los documentos de ayuda financiera para ciertos grupos locales grandes con dominio limitado del inglés. Pide la versión oficial.",
+  "schedule_h.title": "Comparación con la declaración al IRS",
+  "schedule_h.agree": "La declaración del hospital al IRS coincide: atención gratis hasta el {pct}% de la guía federal de pobreza.",
+  "schedule_h.conflict": "La declaración reporta atención {kind} hasta el {reported}%, pero la política actual dice {current}%. Pregunta a la oficina de facturación sobre la diferencia.",
+  "schedule_h.free": "gratis",
+  "schedule_h.discounted": "con descuento",
+  "schedule_h.period": "Período fiscal: {period}.",
+  "schedule_h.older": "La declaración puede ser anterior a la política actual.",
+  "schedule_h.source": "Ver declaración",
+  "schedule_h.no_effect": "Esta comparación no cambia tu resultado de elegibilidad."
 }

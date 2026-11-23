@@ -172,3 +172,19 @@ export interface ReconciliationData {
   match_score: number;
   discrepancies: Discrepancy[];
 }
+
+export interface ScheduleHCrosscheck {
+  hospital_slug: string;
+  hospital_name: string;
+  ein: string;
+  tax_period: string;
+  filing_url: string;
+  rendered_schedule_h_url: string | null;
+  xml_path: string;
+  retrieved_date: string;
+  free_care_fpl_percent: number | null;
+  discounted_care_fpl_percent: number | null;
+  policy_free_care_fpl_percent: number | null;
+  policy_discounted_care_fpl_percent: number | null;
+  status: "agree" | "conflict";
+}

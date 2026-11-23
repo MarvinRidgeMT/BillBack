@@ -23,6 +23,7 @@ import { InsuranceReview } from "./InsuranceReview";
 import { PolicyReceipt } from "./PolicyReceipt";
 import { ReadAloud } from "./ReadAloud";
 import { ResultExtras } from "./ResultExtras";
+import { ScheduleHBadge } from "./ScheduleHBadge";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 import { FLIP_S, ScrapBurst } from "./ZeroFinale";
 
@@ -334,6 +335,8 @@ function Verdict({ data, sample, bill, household, income, benefits, eob, reduce,
           reduce={reduce}
         />
       )}
+
+      {!sample && <ScheduleHBadge hospitalSlug={bill.hospital.slug} />}
 
       {!sample && (
         <ReadAloud

@@ -115,9 +115,9 @@ export function ReadAloud({ summary, script, scriptTitle }: ReadAloudProps) {
 
   return (
     <section className="readaloud" aria-labelledby={`${id}-title`}>
-      <h3 className="sr-only" id={`${id}-title`}>
+      <h2 className="sr-only" id={`${id}-title`}>
         {t("wow.read.title")}
-      </h3>
+      </h2>
       {canSpeak && (
         <div className="btn-row readaloud-controls">
           <Button

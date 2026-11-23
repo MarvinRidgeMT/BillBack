@@ -296,5 +296,14 @@
   "language.label": "Language",
   "language.ai_notice": "Translated by AI; ask the hospital for the official version in your language.",
   "language.letters_notice": "Letters and PDFs are currently available only in English or Spanish.",
-  "language.official_notice": "Hospitals must translate financial-aid documents for certain large local groups with limited English proficiency. Ask for the official version."
+  "language.official_notice": "Hospitals must translate financial-aid documents for certain large local groups with limited English proficiency. Ask for the official version.",
+  "schedule_h.title": "IRS filing cross-check",
+  "schedule_h.agree": "The hospital's IRS filing agrees: free care up to {pct}% of the federal poverty guideline.",
+  "schedule_h.conflict": "The filing reports {kind} care up to {reported}%, while the current policy says {current}%. Ask the billing office about the discrepancy.",
+  "schedule_h.free": "free",
+  "schedule_h.discounted": "discounted",
+  "schedule_h.period": "Tax period: {period}.",
+  "schedule_h.older": "The filing may be older than the current policy.",
+  "schedule_h.source": "View filing",
+  "schedule_h.no_effect": "This cross-check does not change your eligibility result."
 }

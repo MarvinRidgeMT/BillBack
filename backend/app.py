@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 import hashlib
 
-from backend import demo_mode, fpl, hospital_form, packet, policies
+from backend import demo_mode, fpl, hospital_form, packet, policies, schedule_h
 from backend.policy_reader import cache as policy_cache
 from backend.bill_reader import reader as bill_reader
 from backend.eob_reader import reader as eob_reader
@@ -33,6 +33,17 @@ def _envelope(data: Any = None, error: str | None = None) -> dict[str, Any]:
 @app.get("/api/health")
 def health() -> dict[str, Any]:
     return _envelope({"ok": True})
+
+
+@app.get("/api/schedule-h/{hospital_slug}")
+def schedule_h_crosscheck(hospital_slug: str) -> dict[str, Any]:
+    """Return a public IRS filing comparison; it never changes eligibility."""
+    if len(hospital_slug) > 100:
+        raise HTTPException(400, "hospital slug is too long")
+    record = schedule_h.for_hospital(hospital_slug)
+    if record is None:
+        raise HTTPException(404, "no conservatively matched Schedule H filing")
+    return _envelope(record)
 
 
 async def _pdf_from_request(request: Request) -> tuple[bytes, str | None]:

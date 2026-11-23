@@ -12,6 +12,7 @@ import {
   type EobReadData,
   type Evidence,
   type ReconciliationData,
+  type ScheduleHCrosscheck,
 } from "./types";
 
 /**
@@ -223,6 +224,20 @@ export async function checkEligibility(body: EligibilityRequest): Promise<Eligib
     disclaimer: typeof data.disclaimer === "string" ? data.disclaimer : "",
     source_url: typeof data.source_url === "string" ? data.source_url : null,
   };
+}
+
+/** Public filing context only. A missing match is expected and is not an error. */
+export async function getScheduleHCrosscheck(hospitalSlug: string): Promise<ScheduleHCrosscheck | null> {
+  try {
+    return await request<ScheduleHCrosscheck>(
+      `/api/schedule-h/${encodeURIComponent(hospitalSlug)}`,
+      { method: "GET" },
+      ELIGIBILITY_TIMEOUT_MS,
+    );
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
 }
 
 const STATUSES: readonly EligibilityStatus[] = [
