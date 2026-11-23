@@ -308,7 +308,7 @@ function FlowInner() {
                 reading={reading.promise}
                 sample={reading.sample}
                 onConfirm={onConfirm}
-                onRetry={() => (reading.file ? startReading(reading.file) : go("upload"))}
+                onRetry={() => (reading.file ? startReading(reading.file, reading.eobFile) : go("upload"))}
                 onManual={() => {
                   ensureNavigatorCase();
                   go("manual");
