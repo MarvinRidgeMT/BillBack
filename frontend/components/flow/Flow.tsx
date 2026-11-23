@@ -8,6 +8,7 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/hero/Hero";
 import { Sky } from "@/components/hero/Sky";
+import { AccessibilityProvider } from "@/lib/accessibility";
 import { checkEligibility, readBill, readEob } from "@/lib/api";
 import { I18nProvider } from "@/lib/i18n";
 import { MOCK_BILL_READ, MOCK_EOB_READ } from "@/lib/mock";
@@ -276,7 +277,9 @@ function FlowInner() {
 export function Flow() {
   return (
     <I18nProvider>
-      <FlowInner />
+      <AccessibilityProvider>
+        <FlowInner />
+      </AccessibilityProvider>
     </I18nProvider>
   );
 }

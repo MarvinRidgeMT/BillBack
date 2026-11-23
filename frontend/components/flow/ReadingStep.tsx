@@ -3,6 +3,7 @@
 import { useEffect, useId, useState } from "react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { Glossary } from "@/components/accessibility/Glossary";
 import { ApiError, DEMO_MODE } from "@/lib/api";
 import { confidencePercent, displayField } from "@/lib/format";
 import { hospitalBySlug, matchHospital, NOT_LISTED } from "@/lib/hospitals";
@@ -17,6 +18,7 @@ import {
   type Hospital,
 } from "@/lib/types";
 import { HospitalSelect } from "./HospitalSelect";
+import { ReadAloud } from "./ReadAloud";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 
 const REVEAL_GAP_S = 0.42;
@@ -271,6 +273,13 @@ function Confirm({
           );
         })}
       </div>
+
+      <ReadAloud
+        key={`bill-read-${lang}`}
+        summary={FIELD_NAMES.map((name) => `${t(`field.${name}`)}: ${valueOf(name) || t("reading.not_found")}.`)}
+        script={[]}
+      />
+      <Glossary />
 
       <motion.div
         initial={reduce ? false : { opacity: 0 }}

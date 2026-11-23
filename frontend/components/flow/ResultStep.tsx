@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Stamp } from "@/components/hero/Stamp";
+import { Glossary } from "@/components/accessibility/Glossary";
 import { Button } from "@/components/ui/button";
 import { ApiError, DEMO_MODE, downloadPacket } from "@/lib/api";
 import { useI18n, useT, type MessageKey, type Translate } from "@/lib/i18n";
@@ -385,6 +386,8 @@ function Verdict({ data, sample, bill, household, income, benefits, eob, reduce,
       <ResultExtras data={data} bill={bill} benefits={benefits} sample={sample} />
 
       {eob && <InsuranceReview bill={bill} eob={eob} />}
+
+      <Glossary />
 
       {caveats.length > 0 && (
         <>

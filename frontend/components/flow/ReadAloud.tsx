@@ -38,6 +38,8 @@ interface ReadAloudProps {
   summary: string[];
   /** Part 2: what to say when calling the billing office. */
   script: string[];
+  /** Hide the call-script disclosure when this is reading an on-screen form. */
+  scriptTitle?: string;
 }
 
 type Playback = "idle" | "playing" | "paused";
@@ -46,7 +48,7 @@ type Playback = "idle" | "playing" | "paused";
  * "Read it to me". Uses the voice already on the device (speechSynthesis), so nothing is downloaded or sent.
  * Never autoplays. Everything being read is visible on screen.
  */
-export function ReadAloud({ summary, script }: ReadAloudProps) {
+export function ReadAloud({ summary, script, scriptTitle }: ReadAloudProps) {
   const { t, lang } = useI18n();
   const id = useId();
   const { supported, voice } = useVoice(lang);
@@ -140,14 +142,16 @@ export function ReadAloud({ summary, script }: ReadAloudProps) {
           ))}
         </ol>
       )}
-      <details className="call-script" open={playback !== "idle" && current >= summary.length ? true : undefined}>
-        <summary>{t("wow.read.script_title")}</summary>
-        {script.map((text, i) => (
-          <p key={i} data-current={current === summary.length + i || undefined}>
-            {text}
-          </p>
-        ))}
-      </details>
+      {script.length > 0 && (
+        <details className="call-script" open={playback !== "idle" && current >= summary.length ? true : undefined}>
+          <summary>{scriptTitle ?? t("wow.read.script_title")}</summary>
+          {script.map((text, i) => (
+            <p key={i} data-current={current === summary.length + i || undefined}>
+              {text}
+            </p>
+          ))}
+        </details>
+      )}
     </section>
   );
 }

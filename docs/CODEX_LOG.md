@@ -13,7 +13,7 @@
 | Feature | Award | Evidence | Limits / TODO(team) | Video path |
 |---|---|---|---|---|
 | F1 EOB reconciliation | Multimodal; Health | 3 fictional EOB PDFs; 20 focused tests; 283 backend tests pass; production UI build passes | The bill reader currently extracts totals rather than line items, so itemization is conservatively flagged. | Upload → add insurance statement → confirm → discrepancies → letters |
-| F2 accessibility | Accessibility | Pending axe before/after | Pending | Easy read → glossary → read aloud |
+| F2 accessibility | Accessibility | 26 final axe state/locale/viewport scans: 0 serious/critical; 1 serious stamp contrast rule fixed; 44px minimum small actions | Manual screen-reader user testing remains | Easy read → glossary → read aloud |
 | F3 languages | Accessibility; Community | Pending key counts | Human review required | Language menu → translated notice |
 | F4 Schedule H | Community; trust | Pending match/agreement/conflict counts | Omit unknown filings | Result → Schedule H badge |
 | F5 navigator | Community | Pending case/zip tests | Tab memory only | Navigator toggle → cases → download all |
@@ -23,6 +23,17 @@
 ## TODO(team)
 
 - **A:** Expand the bill reader's structured contract with line items so the deterministic EOB matcher can compare individual services instead of conservatively requesting itemization.
+- **C:** Run a manual VoiceOver/Safari and NVDA/Chrome pass with disabled users before the final video; automated axe is necessary but not sufficient.
+
+## 2026-11-23 — F2 accessibility pack complete
+
+- Added an in-memory easy-read mode with about 20px base text, more space, and one-column fact rows that hold at 200% zoom and 390px.
+- Added a human-written EN/ES glossary for six billing/policy terms. Each definition is keyboard and screen-reader accessible through native disclosure controls.
+- Extended device-local read-aloud to the bill confirmation and questions; the active sentence is visually highlighted and nothing autoplays or leaves the device.
+- Raised small action targets to 44px and preserved the existing 48px primary controls and visible focus rings.
+- Added Playwright + axe coverage for six patient states × two languages × two viewports, plus easy-read/keyboard/zoom checks. Before: one serious contrast rule on the result stamp (two nodes, 2.81:1). After: **0 serious or critical findings across 26 final scans**. See `docs/ACCESSIBILITY.md`.
+- Dependency license check: Playwright is Apache-2.0; axe-core Playwright is MPL-2.0; neither is GPL.
+- Video: **open Check my bill → turn on Easy read in the header → open a glossary definition → use Read it to me on confirmation/questions → resize to the 390px phone view.**
 
 ## 2026-11-23 — F1 insurance mode complete
 

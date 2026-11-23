@@ -8,6 +8,7 @@ import { formatIncomeInput, parseIncome } from "@/lib/format";
 import { useT } from "@/lib/i18n";
 import { SNAPPY } from "@/lib/motion";
 import { BenefitsQuestion, type Benefits } from "./BenefitsQuestion";
+import { ReadAloud } from "./ReadAloud";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 
 const MIN_HOUSEHOLD = 1;
@@ -62,6 +63,15 @@ export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps
     <StepCard step={3} entrance={entrance} reduce={reduce}>
       <StepHeading>{t("questions.title")}</StepHeading>
       <p className="sub">{t("questions.sub")}</p>
+
+      <ReadAloud
+        summary={[
+          t("questions.read_household", { n: household }),
+          income ? t("questions.read_income", { amount: income }) : t("questions.read_income_empty"),
+          t("questions.read_instruction"),
+        ]}
+        script={[]}
+      />
 
       <form onSubmit={submit} noValidate>
         <div className="q">

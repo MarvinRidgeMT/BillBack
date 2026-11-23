@@ -344,7 +344,7 @@
   display: grid;
   place-items: center;
   text-align: center;
-  color: var(--coral);
+  color: var(--ink);
   background: rgba(255, 255, 255, 0.82);
   font-family: var(--font-display);
   line-height: 0.95;
@@ -908,6 +908,11 @@
     gap: 22px;
   }
 }
+.stamp,
+.stamp b,
+.stamp span {
+  color: var(--ink) !important;
+}
 
 /* ---------- Reduced motion: nothing moves ---------- */
 @media (prefers-reduced-motion: reduce) {
@@ -1190,5 +1195,98 @@
 @media (max-width: 560px) {
   .insurance-sides {
     grid-template-columns: 1fr;
+  }
+}
+
+.easy-read body {
+  font-size: 20px;
+  line-height: 1.7;
+}
+.easy-read .panel {
+  width: min(680px, 100%);
+}
+.easy-read .sub,
+.easy-read .field-row .v,
+.easy-read .what-next li,
+.easy-read .caveats li,
+.easy-read .insurance-review p {
+  font-size: 20px;
+  line-height: 1.65;
+}
+.easy-read .field-row {
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding-block: 18px;
+}
+.easy-read .field-row .chip,
+.easy-read .field-row .v {
+  grid-column: 1;
+  grid-row: auto;
+  justify-self: start;
+}
+.easy-read .field-row .k,
+.easy-read .field-row .note {
+  font-size: 17px;
+}
+.easy-read .what-next li,
+.easy-read .caveats li {
+  margin-block: 12px;
+}
+.easy-read-toggle {
+  gap: 6px;
+}
+.glossary {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--mint) 35%, var(--card));
+}
+.glossary h3,
+.glossary p {
+  margin: 0 0 8px;
+}
+.glossary-terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.glossary details {
+  flex: 1 1 150px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+}
+.glossary summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.glossary details p {
+  padding: 0 12px 12px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.mini-btn,
+.inline-btn,
+.link-button {
+  min-height: 44px;
+}
+@media (max-width: 700px) {
+  .nav {
+    height: auto;
+    min-height: 80px;
+    align-items: flex-start;
+    padding-block: 12px;
+  }
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .easy-read-toggle {
+    order: 3;
   }
 }

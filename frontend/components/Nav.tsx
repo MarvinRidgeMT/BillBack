@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18n } from "@/lib/i18n";
+import { AccessibilityToolbar } from "@/components/accessibility/AccessibilityToolbar";
 
 /** Logo left; "How it works" and the language toggle right. */
 export function Nav() {
@@ -12,6 +13,7 @@ export function Nav() {
         <a className="nav-link how-link" href="#how">
           {t("nav.how")}
         </a>
+        <AccessibilityToolbar />
         <button type="button" className="nav-link" lang={t("nav.lang_code")} onClick={toggleLang}>
           {t("nav.lang_toggle")}
         </button>
