@@ -58,4 +58,4 @@ def build(hospital_name: str, state: str, free_max: float, discount_max: Optiona
 
 def slug_for(rules: PolicyRules) -> str:
     assert rules.source is not None
-    return f"{live_session.PREFIX}manual-{rules.source.sha256[:8]}"
+    return f"{live_session.PREFIX}manual-{rules.source.sha256[: live_session.SLUG_HEX]}"

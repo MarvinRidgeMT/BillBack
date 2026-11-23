@@ -69,6 +69,12 @@ def _run(method: str, truth: dict[str, Any]) -> dict[str, Any]:
     return {**row, "checks": _score(row["fields"], truth)}
 
 
+def rescore(row: dict[str, Any], truth: Optional[dict[str, Any]]) -> dict[str, Any]:
+    if truth is None or "fields" not in row:
+        return row
+    return {**row, "checks": _score(row["fields"], truth)}
+
+
 def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     """Totals for one method. Bills that errored count as 0/5; bills that were not run are left out."""
     ran = [r for r in rows if not r.get("not_run")]
@@ -109,11 +115,17 @@ def main(argv: Optional[list[str]] = None) -> int:
     args = ap.parse_args(argv)
     previous = load_result("bench_bill_reader") or {}
     truths = load_bill_truths()
-    methods = {"A": [], "B": []}
+    by_name = {t["name"]: t for t in truths}
+    methods: dict[str, list] = {"A": [], "B": []}
+    metas: dict[str, dict] = {}
     for m in ("A", "B"):
         if args.only and args.only != m:
-            methods[m] = previous.get("methods", {}).get(m, {}).get("rows", [])
+            kept = previous.get("methods", {}).get(m, {})
+            # Re-score the saved reads with today's comparison rules (no model call); keep when they were read.
+            methods[m] = [rescore(r, by_name.get(r["bill"])) for r in kept.get("rows", [])]
+            metas[m] = kept.get("meta") or {k: previous.get(k) for k in ("generated_at", "model", "git_commit")}
             continue
+        metas[m] = run_meta()
         for t in truths:
             row = {"bill": t["name"], "condition": t["condition"], **_run(m, t)}
             methods[m].append(row)
@@ -124,7 +136,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         method_b="Tesseract OCR + regex/heuristics (eval/baselines/tesseract_extract.py)",
         rules=compare.RULES_TEXT,
         pricing_source=pricing.PRICING_SOURCE,
-        methods={m: {"summary": summarize(rows), "rows": rows} for m, rows in methods.items()},
+        methods={m: {"summary": summarize(rows), "rows": rows, "meta": metas[m]} for m, rows in methods.items()},
     )
     save_result("bench_bill_reader", payload)
     for m in ("A", "B"):

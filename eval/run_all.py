@@ -104,7 +104,9 @@ def bill_section(bench: Optional[dict[str, Any]]) -> tuple[list[str], dict[str, 
     a, b = bench["methods"]["A"]["summary"], bench["methods"]["B"]["summary"]
     b_rows = bench["methods"]["B"]["rows"]
     b_missing = sum(1 for r in b_rows if r.get("not_run"))
-    lines += [stamp(bench), "",
+    meta_a, meta_b = bench["methods"]["A"].get("meta"), bench["methods"]["B"].get("meta")
+    lines += [f"Method A read the bills: {stamp(meta_a or bench)[1:-1]}. Method B: {stamp(meta_b or bench)[1:-1]}. "
+              "Scores below use today's comparison rules.", "",
               f"Method A: {bench['method_a']}. Method B: {bench['method_b']}. Same {a['bills_run'] or len(b_rows)} bills, "
               "same scoring rules (section 8).", ""]
     if b_missing:
@@ -120,6 +122,7 @@ def bill_section(bench: Optional[dict[str, Any]]) -> tuple[list[str], dict[str, 
             lines.append(f"| {cond} | {frac(*(ca or [None, None]))} | {frac(*(cb or [None, None]))} |")
     lines += [f"| Average seconds per bill | {secs(a['avg_seconds'])} | {secs(b['avg_seconds'])} |",
               f"| Estimated cost per bill | {money(a['avg_cost_usd'])} | $0 (runs locally) |",
+              "| (time and cost leave out bills that errored) | | |",
               f"| Bills that errored | {a['errors']} | {b['errors']} |",
               f"| Wrong values NOT sent to the patient to check | **{a.get('wrong_and_not_sent_to_patient', '—')}** | n/a (no confidence scores) |", "",
               f"Image-quality check (plain code): flagged as poor photos {', '.join(a.get('flagged_poor_photo') or []) or 'none'}; "
@@ -236,8 +239,10 @@ def households_section(hh: Optional[dict[str, Any]]) -> list[str]:
     lines = ["## 4. End to end: 10 households (rubric R2, A3)", ""]
     if not hh:
         return lines + ["Not run yet: `python -m eval.run_households`.", ""]
+    sources = hh.get("bill_sources") or {}
+    how = ", ".join(f"{n} {k}" for k, n in sources.items()) or "saved reads"
     lines += [stamp(hh), "", f"**{hh['correct']}/{hh['total']} households correct** through the real pipeline: sample-bill "
-              "read (saved read) → hospital match → cached real policy → rules engine → application PDF. Expected results: "
+              f"read ({how}) → hospital match → cached real policy → rules engine → application PDF. Expected results: "
               f"{hh['expectations_by']}; checked by: {hh['checked_by']}.", "",
               "| Household | Hospital | % of poverty line | Expected | Got | Correct |", "|---|---|---|---|---|---|"]
     for r in hh["rows"]:

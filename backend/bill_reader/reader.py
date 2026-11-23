@@ -116,6 +116,7 @@ def read_bill(data: bytes, content_type: str, *, client: Optional[ModelClient] =
     photo_quality = quality.NOT_CHECKED if data.startswith(b"%PDF") else quality.check_image(data)
     client = client or default_client()
 
+    deadline = time.monotonic() + BILL_TOTAL_TIMEOUT_S  # one budget for the read and its schema retry
     result = generate_with_retry(client, prompt, total_timeout_s=BILL_TOTAL_TIMEOUT_S)
     tokens_in, tokens_out = result.input_tokens, result.output_tokens
     try:
@@ -124,7 +125,7 @@ def read_bill(data: bytes, content_type: str, *, client: Optional[ModelClient] =
         log.warning("bill output invalid, retrying once: %s", _describe_invalid(exc))
         correction = f"Invalid JSON for the schema: {_describe_invalid(exc)}. Return corrected JSON only."
         result = generate_with_retry(client, dataclasses.replace(prompt, correction=correction),
-                                     total_timeout_s=BILL_TOTAL_TIMEOUT_S)
+                                     total_timeout_s=max(0.0, deadline - time.monotonic()))
         tokens_in += result.input_tokens
         tokens_out += result.output_tokens
         try:

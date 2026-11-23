@@ -4,7 +4,8 @@ Rules (also printed in docs/RESULTS.md):
 - text: Unicode-normalized, case-folded, whitespace collapsed, then compared exactly
 - money: must match to the cent (parsed from "$1,234.50", "1234.5", or integer cents)
 - dates: must be the same calendar day after parsing (ISO, US m/d/y, "Aug 14, 2026", ...)
-- hospital names and addresses: equal after normalization, or fuzzy ratio >= NAME_FUZZY_THRESHOLD
+- hospital names and addresses: equal after normalization, or fuzzy ratio >= NAME_FUZZY_THRESHOLD;
+  addresses also need every number (street number, ZIP) to be identical
 - % of the poverty line: must match exactly (200 == 200.0; 200 != 201)
 - yes/no fields: compared as booleans ("yes"/"true"/"y" -> True)
 """
@@ -104,6 +105,14 @@ def name_match(got: Optional[str], expected: Optional[str], threshold: float = N
     return _name_key(got) == _name_key(expected) or name_similarity(got, expected) >= threshold
 
 
+_NUMBER = re.compile(r"\d+")
+
+
+def address_match(got: Optional[str], expected: Optional[str], threshold: float = NAME_FUZZY_THRESHOLD) -> bool:
+    """Like name_match, but every number (street number, ZIP) must be exactly the same: 123 Main St != 125 Main St."""
+    return _NUMBER.findall(norm_text(got)) == _NUMBER.findall(norm_text(expected)) and name_match(got, expected, threshold)
+
+
 def account_equal(got: Optional[str], expected: Optional[str]) -> bool:
     """Case- and whitespace-insensitive. Separators matter: 'FH 7720-1145' != 'FH77201145'."""
     return bool(norm_text(expected)) and norm_text(got) == norm_text(expected)
@@ -138,7 +147,7 @@ def bool_equal(got: Any, expected: Any) -> bool:
 BILL_FIELDS = ("hospital_name", "hospital_address", "amount_due", "service_date", "account_number")
 _BILL_RULES = {
     "hospital_name": name_match,
-    "hospital_address": name_match,
+    "hospital_address": address_match,
     "amount_due": money_equal,
     "service_date": date_equal,
     "account_number": account_equal,
@@ -155,6 +164,7 @@ def compare_bill_field(field: str, got: Any, expected: Any) -> bool:
 RULES_TEXT = (
     "Text is Unicode-normalized, case-folded and whitespace-collapsed before comparing. Money must match to the cent. "
     "Dates must be the same calendar day after parsing. Hospital names and addresses match if equal after normalization "
-    f"or if the fuzzy ratio (token sort) is ≥ {NAME_FUZZY_THRESHOLD:.2f}. Account numbers: case and whitespace ignored, "
+    f"or if the fuzzy ratio (token sort) is ≥ {NAME_FUZZY_THRESHOLD:.2f}; for addresses every number (street number, ZIP) "
+    "must also be exactly the same. Account numbers: case and whitespace ignored, "
     "separators kept. % of the poverty line must match exactly."
 )

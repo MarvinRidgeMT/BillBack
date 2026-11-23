@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-23T20:28:56+00:00",
+  "generated_at": "2026-11-23T22:21:46+00:00",
   "model": "claude-sonnet-5-5",
-  "git_commit": "960fd30+uncommitted",
+  "git_commit": "d163fd6+uncommitted",
   "method_a": "AI bill reader shipped in the app (backend/bill_reader/reader.py)",
   "method_b": "Tesseract OCR + regex/heuristics (eval/baselines/tesseract_extract.py)",
-  "rules": "Text is Unicode-normalized, case-folded and whitespace-collapsed before comparing. Money must match to the cent. Dates must be the same calendar day after parsing. Hospital names and addresses match if equal after normalization or if the fuzzy ratio (token sort) is \u2265 0.90. Account numbers: case and whitespace ignored, separators kept. % of the poverty line must match exactly.",
+  "rules": "Text is Unicode-normalized, case-folded and whitespace-collapsed before comparing. Money must match to the cent. Dates must be the same calendar day after parsing. Hospital names and addresses match if equal after normalization or if the fuzzy ratio (token sort) is \u2265 0.90; for addresses every number (street number, ZIP) must also be exactly the same. Account numbers: case and whitespace ignored, separators kept. % of the poverty line must match exactly.",
   "pricing_source": "https://platform.claude.com/docs/en/about-claude/pricing (checked 2026-11-22)",
   "methods": {
     "A": {
@@ -562,7 +562,12 @@
             "account_number": false
           }
         }
-      ]
+      ],
+      "meta": {
+        "generated_at": "2026-11-23T20:28:56+00:00",
+        "model": "claude-sonnet-5-5",
+        "git_commit": "960fd30+uncommitted"
+      }
     },
     "B": {
       "summary": {
@@ -583,8 +588,8 @@
           "service_date": 2,
           "account_number": 2
         },
-        "avg_seconds": 0.00835045799612999,
-        "max_seconds": 0.008757957955822349,
+        "avg_seconds": 0.006069854483939707,
+        "max_seconds": 0.0066266669891774654,
         "avg_cost_usd": 0.0,
         "low_confidence_fields": 0,
         "fields_to_confirm": 0,
@@ -610,7 +615,7 @@
             "account_number": "BT-00938815"
           },
           "method": "pdf_text",
-          "seconds": 0.008757957955822349,
+          "seconds": 0.0066266669891774654,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -667,7 +672,7 @@
             "account_number": "MC-55418820"
           },
           "method": "pdf_text",
-          "seconds": 0.00794295803643763,
+          "seconds": 0.005513041978701949,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -695,7 +700,12 @@
           "error": "tesseract is not installed (brew install tesseract)",
           "not_run": true
         }
-      ]
+      ],
+      "meta": {
+        "generated_at": "2026-11-23T22:21:46+00:00",
+        "model": "claude-sonnet-5-5",
+        "git_commit": "d163fd6+uncommitted"
+      }
     }
   }
 }

@@ -32,6 +32,8 @@ CODES: dict[str, int] = {
     "not_policy": 422,
     "ai_unavailable": 503,
     "ai_invalid": 502,
+    "unsupported": 415,
+    "rate_limited": 429,
     "server_error": 500,
 }
 
@@ -65,5 +67,5 @@ def install(app: FastAPI) -> None:
     @app.exception_handler(StarletteHTTPException)
     async def _http(_: Request, exc: StarletteHTTPException) -> JSONResponse:
         code = {400: "bad_file", 403: "live_off", 404: "not_found", 409: "demo_only", 413: "too_large",
-                503: "ai_unavailable"}.get(exc.status_code, "server_error")
+                415: "unsupported", 429: "rate_limited", 503: "ai_unavailable"}.get(exc.status_code, "server_error")
         return JSONResponse(error_body(code, str(exc.detail)), status_code=exc.status_code)

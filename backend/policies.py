@@ -202,6 +202,8 @@ def _search_score(query: str, h: dict[str, Any]) -> float:
     names = [h["hospital_name"], *h.get("aliases", [])]
     hay = " ".join([*names, h.get("city") or "", *states]).lower().replace("'", "").split()
     words = query.lower().replace("'", "").split()
+    if not words:
+        return 0.0
     covered = sum(max(fuzz.ratio(w, x) for x in hay) >= WORD_MATCH_MIN for w in words) / len(words)
     whole = max(
         max(fuzz.token_sort_ratio(query.lower(), n.lower()) for n in names),

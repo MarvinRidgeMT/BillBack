@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from typing import Any, Literal, Optional
 
 from fastapi import FastAPI, HTTPException, Request, Response, UploadFile
+from fastapi.responses import JSONResponse
+from starlette.formparsers import MultiPartParser
 from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
@@ -19,15 +21,27 @@ from backend.llm_retry import ModelUnavailable
 from backend.policy_reader import cache as policy_cache
 from backend.bill_reader import reader as bill_reader
 from backend.eligibility import eligibility_result_to_api_response, load_fpl_table_from_json, run_eligibility
-from backend import live_session, manual_policy
+from backend import live_session, manual_policy, rate_limit
 from backend.policy_reader import grounding
 from backend.policy_reader.extract_text import DocumentError
 from backend.policy_reader.fetch import MAX_BYTES, FetchError, fetch_policy
 from backend.policy_reader.reader import PolicyReaderError, read_policy, read_policy_text
 
 log = logging.getLogger("billback")
+# Uploads stay in memory: Starlette spools multipart parts over 1 MB to a temp file on disk by default.
+MultiPartParser.spool_max_size = MAX_BYTES + 1024 * 1024
+MAX_REQUEST_BYTES = MAX_BYTES + 1024 * 1024  # 25 MB file + form overhead; checked before the body is parsed
+
 app = FastAPI(title="BillBack API")
 errors.install(app)
+
+
+@app.middleware("http")
+async def _cap_request_size(request: Request, call_next):
+    length = request.headers.get("content-length")
+    if length and length.isdigit() and int(length) > MAX_REQUEST_BYTES:
+        return JSONResponse(errors.error_body("too_large", "file is larger than 25 MB"), status_code=413)
+    return await call_next(request)
 MAX_HOUSEHOLD = 20  # API and UI agree: 1-20 people
 
 
@@ -64,7 +78,10 @@ async def _policy_input(request: Request) -> _PolicyInput:
     if ctype.startswith("application/json"):
         if not demo_mode.live_mode():
             raise AppError("live_off", "reading a policy from a link is turned off (LIVE_MODE=0)")
-        body = await request.json()
+        try:
+            body = await request.json()
+        except ValueError as exc:
+            raise AppError("bad_url", "send {\"url\": \"https://...\"}") from exc
         url = body.get("url") if isinstance(body, dict) else None
         if not isinstance(url, str) or not url.strip() or len(url) > 2048:
             raise AppError("bad_url", "paste a link that starts with https://")
@@ -115,6 +132,7 @@ async def policy_read(request: Request) -> dict[str, Any]:
     """Live mode: a policy link or PDF -> grounded rules, kept in memory for this session only (never on disk).
     A policy we already read and checked is served from the curated cache instead."""
     started = time.perf_counter()
+    rate_limit.check(request, "policy_read")
     got = await _policy_input(request)
     beta = got.url is not None
     sha = policy_cache.sha256_bytes(got.pdf_bytes) if got.pdf_bytes else None
@@ -136,7 +154,7 @@ async def policy_read(request: Request) -> dict[str, Any]:
     except PolicyReaderError as exc:
         log.exception("policy reader failed")
         raise AppError("ai_invalid", "could not read that policy; try the PDF or enter the limits by hand") from exc
-    key = (sha or policy_cache.sha256_bytes(got.text.encode("utf-8")))[:8]
+    key = (sha or policy_cache.sha256_bytes(got.text.encode("utf-8")))[: live_session.SLUG_HEX]
     slug = live_session.put(f"{live_session.PREFIX}{key}", result.rules)
     return _envelope(_policy_payload(result.rules, slug, source="live", cached=False, seconds=result.seconds, beta=beta))
 
@@ -149,8 +167,9 @@ class ManualPolicyRequest(BaseModel):
 
 
 @app.post("/api/policy/manual")
-def policy_manual(req: ManualPolicyRequest) -> dict[str, Any]:
+def policy_manual(req: ManualPolicyRequest, request: Request) -> dict[str, Any]:
     """The patient types the limits from the hospital's policy (when the link or PDF can't be read). Memory only."""
+    rate_limit.check(request, "policy_manual")
     if req.discount_max_percent is not None and req.discount_max_percent < req.free_max_percent:
         raise AppError("invalid_input", "the discount limit can't be lower than the free-care limit",
                        extra={"fields": ["discount_max_percent"]})

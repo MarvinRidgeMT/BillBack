@@ -1,6 +1,6 @@
 """Live-mode policies, kept in this server process's memory only: never written to disk, gone on restart.
 
-Keyed by slug "live-<sha8>" (read from a link or upload) or "live-manual-<hash8>" (limits typed in by the patient).
+Keyed by slug "live-<sha16>" (read from a link or upload) or "live-manual-<hash16>" (limits typed in by the patient).
 Entries expire after TTL_SECONDS and the store holds at most MAX_ENTRIES (oldest dropped first).
 """
 
@@ -16,6 +16,7 @@ from backend.policy_reader.schema import PolicyRules
 TTL_SECONDS = 2 * 60 * 60
 MAX_ENTRIES = 200
 PREFIX = "live-"
+SLUG_HEX = 16  # 64 bits of the document's sha256: crafting a colliding document is impractical
 
 _lock = threading.Lock()
 _store: "OrderedDict[str, tuple[float, PolicyRules]]" = OrderedDict()

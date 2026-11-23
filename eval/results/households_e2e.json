@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-11-23T20:28:57+00:00",
+  "generated_at": "2026-11-23T22:21:46+00:00",
   "model": "claude-sonnet-5-5",
-  "git_commit": "960fd30+uncommitted",
+  "git_commit": "d163fd6+uncommitted",
   "correct": 9,
   "total": 10,
   "rows": [
     {
       "id": "E2E-01",
       "bill": "bill_01_clean",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "usa-health",
       "slug_ok": true,
       "expected_status": "likely_free",
@@ -21,12 +21,12 @@
       "explanation": "Household income ($15,000) qualifies for free care under 'Free Care' (threshold: at or below $31,920.00 (200.0% FPL)). All verified conditions satisfied. Income: 15000.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.021014083875343204
+      "seconds": 0.016512417001649737
     },
     {
       "id": "E2E-02",
       "bill": "bill_02_text",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "boys-town-national-research-hospital",
       "slug_ok": true,
       "expected_status": "likely_free",
@@ -39,12 +39,12 @@
       "explanation": "Household income ($43,280) qualifies for free care under 'Free Care' (threshold: at or below $43,280.00 (200.0% FPL)). All verified conditions satisfied. Income: 43280.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.009573457995429635
+      "seconds": 0.007944124983623624
     },
     {
       "id": "E2E-03",
       "bill": "bill_03_angled",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "fort-healthcare-inc",
       "slug_ok": true,
       "expected_status": "likely_discounted",
@@ -57,12 +57,12 @@
       "explanation": "Household income ($43,281) qualifies for discounted care under 'Reduced basis per Attachment 1 table: 90% discount at 210% FPG, declining stepwise (80% at 220%, 70% at 230%, 60% at 240%, 50% at 250%, 40% at 260%, 35% at 270%, 30% at 280%, 25% at 290%, 20% at 300-320%, 15% at 340-360%, 10% at 380-400%).' (threshold: at or below $86,560.00 (400.0% FPL)) (discount: Sliding scale). All verified conditions satisfied. Income: 43281.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.009244499960914254
+      "seconds": 0.008766500046476722
     },
     {
       "id": "E2E-04",
       "bill": "bill_04_angled_blur",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "marshfield-clinic-health-system",
       "slug_ok": true,
       "expected_status": "likely_discounted",
@@ -75,12 +75,12 @@
       "explanation": "Household income ($99,000) qualifies for discounted care under '75% discount for income 201%-300% FPL per Appendix A table' (threshold: at or below $99,000.00 (300.0% FPL)) with 75.0% discount. All verified conditions satisfied. Income: 99000.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.09633370907977223
+      "seconds": 0.07204529200680554
     },
     {
       "id": "E2E-05",
       "bill": "bill_05_crumpled",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "adena-health-system",
       "slug_ok": true,
       "expected_status": "cannot_determine",
@@ -93,12 +93,12 @@
       "explanation": "Cannot determine eligibility with current information. Household income: $30,000. FPL reference: $27,320 (2026 contiguous, household size 3). Missing facts: unresolved_savings_rule. Unresolved rules: none.",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.012135584140196443
+      "seconds": 0.010104249930009246
     },
     {
       "id": "E2E-06",
       "bill": "bill_06_crumpled",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "baptist-memorial-health-care-corporation",
       "slug_ok": true,
       "expected_status": "probably_not_eligible",
@@ -111,12 +111,12 @@
       "explanation": "Household income ($160,000) exceeds all assistance thresholds in this policy. FPL reference: $38,680 (2026 contiguous, household size 5).",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.009360624942928553
+      "seconds": 0.007914667017757893
     },
     {
       "id": "E2E-07",
       "bill": "bill_07_dim",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "usa-health",
       "slug_ok": true,
       "expected_status": "likely_discounted",
@@ -129,12 +129,12 @@
       "explanation": "Household income ($100,000) qualifies for discounted care under '85% FAP adjustment applied' (threshold: at or below $123,750.00 (300.0% FPL)) with 85.0% discount. All verified conditions satisfied. Income: 100000.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.009267292218282819
+      "seconds": 0.008718207944184542
     },
     {
       "id": "E2E-08",
       "bill": "bill_08_dim_angled",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "boys-town-national-research-hospital",
       "slug_ok": true,
       "expected_status": "cannot_determine",
@@ -147,12 +147,12 @@
       "explanation": "Cannot determine eligibility with current information. Household income: $25,000. FPL reference: $27,320 (2026 contiguous, household size 3). Missing facts: asset_test. Unresolved rules: none.",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.00916499993763864
+      "seconds": 0.00797033286653459
     },
     {
       "id": "E2E-09",
       "bill": "bill_09_text",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "marshfield-clinic-health-system",
       "slug_ok": true,
       "expected_status": "likely_free",
@@ -165,12 +165,12 @@
       "explanation": "Household income ($120,000) qualifies for free care under 'Free Care' (threshold: at or below $122,800.00 (200.0% FPL)). All verified conditions satisfied. Income: 120000.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.07938708295114338
+      "seconds": 0.054430708987638354
     },
     {
       "id": "E2E-10",
       "bill": "bill_10_crumpled_dim",
-      "bill_source": "cache/bills",
+      "bill_source": "saved read (cache/bills)",
       "matched_slug": "fort-healthcare-inc",
       "slug_ok": true,
       "expected_status": "probably_not_eligible",
@@ -183,9 +183,13 @@
       "explanation": "Cannot determine eligibility with current information. Household income: $30,000. FPL reference: $21,640 (2026 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
       "packet_ok": true,
       "correct": false,
-      "seconds": 0.011891333851963282
+      "seconds": 0.010331499855965376
     }
   ],
+  "live": false,
+  "bill_sources": {
+    "saved read (cache/bills)": 10
+  },
   "expectations_by": "Claude Code (AI) from the policy limits in cache/policies/, arithmetic shown per household",
   "checked_by": "TODO(team, B): re-check each row by hand and put your name here",
   "b_hand_key": {

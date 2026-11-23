@@ -14,7 +14,7 @@ from fastapi.testclient import TestClient
 from pypdf import PdfReader, PdfWriter
 
 from backend import app as app_module
-from backend import live_session, policies
+from backend import live_session, policies, rate_limit
 from backend.policy_reader import extract_text, fetch
 from backend.policy_reader.cache import DEFAULT_CACHE_DIR
 from backend.policy_reader.llm_clients import ModelResult
@@ -42,6 +42,7 @@ class FakeModel:
 @pytest.fixture(autouse=True)
 def _fresh(monkeypatch):
     live_session.clear()
+    rate_limit.reset()
     model = FakeModel()
     monkeypatch.setattr("backend.policy_reader.reader.default_client", lambda: model)
     monkeypatch.setenv("LIVE_MODE", "1")
@@ -189,7 +190,8 @@ def _fake_web(monkeypatch, routes: dict):
 
     real_client = httpx.Client
     monkeypatch.setattr(fetch.httpx, "Client", lambda **kw: real_client(transport=httpx.MockTransport(handler), **kw))
-    monkeypatch.setattr(fetch, "_assert_public_host", lambda url: None)
+    # Resolve every name to itself so the pinned URL is unchanged and no DNS is used.
+    monkeypatch.setattr(fetch, "_resolve_public", lambda url: (fetch.urlparse(url).hostname, fetch.urlparse(url).hostname))
 
 
 def test_html_page_with_a_policy_pdf_link(monkeypatch):
@@ -220,6 +222,38 @@ def test_download_timeout(monkeypatch):
     _fake_web(monkeypatch, {})
     with pytest.raises(fetch.FetchError) as err:
         fetch.fetch_policy("https://slow.example.org/fap.pdf")
+    assert err.value.code == "fetch_timeout"
+
+
+def test_fetch_connects_to_the_checked_ip_with_host_and_sni(monkeypatch):
+    """No second DNS lookup (DNS rebinding): the request goes to the IP we validated."""
+    seen = {}
+
+    def handler(request):
+        seen.update(url=str(request.url), host=request.headers["host"], sni=request.extensions.get("sni_hostname"))
+        return httpx.Response(200, headers={"content-type": "application/pdf"}, content=b"%PDF-1.4 x")
+
+    real_client = httpx.Client
+    monkeypatch.setattr(fetch.httpx, "Client", lambda **kw: real_client(transport=httpx.MockTransport(handler), **kw))
+    monkeypatch.setattr(fetch, "_resolve_public", lambda url: ("hosp.example.org", "93.184.216.34"))
+    got = fetch.fetch_policy("https://hosp.example.org/fap.pdf")
+    assert seen == {"url": "https://93.184.216.34/fap.pdf", "host": "hosp.example.org", "sni": "hosp.example.org"}
+    assert got.url == "https://hosp.example.org/fap.pdf"
+
+
+@pytest.mark.parametrize("url", ["https://example.org:8443/fap.pdf", "http://[fe80::1%25eth0]/x.pdf"])
+def test_odd_ports_and_scoped_addresses_are_bad_urls(url):
+    with pytest.raises(fetch.FetchError) as err:
+        fetch.fetch_policy(url)
+    assert err.value.code == "bad_url"
+
+
+def test_slow_drip_download_hits_the_wall_clock_deadline(monkeypatch):
+    clock = iter([0.0] + [100.0] * 10)  # the deadline is set at 0 s; the first body check sees 100 s
+    monkeypatch.setattr(fetch.time, "monotonic", lambda: next(clock))
+    _fake_web(monkeypatch, {"https://h.example.org/fap.pdf": ("application/pdf", b"%PDF-1.4 " + b"x" * 10)})
+    with pytest.raises(fetch.FetchError) as err:
+        fetch.fetch_policy("https://h.example.org/fap.pdf")
     assert err.value.code == "fetch_timeout"
 
 
@@ -275,3 +309,37 @@ def test_unknown_hospital_is_not_matched():
     data = client.post("/api/hospitals/match", json={"hospital_name": "Mayo Clinic Rochester",
                                                      "hospital_address": "200 First St SW, Rochester, MN 55905"}).json()["data"]
     assert data["matched"] is False and data["reason"]
+
+
+def test_live_reads_are_rate_limited_per_client(monkeypatch):
+    monkeypatch.setitem(rate_limit.LIMITS, "policy_manual", (2, 600.0))
+    body = {"hospital_name": "X Hospital", "state": "OH", "free_max_percent": 200}
+    codes = [client.post("/api/policy/manual", json={**body, "free_max_percent": 200 + i}).status_code for i in range(3)]
+    assert codes == [200, 200, 429]
+
+
+def test_live_slugs_are_long_enough_not_to_collide():
+    data = client.post("/api/policy/manual", json={"hospital_name": "X Hospital", "state": "OH",
+                                                   "free_max_percent": 200}).json()["data"]
+    assert len(data["slug"].removeprefix("live-manual-")) == live_session.SLUG_HEX == 16
+
+
+def test_oversized_request_is_refused_before_parsing():
+    resp = client.post("/api/policy/read", content=b"x", headers={"content-type": "multipart/form-data; boundary=x",
+                                                                  "content-length": str(60 * 1024 * 1024)})
+    assert resp.status_code == 413 and resp.json()["code"] == "too_large"
+
+
+def test_uploads_stay_in_memory():
+    from starlette.formparsers import MultiPartParser
+
+    assert MultiPartParser.spool_max_size > 25 * 1024 * 1024  # parts up to the size cap never spill to a temp file
+
+
+def test_bad_json_body_is_a_typed_error():
+    resp = client.post("/api/policy/read", content=b"{not json", headers={"content-type": "application/json"})
+    assert resp.json()["code"] == "bad_url"
+
+
+def test_search_with_only_apostrophes_does_not_crash():
+    assert client.get("/api/hospitals/search?q=%27%27").json()["data"] == []

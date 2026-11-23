@@ -10,6 +10,7 @@ import html as html_lib
 import ipaddress
 import re
 import socket
+import time
 from dataclasses import dataclass
 from html.parser import HTMLParser
 from typing import Literal, Optional
@@ -43,26 +44,62 @@ class FetchedPolicy:
     text: str = ""
 
 
-def _assert_public_host(url: str) -> None:
+ALLOWED_PORTS = (80, 443)
+FETCH_DEADLINE_S = 45.0  # wall clock for the whole fetch, so a server dripping bytes can't hold a worker
+
+
+def _resolve_public(url: str) -> tuple[str, str]:
+    """(hostname, one public IP for it). Raises FetchError for non-http(s), odd ports or non-public addresses."""
     parsed = urlparse(url)
     if parsed.scheme not in ("http", "https") or not parsed.hostname:
         raise FetchError("URL must start with http:// or https://", "bad_url")
     try:
-        infos = socket.getaddrinfo(parsed.hostname, parsed.port or 443, proto=socket.IPPROTO_TCP)
-    except socket.gaierror as exc:
+        port = parsed.port
+    except ValueError as exc:
+        raise FetchError("that link has an invalid port", "bad_url") from exc
+    if port is not None and port not in ALLOWED_PORTS:
+        raise FetchError("that link uses an unusual port", "bad_url")
+    try:
+        infos = socket.getaddrinfo(parsed.hostname, port or (443 if parsed.scheme == "https" else 80),
+                                   proto=socket.IPPROTO_TCP)
+    except (socket.gaierror, UnicodeError) as exc:
         raise FetchError("could not find that website", "fetch_failed") from exc
+    ips = []
     for info in infos:
-        ip = ipaddress.ip_address(info[4][0])
+        try:
+            ip = ipaddress.ip_address(str(info[4][0]).split("%", 1)[0])
+        except ValueError as exc:
+            raise FetchError("that address is not a public website", "bad_url") from exc
         if not ip.is_global:
             raise FetchError("that address is not a public website", "bad_url")
+        ips.append(str(ip))
+    if not ips:
+        raise FetchError("could not find that website", "fetch_failed")
+    return parsed.hostname, ips[0]
 
 
-def _get_capped(client: httpx.Client, url: str) -> tuple[bytes, str, str]:
+def _assert_public_host(url: str) -> None:
+    _resolve_public(url)
+
+
+def _pinned(url: str) -> tuple[str, dict[str, str], dict[str, str]]:
+    """Connect to the IP we checked (not a second DNS answer: no DNS rebinding), keeping Host and TLS SNI."""
+    host, ip = _resolve_public(url)
+    parsed = urlparse(url)
+    ip_host = f"[{ip}]" if ":" in ip else ip
+    netloc = f"{ip_host}:{parsed.port}" if parsed.port else ip_host
+    headers = {"Host": parsed.netloc.rsplit("@", 1)[-1]}
+    extensions = {"sni_hostname": host} if parsed.scheme == "https" else {}
+    return parsed._replace(netloc=netloc).geturl(), headers, extensions
+
+
+def _get_capped(client: httpx.Client, url: str, deadline: float | None = None) -> tuple[bytes, str, str]:
     """GET following redirects manually so every hop is checked. Returns (body, content_type, final_url)."""
+    deadline = deadline or time.monotonic() + FETCH_DEADLINE_S
     try:
         for _ in range(MAX_REDIRECTS + 1):
-            _assert_public_host(url)
-            with client.stream("GET", url) as resp:
+            target, headers, extensions = _pinned(url)
+            with client.stream("GET", target, headers=headers, extensions=extensions) as resp:
                 if resp.is_redirect:
                     url = urljoin(url, resp.headers.get("location", ""))
                     continue
@@ -73,7 +110,9 @@ def _get_capped(client: httpx.Client, url: str) -> tuple[bytes, str, str]:
                     body += chunk
                     if len(body) > MAX_BYTES:
                         raise FetchError("file is larger than 25 MB", "too_large")
-                return bytes(body), resp.headers.get("content-type", "").lower(), str(resp.url)
+                    if time.monotonic() > deadline:
+                        raise FetchError("the website took too long to send the file", "fetch_timeout")
+                return bytes(body), resp.headers.get("content-type", "").lower(), url
     except httpx.TimeoutException as exc:
         raise FetchError("the website took too long to answer", "fetch_timeout") from exc
     except httpx.HTTPError as exc:
@@ -128,7 +167,8 @@ def fetch_policy(url: str) -> FetchedPolicy:
     if not isinstance(url, str) or not url.strip():
         raise FetchError("paste a link that starts with https://", "bad_url")
     with httpx.Client(timeout=TIMEOUT_SECONDS, follow_redirects=False, headers={"User-Agent": USER_AGENT}) as client:
-        body, ctype, final_url = _get_capped(client, url.strip())
+        deadline = time.monotonic() + FETCH_DEADLINE_S
+        body, ctype, final_url = _get_capped(client, url.strip(), deadline)
         if body.startswith(b"%PDF") or "application/pdf" in ctype:
             if not body.startswith(b"%PDF"):
                 raise FetchError("the file says it is a PDF but isn't one", "not_pdf")
@@ -138,7 +178,7 @@ def fetch_policy(url: str) -> FetchedPolicy:
         page = body.decode("utf-8", errors="ignore")
         link = _find_policy_pdf_link(page, final_url)
         if link:
-            body, _, final_url = _get_capped(client, link)
+            body, _, final_url = _get_capped(client, link, deadline)
             if not body.startswith(b"%PDF"):
                 raise FetchError("the policy link on that page is not a PDF", "not_pdf")
             return FetchedPolicy("pdf", final_url, pdf_bytes=body)

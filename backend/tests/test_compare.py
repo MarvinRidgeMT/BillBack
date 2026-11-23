@@ -54,6 +54,16 @@ def test_address_word_order_tolerated_but_wrong_number_is_not():
     assert not compare.name_match("9 Main St, Mobile, AL 36617", "1200 Magnolia Grove Blvd, Mobile, AL 36617")
 
 
+def test_one_digit_off_address_is_wrong_even_though_fuzzy_ratio_passes():
+    """Found in review: token-sort ratio of these is ~0.91, so a fuzzy-only rule would count it correct."""
+    assert compare.name_similarity("123 Main St, Mobile, AL 36617", "125 Main St, Mobile, AL 36617") >= 0.9
+    assert not compare.compare_bill_field("hospital_address", "123 Main St, Mobile, AL 36617", "125 Main St, Mobile, AL 36617")
+    assert not compare.compare_bill_field("hospital_address", "1200 Magnolia Grove Blvd, Mobile, AL 36618",
+                                          "1200 Magnolia Grove Blvd, Mobile, AL 36617")
+    assert compare.compare_bill_field("hospital_address", "1200 Magnolia Grove Blvd Mobile AL 36617",
+                                      "1200 Magnolia Grove Blvd, Mobile, AL 36617")
+
+
 def test_account_number_keeps_separators():
     assert compare.account_equal("fh 7720-1145", "FH 7720-1145")
     assert not compare.account_equal("FH77201145", "FH 7720-1145")

@@ -29,9 +29,8 @@ KEY_FIELD_TO_RULE = {
 
 
 def cached_policies() -> dict[str, PolicyRules]:
-    """hospital_name -> rules, for every cached policy."""
-    return {r.hospital_name: r for r in (PolicyRules.model_validate_json(p.read_text())
-                                         for p in sorted(Path(DEFAULT_CACHE_DIR).glob("*__*.json")))}
+    """cache file name -> rules, for every cached policy (keyed by file so two files for one hospital both count)."""
+    return {p.name: PolicyRules.model_validate_json(p.read_text()) for p in sorted(Path(DEFAULT_CACHE_DIR).glob("*__*.json"))}
 
 
 def flag_stats(policies: dict[str, PolicyRules]) -> dict[str, Any]:
@@ -41,7 +40,7 @@ def flag_stats(policies: dict[str, PolicyRules]) -> dict[str, Any]:
     for name, rules in policies.items():
         view = grounding.grounded_view(rules)
         n_flag = sum(f["needs_checking"] for f in view.values())
-        per_policy.append({"hospital": name, "flagged": [k for k, f in view.items() if f["needs_checking"]]})
+        per_policy.append({"hospital": rules.hospital_name, "file": name, "flagged": [k for k, f in view.items() if f["needs_checking"]]})
         flagged += n_flag
         for f in view.values():
             reasons.update(f["problems"])
@@ -67,8 +66,9 @@ def accuracy_and_precision(policies: dict[str, PolicyRules]) -> dict[str, Any]:
         return {"status": "pending", "verified_rows": 0, "key_rows": _key_size(), "target_fields": TARGET_FIELDS}
     correct = sum((r["is_correct"].strip().lower() in YES) for r in rows)
     flagged_rows, flagged_wrong, wrong_total, wrong_flagged = 0, 0, 0, 0
+    by_hospital = {rules.hospital_name: rules for rules in policies.values()}
     for r in rows:
-        rules = policies.get(r["hospital"])
+        rules = by_hospital.get(r["hospital"])
         field = KEY_FIELD_TO_RULE.get(r["field"])
         if rules is None or field is None:
             continue

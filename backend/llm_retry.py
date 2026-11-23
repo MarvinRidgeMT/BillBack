@@ -66,4 +66,5 @@ def generate_with_retry(
             if attempt == tries or deadline - clock() - delay < MIN_TRY_S:
                 break
             sleep(delay)
-    raise ModelUnavailable(f"model unavailable after retries: {last}") from last
+    reason = str(last) if last else "no time left in the budget"
+    raise ModelUnavailable(f"model unavailable after retries: {reason}") from last

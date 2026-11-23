@@ -31,10 +31,10 @@ def _bill_read(client: TestClient, truth: dict[str, Any], live: bool) -> tuple[d
     if not live:
         hit = demo_mode.cached_bill(hashlib.sha256(data).hexdigest())
         if hit is not None:
-            return hit, "cache/bills"
+            return hit, "saved read (cache/bills)"
     resp = client.post("/api/bill/read", files={"file": (truth["path"].name, data, content_type(truth["path"]))})
     resp.raise_for_status()
-    return resp.json()["data"], "live"
+    return resp.json()["data"], "live read"
 
 
 def run_one(client: TestClient, hh: dict[str, Any], truth: dict[str, Any], live: bool) -> dict[str, Any]:
@@ -97,7 +97,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         print(f"{mark} {r['id']} {r['matched_slug']:42} expected {r['expected_status']:22} got {r['status']} ({r['percent_of_fpl']}%)")
     b_key = b_key_summary()
     payload = run_meta(
-        correct=sum(r["correct"] for r in rows), total=len(rows), rows=rows,
+        correct=sum(r["correct"] for r in rows), total=len(rows), rows=rows, live=args.live,
+        bill_sources={src: sum(r["bill_source"] == src for r in rows) for src in sorted({r["bill_source"] for r in rows})},
         expectations_by=spec["worked_by"], checked_by=spec["checked_by"],
         b_hand_key={k: b_key[k] for k in ("households_status_ok_2026", "households", "status_ok_2026", "n")} if b_key else None,
     )
