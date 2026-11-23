@@ -12,9 +12,9 @@ Scope: hero, upload, bill confirmation, insurance confirmation, questions, and r
 | Critical axe rules | 0 | 0 |
 | Serious/critical rules across the final 26 state/locale/viewport scans | — | 0 |
 
-The before scan found `color-contrast` on the decorative result stamp: coral text on white measured 2.81:1 in two nodes. The stamp text now uses the dark ink color while preserving the coral border. The final suite reports no serious or critical violations in either locale or viewport.
+The before scan found `color-contrast` on the decorative result stamp: coral text on white measured 2.81:1 in two nodes. The stamp text now uses the dark ink color while preserving the coral border. A later heading-order cleanup removed the remaining moderate findings. The final suite reports **zero axe violations of any severity across all 26 scans** in either locale or viewport.
 
-Some step screens retain one non-serious axe result. It is intentionally recorded rather than hidden; the CI check fails only on serious or critical findings. Run `npm run test:a11y` from `frontend/` to see rule IDs and exact nodes.
+Run `npm run test:a11y` from `frontend/` to reproduce the state-by-state output.
 
 ## Product changes reviewed
 

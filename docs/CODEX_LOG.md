@@ -13,7 +13,7 @@
 | Feature | Award | Evidence | Limits / TODO(team) | Video path |
 |---|---|---|---|---|
 | F1 EOB reconciliation | Multimodal; Health | 3 fictional EOB PDFs; 20 focused tests; 283 backend tests pass; production UI build passes | The bill reader currently extracts totals rather than line items, so itemization is conservatively flagged. | Upload → add insurance statement → confirm → discrepancies → letters |
-| F2 accessibility | Accessibility | 26 final axe state/locale/viewport scans: 0 serious/critical; 1 serious stamp contrast rule fixed; 44px minimum small actions | Manual screen-reader user testing remains | Easy read → glossary → read aloud |
+| F2 accessibility | Accessibility | 26 final axe state/locale/viewport scans: 0 violations at any severity; 1 serious stamp contrast rule fixed; 44px minimum small actions | Manual screen-reader user testing remains | Easy read → glossary → read aloud |
 | F3 languages | Accessibility; Community | 5-locale menu; 298 complete EN/ES keys; 107 critical-flow keys in each new locale; 4 i18n tests | VI/ZH-CN/TL are AI-translated previews with English fallback and need human review | Language menu → translated notice |
 | F4 Schedule H | Community; trust | 22 cached hospitals checked; 3 conservative matches with comparable data; 2 agree; 1 conflict | 19 unknown/unmatched filings omitted; ProPublica rendered-XML fallback used for Deflate64 archives | Result → Schedule H badge |
 | F5 navigator | Community | 1 browser journey covers third-person flow, case state, printable summary, packet ZIP, and status update | Anonymous case labels; tab memory only; EN/ES packet generation | Navigator toggle → cases → download all |
@@ -67,6 +67,15 @@
 - Scope is deliberately Ohio-only. The other 49 states show no referral until a current official threshold/application link and any retroactive-coverage waiver are checked.
 - Verification: the browser journey uses an Ohio fixture at 130% FPL, confirms the referral appears, and verifies the application link points to Ohio Medicaid.
 - Video: **use the Adena/Ohio sample with income at or below 138% FPL → result → show “You might also qualify for Medicaid” → point out “referral, not a decision,” the retroactive-coverage note, 2027 change, and official Ohio application link.**
+
+## 2026-11-23 — final integration
+
+- Rebasing check against `origin/main` completed; the branch was already current with no conflicts.
+- Final backend: **294 passed, 2 skipped**.
+- Final frontend: **4 localization tests**, **1 complete navigator/follow-up/Medicaid browser journey**, TypeScript, ESLint, and the production Next.js build all pass.
+- Final accessibility: **4 Playwright tests** covering **26 state/locale/viewport scans** pass with **0 axe violations at any severity**, including English/Spanish, desktop/390px, keyboard focus, reduced motion, and 200% easy-read zoom.
+- Dependency review: `fflate` 0.8.3 is MIT; Playwright is Apache-2.0; axe-core Playwright is MPL-2.0. No GPL dependency was added.
+- No real patient data, secrets, analytics, accounts, or user-data persistence were added. Generated PDFs and ZIPs remain in request/browser memory.
 
 ## 2026-11-23 — F2 accessibility pack complete
 
