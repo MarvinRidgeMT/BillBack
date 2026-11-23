@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Stamp } from "@/components/hero/Stamp";
 import { Glossary } from "@/components/accessibility/Glossary";
@@ -24,6 +24,8 @@ import { PolicyReceipt } from "./PolicyReceipt";
 import { ReadAloud } from "./ReadAloud";
 import { ResultExtras } from "./ResultExtras";
 import { ScheduleHBadge } from "./ScheduleHBadge";
+import { NavigatorPanel } from "./NavigatorPanel";
+import type { NavigatorCase } from "@/lib/navigator";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 import { FLIP_S, ScrapBurst } from "./ZeroFinale";
 
@@ -57,16 +59,30 @@ interface ResultStepProps {
   eob?: EobDocument | null;
   onRetry: () => void;
   onStartOver: () => void;
+  navigator?: boolean;
+  navigatorCases?: NavigatorCase[];
+  onResult?: (data: EligibilityData) => void;
+  onPacketDownloaded?: () => void;
+  onNavigatorDownloaded?: (ids: string[]) => void;
 }
 
-export function ResultStep({ entrance, reduce, checking, bill, household, income, benefits = "skip", eob = null, onRetry, onStartOver }: ResultStepProps) {
+export function ResultStep({ entrance, reduce, checking, bill, household, income, benefits = "skip", eob = null, onRetry, onStartOver, navigator = false, navigatorCases = [], onResult, onPacketDownloaded, onNavigatorDownloaded }: ResultStepProps) {
   const t = useT();
   const [state, setState] = useState<State>({ phase: "loading" });
+  const onResultRef = useRef(onResult);
+
+  useEffect(() => {
+    onResultRef.current = onResult;
+  }, [onResult]);
 
   useEffect(() => {
     let live = true;
     checking.then(
-      (data) => live && setState({ phase: "ready", data, sample: false }),
+      (data) => {
+        if (!live) return;
+        setState({ phase: "ready", data, sample: false });
+        onResultRef.current?.(data);
+      },
       (err: unknown) => {
         if (!live) return;
         const error = err instanceof ApiError ? err : new ApiError("failed", null);
@@ -121,6 +137,10 @@ export function ResultStep({ entrance, reduce, checking, bill, household, income
           eob={eob}
           reduce={reduce}
           onStartOver={onStartOver}
+          navigator={navigator}
+          navigatorCases={navigatorCases}
+          onPacketDownloaded={onPacketDownloaded}
+          onNavigatorDownloaded={onNavigatorDownloaded}
         />
       )}
     </StepCard>
@@ -169,11 +189,15 @@ interface VerdictProps {
   eob: EobDocument | null;
   reduce: boolean;
   onStartOver: () => void;
+  navigator: boolean;
+  navigatorCases: NavigatorCase[];
+  onPacketDownloaded?: () => void;
+  onNavigatorDownloaded?: (ids: string[]) => void;
 }
 
 type PacketState = "idle" | "working" | "failed";
 
-function Verdict({ data, sample, bill, household, income, benefits, eob, reduce, onStartOver }: VerdictProps) {
+function Verdict({ data, sample, bill, household, income, benefits, eob, reduce, onStartOver, navigator, navigatorCases, onPacketDownloaded, onNavigatorDownloaded }: VerdictProps) {
   const { t, lang } = useI18n();
   const stamp = stampText(data, t);
   const [stamped, setStamped] = useState(reduce);
@@ -227,6 +251,7 @@ function Verdict({ data, sample, bill, household, income, benefits, eob, reduce,
         },
         lang: lang === "es" ? "es" : "en",
       });
+      onPacketDownloaded?.();
       setPacket("idle");
     } catch {
       setPacket("failed");
@@ -275,11 +300,11 @@ function Verdict({ data, sample, bill, household, income, benefits, eob, reduce,
           {finale && <ScrapBurst delay={stampDelayMs / 1000} />}
         </motion.div>
         <div>
-          <StepHeading key={data.status}>{t(TITLES[data.status])}</StepHeading>
+          <StepHeading key={data.status}>{t(navigator ? (`navigator.${TITLES[data.status]}` as MessageKey) : TITLES[data.status])}</StepHeading>
           <p className="sub mb-0!">
             {sample
               ? t("result.sample_note")
-              : t(household === 1 ? "result.fpl_one" : "result.fpl_other", {
+              : t(navigator ? "navigator.result_fpl" : household === 1 ? "result.fpl_one" : "result.fpl_other", {
                   pct: Math.round(data.percent_of_fpl),
                   n: household,
                 })}
@@ -387,6 +412,10 @@ function Verdict({ data, sample, bill, household, income, benefits, eob, reduce,
       )}
 
       <ResultExtras data={data} bill={bill} benefits={benefits} sample={sample} />
+
+      {navigator && onNavigatorDownloaded && (
+        <NavigatorPanel cases={navigatorCases} onDownloaded={onNavigatorDownloaded} />
+      )}
 
       {eob && <InsuranceReview bill={bill} eob={eob} />}
 

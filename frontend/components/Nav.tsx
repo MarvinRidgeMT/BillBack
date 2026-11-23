@@ -5,7 +5,7 @@ import { AccessibilityToolbar } from "@/components/accessibility/AccessibilityTo
 import { LanguageMenu } from "@/components/LanguageMenu";
 
 /** Logo left; "How it works" and the language toggle right. */
-export function Nav() {
+export function Nav({ navigatorMode, onNavigatorMode }: { navigatorMode: boolean; onNavigatorMode: (value: boolean) => void }) {
   const t = useT();
   return (
     <header className="nav">
@@ -14,6 +14,10 @@ export function Nav() {
         <a className="nav-link how-link" href="#how">
           {t("nav.how")}
         </a>
+        <label className="navigator-toggle">
+          <input type="checkbox" checked={navigatorMode} onChange={(event) => onNavigatorMode(event.target.checked)} />
+          <span>{t("navigator.toggle")}</span>
+        </label>
         <AccessibilityToolbar />
         <LanguageMenu />
       </nav>

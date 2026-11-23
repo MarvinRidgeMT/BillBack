@@ -263,7 +263,7 @@ export interface PacketRequest {
 }
 
 /** POST /api/packet. The PDF is built in memory on the backend and handed straight to the browser. */
-export async function downloadPacket(body: PacketRequest): Promise<void> {
+export async function buildPacketBlob(body: PacketRequest): Promise<Blob> {
   let res: Response;
   try {
     res = await fetch("/api/packet", {
@@ -278,7 +278,12 @@ export async function downloadPacket(body: PacketRequest): Promise<void> {
   if (!res.ok || !res.headers.get("content-type")?.includes("application/pdf")) {
     throw new ApiError(res.status === 503 ? "unavailable" : "failed", res.status);
   }
-  const blob = await res.blob();
+  return res.blob();
+}
+
+/** Download one generated packet without storing it on either side. */
+export async function downloadPacket(body: PacketRequest): Promise<void> {
+  const blob = await buildPacketBlob(body);
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

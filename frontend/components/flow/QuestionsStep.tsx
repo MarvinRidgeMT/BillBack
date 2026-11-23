@@ -26,10 +26,11 @@ interface QuestionsStepProps {
   entrance: Entrance;
   reduce: boolean;
   onSubmit: (answers: Answers) => void;
+  navigator?: boolean;
 }
 
 /** The two things hospitals decide on: household size and yearly income. */
-export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps) {
+export function QuestionsStep({ entrance, reduce, onSubmit, navigator = false }: QuestionsStepProps) {
   const t = useT();
   const id = useId();
   const [household, setHousehold] = useState(MIN_HOUSEHOLD);
@@ -61,8 +62,8 @@ export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps
 
   return (
     <StepCard step={3} entrance={entrance} reduce={reduce}>
-      <StepHeading>{t("questions.title")}</StepHeading>
-      <p className="sub">{t("questions.sub")}</p>
+      <StepHeading>{t(navigator ? "navigator.questions_title" : "questions.title")}</StepHeading>
+      <p className="sub">{t(navigator ? "navigator.questions_sub" : "questions.sub")}</p>
 
       <ReadAloud
         summary={[

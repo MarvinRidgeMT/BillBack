@@ -33,9 +33,10 @@ interface UploadStepProps {
   onFile: (file: File, eobFile: File | null) => void;
   onSampleInsurance: () => void;
   onManual: () => void;
+  navigator?: boolean;
 }
 
-export function UploadStep({ entrance, reduce, onFile, onSampleInsurance, onManual }: UploadStepProps) {
+export function UploadStep({ entrance, reduce, onFile, onSampleInsurance, onManual, navigator = false }: UploadStepProps) {
   const t = useT();
   const input = useRef<HTMLInputElement>(null);
   const eobInput = useRef<HTMLInputElement>(null);
@@ -88,8 +89,8 @@ export function UploadStep({ entrance, reduce, onFile, onSampleInsurance, onManu
 
   return (
     <StepCard step={1} entrance={entrance} reduce={reduce}>
-      <StepHeading>{t("upload.title")}</StepHeading>
-      <p className="sub">{t("upload.sub")}</p>
+      <StepHeading>{t(navigator ? "navigator.upload_title" : "upload.title")}</StepHeading>
+      <p className="sub">{t(navigator ? "navigator.upload_sub" : "upload.sub")}</p>
 
       <div className="optional-upload">
         <p className="mb-1 font-medium">{t("upload.eob_title")}</p>

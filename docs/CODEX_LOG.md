@@ -16,7 +16,7 @@
 | F2 accessibility | Accessibility | 26 final axe state/locale/viewport scans: 0 serious/critical; 1 serious stamp contrast rule fixed; 44px minimum small actions | Manual screen-reader user testing remains | Easy read → glossary → read aloud |
 | F3 languages | Accessibility; Community | 5-locale menu; 298 complete EN/ES keys; 107 critical-flow keys in each new locale; 4 i18n tests | VI/ZH-CN/TL are AI-translated previews with English fallback and need human review | Language menu → translated notice |
 | F4 Schedule H | Community; trust | 22 cached hospitals checked; 3 conservative matches with comparable data; 2 agree; 1 conflict | 19 unknown/unmatched filings omitted; ProPublica rendered-XML fallback used for Deflate64 archives | Result → Schedule H badge |
-| F5 navigator | Community | Pending case/zip tests | Tab memory only | Navigator toggle → cases → download all |
+| F5 navigator | Community | 1 browser journey covers third-person flow, case state, printable summary, packet ZIP, and status update | Anonymous case labels; tab memory only; EN/ES packet generation | Navigator toggle → cases → download all |
 | F6 follow-up | Health; Community | Pending letter tests | Request, not guarantee | Result → tracker → follow-up letter |
 | F7 Medicaid | Health | Conditional | Only verified states | Result → referral card |
 
@@ -36,6 +36,16 @@
 - Sources opened: IRS Form 990 downloads <https://www.irs.gov/charities-non-profits/form-990-series-downloads>, current Schedule H instructions <https://www.irs.gov/instructions/i990sh>, IRS XML schemas <https://www.irs.gov/e-file-providers/current-valid-xml-schemas-and-business-rules-for-exempt-organizations-and-other-tax-exempt-entities-modernized-e-file>, and ProPublica's nonprofit API <https://projects.propublica.org/nonprofits/api/>.
 - Verification: 5 focused parser/data tests pass; TypeScript and 4 catalog tests pass. Full-suite/build results are recorded at the final integration pass.
 - Video: **use the fictional sample (mapped to Adena) → result → show “IRS filing cross-check” with 200% agreement, tax period, source link, and the “does not change your result” line.**
+
+## 2026-11-23 — F5 navigator mode complete
+
+- Added the “I'm helping someone else” header toggle, third-person upload/questions/result wording, and an explicit notice that cases live only in the current tab and vanish when it closes.
+- Added anonymous in-memory cases with `started`, `result ready`, and `packet downloaded` states. No account, browser storage, analytics, or server-side case storage is used.
+- Added an EN/ES printable one-page take-home summary for every completed case.
+- Added “Download everything,” which builds one client-side ZIP containing each case's generated application PDF, take-home HTML summary, and `.ics` reminder when the policy provides a computable deadline. A failed case packet does not get silently marked downloaded.
+- Added `fflate` 0.8.3 pinned exactly. The npm registry reports its license as MIT; it is not GPL.
+- Verification: the Playwright navigator journey exercises the third-person entry, one complete case, status transition, summary action, generated ZIP download, and downloaded state. TypeScript, lint, and localization catalog tests pass.
+- Video: **turn on “I'm helping someone else” → Try a sample with insurance → complete the result → show Case 1 and its status → Print one-page summary → Download everything → show “Packet downloaded.”**
 
 ## 2026-11-23 — F2 accessibility pack complete
 
