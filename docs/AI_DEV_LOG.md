@@ -181,7 +181,7 @@ One entry per piece of AI-written work that was checked. Entries are honest: if 
 - Decision: **changed**, each with a regression test: a streaming body-size cap (counts bytes as they arrive), the
   timeout passed to the Gemini SDK, OCR money matched within one line, eval modules imported per step, and a fresh
   not-listed draft whenever the bill's hospital changes. Re-ran the baseline: still 37/60.
-- Commit: see the commit after `c01e620` ("fix: five bugs from Graphify's review of PR #1")
+- Commit: `d72382e`
 
 ---
 
