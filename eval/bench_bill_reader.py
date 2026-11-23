@@ -82,6 +82,9 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     timed = [r["seconds"] for r in ran if "seconds" in r]
     costs = [r["cost_usd"] for r in ran if r.get("cost_usd") is not None]
     low = sum(1 for r in ran for c in (r.get("confidence") or {}).values() if c < CONFIRM_THRESHOLD)
+    # The dangerous kind of miss: a wrong value the patient is NOT asked to check.
+    confident_wrong = sum(1 for r in ran for f, ok in r.get("checks", {}).items()
+                          if not ok and f not in (r.get("fields_to_confirm") or []) and r.get("confidence") is not None)
     return {
         "bills_run": len(ran),
         "errors": sum(1 for r in ran if "error" in r),
@@ -94,6 +97,9 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "avg_cost_usd": sum(costs) / len(costs) if costs else None,
         "low_confidence_fields": low,
         "fields_to_confirm": sum(len(r.get("fields_to_confirm") or []) for r in ran),
+        "wrong_and_not_sent_to_patient": confident_wrong,
+        "flagged_unreadable": [r["bill"] for r in ran if r.get("unreadable")],
+        "flagged_poor_photo": [r["bill"] for r in ran if (r.get("quality") or {}).get("ok") is False],
     }
 
 

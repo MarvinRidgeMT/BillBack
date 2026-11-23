@@ -1,0 +1,9 @@
+{
+  "generated_at": "2026-11-23T20:28:56+00:00",
+  "model": "claude-sonnet-5-5",
+  "git_commit": "960fd30+uncommitted",
+  "line": "396 passed, 5 skipped in 6.88s",
+  "returncode": 0,
+  "passed": 396,
+  "skipped": 5
+}
