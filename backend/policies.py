@@ -16,6 +16,7 @@ from typing import Any, Optional
 
 from rapidfuzz import fuzz
 
+from backend import live_session
 from backend.policy_reader.cache import DEFAULT_CACHE_DIR, REPO_ROOT
 from backend.policy_reader.schema import PolicyRules
 
@@ -53,10 +54,16 @@ DEMO_ALIASES: dict[str, str] = {
 }
 
 
-def load_policy(slug: str, cache_dir: Path = DEFAULT_CACHE_DIR) -> tuple[PolicyRules, Path]:
-    """Load cache/policies/<slug>__<sha8>.json. The slug is validated so it can't escape the folder."""
+def load_policy(slug: str, cache_dir: Path = DEFAULT_CACHE_DIR) -> tuple[PolicyRules, Optional[Path]]:
+    """Load cache/policies/<slug>__<sha8>.json, or a live-mode policy from memory ("live-..." slugs, no file).
+    The slug is validated so it can't escape the folder."""
     if not isinstance(slug, str) or not _SLUG_RE.match(slug):
         raise ValueError("hospital_slug must be lowercase letters, digits and dashes")
+    if live_session.is_live_slug(slug):
+        rules = live_session.get(slug)
+        if rules is None:
+            raise LookupError(f"'{slug}' has expired; read the policy again")
+        return rules, None
     matches = sorted(Path(cache_dir).glob(f"{slug}__*.json"))
     if not matches:
         raise LookupError(f"no cached policy for '{slug}'")
@@ -168,6 +175,58 @@ def match_hospital(name: Optional[str], address: Optional[str] = None) -> dict[s
         "bill_state": bill_state,
         "reason": None if matched else "not in our list; pick the hospital or paste its policy link",
     }
+
+
+SEARCH_MIN_SCORE = 60
+SEARCH_LIMIT = 8
+
+
+def curated_slug_for_url(url: Optional[str]) -> Optional[str]:
+    """The curated policy whose public PDF is this URL (live mode falls back to it if the model is down)."""
+    if not url:
+        return None
+    wanted = url.strip().rstrip("/").lower()
+    for h in load_index():
+        if h.get("source_url") and h["source_url"].strip().rstrip("/").lower() == wanted:
+            return h["slug"]
+    return None
+
+
+WORD_MATCH_MIN = 80
+
+
+def _search_score(query: str, h: dict[str, Any]) -> float:
+    """Every word of the query must fuzzily match a word of the hospital's names, city or state; then rank by
+    whole-name similarity. 'Mayo Clinic' must not match 'Marshfield Clinic' just because both say 'clinic'."""
+    states = [s for s in [h.get("state"), *h.get("states", [])] if s]
+    names = [h["hospital_name"], *h.get("aliases", [])]
+    hay = " ".join([*names, h.get("city") or "", *states]).lower().replace("'", "").split()
+    words = query.lower().replace("'", "").split()
+    if not words:
+        return 0.0
+    covered = sum(max(fuzz.ratio(w, x) for x in hay) >= WORD_MATCH_MIN for w in words) / len(words)
+    whole = max(
+        max(fuzz.token_sort_ratio(query.lower(), n.lower()) for n in names),
+        max(fuzz.partial_token_sort_ratio(query.lower(), n.lower()) for n in names) if len(query) >= 4 else 0,
+        fuzz.token_sort_ratio(query.lower(), (h.get("city") or "").lower()),
+    )
+    return max(whole, 90.0) if covered == 1 else covered * 50  # partial coverage stays under SEARCH_MIN_SCORE
+
+
+def search_hospitals(query: Optional[str], limit: int = SEARCH_LIMIT) -> list[dict[str, Any]]:
+    """Fuzzy search over curated hospitals: name, other names, city and state. A bare state code lists that state."""
+    q = (query or "").strip()[:100]
+    if len(q) < 2:
+        return []
+    results = []
+    for h in load_index():
+        states = [s for s in [h.get("state"), *h.get("states", [])] if s]
+        score = 100.0 if len(q) == 2 and q.upper() in states else _search_score(q, h)
+        if score >= SEARCH_MIN_SCORE:
+            results.append({"slug": h["slug"], "name": h["hospital_name"], "state": h.get("state"),
+                            "city": h.get("city"), "score": round(score, 1)})
+    results.sort(key=lambda r: (-r["score"], r["name"]))
+    return results[:limit]
 
 
 if __name__ == "__main__":

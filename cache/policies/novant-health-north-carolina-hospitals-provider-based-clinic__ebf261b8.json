@@ -40,7 +40,7 @@
     "evidence": {
       "quote": "Income between 200%-250% of FPL: 75% discount. Income between 250%-300% FPL: 50% discount.",
       "page": 2,
-      "confidence": 0.7,
+      "confidence": 0.6,
       "status": "stated",
       "verified": true
     }
@@ -94,6 +94,7 @@
     "Policy does not mention assets.",
     "Policy covers multiple hospitals; the application window and tiers are as stated for all.",
     "Effective date reads 'Jan26+' and revisions list is inconsistent (07/01/2026 for NHNHRMC/Pender added).",
-    "Insured patients pay discount on patient responsibility minus copays; payment plan available for insured at 200-300% FPL."
+    "Insured patients pay discount on patient responsibility minus copays; payment plan available for insured at 200-300% FPL.",
+    "free_care limit 300.0% is above a discount tier's upper limit 250.0%"
   ]
 }

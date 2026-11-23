@@ -3,25 +3,42 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, MotionConfig } from "motion/react";
 import { CharityMap } from "@/components/CharityMap";
+import { DevPanel } from "@/components/DevPanel";
 import { Footer } from "@/components/Footer";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/hero/Hero";
 import { Sky } from "@/components/hero/Sky";
-import { checkEligibility, readBill } from "@/lib/api";
+import { checkEligibility, manualPolicy, readBill, readPolicyFile, readPolicyUrl } from "@/lib/api";
+import type { LiveAction } from "@/lib/errors";
+import { useLiveMode } from "@/lib/hospitals";
 import { I18nProvider } from "@/lib/i18n";
 import { MOCK_BILL_READ } from "@/lib/mock";
 import { useParallax, useReducedMotionPref } from "@/lib/motion";
-import type { BillReadData, ConfirmedBill, EligibilityData, EligibilityRequest } from "@/lib/types";
+import {
+  FIELD_NAMES,
+  type BillReadData,
+  type ConfirmedBill,
+  type EligibilityData,
+  type EligibilityRequest,
+  type FieldName,
+  type Hospital,
+  type ManualInitial,
+  type PolicyReadData,
+} from "@/lib/types";
+import { nextNotListedDraft } from "@/lib/notListedDraft";
+import { stateFromAddress } from "@/lib/validation";
 import type { Benefits } from "./BenefitsQuestion";
+import { LivePolicyStep } from "./LivePolicyStep";
 import { ManualEntry } from "./ManualEntry";
-import { QuestionsStep, type Answers } from "./QuestionsStep";
+import { emptyDraft, NotListed, type NotListedDraft, type NotListedFocus, type PolicyInput } from "./NotListed";
+import { EMPTY_DRAFT, QuestionsStep, type Answers, type AnswersDraft } from "./QuestionsStep";
 import { ReadingStep } from "./ReadingStep";
 import { ResultStep } from "./ResultStep";
 import type { Entrance } from "./StepCard";
 import { UploadStep } from "./UploadStep";
 
-type Step = "hero" | "upload" | "reading" | "manual" | "questions" | "result";
+type Step = "hero" | "upload" | "reading" | "manual" | "notListed" | "livePolicy" | "questions" | "result";
 
 interface Reading {
   attempt: number;
@@ -39,6 +56,21 @@ interface Checking {
   promise: Promise<EligibilityData>;
 }
 
+interface PolicyJob {
+  attempt: number;
+  /** Kept in memory only, so "Try again" can resend it. */
+  input: PolicyInput;
+  promise: Promise<PolicyReadData>;
+}
+
+const EMPTY_FIELDS = Object.fromEntries(FIELD_NAMES.map((n) => [n, ""])) as Record<FieldName, string>;
+
+function readPolicy(input: PolicyInput): Promise<PolicyReadData> {
+  if (input.kind === "url") return readPolicyUrl(input.url);
+  if (input.kind === "file") return readPolicyFile(input.file);
+  return manualPolicy(input.body);
+}
+
 /** A rejection is handled by the step that shows it. This stops it being reported as unhandled if the patient leaves first. */
 function quiet<T>(promise: Promise<T>): Promise<T> {
   promise.catch(() => {});
@@ -46,7 +78,8 @@ function quiet<T>(promise: Promise<T>): Promise<T> {
 }
 
 /**
- * The whole app as one state machine: hero -> upload -> reading (or manual) -> questions -> result.
+ * The whole app as one state machine:
+ * hero -> upload -> reading (or manual) -> [not listed -> live policy] -> questions -> result.
  * Everything lives in React state. Nothing is stored, so a refresh starts over.
  */
 function FlowInner() {
@@ -58,6 +91,16 @@ function FlowInner() {
   const [reading, setReading] = useState<Reading | null>(null);
   const [bill, setBill] = useState<ConfirmedBill | null>(null);
   const [checking, setChecking] = useState<Checking | null>(null);
+  // The manual form's starting point when the patient leaves a reading (everything read so far).
+  const [manualInitial, setManualInitial] = useState<ManualInitial | null>(null);
+  // Bill fields confirmed while the hospital still needs a policy (the "not listed" path).
+  const [pendingFields, setPendingFields] = useState<Record<FieldName, string> | null>(null);
+  const [notListedDraft, setNotListedDraft] = useState<NotListedDraft>(() => emptyDraft("", null));
+  const [notListedFocus, setNotListedFocus] = useState<NotListedFocus>(null);
+  const [policyJob, setPolicyJob] = useState<PolicyJob | null>(null);
+  const [answers, setAnswers] = useState<AnswersDraft>(EMPTY_DRAFT);
+  const [billFromPolicy, setBillFromPolicy] = useState(false);
+  const liveMode = useLiveMode();
   const attempts = useRef(0);
   const visited = useRef(false);
 
@@ -113,13 +156,65 @@ function FlowInner() {
   const onConfirm = useCallback(
     (confirmed: ConfirmedBill) => {
       setBill(confirmed);
+      setBillFromPolicy(false);
       go("questions");
     },
     [go],
   );
 
+  const openManual = useCallback(
+    (initial: ManualInitial | null) => {
+      setManualInitial(initial);
+      go("manual");
+    },
+    [go],
+  );
+
+  const onNotListed = useCallback(
+    (fields: Record<FieldName, string>) => {
+      // A different hospital's bill starts a fresh draft, so the old hospital never reaches the policy check.
+      setNotListedDraft((d) => nextNotListedDraft(d, pendingFields, fields, stateFromAddress(fields.hospital_address)));
+      setPendingFields(fields);
+      setNotListedFocus(null);
+      go("notListed");
+    },
+    [go, pendingFields],
+  );
+
+  const startPolicy = useCallback(
+    (input: PolicyInput, draft: NotListedDraft) => {
+      attempts.current += 1;
+      setNotListedDraft(draft);
+      setPolicyJob({ attempt: attempts.current, input, promise: quiet(readPolicy(input)) });
+      go("livePolicy");
+    },
+    [go],
+  );
+
+  const onLiveAction = useCallback(
+    (action: LiveAction) => {
+      if (action === "retry" && policyJob) {
+        startPolicy(policyJob.input, notListedDraft);
+        return;
+      }
+      setNotListedFocus(action === "manual" ? "manual" : "upload");
+      go("notListed");
+    },
+    [go, policyJob, notListedDraft, startPolicy],
+  );
+
+  const onPolicyReady = useCallback(
+    (hospital: Hospital) => {
+      setBill({ fields: pendingFields ?? EMPTY_FIELDS, hospital });
+      setBillFromPolicy(true);
+      go("questions");
+    },
+    [go, pendingFields],
+  );
+
   const onAnswers = useCallback(
-    ({ household, income, benefits }: Answers) => {
+    ({ household, income, benefits }: Answers, draft: AnswersDraft) => {
+      setAnswers(draft);
       if (!bill) return;
       startChecking({
         hospital_slug: bill.hospital.slug,
@@ -131,10 +226,30 @@ function FlowInner() {
     [bill, startChecking],
   );
 
+  // Back from the questions: to the policy we read, or to the bill details with everything kept.
+  const onQuestionsBack = useCallback(
+    (draft: AnswersDraft) => {
+      setAnswers(draft);
+      if (billFromPolicy && policyJob) {
+        go("livePolicy");
+        return;
+      }
+      openManual(bill ? { fields: bill.fields, lowConfidence: [], hospital: bill.hospital } : null);
+    },
+    [billFromPolicy, policyJob, bill, go, openManual],
+  );
+
   const startOver = useCallback(() => {
     setReading(null);
     setBill(null);
     setChecking(null);
+    setManualInitial(null);
+    setPendingFields(null);
+    setNotListedDraft(emptyDraft("", null));
+    setNotListedFocus(null);
+    setPolicyJob(null);
+    setAnswers(EMPTY_DRAFT);
+    setBillFromPolicy(false);
     go("hero");
   }, [go]);
 
@@ -159,7 +274,7 @@ function FlowInner() {
                 entrance={entrance}
                 reduce={reduce}
                 onFile={startReading}
-                onManual={() => go("manual")}
+                onManual={() => openManual(null)}
               />
             )}
             {step === "reading" && reading && (
@@ -170,10 +285,11 @@ function FlowInner() {
                 reading={reading.promise}
                 sample={reading.sample}
                 onConfirm={onConfirm}
+                onNotListed={onNotListed}
                 onRetry={() => (reading.file ? startReading(reading.file) : go("upload"))}
-                onManual={() => go("manual")}
+                onRetake={() => go("upload")}
+                onManual={(initial) => openManual(initial ?? null)}
                 onSample={() => startReading(null)}
-                onStartOver={startOver}
               />
             )}
             {step === "manual" && (
@@ -181,13 +297,52 @@ function FlowInner() {
                 key="manual"
                 entrance={entrance}
                 reduce={reduce}
+                initial={manualInitial}
                 onConfirm={onConfirm}
+                onNotListed={onNotListed}
                 onBack={() => go("upload")}
-                onStartOver={startOver}
+              />
+            )}
+            {step === "notListed" && (
+              <NotListed
+                key={`not-listed-${notListedFocus ?? "top"}`}
+                entrance={entrance}
+                reduce={reduce}
+                liveMode={liveMode}
+                draft={notListedDraft}
+                focus={notListedFocus}
+                onRead={startPolicy}
+                onBack={() =>
+                  openManual(pendingFields ? { fields: pendingFields, lowConfidence: [], hospital: null } : null)
+                }
+              />
+            )}
+            {step === "livePolicy" && policyJob && (
+              <LivePolicyStep
+                key={`live-${policyJob.attempt}`}
+                entrance={entrance}
+                reduce={reduce}
+                reading={policyJob.promise}
+                kind={policyJob.input.kind}
+                fallbackName={notListedDraft.hospital || pendingFields?.hospital_name || ""}
+                fallbackState={notListedDraft.state || stateFromAddress(pendingFields?.hospital_address)}
+                onContinue={onPolicyReady}
+                onAction={onLiveAction}
+                onBack={() => {
+                  setNotListedFocus(null);
+                  go("notListed");
+                }}
               />
             )}
             {step === "questions" && (
-              <QuestionsStep key="questions" entrance={entrance} reduce={reduce} onSubmit={onAnswers} />
+              <QuestionsStep
+                key="questions"
+                entrance={entrance}
+                reduce={reduce}
+                initial={answers}
+                onSubmit={onAnswers}
+                onBack={onQuestionsBack}
+              />
             )}
             {step === "result" && checking && bill && (
               <ResultStep
@@ -200,6 +355,7 @@ function FlowInner() {
                 income={checking.request.annual_income}
                 benefits={checking.benefits}
                 onRetry={() => startChecking(checking.request, checking.benefits)}
+                onEditAnswers={() => go("questions")}
                 onStartOver={startOver}
               />
             )}
@@ -209,6 +365,7 @@ function FlowInner() {
       <HowItWorks />
       <CharityMap />
       <Footer />
+      <DevPanel />
     </MotionConfig>
   );
 }

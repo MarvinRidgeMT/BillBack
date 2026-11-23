@@ -3,20 +3,23 @@
 import { useEffect, useId, useState } from "react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
+import { StatusBanner } from "@/components/ui/StatusBanner";
 import { ApiError, DEMO_MODE } from "@/lib/api";
+import { asApiError } from "@/lib/errorText";
 import { confidencePercent, displayField } from "@/lib/format";
-import { hospitalBySlug, matchHospital, NOT_LISTED } from "@/lib/hospitals";
-import { useI18n, type MessageKey, type Translate } from "@/lib/i18n";
+import { fieldsToCheck } from "@/lib/grounded";
+import { matchHospital, NOT_LISTED } from "@/lib/hospitals";
+import { useI18n, type Lang, type MessageKey, type Translate } from "@/lib/i18n";
 import { SOFT } from "@/lib/motion";
 import {
-  CONFIRM_THRESHOLD,
   FIELD_NAMES,
   type BillReadData,
   type ConfirmedBill,
   type FieldName,
-  type Hospital,
+  type ManualInitial,
 } from "@/lib/types";
-import { HospitalSelect } from "./HospitalSelect";
+import { HospitalSearch, type HospitalPick } from "./HospitalSearch";
+import { BlurryBanner, ReadErrorBanner, UnreadableBanner } from "./ReadingBanners";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 
 const REVEAL_GAP_S = 0.42;
@@ -35,34 +38,55 @@ interface ReadingStepProps {
   /** True when this is the labeled sample, not the patient's bill. */
   sample: boolean;
   onConfirm: (bill: ConfirmedBill) => void;
+  /** The hospital isn't one we know: go find its policy, keeping the confirmed bill fields. */
+  onNotListed: (fields: Record<FieldName, string>) => void;
   onRetry: () => void;
-  onManual: () => void;
+  /** Back to the upload card, for a new photo or another file. */
+  onRetake: () => void;
+  /** To the manual form, prefilled with whatever was read. */
+  onManual: (initial?: ManualInitial) => void;
   onSample: () => void;
-  onStartOver: () => void;
+}
+
+const localeOf = (lang: Lang) => (lang === "es" ? "es-US" : "en-US");
+
+/** Everything the reader found, as text the patient can edit, and which fields need their eyes. */
+export function manualInitialFrom(data: BillReadData, lang: Lang): ManualInitial {
+  const fields = Object.fromEntries(
+    FIELD_NAMES.map((n) => [n, displayField(n, data.fields[n], localeOf(lang))]),
+  ) as Record<FieldName, string>;
+  const lowConfidence = fieldsToCheck(FIELD_NAMES, data.fields, [...data.fields_to_confirm, ...data.weak_fields]);
+  return { fields, lowConfidence };
 }
 
 export function ReadingStep(props: ReadingStepProps) {
-  const { entrance, reduce, reading, sample, onRetry, onManual, onSample } = props;
-  const { t } = useI18n();
+  const { entrance, reduce, reading, sample, onRetry, onRetake, onManual, onSample } = props;
+  const { t, lang } = useI18n();
   const [state, setState] = useState<State>({ phase: "loading" });
 
   useEffect(() => {
     let live = true;
     reading.then(
       (data) => live && setState({ phase: "ready", data }),
-      (err: unknown) =>
-        live && setState({ phase: "error", error: err instanceof ApiError ? err : new ApiError("failed", null) }),
+      (err: unknown) => live && setState({ phase: "error", error: asApiError(err) }),
     );
     return () => {
       live = false;
     };
   }, [reading]);
 
+  // An unreadable photo keeps the "Reading" heading, so focus goes to the banner that explains it.
+  const checking = state.phase === "ready" && !state.data.unreadable;
+
   return (
     <StepCard step={2} entrance={entrance} reduce={reduce}>
-      {sample && <p className="banner">{t("reading.sample_banner")}</p>}
-      <StepHeading key={state.phase === "ready" ? "check" : "reading"}>
-        {state.phase === "ready" ? t("reading.check_title") : t("reading.title")}
+      {sample && (
+        <StatusBanner variant="info" title={t("reading.sample_title")}>
+          <p>{t("reading.sample_banner")}</p>
+        </StatusBanner>
+      )}
+      <StepHeading key={checking ? "check" : "reading"}>
+        {checking ? t("reading.check_title") : t("reading.title")}
       </StepHeading>
 
       {state.phase === "loading" && (
@@ -73,27 +97,24 @@ export function ReadingStep(props: ReadingStepProps) {
       )}
 
       {state.phase === "error" && (
-        <>
-          <p className="error-text" role="alert">
-            {state.error.kind === "rejected" && state.error.message
-              ? state.error.message
-              : t("error.read_generic")}
-          </p>
-          <div className="btn-row">
-            <Button onClick={onRetry}>{t("error.try_again")}</Button>
-            <Button variant="ghost" onClick={onManual}>
-              {t("upload.manual")}
-            </Button>
-            {DEMO_MODE && state.error.kind !== "rejected" && (
-              <Button variant="ghost" onClick={onSample}>
-                {t("reading.see_sample")}
-              </Button>
-            )}
-          </div>
-        </>
+        <ReadErrorBanner
+          error={state.error}
+          onRetry={onRetry}
+          onRetake={onRetake}
+          onManual={() => onManual()}
+          onSample={DEMO_MODE && state.error.kind === "unavailable" ? onSample : undefined}
+        />
       )}
 
-      {state.phase === "ready" && <Confirm {...props} data={state.data} />}
+      {state.phase === "ready" && state.data.unreadable && (
+        <UnreadableBanner
+          reasons={state.data.quality.reasons}
+          onRetake={onRetake}
+          onManual={() => onManual(manualInitialFrom(state.data, lang))}
+        />
+      )}
+
+      {checking && <Confirm {...props} data={state.data} />}
     </StepCard>
   );
 }
@@ -112,21 +133,20 @@ function Confirm({
   data,
   reduce,
   onConfirm,
-  onStartOver,
+  onNotListed,
 }: ReadingStepProps & { data: BillReadData }) {
   const { t, lang } = useI18n();
   const baseId = useId();
-  const locale = lang === "es" ? "es-US" : "en-US";
+  const locale = localeOf(lang);
 
-  const needsCheck = (name: FieldName) =>
-    data.fields_to_confirm.includes(name) || data.fields[name].confidence < CONFIRM_THRESHOLD;
-  const toCheck = FIELD_NAMES.filter(needsCheck);
+  const toCheck = fieldsToCheck(FIELD_NAMES, data.fields, [...data.fields_to_confirm, ...data.weak_fields]);
+  const needsCheck = (name: FieldName) => toCheck.includes(name);
 
   const [edits, setEdits] = useState<Partial<Record<FieldName, string>>>({});
   const [revealed, setRevealed] = useState(reduce);
-  const [guess, setGuess] = useState<Hospital | null>(null);
+  const [guess, setGuess] = useState<HospitalPick>(null);
   const [matchDone, setMatchDone] = useState(false);
-  const [hospital, setHospital] = useState("");
+  const [hospital, setHospital] = useState<HospitalPick>(null);
   // True once the patient has picked a hospital themselves. Their pick is never overwritten.
   const [chosenByPatient, setChosenByPatient] = useState(false);
   const [showRequired, setShowRequired] = useState(false);
@@ -144,7 +164,7 @@ function Confirm({
       if (!live) return;
       setGuess(m);
       setMatchDone(true);
-      setHospital((current) => (current === "" && m ? m.slug : current));
+      setHospital((current) => (current === null ? m : current));
     });
     return () => {
       live = false;
@@ -164,7 +184,7 @@ function Confirm({
     if (name === "hospital_name") {
       matchHospital(value, valueOf("hospital_address")).then((next) => {
         setGuess(next);
-        if (!chosenByPatient) setHospital(next?.slug ?? "");
+        if (!chosenByPatient) setHospital(next);
       });
     }
   }
@@ -172,13 +192,16 @@ function Confirm({
   const valueOf = (name: FieldName) => edits[name] ?? displayField(name, data.fields[name], locale);
 
   function confirm() {
-    const chosen = hospitalBySlug(hospital);
-    if (!chosen) {
+    const fields = Object.fromEntries(FIELD_NAMES.map((n) => [n, valueOf(n).trim()])) as Record<FieldName, string>;
+    if (hospital === NOT_LISTED) {
+      onNotListed(fields);
+      return;
+    }
+    if (!hospital) {
       setShowRequired(true);
       return;
     }
-    const fields = Object.fromEntries(FIELD_NAMES.map((n) => [n, valueOf(n).trim()])) as Record<FieldName, string>;
-    onConfirm({ fields, hospital: chosen });
+    onConfirm({ fields, hospital });
   }
 
   const seconds = data.seconds.toFixed(1);
@@ -189,8 +212,10 @@ function Confirm({
         ? t("reading.needs_one")
         : t("reading.needs_many", { n: toCheck.length });
 
+  const quality = data.quality;
   return (
     <>
+      {quality.checked && !quality.ok && <BlurryBanner reasons={quality.reasons} />}
       <p className="status-line" role="status">
         {revealed ? (
           <span>
@@ -278,28 +303,29 @@ function Confirm({
         transition={{ duration: 0.5 }}
         inert={!revealed}
       >
-        <HospitalSelect
+        <HospitalSearch
           value={hospital}
           onChange={(v) => {
             setHospital(v);
             setChosenByPatient(true);
             setShowRequired(false);
           }}
-          matched={!chosenByPatient && hospital !== "" && hospital === guess?.slug}
+          matched={
+            !chosenByPatient &&
+            hospital !== null &&
+            hospital !== NOT_LISTED &&
+            guess !== null &&
+            guess !== NOT_LISTED &&
+            hospital.slug === guess.slug
+          }
           matchFailed={matchDone && !guess}
           showRequired={showRequired}
         />
-        {unresolved.length > 0 && hospital !== NOT_LISTED && <p className="hint mt-4 mb-0">{t("reading.check_first")}</p>}
+        {unresolved.length > 0 && <p className="hint mt-4 mb-0">{t("reading.check_first")}</p>}
         <div className="btn-row">
-          {hospital === NOT_LISTED ? (
-            <Button variant="ghost" onClick={onStartOver}>
-              {t("result.start_over")}
-            </Button>
-          ) : (
-            <Button variant="coral" onClick={confirm} disabled={unresolved.length > 0}>
-              {t("reading.ok")}
-            </Button>
-          )}
+          <Button variant="coral" onClick={confirm} disabled={unresolved.length > 0}>
+            {hospital === NOT_LISTED ? t("reading.find_policy") : t("reading.ok")}
+          </Button>
         </div>
       </motion.div>
     </>

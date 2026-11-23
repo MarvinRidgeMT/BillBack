@@ -21,11 +21,25 @@ export interface BillField {
   normalized: number | string | null;
 }
 
+/** Photo check done by backend code before the AI read. PDFs are not checked (checked: false, ok: true). */
+export interface ImageQuality {
+  ok: boolean;
+  checked: boolean;
+  /** "blurry" | "too_small" | "dark" */
+  reasons: string[];
+}
+
 export interface BillReadData {
   fields: Record<FieldName, BillField>;
   fields_to_confirm: string[];
   seconds: number;
   model: string;
+  quality: ImageQuality;
+  /** True when the photo was too poor to trust: the patient retakes it or types the details. */
+  unreadable: boolean;
+  /** Fields the backend thinks are weak even when the AI said it was sure. */
+  weak_fields: string[];
+  timings?: { bill_read_s?: number };
 }
 
 export type EligibilityStatus =
@@ -67,6 +81,7 @@ export interface EligibilityData {
   engine: string;
   /** Year of the HHS poverty guidelines the engine used. */
   fpl_year?: number | null;
+  timings?: { rules_s?: number };
 }
 
 export interface EligibilityRequest {
@@ -80,6 +95,41 @@ export interface Envelope<T> {
   success: boolean;
   data: T | null;
   error: string | null;
+  /** Stable error code on failures (backend/errors.py). */
+  code?: string;
+}
+
+/** One policy field as the reader found it, with the sentence it came from. */
+export interface GroundedField {
+  /** Shape depends on the field: see describeGrounded in lib/grounded.ts. */
+  value: unknown;
+  source_quote: string;
+  page: number | null;
+  confidence: number;
+  status: "stated" | "not_stated" | "unclear";
+  verified: boolean | null;
+  needs_checking: boolean;
+  /** quote_not_found | policy_unclear | low_confidence | not_stated | failed_sanity_check */
+  problems: string[];
+}
+
+export type Grounded = Record<
+  "free_care" | "discount" | "asset_test" | "residency" | "application_window",
+  GroundedField
+>;
+
+/** POST /api/policy/read and /api/policy/manual. Live and manual policies are kept in backend memory only. */
+export interface PolicyReadData {
+  /** "live-xxxxxxxx" for a policy read now, or a curated slug when we had already read it. */
+  slug: string;
+  source: "curated" | "live" | "manual";
+  hospital_name: string;
+  state: string | null;
+  grounded: Grounded;
+  needs_checking: string[];
+  seconds: number;
+  beta: boolean;
+  timings?: { policy_read_s?: number };
 }
 
 export interface Hospital {
@@ -92,4 +142,12 @@ export interface Hospital {
 export interface ConfirmedBill {
   fields: Record<FieldName, string>;
   hospital: Hospital;
+}
+
+/** What the manual form starts with when the patient leaves a bill read: everything read, and what to check. */
+export interface ManualInitial {
+  fields: Record<FieldName, string>;
+  /** Fields under 80% sure or flagged by the backend: highlighted on the form. */
+  lowConfidence: FieldName[];
+  hospital?: Hospital | null;
 }

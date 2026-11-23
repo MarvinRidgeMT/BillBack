@@ -1,0 +1,4 @@
+policy,reader,minutes_to_find_6_fields,notes
+TODO(team): policy file from data/policies/ e.g. fort-healthcare-wi.pdf,TODO(team): your name,TODO(team): minutes with a stopwatch,"find free-care %, discount %, discount amount, asset test, residency, application window by reading the PDF"
+TODO(team): second policy e.g. usa-health-al.pdf,TODO(team),TODO(team),
+TODO(team): third policy e.g. marshfield-clinic-wi.pdf,TODO(team),TODO(team),

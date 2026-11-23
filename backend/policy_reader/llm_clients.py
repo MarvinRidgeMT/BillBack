@@ -16,8 +16,9 @@ from .schema import llm_json_schema, strict_json_schema
 
 log = logging.getLogger(__name__)
 
-RETRY_STATUS_CODES = {429, 500, 502, 503, 504}
-RETRY_BACKOFF_SECONDS = 4.0
+RETRY_STATUS_CODES = {408, 429, 500, 502, 503, 504, 529}
+DEFAULT_CALL_TIMEOUT_S = 180.0
+GEMINI_SEED = 0
 DEFAULT_ANTHROPIC_MODEL = "claude-sonnet-5-5"
 DEFAULT_ANTHROPIC_EFFORT = "medium"
 ANTHROPIC_MAX_TOKENS = 16000
@@ -26,6 +27,10 @@ ANTHROPIC_FALLBACK_BETA = "server-side-fallback-2026-07-01"
 
 class PolicyReaderError(RuntimeError):
     """The model call failed or its output could not be turned into valid rules JSON."""
+
+
+class TransientModelError(PolicyReaderError):
+    """Rate limit, server error, timeout or connection problem: worth retrying (backend/llm_retry.py)."""
 
 
 @dataclass(frozen=True)
@@ -76,8 +81,8 @@ class AnthropicClient:
             raise PolicyReaderError("ANTHROPIC_API_KEY is not set (put it in .env)")
         self.model = model or os.getenv("ANTHROPIC_MODEL") or DEFAULT_ANTHROPIC_MODEL
         self.effort = effort or os.getenv("ANTHROPIC_EFFORT") or DEFAULT_ANTHROPIC_EFFORT
-        # SDK retries 408/409/429/5xx and connection errors on its own.
-        self._client = anthropic.Anthropic(max_retries=2, timeout=180.0)
+        # Retries live in backend/llm_retry.py (backoff inside a total time budget), so the SDK doesn't retry.
+        self._client = anthropic.Anthropic(max_retries=0, timeout=DEFAULT_CALL_TIMEOUT_S)
         self._schema = strict_json_schema()
 
     def _content(self, prompt: PromptInput) -> list[dict]:
@@ -110,12 +115,13 @@ class AnthropicClient:
             blocks.append({"type": "text", "text": prompt.correction})
         return blocks
 
-    def generate(self, prompt: PromptInput) -> ModelResult:
+    def generate(self, prompt: PromptInput, timeout: Optional[float] = None) -> ModelResult:
         import anthropic
 
         start = time.perf_counter()
+        client = self._client.with_options(timeout=timeout) if timeout else self._client
         try:
-            resp = self._client.beta.messages.create(
+            resp = client.beta.messages.create(
                 model=self.model,
                 max_tokens=ANTHROPIC_MAX_TOKENS,
                 betas=[ANTHROPIC_FALLBACK_BETA],
@@ -132,11 +138,15 @@ class AnthropicClient:
         except anthropic.BadRequestError as exc:
             raise PolicyReaderError(f"Anthropic bad request: {exc.message}") from exc
         except anthropic.RateLimitError as exc:
-            raise PolicyReaderError("Anthropic rate limit hit after retries; try again shortly") from exc
+            raise TransientModelError("Anthropic rate limit") from exc
         except anthropic.APIStatusError as exc:
+            if exc.status_code in RETRY_STATUS_CODES:
+                raise TransientModelError(f"Anthropic API error {exc.status_code}") from exc
             raise PolicyReaderError(f"Anthropic API error {exc.status_code}: {exc.message}") from exc
+        except anthropic.APITimeoutError as exc:
+            raise TransientModelError("Anthropic API call timed out") from exc
         except anthropic.APIConnectionError as exc:
-            raise PolicyReaderError("could not reach the Anthropic API") from exc
+            raise TransientModelError("could not reach the Anthropic API") from exc
 
         if resp.stop_reason == "refusal":
             raise PolicyReaderError("model declined this document (refusal)")
@@ -168,7 +178,7 @@ class GeminiClient:
             raise PolicyReaderError("GEMINI_MODEL is not set (see .env.example)")
         self._client = genai.Client(api_key=api_key)
 
-    def generate(self, prompt: PromptInput) -> ModelResult:
+    def generate(self, prompt: PromptInput, timeout: Optional[float] = None) -> ModelResult:
         from google.genai import errors, types
 
         parts: list = [prompt.instructions]
@@ -182,30 +192,29 @@ class GeminiClient:
             parts.append(prompt.correction)
         config = types.GenerateContentConfig(
             temperature=0,
+            seed=GEMINI_SEED,
+            # The retry helper's per-try budget (backend/llm_retry.py); the SDK takes milliseconds.
+            http_options=types.HttpOptions(timeout=int(timeout * 1000)) if timeout else None,
             response_mime_type="application/json",
             response_json_schema=prompt.loose_schema or llm_json_schema(),
         )
-        for attempt in (1, 2):
-            start = time.perf_counter()
-            try:
-                resp = self._client.models.generate_content(model=self.model, contents=parts, config=config)
-            except errors.APIError as exc:
-                code = getattr(exc, "code", None)
-                if attempt == 1 and code in RETRY_STATUS_CODES:
-                    log.warning("Gemini %s, retrying in %ss", code, RETRY_BACKOFF_SECONDS)
-                    time.sleep(RETRY_BACKOFF_SECONDS)
-                    continue
-                raise PolicyReaderError(f"Gemini API error {code}: {exc}") from exc
-            usage = resp.usage_metadata
-            out_tokens = ((usage.candidates_token_count or 0) + (usage.thoughts_token_count or 0)) if usage else 0
-            return ModelResult(
-                text=resp.text or "",
-                input_tokens=(usage.prompt_token_count or 0) if usage else 0,
-                output_tokens=out_tokens,
-                seconds=time.perf_counter() - start,
-                model=self.model,
-            )
-        raise PolicyReaderError("Gemini call failed after retry")
+        start = time.perf_counter()
+        try:
+            resp = self._client.models.generate_content(model=self.model, contents=parts, config=config)
+        except errors.APIError as exc:
+            code = getattr(exc, "code", None)
+            if code in RETRY_STATUS_CODES:
+                raise TransientModelError(f"Gemini API error {code}") from exc
+            raise PolicyReaderError(f"Gemini API error {code}: {exc}") from exc
+        usage = resp.usage_metadata
+        out_tokens = ((usage.candidates_token_count or 0) + (usage.thoughts_token_count or 0)) if usage else 0
+        return ModelResult(
+            text=resp.text or "",
+            input_tokens=(usage.prompt_token_count or 0) if usage else 0,
+            output_tokens=out_tokens,
+            seconds=time.perf_counter() - start,
+            model=self.model,
+        )
 
 
 def default_client() -> ModelClient:

@@ -1,0 +1,193 @@
+{
+  "generated_at": "2026-11-23T23:44:03+00:00",
+  "model": "claude-sonnet-5-5",
+  "git_commit": "c01e620+uncommitted",
+  "flags": {
+    "policies": 22,
+    "fields": 110,
+    "stated": 67,
+    "quotes_verified": 64,
+    "quotes_not_found": 3,
+    "flagged": 34,
+    "flag_reasons": {
+      "policy_unclear": 15,
+      "low_confidence": 26,
+      "not_stated": 7,
+      "quote_not_found": 5,
+      "failed_sanity_check": 1
+    },
+    "per_policy": [
+      {
+        "hospital": "Adena Health System",
+        "file": "adena-health-system__98aeefd8.json",
+        "flagged": [
+          "asset_test"
+        ]
+      },
+      {
+        "hospital": "Banner Health",
+        "file": "banner-health__51370475.json",
+        "flagged": [
+          "free_care",
+          "asset_test",
+          "application_window"
+        ]
+      },
+      {
+        "hospital": "Baptist Health South Florida",
+        "file": "baptist-health-south-florida__0dc21b1c.json",
+        "flagged": [
+          "asset_test"
+        ]
+      },
+      {
+        "hospital": "Baptist Memorial Health Care Corporation",
+        "file": "baptist-memorial-health-care-corporation__a4ba678b.json",
+        "flagged": [
+          "free_care"
+        ]
+      },
+      {
+        "hospital": "BayCare Health System",
+        "file": "baycare-health-system__d6e631e0.json",
+        "flagged": [
+          "free_care",
+          "discount",
+          "asset_test",
+          "residency",
+          "application_window"
+        ]
+      },
+      {
+        "hospital": "Boys Town National Research Hospital",
+        "file": "boys-town-national-research-hospital__9bae57a6.json",
+        "flagged": [
+          "application_window"
+        ]
+      },
+      {
+        "hospital": "Children's Hospital Colorado",
+        "file": "children-s-hospital-colorado__a25d4f61.json",
+        "flagged": [
+          "free_care",
+          "discount"
+        ]
+      },
+      {
+        "hospital": "Deaconess Regional Healthcare Services Illinois, Inc. (Heartland Regional Medical Center)",
+        "file": "deaconess-regional-healthcare-services-illinois-inc-heartlan__37394988.json",
+        "flagged": [
+          "application_window"
+        ]
+      },
+      {
+        "hospital": "Duke University Health System",
+        "file": "duke-university-health-system__59cfa9e1.json",
+        "flagged": [
+          "free_care",
+          "discount",
+          "application_window"
+        ]
+      },
+      {
+        "hospital": "Emory Healthcare",
+        "file": "emory-healthcare__8a08f6f7.json",
+        "flagged": [
+          "asset_test"
+        ]
+      },
+      {
+        "hospital": "Fort HealthCare, Inc.",
+        "file": "fort-healthcare-inc__5cc2d46b.json",
+        "flagged": []
+      },
+      {
+        "hospital": "Heartland Health Services",
+        "file": "heartland-health-services__66e5994a.json",
+        "flagged": [
+          "free_care",
+          "application_window"
+        ]
+      },
+      {
+        "hospital": "Los Angeles County Department of Health Services",
+        "file": "los-angeles-county-department-of-health-services__824bf376.json",
+        "flagged": [
+          "discount"
+        ]
+      },
+      {
+        "hospital": "Marshfield Clinic Health System",
+        "file": "marshfield-clinic-health-system__e23ca69e.json",
+        "flagged": []
+      },
+      {
+        "hospital": "Mercy (Mercy Revenue Cycle)",
+        "file": "mercy-mercy-revenue-cycle__4dbed64b.json",
+        "flagged": [
+          "free_care",
+          "discount",
+          "application_window"
+        ]
+      },
+      {
+        "hospital": "Novant Health (North Carolina Hospitals, Provider-based clinics)",
+        "file": "novant-health-north-carolina-hospitals-provider-based-clinic__ebf261b8.json",
+        "flagged": [
+          "free_care",
+          "discount"
+        ]
+      },
+      {
+        "hospital": "Ochsner Health",
+        "file": "ochsner-health__23f46ddd.json",
+        "flagged": [
+          "discount",
+          "residency"
+        ]
+      },
+      {
+        "hospital": "Texas Health Resources (Texas Health)",
+        "file": "texas-health-resources-texas-health__4cd1b026.json",
+        "flagged": [
+          "discount"
+        ]
+      },
+      {
+        "hospital": "UCHealth",
+        "file": "uchealth__2e79001c.json",
+        "flagged": [
+          "asset_test"
+        ]
+      },
+      {
+        "hospital": "USA Health",
+        "file": "usa-health__6a0883be.json",
+        "flagged": [
+          "application_window"
+        ]
+      },
+      {
+        "hospital": "UW Medicine (Harborview Medical Center, UW Medical Center, Airlift Northwest, UW Physicians, UW Medicine Primary Care)",
+        "file": "uw-medicine-harborview-medical-center-uw-medical-center-airl__8c3c45b0.json",
+        "flagged": [
+          "application_window"
+        ]
+      },
+      {
+        "hospital": "Washington Hospital Healthcare System",
+        "file": "washington-hospital-healthcare-system__74213861.json",
+        "flagged": [
+          "application_window"
+        ]
+      }
+    ]
+  },
+  "accuracy": {
+    "status": "pending",
+    "verified_rows": 0,
+    "key_rows": 102,
+    "target_fields": 120
+  },
+  "note": "flags recomputed in code on cached reads; no model call"
+}

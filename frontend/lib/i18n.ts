@@ -28,14 +28,22 @@ interface I18nValue {
 
 const I18nContext = createContext<I18nValue | null>(null);
 
-export function I18nProvider({ children }: { children: ReactNode }) {
+interface I18nProviderProps {
+  children: ReactNode;
+  initialLang?: Lang;
+  /** False for a nested provider (the /states page shows EN and ES side by side): leave <html lang> and the title alone. */
+  syncDocument?: boolean;
+}
+
+export function I18nProvider({ children, initialLang = "en", syncDocument = true }: I18nProviderProps) {
   // Not persisted: nothing about the patient is stored, including language.
-  const [lang, setLang] = useState<Lang>("en");
+  const [lang, setLang] = useState<Lang>(initialLang);
 
   useEffect(() => {
+    if (!syncDocument) return;
     document.documentElement.lang = lang;
     document.title = MESSAGES[lang]["meta.title"];
-  }, [lang]);
+  }, [lang, syncDocument]);
 
   const t = useCallback<Translate>(
     (key, vars) => {

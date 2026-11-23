@@ -1,0 +1,15 @@
+{
+  "file": "sample_bills/bill_07_dim.jpg",
+  "condition": "dim",
+  "conditions": [
+    "dim"
+  ],
+  "hospital_name": "USA Health",
+  "hospital_address": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+  "amount_due": "8001.00",
+  "service_date": "2026-04-19",
+  "account_number": "UH-4489315",
+  "hospital_slug": "usa-health",
+  "state": "AL",
+  "source": "sample_bills/answer_key.csv (values typed into the bill generator)"
+}

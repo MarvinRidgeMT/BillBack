@@ -16,7 +16,9 @@ from pydantic import ValidationError
 
 from backend.policy_reader.llm_clients import ModelClient, PolicyReaderError, PromptInput, default_client
 
-from . import image_prep, validate
+from backend.llm_retry import BILL_TOTAL_TIMEOUT_S, generate_with_retry
+
+from . import image_prep, quality, validate
 from .schema import BillField, BillModelOutput, bill_strict_schema
 
 log = logging.getLogger(__name__)
@@ -25,6 +27,8 @@ PROMPT_PATH = Path(__file__).resolve().parents[1] / "prompts" / "bill_reader.md"
 MAX_BILL_BYTES = 15 * 1024 * 1024
 TEXT_PDF_MIN_CHARS = 50
 IMAGE_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/heic", "image/heif", "image/webp"}
+WEAK_FIELD_CONFIDENCE = 0.5
+MAX_WEAK_FIELDS = 2  # more than this missing or under 0.5 -> "we couldn't read this photo clearly"
 
 
 class BillReadError(ValueError):
@@ -39,6 +43,17 @@ class BillResult:
     model: str
     input_tokens: int = 0
     output_tokens: int = 0
+    quality: quality.ImageQuality = quality.NOT_CHECKED
+
+    @property
+    def weak_fields(self) -> list[str]:
+        return [n for n, f in self.fields.items() if f.value is None or f.confidence < WEAK_FIELD_CONFIDENCE]
+
+    @property
+    def unreadable(self) -> bool:
+        """Too little came through, or the photo is poor and something is shaky: offer retake / type it in."""
+        weak = len(self.weak_fields)
+        return weak > MAX_WEAK_FIELDS or (not self.quality.ok and weak >= 1)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -46,6 +61,10 @@ class BillResult:
             "fields_to_confirm": self.fields_to_confirm,
             "seconds": round(self.seconds, 2),
             "model": self.model,
+            "quality": self.quality.to_dict(),
+            "unreadable": self.unreadable,
+            "weak_fields": self.weak_fields,
+            "timings": {"bill_read_s": round(self.seconds, 2)},
         }
 
 
@@ -94,15 +113,19 @@ def read_bill(data: bytes, content_type: str, *, client: Optional[ModelClient] =
         raise BillReadError("file is larger than 15 MB")
     start = time.perf_counter()
     prompt, pdf_text = _build_prompt(data, content_type)
+    photo_quality = quality.NOT_CHECKED if data.startswith(b"%PDF") else quality.check_image(data)
     client = client or default_client()
 
-    result = client.generate(prompt)
+    deadline = time.monotonic() + BILL_TOTAL_TIMEOUT_S  # one budget for the read and its schema retry
+    result = generate_with_retry(client, prompt, total_timeout_s=BILL_TOTAL_TIMEOUT_S)
     tokens_in, tokens_out = result.input_tokens, result.output_tokens
     try:
         raw = _parse(result.text)
     except (ValidationError, json.JSONDecodeError) as exc:
         log.warning("bill output invalid, retrying once: %s", _describe_invalid(exc))
-        result = client.generate(dataclasses.replace(prompt, correction=f"Invalid JSON for the schema: {exc}. Return corrected JSON only."))
+        correction = f"Invalid JSON for the schema: {_describe_invalid(exc)}. Return corrected JSON only."
+        result = generate_with_retry(client, dataclasses.replace(prompt, correction=correction),
+                                     total_timeout_s=max(0.0, deadline - time.monotonic()))
         tokens_in += result.input_tokens
         tokens_out += result.output_tokens
         try:
@@ -119,4 +142,5 @@ def read_bill(data: bytes, content_type: str, *, client: Optional[ModelClient] =
         model=result.model,
         input_tokens=tokens_in,
         output_tokens=tokens_out,
+        quality=photo_quality,
     )

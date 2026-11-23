@@ -1,0 +1,68 @@
+{
+  "about": "10 fictional households, each paired with one sample bill. eval/run_households.py runs each one through the real pipeline: bill read (cached read of the sample bill, or --live) -> hospital match -> cached real policy -> POST /api/eligibility (rules engine) -> POST /api/packet. Expected results were worked out from the arithmetic below (2026 HHS poverty guideline, the household's state row) and the cached policy's limits; they were NOT produced by running the engine. Engine conventions used: limits are inclusive ('at or below'); a known asset amount satisfies an asset test that has no dollar limit; a residency rule compares the household's state to the hospital's state; a rule the policy reader marked unclear (or under 0.8 confidence) is never treated as a pass.",
+  "fpl_2026": {"contiguous": {"1": 15960, "2": 21640, "3": 27320, "4": 33000, "5": 38680, "6": 44360, "7": 50040, "8": 55720, "add_per_person": 5680}, "AK": {"4": 41250}},
+  "worked_by": "Claude Code (AI) from the policy limits in cache/policies/, arithmetic shown per household",
+  "checked_by": "TODO(team, B): re-check each row by hand and put your name here",
+  "households": [
+    {
+      "id": "E2E-01", "bill": "bill_01_clean", "hospital_slug": "usa-health",
+      "household_size": 1, "annual_income": 15000, "state": "AL", "assets_usd": 500,
+      "worked": "FPL(1) = 15,960. 15,000 / 15,960 = 93.98%. USA Health free care <= 200%. Asset test applies; assets are known and the policy gives no dollar limit, so it is met.",
+      "expected_status": "likely_free"
+    },
+    {
+      "id": "E2E-02", "bill": "bill_02_text", "hospital_slug": "boys-town-national-research-hospital",
+      "household_size": 2, "annual_income": 43280, "state": "NE", "assets_usd": 2000,
+      "worked": "FPL(2) = 21,640. 43,280 / 21,640 = 200.00% exactly. Boys Town free care <= 200% (inclusive). Assets known, asset test met.",
+      "expected_status": "likely_free"
+    },
+    {
+      "id": "E2E-03", "bill": "bill_03_angled", "hospital_slug": "fort-healthcare-inc",
+      "household_size": 2, "annual_income": 43281, "state": "WI", "assets_usd": null,
+      "worked": "43,281 / 21,640 = 200.005%, $1 over the 200% free-care limit. Fort HealthCare discount (sliding scale) up to 400%. Residency: WI household, WI hospital, met. No asset test stated.",
+      "expected_status": "likely_discounted"
+    },
+    {
+      "id": "E2E-04", "bill": "bill_04_angled_blur", "hospital_slug": "marshfield-clinic-health-system",
+      "household_size": 4, "annual_income": 99000, "state": "WI", "assets_usd": null,
+      "worked": "FPL(4) = 33,000. 99,000 / 33,000 = 300.00% exactly. Marshfield free <= 200%; tier 201-300% = 75% off (inclusive at 300%). Residency WI met.",
+      "expected_status": "likely_discounted", "expected_discount_percent": 75
+    },
+    {
+      "id": "E2E-05", "bill": "bill_05_crumpled", "hospital_slug": "adena-health-system",
+      "household_size": 3, "annual_income": 30000, "state": "OH", "assets_usd": 1000,
+      "worked": "FPL(3) = 27,320. 30,000 / 27,320 = 109.81%, under Adena's 200% free-care limit, BUT the policy reader marked Adena's savings (asset) rule unclear (confidence 0.4), so a person must check it: the result must not be 'likely free'.",
+      "expected_status": "cannot_determine"
+    },
+    {
+      "id": "E2E-06", "bill": "bill_06_crumpled", "hospital_slug": "baptist-memorial-health-care-corporation",
+      "household_size": 5, "annual_income": 160000, "state": "MS", "assets_usd": null,
+      "worked": "FPL(5) = 38,680. 160,000 / 38,680 = 413.65%. Baptist Memorial's highest discount band with a limit ends at 400% (the '401%+' band has no income limit and is not a charity-care tier).",
+      "expected_status": "probably_not_eligible"
+    },
+    {
+      "id": "E2E-07", "bill": "bill_07_dim", "hospital_slug": "usa-health",
+      "household_size": 4, "annual_income": 100000, "state": "AK", "assets_usd": 3000,
+      "worked": "Alaska row: FPL(4, AK) = 41,250. 100,000 / 41,250 = 242.42%. USA Health tier 200-300% = 85% off. (With the 48-state row it would be 303% and the 75% tier, so this checks the AK table is used.)",
+      "expected_status": "likely_discounted", "expected_discount_percent": 85
+    },
+    {
+      "id": "E2E-08", "bill": "bill_08_dim_angled", "hospital_slug": "boys-town-national-research-hospital",
+      "household_size": 3, "annual_income": 25000, "state": "NE", "assets_usd": null,
+      "worked": "25,000 / 27,320 = 91.51%, under 200%, but Boys Town has an asset test and the household didn't give savings, so we can't say yet.",
+      "expected_status": "cannot_determine"
+    },
+    {
+      "id": "E2E-09", "bill": "bill_09_text", "hospital_slug": "marshfield-clinic-health-system",
+      "household_size": 9, "annual_income": 120000, "state": "WI", "assets_usd": null,
+      "worked": "FPL(9) = 55,720 + 1 x 5,680 = 61,400 (HHS per-person increment above 8). 120,000 / 61,400 = 195.44%, under 200%. Residency WI met.",
+      "expected_status": "likely_free"
+    },
+    {
+      "id": "E2E-10", "bill": "bill_10_crumpled_dim", "hospital_slug": "fort-healthcare-inc",
+      "household_size": 2, "annual_income": 30000, "state": "TX", "assets_usd": null,
+      "worked": "30,000 / 21,640 = 138.63%, under 200%, but the household lives in Texas and Fort HealthCare's policy limits assistance to its Wisconsin service area ('non-residents ... receive only the self-pay discount'). Reading the policy by hand: not eligible for charity care.",
+      "expected_status": "probably_not_eligible"
+    }
+  ]
+}

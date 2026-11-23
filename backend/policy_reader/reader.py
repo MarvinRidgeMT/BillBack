@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import dataclasses
 import logging
-import os
 import time
 from dataclasses import dataclass, field
 from datetime import date
@@ -13,17 +12,17 @@ from typing import Optional
 
 from pydantic import ValidationError
 
+from backend import pricing
+
 from . import cache, extract_text, validate
 from .llm_clients import ModelClient, ModelResult, PolicyReaderError, PromptInput, default_client
 from .schema import PolicyRules, Source
 
-__all__ = ["ModelResult", "PolicyReaderError", "ReadResult", "read_policy"]
+__all__ = ["ModelResult", "PolicyReaderError", "ReadResult", "read_policy", "read_policy_text"]
 
 log = logging.getLogger(__name__)
 
 PROMPT_PATH = Path(__file__).resolve().parents[1] / "prompts" / "policy_reader.md"
-# USD per 1M tokens, for cost estimates only. Claude Sonnet 5.5 list price; override via env.
-DEFAULT_PRICES = {"claude-sonnet-5-5": (2.00, 10.00), "claude-opus-5-5": (4.00, 20.00), "claude-haiku-5-5": (0.10, 0.50)}
 
 
 @dataclass(frozen=True)
@@ -38,24 +37,20 @@ class ReadResult:
     extraction_warnings: tuple[str, ...] = field(default_factory=tuple)
 
     def estimated_cost_usd(self) -> Optional[float]:
-        env_in, env_out = os.getenv("PRICE_IN_PER_M"), os.getenv("PRICE_OUT_PER_M")
-        if env_in and env_out:
-            price_in, price_out = float(env_in), float(env_out)
-        elif self.model in DEFAULT_PRICES:
-            price_in, price_out = DEFAULT_PRICES[self.model]
-        else:
-            return None
-        return self.input_tokens / 1e6 * price_in + self.output_tokens / 1e6 * price_out
+        return pricing.estimate_cost_usd(self.model, self.input_tokens, self.output_tokens)
 
 
 def _raw_path(cache_dir: Path, sha: str) -> Path:
     return Path(cache_dir) / "raw" / f"{sha[:8]}.raw.json"
 
 
-def _finish(raw: PolicyRules, doc: extract_text.ExtractedDoc, sha: str, url: Optional[str]) -> PolicyRules:
+def _finish(
+    raw: PolicyRules, doc: extract_text.ExtractedDoc, sha: str, url: Optional[str], retrieved_at: Optional[str] = None
+) -> PolicyRules:
     with_source = raw.model_copy(
         update={
-            "source": Source(url=url, sha256=sha, retrieved_at=date.today().isoformat(), page_count=doc.page_count),
+            "source": Source(url=url, sha256=sha, retrieved_at=retrieved_at or date.today().isoformat(),
+                             page_count=doc.page_count),
             "warnings": list(doc.warnings) + list(raw.warnings),
         }
     )
@@ -72,13 +67,22 @@ def revalidate_cached(
         return None
     previous = cache.lookup(sha, cache_dir)
     url = url or (previous.source.url if previous and previous.source else None)
-    rules = _finish(PolicyRules.model_validate_json(raw_file.read_text()), extract_text.extract_pages(pdf_bytes), sha, url)
+    retrieved = previous.source.retrieved_at if previous and previous.source else None  # keep the download date
+    raw = PolicyRules.model_validate_json(raw_file.read_text())
+    rules = _finish(raw, extract_text.extract_pages(pdf_bytes), sha, url, retrieved_at=retrieved)
     cache.save(rules, cache_dir)
     return rules
 
 
+def _generate(client: ModelClient, prompt: PromptInput) -> ModelResult:
+    from backend.llm_retry import POLICY_PER_TRY_TIMEOUT_S, POLICY_TOTAL_TIMEOUT_S, generate_with_retry
+
+    return generate_with_retry(client, prompt, total_timeout_s=POLICY_TOTAL_TIMEOUT_S,
+                               per_try_timeout_s=POLICY_PER_TRY_TIMEOUT_S)
+
+
 def _parse_with_retry(client: ModelClient, prompt: PromptInput) -> tuple[PolicyRules, ModelResult, int, int]:
-    result = client.generate(prompt)
+    result = _generate(client, prompt)
     tokens_in, tokens_out = result.input_tokens, result.output_tokens
     try:
         return PolicyRules.model_validate_json(result.text), result, tokens_in, tokens_out
@@ -88,7 +92,7 @@ def _parse_with_retry(client: ModelClient, prompt: PromptInput) -> tuple[PolicyR
             prompt,
             correction=f"Your previous answer was not valid for the schema. Error:\n{exc}\nReturn the corrected JSON only.",
         )
-    result = client.generate(retry)
+    result = _generate(client, retry)
     tokens_in += result.input_tokens
     tokens_out += result.output_tokens
     try:
@@ -104,27 +108,51 @@ def read_policy(
     client: Optional[ModelClient] = None,
     cache_dir: Path = cache.DEFAULT_CACHE_DIR,
     use_cache: bool = True,
+    persist: bool = True,
 ) -> ReadResult:
+    """persist=False (live mode): nothing is written to disk and the document is checked first
+    (password, empty, too short, not a policy -> extract_text.DocumentError with a code)."""
     start = time.perf_counter()
     sha = cache.sha256_bytes(pdf_bytes)
     if use_cache:
         hit = cache.lookup(sha, cache_dir)
         if hit is not None:
             return ReadResult(rules=hit, cached=True, seconds=time.perf_counter() - start)
+    doc = extract_text.extract_pages(pdf_bytes) if persist else extract_text.extract_checked(pdf_bytes)
+    return _read_doc(doc, sha, url, client, cache_dir if persist else None, start,
+                     pdf_bytes=pdf_bytes if doc.needs_raw_pdf else None)
 
-    doc = extract_text.extract_pages(pdf_bytes)
+
+def read_policy_text(text: str, *, url: Optional[str] = None, client: Optional[ModelClient] = None) -> ReadResult:
+    """A policy published as a web page (live mode only; never written to disk)."""
+    start = time.perf_counter()
+    doc = extract_text.doc_from_text(text)
+    return _read_doc(doc, cache.sha256_bytes(text.encode("utf-8")), url, client, None, start)
+
+
+def _read_doc(
+    doc: extract_text.ExtractedDoc,
+    sha: str,
+    url: Optional[str],
+    client: Optional[ModelClient],
+    cache_dir: Optional[Path],
+    start: float,
+    pdf_bytes: Optional[bytes] = None,
+) -> ReadResult:
+    """One model call (plus one retry on a schema error), then code checks. cache_dir=None: memory only."""
     prompt = PromptInput(
         instructions=PROMPT_PATH.read_text(),
         policy_text=extract_text.to_prompt_text(doc),
-        pdf_bytes=pdf_bytes if doc.needs_raw_pdf else None,
+        pdf_bytes=pdf_bytes,
     )
     raw, last, tokens_in, tokens_out = _parse_with_retry(client or default_client(), prompt)
-    raw_file = _raw_path(cache_dir, sha)
-    raw_file.parent.mkdir(parents=True, exist_ok=True)
-    raw_file.write_text(raw.model_dump_json(indent=2) + "\n")  # model output before code checks
-
+    path = None
     rules = _finish(raw, doc, sha, url)
-    path = cache.save(rules, cache_dir)
+    if cache_dir is not None:
+        raw_file = _raw_path(cache_dir, sha)
+        raw_file.parent.mkdir(parents=True, exist_ok=True)
+        raw_file.write_text(raw.model_dump_json(indent=2) + "\n")  # model output before code checks
+        path = cache.save(rules, cache_dir)
     return ReadResult(
         rules=rules,
         cached=False,

@@ -104,3 +104,72 @@ def to_prompt_text(doc: ExtractedDoc) -> str:
         body = p.text if p.text else "[no text layer on this page — read it from the attached PDF]"
         blocks.append(f"=== PAGE {p.number} ===\n{body}")
     return "\n\n".join(blocks)
+
+
+# ---------- live-mode checks: say clearly why a document can't be read as a policy ----------
+
+MIN_POLICY_CHARS = 800  # the shortest real policy we've seen is several pages; a page of text is ~2,000 chars
+
+
+class DocumentError(ValueError):
+    """The document can't be read as a policy. `code` is stable for the UI; the message is safe to show."""
+
+    def __init__(self, message: str, code: str):
+        super().__init__(message)
+        self.code = code
+
+
+def _check_encryption(pdf_bytes: bytes) -> None:
+    from pypdf import PdfReader
+    from pypdf.errors import PdfReadError
+
+    try:
+        reader = PdfReader(io.BytesIO(pdf_bytes))
+    except (PdfReadError, ValueError, OSError) as exc:
+        raise DocumentError("that PDF is damaged or empty", "pdf_empty") from exc
+    if reader.is_encrypted:
+        try:
+            ok = reader.decrypt("")  # owner-password-only PDFs still open
+        except Exception:  # pypdf raises several types for unsupported encryption
+            ok = 0
+        if not ok:
+            raise DocumentError("that PDF is password-protected", "pdf_encrypted")
+
+
+def _text_checks(text: str) -> None:
+    from .fetch import looks_like_policy
+
+    stripped = text.strip()
+    if not stripped:
+        raise DocumentError("that PDF has no readable text", "pdf_empty")
+    if len(stripped) < MIN_POLICY_CHARS:
+        raise DocumentError("that document is too short to be a financial assistance policy", "too_short")
+    if not looks_like_policy(stripped):
+        raise DocumentError("that document doesn't look like a financial assistance policy", "not_policy")
+
+
+def _has_images(pdf_bytes: bytes) -> bool:
+    with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+        return any(page.images for page in pdf.pages)
+
+
+def extract_checked(pdf_bytes: bytes) -> ExtractedDoc:
+    """extract_pages + checks for password protection, empty/damaged files, too-short or off-topic text."""
+    _check_encryption(pdf_bytes)
+    try:
+        doc = extract_pages(pdf_bytes)
+    except Exception as exc:  # pdfplumber/pdfminer raise many types on damaged files
+        raise DocumentError("that PDF is damaged or empty", "pdf_empty") from exc
+    if doc.page_count == 0:
+        raise DocumentError("that PDF has no pages", "pdf_empty")
+    if all(not p.text.strip() for p in doc.pages) and not _has_images(pdf_bytes):
+        raise DocumentError("that PDF is blank", "pdf_empty")
+    if not doc.needs_raw_pdf:  # scanned pages without OCR go to the model as a PDF; we can't judge their text
+        _text_checks("\n".join(p.text for p in doc.pages))
+    return doc
+
+
+def doc_from_text(text: str) -> ExtractedDoc:
+    """A policy published as a web page: one 'page' of text."""
+    _text_checks(text)
+    return ExtractedDoc((PageText(1, text, "text"),), needs_raw_pdf=False, warnings=("read from a web page, not a PDF",))

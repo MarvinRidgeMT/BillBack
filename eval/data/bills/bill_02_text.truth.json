@@ -1,0 +1,15 @@
+{
+  "file": "sample_bills/bill_02_text.pdf",
+  "condition": "clean",
+  "conditions": [
+    "clean"
+  ],
+  "hospital_name": "Boys Town National Research Hospital",
+  "hospital_address": "5500 Larkspur Ave, Omaha, NE 68131",
+  "amount_due": "1955.25",
+  "service_date": "2026-07-02",
+  "account_number": "BT-00938815",
+  "hospital_slug": "boys-town-national-research-hospital",
+  "state": "NE",
+  "source": "sample_bills/answer_key.csv (values typed into the bill generator)"
+}

@@ -1,0 +1,879 @@
+{
+  "generated_at": "2026-11-23T23:44:03+00:00",
+  "model": "claude-sonnet-5-5",
+  "git_commit": "c01e620+uncommitted",
+  "method_a": "AI bill reader shipped in the app (backend/bill_reader/reader.py)",
+  "method_b": "Tesseract OCR + regex/heuristics (eval/baselines/tesseract_extract.py)",
+  "rules": "Text is Unicode-normalized, case-folded and whitespace-collapsed before comparing. Money must match to the cent. Dates must be the same calendar day after parsing. Hospital names and addresses match if equal after normalization or if the fuzzy ratio (token sort) is \u2265 0.90; for addresses every number (street number, ZIP) must also be exactly the same. Account numbers: case and whitespace ignored, separators kept. % of the poverty line must match exactly.",
+  "pricing_source": "https://platform.claude.com/docs/en/about-claude/pricing (checked 2026-11-22)",
+  "methods": {
+    "A": {
+      "summary": {
+        "bills_run": 12,
+        "errors": 0,
+        "correct": 57,
+        "total": 60,
+        "by_condition": {
+          "clean": [
+            15,
+            15
+          ],
+          "angled": [
+            5,
+            5
+          ],
+          "crumpled": [
+            10,
+            10
+          ],
+          "dim": [
+            15,
+            15
+          ],
+          "blurry": [
+            12,
+            15
+          ]
+        },
+        "by_field": {
+          "hospital_name": 12,
+          "hospital_address": 11,
+          "amount_due": 12,
+          "service_date": 11,
+          "account_number": 11
+        },
+        "avg_seconds": 2.814223888795823,
+        "max_seconds": 3.494184915907681,
+        "avg_cost_usd": 0.009832166666666666,
+        "low_confidence_fields": 6,
+        "fields_to_confirm": 6,
+        "wrong_and_not_sent_to_patient": 0,
+        "wrong_values_returned": 0,
+        "flagged_unreadable": [
+          "bill_12_very_blurry"
+        ],
+        "flagged_poor_photo": [
+          "bill_11_blurry",
+          "bill_12_very_blurry"
+        ]
+      },
+      "rows": [
+        {
+          "bill": "bill_01_clean",
+          "condition": "clean",
+          "fields": {
+            "hospital_name": "USA HEALTH",
+            "hospital_address": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+            "amount_due": 481200,
+            "service_date": "2026-08-14",
+            "account_number": "UH-4471902"
+          },
+          "confidence": {
+            "hospital_name": 0.97,
+            "hospital_address": 0.95,
+            "amount_due": 0.98,
+            "service_date": 0.97,
+            "account_number": 0.97
+          },
+          "fields_to_confirm": [],
+          "quality": {
+            "ok": true,
+            "checked": true,
+            "reasons": [],
+            "sharpness": 803.1,
+            "brightness": 247.7,
+            "width": 1545,
+            "height": 2000
+          },
+          "unreadable": false,
+          "seconds": 3.141991750104353,
+          "input_tokens": 4226,
+          "output_tokens": 180,
+          "cost_usd": 0.010251999999999999,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_02_text",
+          "condition": "clean",
+          "fields": {
+            "hospital_name": "BOYS TOWN NATIONAL RESEARCH HOSPITAL",
+            "hospital_address": "5500 Larkspur Ave, Omaha, NE 68131",
+            "amount_due": 195525,
+            "service_date": "2026-07-02",
+            "account_number": "BT-00938815"
+          },
+          "confidence": {
+            "hospital_name": 0.9,
+            "hospital_address": 0.9,
+            "amount_due": 0.98,
+            "service_date": 0.98,
+            "account_number": 0.97
+          },
+          "fields_to_confirm": [],
+          "quality": {
+            "ok": true,
+            "checked": false,
+            "reasons": [],
+            "sharpness": null,
+            "brightness": null,
+            "width": null,
+            "height": null
+          },
+          "unreadable": false,
+          "seconds": 2.576078583020717,
+          "input_tokens": 1902,
+          "output_tokens": 196,
+          "cost_usd": 0.005764,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_03_angled",
+          "condition": "angled",
+          "fields": {
+            "hospital_name": "FORT HEALTHCARE",
+            "hospital_address": "811 Cedar Bluff Rd, Fort Atkinson, WI 53538",
+            "amount_due": 493180,
+            "service_date": "2026-09-21",
+            "account_number": "FH 7720-1145"
+          },
+          "confidence": {
+            "hospital_name": 0.97,
+            "hospital_address": 0.95,
+            "amount_due": 0.98,
+            "service_date": 0.97,
+            "account_number": 0.5
+          },
+          "fields_to_confirm": [
+            "account_number"
+          ],
+          "quality": {
+            "ok": true,
+            "checked": true,
+            "reasons": [],
+            "sharpness": 758.4,
+            "brightness": 197.2,
+            "width": 1600,
+            "height": 1905
+          },
+          "unreadable": false,
+          "seconds": 2.3929297919385135,
+          "input_tokens": 4400,
+          "output_tokens": 188,
+          "cost_usd": 0.01068,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_04_angled_blur",
+          "condition": "blurry",
+          "fields": {
+            "hospital_name": "MARSHFIELD CLINIC HEALTH SYSTEM",
+            "hospital_address": "302 Birchwood Lane, Marshfield, WI 54449",
+            "amount_due": 253000,
+            "service_date": "2026-06-30",
+            "account_number": "MC-55203917"
+          },
+          "confidence": {
+            "hospital_name": 0.97,
+            "hospital_address": 0.95,
+            "amount_due": 0.98,
+            "service_date": 0.97,
+            "account_number": 0.97
+          },
+          "fields_to_confirm": [],
+          "quality": {
+            "ok": true,
+            "checked": true,
+            "reasons": [],
+            "sharpness": 453.5,
+            "brightness": 191.7,
+            "width": 1600,
+            "height": 1876
+          },
+          "unreadable": false,
+          "seconds": 2.7971454998478293,
+          "input_tokens": 4458,
+          "output_tokens": 193,
+          "cost_usd": 0.010846,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_05_crumpled",
+          "condition": "crumpled",
+          "fields": {
+            "hospital_name": "ADENA HEALTH SYSTEM",
+            "hospital_address": "77 Ridgeline Pkwy, Chillicothe, OH 45601",
+            "amount_due": 670000,
+            "service_date": "2026-10-03",
+            "account_number": "ADH-3309184"
+          },
+          "confidence": {
+            "hospital_name": 0.97,
+            "hospital_address": 0.95,
+            "amount_due": 0.98,
+            "service_date": 0.97,
+            "account_number": 0.97
+          },
+          "fields_to_confirm": [],
+          "quality": {
+            "ok": true,
+            "checked": true,
+            "reasons": [],
+            "sharpness": 808.4,
+            "brightness": 211.9,
+            "width": 1600,
+            "height": 1999
+          },
+          "unreadable": false,
+          "seconds": 2.2709546249825507,
+          "input_tokens": 4284,
+          "output_tokens": 189,
+          "cost_usd": 0.010457999999999999,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_06_crumpled",
+          "condition": "crumpled",
+          "fields": {
+            "hospital_name": "BAPTIST MEMORIAL HEALTH CARE",
+            "hospital_address": "4100 Pecan Hollow Dr, Columbus, MS 39705",
+            "amount_due": 241240,
+            "service_date": "2026-05-11",
+            "account_number": "BMH-20871466"
+          },
+          "confidence": {
+            "hospital_name": 0.97,
+            "hospital_address": 0.95,
+            "amount_due": 0.98,
+            "service_date": 0.97,
+            "account_number": 0.96
+          },
+          "fields_to_confirm": [],
+          "quality": {
+            "ok": true,
+            "checked": true,
+            "reasons": [],
+            "sharpness": 818.7,
+            "brightness": 203.7,
+            "width": 1600,
+            "height": 1966
+          },
+          "unreadable": false,
+          "seconds": 2.9448670418933034,
+          "input_tokens": 4342,
+          "output_tokens": 194,
+          "cost_usd": 0.010624000000000001,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_07_dim",
+          "condition": "dim",
+          "fields": {
+            "hospital_name": "USA HEALTH",
+            "hospital_address": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+            "amount_due": 800100,
+            "service_date": "2026-04-19",
+            "account_number": "UH-4489315"
+          },
+          "confidence": {
+            "hospital_name": 0.97,
+            "hospital_address": 0.95,
+            "amount_due": 0.98,
+            "service_date": 0.97,
+            "account_number": 0.97
+          },
+          "fields_to_confirm": [],
+          "quality": {
+            "ok": true,
+            "checked": true,
+            "reasons": [],
+            "sharpness": 648.8,
+            "brightness": 88.9,
+            "width": 1600,
+            "height": 1995
+          },
+          "unreadable": false,
+          "seconds": 3.0731580830179155,
+          "input_tokens": 4284,
+          "output_tokens": 180,
+          "cost_usd": 0.010367999999999999,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_08_dim_angled",
+          "condition": "dim",
+          "fields": {
+            "hospital_name": "BOYS TOWN NATIONAL RESEARCH HOSPITAL",
+            "hospital_address": "5500 Larkspur Ave, Omaha, NE 68131",
+            "amount_due": 225000,
+            "service_date": "2026-09-09",
+            "account_number": "BT-01147722"
+          },
+          "confidence": {
+            "hospital_name": 0.97,
+            "hospital_address": 0.93,
+            "amount_due": 0.98,
+            "service_date": 0.95,
+            "account_number": 0.97
+          },
+          "fields_to_confirm": [],
+          "quality": {
+            "ok": true,
+            "checked": true,
+            "reasons": [],
+            "sharpness": 641.9,
+            "brightness": 81.4,
+            "width": 1600,
+            "height": 1878
+          },
+          "unreadable": false,
+          "seconds": 2.7509428749326617,
+          "input_tokens": 4458,
+          "output_tokens": 196,
+          "cost_usd": 0.010876,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_09_text",
+          "condition": "clean",
+          "fields": {
+            "hospital_name": "MARSHFIELD CLINIC HEALTH SYSTEM",
+            "hospital_address": "302 Birchwood Lane, Marshfield, WI 54449",
+            "amount_due": 34075,
+            "service_date": "2026-03-03",
+            "account_number": "MC-55418820"
+          },
+          "confidence": {
+            "hospital_name": 0.95,
+            "hospital_address": 0.85,
+            "amount_due": 0.98,
+            "service_date": 0.98,
+            "account_number": 0.97
+          },
+          "fields_to_confirm": [],
+          "quality": {
+            "ok": true,
+            "checked": false,
+            "reasons": [],
+            "sharpness": null,
+            "brightness": null,
+            "width": null,
+            "height": null
+          },
+          "unreadable": false,
+          "seconds": 2.6754862919915468,
+          "input_tokens": 1890,
+          "output_tokens": 212,
+          "cost_usd": 0.0059,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_10_crumpled_dim",
+          "condition": "dim",
+          "fields": {
+            "hospital_name": "FORT HEALTHCARE",
+            "hospital_address": "811 Cedar Bluff Rd, Fort Atkinson, WI 53538",
+            "amount_due": 580000,
+            "service_date": "2026-11-02",
+            "account_number": "FH 7735-0092"
+          },
+          "confidence": {
+            "hospital_name": 0.97,
+            "hospital_address": 0.95,
+            "amount_due": 0.98,
+            "service_date": 0.96,
+            "account_number": 0.5
+          },
+          "fields_to_confirm": [
+            "account_number"
+          ],
+          "quality": {
+            "ok": true,
+            "checked": true,
+            "reasons": [],
+            "sharpness": 643.7,
+            "brightness": 87.9,
+            "width": 1600,
+            "height": 1994
+          },
+          "unreadable": false,
+          "seconds": 2.9595565828494728,
+          "input_tokens": 4284,
+          "output_tokens": 188,
+          "cost_usd": 0.010447999999999999,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_11_blurry",
+          "condition": "blurry",
+          "fields": {
+            "hospital_name": "USA HEALTH",
+            "hospital_address": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+            "amount_due": 481200,
+            "service_date": "2026-08-14",
+            "account_number": "UH-4471902"
+          },
+          "confidence": {
+            "hospital_name": 0.95,
+            "hospital_address": 0.85,
+            "amount_due": 0.97,
+            "service_date": 0.93,
+            "account_number": 0.9
+          },
+          "fields_to_confirm": [],
+          "quality": {
+            "ok": false,
+            "checked": true,
+            "reasons": [
+              "blurry"
+            ],
+            "sharpness": 104.8,
+            "brightness": 247.7,
+            "width": 1545,
+            "height": 2000
+          },
+          "unreadable": false,
+          "seconds": 2.69339062506333,
+          "input_tokens": 4226,
+          "output_tokens": 195,
+          "cost_usd": 0.010402,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_12_very_blurry",
+          "condition": "blurry",
+          "fields": {
+            "hospital_name": "ADENA HEALTH SYSTEM",
+            "hospital_address": null,
+            "amount_due": 670000,
+            "service_date": null,
+            "account_number": null
+          },
+          "confidence": {
+            "hospital_name": 0.93,
+            "hospital_address": 0.2,
+            "amount_due": 0.75,
+            "service_date": 0.2,
+            "account_number": 0.25
+          },
+          "fields_to_confirm": [
+            "hospital_address",
+            "amount_due",
+            "service_date",
+            "account_number"
+          ],
+          "quality": {
+            "ok": false,
+            "checked": true,
+            "reasons": [
+              "blurry"
+            ],
+            "sharpness": 48.5,
+            "brightness": 211.9,
+            "width": 1600,
+            "height": 1999
+          },
+          "unreadable": true,
+          "seconds": 3.494184915907681,
+          "input_tokens": 4284,
+          "output_tokens": 280,
+          "cost_usd": 0.011368,
+          "model": "claude-sonnet-5-5",
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": false,
+            "amount_due": true,
+            "service_date": false,
+            "account_number": false
+          }
+        }
+      ],
+      "meta": {
+        "generated_at": "2026-11-23T20:28:56+00:00",
+        "model": "claude-sonnet-5-5",
+        "git_commit": "960fd30+uncommitted"
+      }
+    },
+    "B": {
+      "summary": {
+        "bills_run": 12,
+        "errors": 0,
+        "correct": 37,
+        "total": 60,
+        "by_condition": {
+          "clean": [
+            15,
+            15
+          ],
+          "angled": [
+            3,
+            5
+          ],
+          "crumpled": [
+            7,
+            10
+          ],
+          "dim": [
+            8,
+            15
+          ],
+          "blurry": [
+            4,
+            15
+          ]
+        },
+        "by_field": {
+          "hospital_name": 9,
+          "hospital_address": 7,
+          "amount_due": 8,
+          "service_date": 7,
+          "account_number": 6
+        },
+        "avg_seconds": 1.2257353125023656,
+        "max_seconds": 2.0332144999410957,
+        "avg_cost_usd": 0.0,
+        "low_confidence_fields": 0,
+        "fields_to_confirm": 0,
+        "wrong_and_not_sent_to_patient": 0,
+        "wrong_values_returned": 15,
+        "flagged_unreadable": [],
+        "flagged_poor_photo": []
+      },
+      "rows": [
+        {
+          "bill": "bill_01_clean",
+          "condition": "clean",
+          "fields": {
+            "hospital_name": "USA HEALTH",
+            "hospital_address": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+            "amount_due": "$4,812.00",
+            "service_date": "08/14/2026",
+            "account_number": "UH-4471902"
+          },
+          "method": "ocr",
+          "seconds": 1.6992407080251724,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_02_text",
+          "condition": "clean",
+          "fields": {
+            "hospital_name": "BOYS TOWN NATIONAL RESEARCH HOSPITAL",
+            "hospital_address": "5500 Larkspur Ave, Omaha, NE 68131",
+            "amount_due": "$1,955.25",
+            "service_date": "07/02/2026",
+            "account_number": "BT-00938815"
+          },
+          "method": "pdf_text",
+          "seconds": 0.030686333077028394,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_03_angled",
+          "condition": "angled",
+          "fields": {
+            "hospital_name": "FORT HEALTHCARE",
+            "hospital_address": null,
+            "amount_due": "$4,931.80",
+            "service_date": "99/21/2026",
+            "account_number": "FH 7720-1145"
+          },
+          "method": "ocr",
+          "seconds": 1.3170636252034456,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": false,
+            "amount_due": true,
+            "service_date": false,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_04_angled_blur",
+          "condition": "blurry",
+          "fields": {
+            "hospital_name": "MARSHFiEL CLINIC HEALTH Ss YSTEM",
+            "hospital_address": "302 Birchwoog Lane, Marshfieig, WI 54449",
+            "amount_due": "$2,530.09",
+            "service_date": "96/30/2936",
+            "account_number": "MC-55293975"
+          },
+          "method": "ocr",
+          "seconds": 1.067163416882977,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": false,
+            "service_date": false,
+            "account_number": false
+          }
+        },
+        {
+          "bill": "bill_05_crumpled",
+          "condition": "crumpled",
+          "fields": {
+            "hospital_name": "ADENA HEALTH SYSTEM \u2018ee date: 10/24/2026",
+            "hospital_address": null,
+            "amount_due": "$6,700.00",
+            "service_date": "10/03/2026",
+            "account_number": "ADH-3309184"
+          },
+          "method": "ocr",
+          "seconds": 1.5847136660013348,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": false,
+            "hospital_address": false,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_06_crumpled",
+          "condition": "crumpled",
+          "fields": {
+            "hospital_name": "BAPTIST MEMORIAL HEALTH CARE",
+            "hospital_address": "4100 Pecan Hollow Dr, Columbus, MS 39705",
+            "amount_due": "$2,412.40",
+            "service_date": "05/11/2026",
+            "account_number": "MS 39705"
+          },
+          "method": "ocr",
+          "seconds": 1.6463634169194847,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": false
+          }
+        },
+        {
+          "bill": "bill_07_dim",
+          "condition": "dim",
+          "fields": {
+            "hospital_name": "USA HEALTH",
+            "hospital_address": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+            "amount_due": "$8,001.00",
+            "service_date": "04/19/2026",
+            "account_number": "UH-4489315"
+          },
+          "method": "ocr",
+          "seconds": 1.8570371251553297,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_08_dim_angled",
+          "condition": "dim",
+          "fields": {
+            "hospital_name": "Boys TOWN NATIONAL RESEARCH HOSPITAL paATIENT",
+            "hospital_address": null,
+            "amount_due": "$2,909.00",
+            "service_date": "99/09/2026",
+            "account_number": "91347722"
+          },
+          "method": "ocr",
+          "seconds": 1.144155542133376,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": false,
+            "hospital_address": false,
+            "amount_due": false,
+            "service_date": false,
+            "account_number": false
+          }
+        },
+        {
+          "bill": "bill_09_text",
+          "condition": "clean",
+          "fields": {
+            "hospital_name": "MARSHFIELD CLINIC HEALTH SYSTEM",
+            "hospital_address": "302 Birchwood Lane, Marshfield, WI 54449",
+            "amount_due": "$340.75",
+            "service_date": "03/03/2026",
+            "account_number": "MC-55418820"
+          },
+          "method": "pdf_text",
+          "seconds": 0.006377833895385265,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
+        },
+        {
+          "bill": "bill_10_crumpled_dim",
+          "condition": "dim",
+          "fields": {
+            "hospital_name": "FORT HEALTHCare",
+            "hospital_address": "811 Cedar Bluff Rd, Fort Atkinson, WI 53538",
+            "amount_due": "$5,800.09",
+            "service_date": "11/02/2026",
+            "account_number": "FH 7735-0995"
+          },
+          "method": "ocr",
+          "seconds": 2.0332144999410957,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": false,
+            "service_date": true,
+            "account_number": false
+          }
+        },
+        {
+          "bill": "bill_11_blurry",
+          "condition": "blurry",
+          "fields": {
+            "hospital_name": "USA HEALTH",
+            "hospital_address": null,
+            "amount_due": "$4,812.00",
+            "service_date": "06/14/2026",
+            "account_number": "4471902"
+          },
+          "method": "ocr",
+          "seconds": 1.73366849985905,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": false,
+            "amount_due": true,
+            "service_date": false,
+            "account_number": false
+          }
+        },
+        {
+          "bill": "bill_12_very_blurry",
+          "condition": "blurry",
+          "fields": {
+            "hospital_name": "~~, ---*",
+            "hospital_address": null,
+            "amount_due": null,
+            "service_date": null,
+            "account_number": null
+          },
+          "method": "ocr",
+          "seconds": 0.5891390829347074,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": false,
+            "hospital_address": false,
+            "amount_due": false,
+            "service_date": false,
+            "account_number": false
+          }
+        }
+      ],
+      "meta": {
+        "generated_at": "2026-11-23T23:43:48+00:00",
+        "model": "claude-sonnet-5-5",
+        "git_commit": "c01e620+uncommitted"
+      }
+    }
+  }
+}

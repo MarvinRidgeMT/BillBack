@@ -39,6 +39,33 @@
         "start"
       ],
       "port": 3000
+    },
+    {
+      "name": "backend-live",
+      "runtimeExecutable": "/usr/bin/env",
+      "runtimeArgs": [
+        "LIVE_MODE=1",
+        "DEMO_CACHE_ONLY=0",
+        "BILL_CACHE_ONLY=0",
+        ".venv/bin/uvicorn",
+        "backend.app:app",
+        "--port",
+        "8000"
+      ],
+      "port": 8000
+    },
+    {
+      "name": "backend-ai-down",
+      "runtimeExecutable": "/usr/bin/env",
+      "runtimeArgs": [
+        "LIVE_MODE=1",
+        "ANTHROPIC_BASE_URL=http://127.0.0.1:9",
+        ".venv/bin/uvicorn",
+        "backend.app:app",
+        "--port",
+        "8000"
+      ],
+      "port": 8000
     }
   ]
 }

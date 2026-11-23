@@ -19,8 +19,9 @@ SANITY_CONFIDENCE_CAP = 0.6
 REVIEW_CONFIDENCE_THRESHOLD = 0.8
 MIN_QUOTE_CHARS = 6
 FUZZY_MIN_QUOTE_CHARS = 25  # shorter quotes (table rows) must match exactly
-FPL_PERCENT_RANGE = (100, 1000)
-WINDOW_DAYS_RANGE = (30, 730)
+# Plausible ranges; a value outside is flagged (confidence capped, sent to review), never silently used.
+FPL_PERCENT_RANGE = (100, 600)
+WINDOW_DAYS_RANGE = (30, 365)
 
 _QUOTE_CHARS = {"‘": "'", "’": "'", "“": '"', "”": '"', " ": " "}
 _DASHES = re.compile(r"[‐-―−-]")
@@ -75,6 +76,9 @@ def sanity_problems(rules: PolicyRules) -> list[tuple[str, str]]:
         problems.append(("discount", f"discount.fpl_max_percent={disc} is out of range {FPL_PERCENT_RANGE}"))
     if free is not None and disc is not None and free > disc:
         problems.append(("free_care", f"free_care limit {free}% is above discount limit {disc}%"))
+    tier_tops = [t.fpl_max_percent for t in rules.discount.tiers if t.fpl_max_percent is not None]
+    if free is not None and any(free > top for top in tier_tops):
+        problems.append(("discount", f"free_care limit {free}% is above a discount tier's upper limit {min(tier_tops)}%"))
 
     tiers = rules.discount.tiers
     for i, tier in enumerate(tiers):

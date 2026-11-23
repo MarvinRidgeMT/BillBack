@@ -1,0 +1,16 @@
+{
+  "file": "sample_bills/bill_04_angled_blur.jpg",
+  "condition": "blurry",
+  "conditions": [
+    "blurry",
+    "angled"
+  ],
+  "hospital_name": "Marshfield Clinic Health System",
+  "hospital_address": "302 Birchwood Lane, Marshfield, WI 54449",
+  "amount_due": "2530.00",
+  "service_date": "2026-06-30",
+  "account_number": "MC-55203917",
+  "hospital_slug": "marshfield-clinic-health-system",
+  "state": "WI",
+  "source": "sample_bills/answer_key.csv (values typed into the bill generator)"
+}

@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Stamp } from "@/components/hero/Stamp";
 import { Button } from "@/components/ui/button";
-import { ApiError, DEMO_MODE, downloadPacket } from "@/lib/api";
+import { StatusBanner } from "@/components/ui/StatusBanner";
+import { ApiError, DEMO_MODE, downloadPacket, isSessionPolicy } from "@/lib/api";
+import { apiErrorText, asApiError } from "@/lib/errorText";
 import { useI18n, useT, type MessageKey, type Translate } from "@/lib/i18n";
 import { EASE_OUT, SNAPPY_SETTLE_MS } from "@/lib/motion";
 import { plainCaveat } from "@/lib/caveats";
@@ -39,7 +41,7 @@ const TITLES: Record<EligibilityStatus, MessageKey> = {
 type State =
   | { phase: "loading" }
   | { phase: "ready"; data: EligibilityData; sample: boolean }
-  | { phase: "unavailable"; message: string };
+  | { phase: "unavailable"; error: ApiError };
 
 interface ResultStepProps {
   entrance: Entrance;
@@ -51,10 +53,23 @@ interface ResultStepProps {
   income: number;
   benefits?: Benefits;
   onRetry: () => void;
+  /** Back to the two questions, with the answers kept. */
+  onEditAnswers?: () => void;
   onStartOver: () => void;
 }
 
-export function ResultStep({ entrance, reduce, checking, bill, household, income, benefits = "skip", onRetry, onStartOver }: ResultStepProps) {
+export function ResultStep({
+  entrance,
+  reduce,
+  checking,
+  bill,
+  household,
+  income,
+  benefits = "skip",
+  onRetry,
+  onEditAnswers,
+  onStartOver,
+}: ResultStepProps) {
   const t = useT();
   const [state, setState] = useState<State>({ phase: "loading" });
 
@@ -64,12 +79,12 @@ export function ResultStep({ entrance, reduce, checking, bill, household, income
       (data) => live && setState({ phase: "ready", data, sample: false }),
       (err: unknown) => {
         if (!live) return;
-        const error = err instanceof ApiError ? err : new ApiError("failed", null);
+        const error = asApiError(err);
         // Only when the service isn't there, and only in demo mode, show the labeled sample.
         if (DEMO_MODE && error.kind === "unavailable") {
           setState({ phase: "ready", data: MOCK_ELIGIBILITY_DEFAULT, sample: true });
         } else {
-          setState({ phase: "unavailable", message: error.kind === "rejected" ? error.message : "" });
+          setState({ phase: "unavailable", error });
         }
       },
     );
@@ -93,15 +108,25 @@ export function ResultStep({ entrance, reduce, checking, bill, household, income
       {state.phase === "unavailable" && (
         <>
           <StepHeading key="unavailable">{t("result.unavailable_title")}</StepHeading>
-          <p className="sub" role="alert">
-            {state.message || t("result.unavailable")}
-          </p>
-          <div className="btn-row">
-            <Button onClick={onRetry}>{t("error.try_again")}</Button>
-            <Button variant="ghost" onClick={onStartOver}>
-              {t("result.start_over")}
-            </Button>
-          </div>
+          <StatusBanner
+            variant="error"
+            title={t("result.unavailable")}
+            actions={
+              <>
+                {state.error.code !== "not_found" && <Button onClick={onRetry}>{t("error.try_again")}</Button>}
+                {onEditAnswers && state.error.code === "invalid_input" && (
+                  <Button variant="ghost" onClick={onEditAnswers}>
+                    {t("result.edit_answers")}
+                  </Button>
+                )}
+                <Button variant={state.error.code === "not_found" ? "default" : "ghost"} onClick={onStartOver}>
+                  {t("result.start_over")}
+                </Button>
+              </>
+            }
+          >
+            <p>{apiErrorText(state.error, t)}</p>
+          </StatusBanner>
         </>
       )}
 
@@ -114,6 +139,7 @@ export function ResultStep({ entrance, reduce, checking, bill, household, income
           income={income}
           benefits={benefits}
           reduce={reduce}
+          onEditAnswers={onEditAnswers}
           onStartOver={onStartOver}
         />
       )}
@@ -161,16 +187,44 @@ interface VerdictProps {
   income: number;
   benefits: Benefits;
   reduce: boolean;
+  onEditAnswers?: () => void;
   onStartOver: () => void;
 }
 
-type PacketState = "idle" | "working" | "failed";
+export type PacketState = "idle" | "working" | "failed" | "done";
 
-function Verdict({ data, sample, bill, household, income, benefits, reduce, onStartOver }: VerdictProps) {
+/** After "Get my application": success when the PDF is on its way, an error with a retry when it isn't. */
+export function PacketStatus({ state, onRetry }: { state: PacketState; onRetry: () => void }) {
+  const t = useT();
+  if (state === "done") {
+    return (
+      <StatusBanner variant="success" title={t("result.app_ready_title")}>
+        <p>{t("result.app_ready")}</p>
+      </StatusBanner>
+    );
+  }
+  if (state === "failed") {
+    return (
+      <StatusBanner
+        variant="error"
+        title={t("result.app_failed_title")}
+        actions={<Button onClick={onRetry}>{t("error.try_again")}</Button>}
+      >
+        <p>{t("result.app_failed")}</p>
+      </StatusBanner>
+    );
+  }
+  return null;
+}
+
+function Verdict({ data, sample, bill, household, income, benefits, reduce, onEditAnswers, onStartOver }: VerdictProps) {
   const { t, lang } = useI18n();
   const stamp = stampText(data, t);
   const [stamped, setStamped] = useState(reduce);
   const [packet, setPacket] = useState<PacketState>("idle");
+  const [lastKind, setLastKind] = useState<"application" | "appeal">("application");
+  // Read during this visit (link, PDF or typed limits): no stored page image to show, and nothing kept.
+  const sessionPolicy = isSessionPolicy(bill.hospital.slug);
 
   const free = data.status === "likely_free";
   // "$0" finale: the mini bill flips, the amount is struck through, the stamp lands and the scraps burst. Once.
@@ -202,6 +256,7 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
   const canApply = data.status !== "probably_not_eligible";
 
   async function getPacket(kind: "application" | "appeal" = "application") {
+    setLastKind(kind);
     setPacket("working");
     try {
       await downloadPacket({
@@ -220,7 +275,7 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
         },
         lang,
       });
-      setPacket("idle");
+      setPacket("done");
     } catch {
       setPacket("failed");
     }
@@ -238,7 +293,11 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
 
   return (
     <>
-      {sample && <p className="banner">{t("result.sample_banner")}</p>}
+      {sample && (
+        <StatusBanner variant="info" title={t("result.sample_title")}>
+          <p>{t("result.sample_banner")}</p>
+        </StatusBanner>
+      )}
 
       <div className={`verdict ${TONE[data.status]}`}>
         <motion.div
@@ -319,7 +378,9 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
         )}
       </div>
 
-      {quote && typeof evidence.page === "number" && !sample && (
+      {sessionPolicy && !sample && <p className="result-live-note">{t("result.live_note")}</p>}
+
+      {quote && typeof evidence.page === "number" && !sample && !sessionPolicy && (
         <PolicyReceipt
           slug={bill.hospital.slug}
           page={evidence.page}
@@ -414,6 +475,11 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
             {packet === "working" ? t("result.app_working") : t("result.get_app")}
           </Button>
         )}
+        {onEditAnswers && !sample && (
+          <Button variant="ghost" onClick={onEditAnswers}>
+            {t("result.edit_answers")}
+          </Button>
+        )}
         <Button variant="ghost" onClick={onStartOver}>
           {t("result.start_over")}
         </Button>
@@ -425,7 +491,7 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
           </button>
         </p>
       )}
-      <div aria-live="polite">{packet === "failed" && <p className="error-text">{t("result.app_failed")}</p>}</div>
+      <PacketStatus key={packet} state={packet} onRetry={() => getPacket(lastKind)} />
 
       {helpLine}
     </>
