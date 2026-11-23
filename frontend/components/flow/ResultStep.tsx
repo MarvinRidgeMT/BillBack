@@ -26,6 +26,7 @@ import { ResultExtras } from "./ResultExtras";
 import { ScheduleHBadge } from "./ScheduleHBadge";
 import { NavigatorPanel } from "./NavigatorPanel";
 import { FollowUpKit } from "./FollowUpKit";
+import { MedicaidReferral } from "./MedicaidReferral";
 import type { NavigatorCase } from "@/lib/navigator";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 import { FLIP_S, ScrapBurst } from "./ZeroFinale";
@@ -413,6 +414,8 @@ function Verdict({ data, sample, bill, household, income, benefits, eob, reduce,
       )}
 
       <ResultExtras data={data} bill={bill} benefits={benefits} sample={sample} />
+
+      {!sample && <MedicaidReferral state={bill.hospital.state} percentOfFpl={data.percent_of_fpl} />}
 
       {!sample && <FollowUpKit bill={bill} onAppeal={() => getPacket("appeal")} />}
 

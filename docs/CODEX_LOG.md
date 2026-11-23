@@ -18,7 +18,7 @@
 | F4 Schedule H | Community; trust | 22 cached hospitals checked; 3 conservative matches with comparable data; 2 agree; 1 conflict | 19 unknown/unmatched filings omitted; ProPublica rendered-XML fallback used for Deflate64 archives | Result → Schedule H badge |
 | F5 navigator | Community | 1 browser journey covers third-person flow, case state, printable summary, packet ZIP, and status update | Anonymous case labels; tab memory only; EN/ES packet generation | Navigator toggle → cases → download all |
 | F6 follow-up | Health; Community | 6 backend letter/API tests + browser checklist download | Collections pause is a request; urgent legal notices route to legal aid | Result → tracker → follow-up letter |
-| F7 Medicaid | Health | Conditional | Only verified states | Result → referral card |
+| F7 Medicaid | Health | Ohio-only 138% adult-group referral with 2026 state/CMS sources; browser journey covers display/link | Referral, not decision; 49 states omitted pending current official verification | Ohio result at ≤138% FPL → referral card |
 
 ## TODO(team)
 
@@ -26,6 +26,7 @@
 - **C:** Run a manual VoiceOver/Safari and NVDA/Chrome pass with disabled users before the final video; automated axe is necessary but not sufficient.
 - **C:** Arrange native-speaker review for Vietnamese, Simplified Chinese, and Tagalog. Each preview currently has 107 translated critical-flow keys; less-used result extras fall back to English until reviewed.
 - **B:** Review the 19 cached hospitals without a conservative Schedule H match. Add an EIN only after confirming the legal entity and hospital facilities; never infer one from a similar name.
+- **B:** Verify current adult Medicaid thresholds, application links, and any state retroactive-coverage waivers before expanding the referral beyond Ohio. Unverified states are intentionally omitted.
 
 ## 2026-11-23 — F4 IRS Schedule H cross-check complete
 
@@ -56,6 +57,16 @@
 - All PDFs are generated and streamed in memory with `Cache-Control: no-store`; none are written to disk.
 - Verification: **6** focused backend letter/API tests pass in both languages; the browser journey selects a document and downloads the checklist; full backend is **294 passed, 2 skipped**; TypeScript, lint, catalog tests, and production build pass.
 - Video: **result → What happens after you apply → click Applied and download the status request → click Documents sent and select proof of income → download the checklist → show “I got a collections notice” and its legal-aid warning/request letter.**
+
+## 2026-11-23 — F7 retroactive Medicaid referral complete (verified Ohio scope)
+
+- Added a referral when an Ohio household is at or below 138% FPL. It explicitly says other rules apply, only the state decides, and this is not a BillBack eligibility determination.
+- The card links to Ohio's official application instructions, HealthCare.gov, and the current USA.gov Benefit Finder (the former Benefits.gov now redirects there).
+- Current rule copy says Medicaid may cover eligible care from up to three months before the application month and tells the person to ask the state about this bill. It also warns that for applications on or after Jan. 1, 2027, Public Law 119-21 §71112 limits the federal window to one month for expansion adults and two months for other Medicaid groups.
+- Official sources opened Nov. 23, 2026: Ohio's Group VIII page (138% FPL) <https://medicaid.ohio.gov/families-and-individuals/citizen-programs-and-initiatives/medicaid-group-viii>, Ohio application instructions <https://medicaid.ohio.gov/families-and-individuals/coverage/01-how-to-apply>, and CMS's Nov. 18, 2025 enrollment bulletin <https://www.medicaid.gov/federal-policy-guidance/downloads/cib11182025.pdf>.
+- Scope is deliberately Ohio-only. The other 49 states show no referral until a current official threshold/application link and any retroactive-coverage waiver are checked.
+- Verification: the browser journey uses an Ohio fixture at 130% FPL, confirms the referral appears, and verifies the application link points to Ohio Medicaid.
+- Video: **use the Adena/Ohio sample with income at or below 138% FPL → result → show “You might also qualify for Medicaid” → point out “referral, not a decision,” the retroactive-coverage note, 2027 change, and official Ohio application link.**
 
 ## 2026-11-23 — F2 accessibility pack complete
 

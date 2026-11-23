@@ -6,7 +6,7 @@ const eligibility = {
   evidence: { quote: "Free care up to 200% FPG.", page: 3, confidence: 0.98, verified: true, status: "stated" },
   caveats: [],
   disclaimer: "Likely eligible — not a guarantee",
-  percent_of_fpl: 150,
+  percent_of_fpl: 130,
   hospital_name: "Adena Health System",
   source_url: null,
   engine: "test",
@@ -43,6 +43,8 @@ test("navigator cases stay in memory and download one ZIP", async ({ page }) => 
   await page.getByRole("button", { name: "See my result" }).click();
 
   await expect(page.getByRole("heading", { name: "They likely qualify for a $0 bill" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "You might also qualify for Medicaid" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Apply through Ohio" })).toHaveAttribute("href", /medicaid\.ohio\.gov/);
   await expect(page.getByRole("heading", { name: "Cases in this tab" })).toBeVisible();
   await expect(page.getByText("Result ready")).toBeVisible();
   await expect(page.getByRole("button", { name: /Print one-page summary/ })).toBeVisible();

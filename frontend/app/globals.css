@@ -912,6 +912,27 @@
   border-radius: 14px;
   background: var(--card);
 }
+.medicaid-referral {
+  margin: 18px 0;
+  padding: 16px;
+  border: 2px solid var(--ink-2);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--mint) 48%, var(--card));
+}
+.medicaid-referral h2,
+.medicaid-referral p {
+  margin-top: 0;
+}
+.medicaid-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+.medicaid-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 .follow-up-kit > h2,
 .follow-up-kit > p {
   margin-top: 0;

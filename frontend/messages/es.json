@@ -357,5 +357,12 @@
   "follow_up.collections_legal": "Si recibiste documentos judiciales, una demanda, un embargo bancario o un aviso de embargo de sueldo, comunícate de inmediato con ayuda legal local o un abogado. No dejes pasar un plazo judicial.",
   "follow_up.collections_button": "Obtener solicitud para pausar cobros",
   "follow_up.working": "Preparando carta…",
-  "follow_up.failed": "No pudimos preparar esa carta ahora. Inténtalo de nuevo en un minuto."
+  "follow_up.failed": "No pudimos preparar esa carta ahora. Inténtalo de nuevo en un minuto.",
+  "medicaid.title": "También podrías calificar para Medicaid",
+  "medicaid.lead": "Tu ingreso está dentro de la guía del {pct}% para el grupo de adultos de Ohio. Hay otros requisitos y solo el estado puede decidir.",
+  "medicaid.retroactive": "Pregunta por la cobertura retroactiva. Según las reglas federales actuales, Medicaid a veces puede cubrir atención elegible de hasta tres meses antes del mes de solicitud.",
+  "medicaid.change_2027": "Las reglas cambiarán: para solicitudes desde el 1 de enero de 2027, el período federal retroactivo se limita a un mes para adultos de expansión y dos meses para otros grupos de Medicaid.",
+  "medicaid.not_decision": "Esta es una referencia, no una decisión de elegibilidad. Solicita aunque no estés seguro y pregunta al estado si esta factura puede cubrirse.",
+  "medicaid.apply": "Solicitar por medio de {state}",
+  "medicaid.federal_source": "Leer el cambio federal"
 }

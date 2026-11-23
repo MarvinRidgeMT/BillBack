@@ -357,5 +357,12 @@
   "follow_up.collections_legal": "If you received court papers, a lawsuit, a bank levy, or a wage-garnishment notice, contact local legal aid or a lawyer right away. Do not miss a court deadline.",
   "follow_up.collections_button": "Get collections-pause request",
   "follow_up.working": "Building letter…",
-  "follow_up.failed": "We couldn't build that letter right now. Try again in a minute."
+  "follow_up.failed": "We couldn't build that letter right now. Try again in a minute.",
+  "medicaid.title": "You might also qualify for Medicaid",
+  "medicaid.lead": "Your income is within the {pct}% guideline for Ohio's adult group. Other rules still apply, and only the state can decide.",
+  "medicaid.retroactive": "Ask about retroactive coverage. Under current federal rules, Medicaid can sometimes cover eligible care from up to three months before the application month.",
+  "medicaid.change_2027": "Rules are changing: for applications on or after January 1, 2027, the federal retroactive window is limited to one month for expansion adults and two months for other Medicaid groups.",
+  "medicaid.not_decision": "This is a referral, not an eligibility decision. Apply even if you are unsure and ask the state whether this bill can be covered.",
+  "medicaid.apply": "Apply through {state}",
+  "medicaid.federal_source": "Read the federal change"
 }
