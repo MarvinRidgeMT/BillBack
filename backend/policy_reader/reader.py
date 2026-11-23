@@ -18,7 +18,7 @@ from . import cache, extract_text, validate
 from .llm_clients import ModelClient, ModelResult, PolicyReaderError, PromptInput, default_client
 from .schema import PolicyRules, Source
 
-__all__ = ["ModelResult", "PolicyReaderError", "ReadResult", "read_policy"]
+__all__ = ["ModelResult", "PolicyReaderError", "ReadResult", "read_policy", "read_policy_text"]
 
 log = logging.getLogger(__name__)
 
@@ -107,27 +107,51 @@ def read_policy(
     client: Optional[ModelClient] = None,
     cache_dir: Path = cache.DEFAULT_CACHE_DIR,
     use_cache: bool = True,
+    persist: bool = True,
 ) -> ReadResult:
+    """persist=False (live mode): nothing is written to disk and the document is checked first
+    (password, empty, too short, not a policy -> extract_text.DocumentError with a code)."""
     start = time.perf_counter()
     sha = cache.sha256_bytes(pdf_bytes)
     if use_cache:
         hit = cache.lookup(sha, cache_dir)
         if hit is not None:
             return ReadResult(rules=hit, cached=True, seconds=time.perf_counter() - start)
+    doc = extract_text.extract_pages(pdf_bytes) if persist else extract_text.extract_checked(pdf_bytes)
+    return _read_doc(doc, sha, url, client, cache_dir if persist else None, start,
+                     pdf_bytes=pdf_bytes if doc.needs_raw_pdf else None)
 
-    doc = extract_text.extract_pages(pdf_bytes)
+
+def read_policy_text(text: str, *, url: Optional[str] = None, client: Optional[ModelClient] = None) -> ReadResult:
+    """A policy published as a web page (live mode only; never written to disk)."""
+    start = time.perf_counter()
+    doc = extract_text.doc_from_text(text)
+    return _read_doc(doc, cache.sha256_bytes(text.encode("utf-8")), url, client, None, start)
+
+
+def _read_doc(
+    doc: extract_text.ExtractedDoc,
+    sha: str,
+    url: Optional[str],
+    client: Optional[ModelClient],
+    cache_dir: Optional[Path],
+    start: float,
+    pdf_bytes: Optional[bytes] = None,
+) -> ReadResult:
+    """One model call (plus one retry on a schema error), then code checks. cache_dir=None: memory only."""
     prompt = PromptInput(
         instructions=PROMPT_PATH.read_text(),
         policy_text=extract_text.to_prompt_text(doc),
-        pdf_bytes=pdf_bytes if doc.needs_raw_pdf else None,
+        pdf_bytes=pdf_bytes,
     )
     raw, last, tokens_in, tokens_out = _parse_with_retry(client or default_client(), prompt)
-    raw_file = _raw_path(cache_dir, sha)
-    raw_file.parent.mkdir(parents=True, exist_ok=True)
-    raw_file.write_text(raw.model_dump_json(indent=2) + "\n")  # model output before code checks
-
+    path = None
     rules = _finish(raw, doc, sha, url)
-    path = cache.save(rules, cache_dir)
+    if cache_dir is not None:
+        raw_file = _raw_path(cache_dir, sha)
+        raw_file.parent.mkdir(parents=True, exist_ok=True)
+        raw_file.write_text(raw.model_dump_json(indent=2) + "\n")  # model output before code checks
+        path = cache.save(rules, cache_dir)
     return ReadResult(
         rules=rules,
         cached=False,

@@ -34,7 +34,7 @@ def test_api_rejects_bad_content_type():
 
 def test_api_upload_returns_rules_envelope(monkeypatch):
     rules = PolicyRules.model_validate_json(FIXTURE.read_text())
-    monkeypatch.setattr(app_module, "read_policy", lambda pdf, url=None: ReadResult(rules=rules, cached=True, seconds=0.0))
+    monkeypatch.setattr(app_module, "read_policy", lambda pdf, **kw: ReadResult(rules=rules, cached=True, seconds=0.0))
     resp = client.post("/api/policy/read", files={"file": ("p.pdf", b"%PDF-1.4 fake", "application/pdf")})
     body = resp.json()
     assert resp.status_code == 200 and body["success"] is True

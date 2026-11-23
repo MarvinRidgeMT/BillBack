@@ -29,6 +29,7 @@ CODES: dict[str, int] = {
     "pdf_encrypted": 422,
     "pdf_empty": 422,
     "too_short": 422,
+    "not_policy": 422,
     "ai_unavailable": 503,
     "ai_invalid": 502,
     "server_error": 500,
