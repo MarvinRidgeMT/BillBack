@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-23T22:21:46+00:00",
+  "generated_at": "2026-11-23T23:30:59+00:00",
   "model": "claude-sonnet-5-5",
-  "git_commit": "d163fd6+uncommitted",
+  "git_commit": "0466d28+uncommitted",
   "method_a": "AI bill reader shipped in the app (backend/bill_reader/reader.py)",
   "method_b": "Tesseract OCR + regex/heuristics (eval/baselines/tesseract_extract.py)",
   "rules": "Text is Unicode-normalized, case-folded and whitespace-collapsed before comparing. Money must match to the cent. Dates must be the same calendar day after parsing. Hospital names and addresses match if equal after normalization or if the fuzzy ratio (token sort) is \u2265 0.90; for addresses every number (street number, ZIP) must also be exactly the same. Account numbers: case and whitespace ignored, separators kept. % of the poverty line must match exactly.",
@@ -48,6 +48,7 @@
         "low_confidence_fields": 6,
         "fields_to_confirm": 6,
         "wrong_and_not_sent_to_patient": 0,
+        "wrong_values_returned": 0,
         "flagged_unreadable": [
           "bill_12_very_blurry"
         ],
@@ -571,29 +572,46 @@
     },
     "B": {
       "summary": {
-        "bills_run": 2,
+        "bills_run": 12,
         "errors": 0,
-        "correct": 10,
-        "total": 10,
+        "correct": 37,
+        "total": 60,
         "by_condition": {
           "clean": [
-            10,
+            15,
+            15
+          ],
+          "angled": [
+            3,
+            5
+          ],
+          "crumpled": [
+            7,
             10
+          ],
+          "dim": [
+            8,
+            15
+          ],
+          "blurry": [
+            4,
+            15
           ]
         },
         "by_field": {
-          "hospital_name": 2,
-          "hospital_address": 2,
-          "amount_due": 2,
-          "service_date": 2,
-          "account_number": 2
+          "hospital_name": 9,
+          "hospital_address": 7,
+          "amount_due": 8,
+          "service_date": 7,
+          "account_number": 6
         },
-        "avg_seconds": 0.006069854483939707,
-        "max_seconds": 0.0066266669891774654,
+        "avg_seconds": 1.204429965194625,
+        "max_seconds": 1.8594197910279036,
         "avg_cost_usd": 0.0,
         "low_confidence_fields": 0,
         "fields_to_confirm": 0,
         "wrong_and_not_sent_to_patient": 0,
+        "wrong_values_returned": 15,
         "flagged_unreadable": [],
         "flagged_poor_photo": []
       },
@@ -601,8 +619,23 @@
         {
           "bill": "bill_01_clean",
           "condition": "clean",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "USA HEALTH",
+            "hospital_address": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+            "amount_due": "$4,812.00",
+            "service_date": "08/14/2026",
+            "account_number": "UH-4471902"
+          },
+          "method": "ocr",
+          "seconds": 1.7021407918073237,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
         },
         {
           "bill": "bill_02_text",
@@ -615,7 +648,7 @@
             "account_number": "BT-00938815"
           },
           "method": "pdf_text",
-          "seconds": 0.0066266669891774654,
+          "seconds": 0.005722332978621125,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -628,38 +661,128 @@
         {
           "bill": "bill_03_angled",
           "condition": "angled",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "FORT HEALTHCARE",
+            "hospital_address": null,
+            "amount_due": "$4,931.80",
+            "service_date": "99/21/2026",
+            "account_number": "FH 7720-1145"
+          },
+          "method": "ocr",
+          "seconds": 1.3350357920862734,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": false,
+            "amount_due": true,
+            "service_date": false,
+            "account_number": true
+          }
         },
         {
           "bill": "bill_04_angled_blur",
           "condition": "blurry",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "MARSHFiEL CLINIC HEALTH Ss YSTEM",
+            "hospital_address": "302 Birchwoog Lane, Marshfieig, WI 54449",
+            "amount_due": "$2,530.09",
+            "service_date": "96/30/2936",
+            "account_number": "MC-55293975"
+          },
+          "method": "ocr",
+          "seconds": 1.0858524998184294,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": false,
+            "service_date": false,
+            "account_number": false
+          }
         },
         {
           "bill": "bill_05_crumpled",
           "condition": "crumpled",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "ADENA HEALTH SYSTEM \u2018ee date: 10/24/2026",
+            "hospital_address": null,
+            "amount_due": "$6,700.00",
+            "service_date": "10/03/2026",
+            "account_number": "ADH-3309184"
+          },
+          "method": "ocr",
+          "seconds": 1.6027742088772357,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": false,
+            "hospital_address": false,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
         },
         {
           "bill": "bill_06_crumpled",
           "condition": "crumpled",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "BAPTIST MEMORIAL HEALTH CARE",
+            "hospital_address": "4100 Pecan Hollow Dr, Columbus, MS 39705",
+            "amount_due": "$2,412.40",
+            "service_date": "05/11/2026",
+            "account_number": "MS 39705"
+          },
+          "method": "ocr",
+          "seconds": 1.673040083842352,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": false
+          }
         },
         {
           "bill": "bill_07_dim",
           "condition": "dim",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "USA HEALTH",
+            "hospital_address": "1200 Magnolia Grove Blvd, Mobile, AL 36617",
+            "amount_due": "$8,001.00",
+            "service_date": "04/19/2026",
+            "account_number": "UH-4489315"
+          },
+          "method": "ocr",
+          "seconds": 1.8594197910279036,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": true,
+            "service_date": true,
+            "account_number": true
+          }
         },
         {
           "bill": "bill_08_dim_angled",
           "condition": "dim",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "Boys TOWN NATIONAL RESEARCH HOSPITAL paATIENT",
+            "hospital_address": null,
+            "amount_due": "$2,909.00",
+            "service_date": "99/09/2026",
+            "account_number": "91347722"
+          },
+          "method": "ocr",
+          "seconds": 1.1310492081101984,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": false,
+            "hospital_address": false,
+            "amount_due": false,
+            "service_date": false,
+            "account_number": false
+          }
         },
         {
           "bill": "bill_09_text",
@@ -672,7 +795,7 @@
             "account_number": "MC-55418820"
           },
           "method": "pdf_text",
-          "seconds": 0.005513041978701949,
+          "seconds": 0.0067967078648507595,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -685,26 +808,71 @@
         {
           "bill": "bill_10_crumpled_dim",
           "condition": "dim",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "FORT HEALTHCare",
+            "hospital_address": "811 Cedar Bluff Rd, Fort Atkinson, WI 53538",
+            "amount_due": "$5,800.09",
+            "service_date": "11/02/2026",
+            "account_number": "FH 7735-0995"
+          },
+          "method": "ocr",
+          "seconds": 1.8291536660399288,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": true,
+            "amount_due": false,
+            "service_date": true,
+            "account_number": false
+          }
         },
         {
           "bill": "bill_11_blurry",
           "condition": "blurry",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "USA HEALTH",
+            "hospital_address": null,
+            "amount_due": "$4,812.00",
+            "service_date": "06/14/2026",
+            "account_number": "4471902"
+          },
+          "method": "ocr",
+          "seconds": 1.640819874824956,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": true,
+            "hospital_address": false,
+            "amount_due": true,
+            "service_date": false,
+            "account_number": false
+          }
         },
         {
           "bill": "bill_12_very_blurry",
           "condition": "blurry",
-          "error": "tesseract is not installed (brew install tesseract)",
-          "not_run": true
+          "fields": {
+            "hospital_name": "~~, ---*",
+            "hospital_address": null,
+            "amount_due": null,
+            "service_date": null,
+            "account_number": null
+          },
+          "method": "ocr",
+          "seconds": 0.5813546250574291,
+          "cost_usd": 0.0,
+          "checks": {
+            "hospital_name": false,
+            "hospital_address": false,
+            "amount_due": false,
+            "service_date": false,
+            "account_number": false
+          }
         }
       ],
       "meta": {
-        "generated_at": "2026-11-23T22:21:46+00:00",
+        "generated_at": "2026-11-23T23:30:45+00:00",
         "model": "claude-sonnet-5-5",
-        "git_commit": "d163fd6+uncommitted"
+        "git_commit": "0466d28+uncommitted"
       }
     }
   }

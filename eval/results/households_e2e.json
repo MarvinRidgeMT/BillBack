@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-23T22:21:46+00:00",
+  "generated_at": "2026-11-23T23:31:00+00:00",
   "model": "claude-sonnet-5-5",
-  "git_commit": "d163fd6+uncommitted",
+  "git_commit": "0466d28+uncommitted",
   "correct": 9,
   "total": 10,
   "rows": [
@@ -21,7 +21,7 @@
       "explanation": "Household income ($15,000) qualifies for free care under 'Free Care' (threshold: at or below $31,920.00 (200.0% FPL)). All verified conditions satisfied. Income: 15000.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.016512417001649737
+      "seconds": 0.02020558319054544
     },
     {
       "id": "E2E-02",
@@ -39,7 +39,7 @@
       "explanation": "Household income ($43,280) qualifies for free care under 'Free Care' (threshold: at or below $43,280.00 (200.0% FPL)). All verified conditions satisfied. Income: 43280.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.007944124983623624
+      "seconds": 0.009195040911436081
     },
     {
       "id": "E2E-03",
@@ -57,7 +57,7 @@
       "explanation": "Household income ($43,281) qualifies for discounted care under 'Reduced basis per Attachment 1 table: 90% discount at 210% FPG, declining stepwise (80% at 220%, 70% at 230%, 60% at 240%, 50% at 250%, 40% at 260%, 35% at 270%, 30% at 280%, 25% at 290%, 20% at 300-320%, 15% at 340-360%, 10% at 380-400%).' (threshold: at or below $86,560.00 (400.0% FPL)) (discount: Sliding scale). All verified conditions satisfied. Income: 43281.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.008766500046476722
+      "seconds": 0.009434457868337631
     },
     {
       "id": "E2E-04",
@@ -75,7 +75,7 @@
       "explanation": "Household income ($99,000) qualifies for discounted care under '75% discount for income 201%-300% FPL per Appendix A table' (threshold: at or below $99,000.00 (300.0% FPL)) with 75.0% discount. All verified conditions satisfied. Income: 99000.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.07204529200680554
+      "seconds": 0.07421374996192753
     },
     {
       "id": "E2E-05",
@@ -93,7 +93,7 @@
       "explanation": "Cannot determine eligibility with current information. Household income: $30,000. FPL reference: $27,320 (2026 contiguous, household size 3). Missing facts: unresolved_savings_rule. Unresolved rules: none.",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.010104249930009246
+      "seconds": 0.010488583939149976
     },
     {
       "id": "E2E-06",
@@ -111,7 +111,7 @@
       "explanation": "Household income ($160,000) exceeds all assistance thresholds in this policy. FPL reference: $38,680 (2026 contiguous, household size 5).",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.007914667017757893
+      "seconds": 0.008635250153020024
     },
     {
       "id": "E2E-07",
@@ -129,7 +129,7 @@
       "explanation": "Household income ($100,000) qualifies for discounted care under '85% FAP adjustment applied' (threshold: at or below $123,750.00 (300.0% FPL)) with 85.0% discount. All verified conditions satisfied. Income: 100000.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.008718207944184542
+      "seconds": 0.007639041868969798
     },
     {
       "id": "E2E-08",
@@ -147,7 +147,7 @@
       "explanation": "Cannot determine eligibility with current information. Household income: $25,000. FPL reference: $27,320 (2026 contiguous, household size 3). Missing facts: asset_test. Unresolved rules: none.",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.00797033286653459
+      "seconds": 0.008470958797261119
     },
     {
       "id": "E2E-09",
@@ -165,7 +165,7 @@
       "explanation": "Household income ($120,000) qualifies for free care under 'Free Care' (threshold: at or below $122,800.00 (200.0% FPL)). All verified conditions satisfied. Income: 120000.0",
       "packet_ok": true,
       "correct": true,
-      "seconds": 0.054430708987638354
+      "seconds": 0.05804729089140892
     },
     {
       "id": "E2E-10",
@@ -183,7 +183,7 @@
       "explanation": "Cannot determine eligibility with current information. Household income: $30,000. FPL reference: $21,640 (2026 contiguous, household size 2). Missing facts: none. Unresolved rules: residency.",
       "packet_ok": true,
       "correct": false,
-      "seconds": 0.010331499855965376
+      "seconds": 0.008311915909871459
     }
   ],
   "live": false,

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-23T22:21:46+00:00",
+  "generated_at": "2026-11-23T23:30:59+00:00",
   "model": "claude-sonnet-5-5",
-  "git_commit": "d163fd6+uncommitted",
+  "git_commit": "0466d28+uncommitted",
   "flags": {
     "policies": 22,
     "fields": 110,

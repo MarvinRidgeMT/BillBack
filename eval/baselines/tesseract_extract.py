@@ -23,19 +23,23 @@ from PIL import Image, ImageOps
 
 FIELDS = ("hospital_name", "hospital_address", "amount_due", "service_date", "account_number")
 MIN_OCR_WIDTH = 2000
-PSM_MODES = (3, 6)  # 3 = automatic layout, 6 = one uniform block of text
+# 6 = one uniform block (keeps a label and its number on one row), tried first; 3 = automatic layout fills gaps.
+PSM_MODES = (6, 3)
 
 _MONEY = re.compile(r"\$\s?\d{1,3}(?:,\d{3})*(?:\.\d{2})|\$\s?\d+(?:\.\d{2})")
 _DATE = re.compile(
     r"\b(\d{1,2}/\d{1,2}/\d{2,4}|\d{4}-\d{2}-\d{2}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2},?\s+\d{4})\b",
     re.IGNORECASE,
 )
-_ADDRESS = re.compile(r"\b\d{1,6}\s+[A-Za-z0-9 .'-]+,\s*[A-Za-z .'-]+,\s*[A-Z]{2}\s+\d{5}(?:-\d{4})?\b")
+# Commas are optional: OCR often drops them ("811 Cedar Bluff Rd Fort Atkinson WI 53538").
+_ADDRESS = re.compile(r"\b\d{1,6}\s+[A-Za-z0-9 .'-]+?,?\s+[A-Za-z .'-]+?,?\s+[A-Z]{2}\s+\d{5}(?:-\d{4})?\b")
+_DASHES = re.compile(r"[\u2010-\u2015\u2212]")
 _ACCOUNT_TOKEN = re.compile(r"\b([A-Z]{1,5}[- ]?\d[\d-]{3,}\d|\d{6,})\b")
 _HOSPITAL_WORDS = re.compile(r"hospital|health|medical|clinic|center|centre|healthcare", re.IGNORECASE)
 _TITLE_SUFFIX = re.compile(r"\s*(patient\s*)?(statement|invoice|bill)\b.*$", re.IGNORECASE)
 _SKIP_HEADER = re.compile(r"statement|invoice|patient|page \d|bill to|remit|sample", re.IGNORECASE)
-AMOUNT_LABELS = ("amount due", "balance due", "total due", "please pay", "amount owed", "patient balance", "you owe")
+# In priority order: the strongest cue wins even if a weaker one appears earlier on the page.
+AMOUNT_LABELS = ("amount due", "balance due", "total due", "amount owed", "patient balance", "you owe", "please pay")
 DATE_LABELS = ("date of service", "service date", "dates of service", "date(s) of service", "dos")
 ACCOUNT_LABELS = ("account number", "account no", "account #", "acct", "account")
 
@@ -85,16 +89,26 @@ def _images_for(data: bytes) -> list[Image.Image]:
     return [Image.open(io.BytesIO(data))]
 
 
+# OCR splits money: "$4 931-80", "$6 ,200 .00", "$742. 80" -> "$4,931.80", "$6,200.00", "$742.80"
+_OCR_MONEY = re.compile(r"\$\s?(\d{1,3}(?:\s?[ ,]\s?\d{3})*|\d+)\s?[.\-]\s?(\d{2})\b")
+
+
+def _fix_money(match: re.Match) -> str:
+    whole = re.sub(r"[ ,]", "", match.group(1))
+    return f"${int(whole):,}.{match.group(2)}"
+
+
 def _lines(text: str) -> list[str]:
+    text = _DASHES.sub("-", text)  # OCR reads hyphens as en/em dashes
+    text = _OCR_MONEY.sub(_fix_money, text)
     return [re.sub(r"\s+", " ", ln).strip() for ln in text.splitlines() if ln.strip()]
 
 
 def _after_label(lines: list[str], labels: tuple[str, ...], pattern: re.Pattern, lookahead: int = 2) -> Optional[str]:
-    """First `pattern` match on a line containing a label (after the label), or on the next `lookahead` lines."""
-    for i, line in enumerate(lines):
-        low = line.lower()
-        for label in labels:
-            pos = low.find(label)
+    """For each label in priority order: the first `pattern` match after it on its line, or on the next lines."""
+    for label in labels:
+        for i, line in enumerate(lines):
+            pos = line.lower().find(label)
             if pos < 0:
                 continue
             same = pattern.search(line[pos + len(label):])
@@ -177,10 +191,6 @@ def extract_fields(text: str) -> dict[str, Optional[str]]:
     }
 
 
-def _found(fields: dict[str, Optional[str]]) -> int:
-    return sum(v is not None for v in fields.values())
-
-
 def read_bill(data: bytes) -> OcrRead:
     """OCR + heuristics on one bill (photo or PDF)."""
     if data.startswith(b"%PDF"):
@@ -190,11 +200,8 @@ def read_bill(data: bytes) -> OcrRead:
     if not tesseract_available():
         raise OcrUnavailable("tesseract is not installed (brew install tesseract)")
     images = _images_for(data)
-    best: Optional[OcrRead] = None
-    for psm in PSM_MODES:
-        text = _ocr_images(images, psm)
-        read = OcrRead(extract_fields(text), text, "ocr")
-        if best is None or _found(read.fields) > _found(best.fields):
-            best = read
-    assert best is not None
-    return best
+    reads = [(psm, _ocr_images(images, psm)) for psm in PSM_MODES]
+    found = [extract_fields(text) for _, text in reads]
+    # Field by field: the first mode (6, rows kept together) wins; later modes only fill fields it missed.
+    fields = {f: next((r[f] for r in found if r[f] is not None), None) for f in FIELDS}
+    return OcrRead(fields, "\n\n".join(text for _, text in reads), "ocr")

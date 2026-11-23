@@ -52,7 +52,7 @@ page and confidence. It never decides eligibility: a plain-Python rules engine d
 guidelines. Anything under 0.8 confidence, any quote code can't find in the PDF, and any number that fails a sanity check
 goes to the patient or is reported as "we can't tell".
 
-**Why this model:** on our 12 test bills (clean, angled, crumpled, dim and blurry photos plus two PDFs) the AI read 57 of 60 fields in about 2.8 seconds and about one cent per bill, and it showed **0 wrong values without asking the patient to check them**: its 3 misses were all on a deliberately very blurry photo, where it returned low confidence and our image check offered *Retake* or *Enter by hand*. A Tesseract-plus-rules baseline tied it on the two text PDFs; it hasn't been run on the photos yet (TODO(team): install Tesseract and re-run), so we don't claim a gap there. TODO(team): finalize with the paragraph in RESULTS.md section 1.
+**Why this model:** on our 12 test bills the AI read 57 of 60 fields, against 37 of 60 for a Tesseract-OCR-plus-rules baseline. They tie on clean bills; on the photos patients actually take the baseline drops to 27–70% (angled, crumpled, dim, blurry) while the AI stays at 80–100%. More important for patients: the baseline returned 15 wrong values (an amount off by 9 cents, a date read as "99/21/2026") with nothing to flag them, while the AI's 3 misses were all blanks it marked as unsure, on a deliberately very blurry photo our image check flagged. It costs about one cent and 2.8 seconds per bill. TODO(team): finalize with the paragraph in RESULTS.md section 1.
 
 **During development** we used Claude Code. Its work was checked by tests and known answers, and the log of what those
 checks caught is in `docs/AI_DEV_LOG.md`. Examples: a test we added found a real policy (Novant) whose free-care limit
@@ -69,15 +69,15 @@ Results (from `docs/RESULTS.md`; bills and households are fictional):
 
 | Measure | Result |
 |---|---|
-| Bill fields correct (AI), all bills | 57/60 (95%) |
-| AI vs. Tesseract baseline | baseline incomplete (Tesseract not installed): on the 2 text-PDF bills both ran, 10/10 (100%) vs. 10/10 (100%) |
+| Bill fields correct, AI vs. Tesseract baseline | 57/60 (95%) vs. 37/60 (62%) |
+| Wrong bill values returned, AI vs. baseline (blanks not counted) | 0 vs. 15 |
 | Time and cost per bill (AI) | 2.8 s, $0.0098 |
 | Policy fields correct (of 120) | pending (no person-verified key yet) |
 | Policy quotes found word for word in the PDF | 64/67 |
 | Policy fields flagged “needs checking” | 34/110 (precision: pending) |
 | Repeat runs (5×): bills / policy decision values / eligibility identical | 3/3 bills, 2/3 policies, 3/3 policies |
 | Households correct end to end | 9/10 |
-| Tests | 396 passed, 5 skipped in 6.88s |
+| Tests | 411 passed, 5 skipped in 11.48s |
 
 Full tables, every miss and how each number was produced: `docs/RESULTS.md`.
 

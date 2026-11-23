@@ -104,6 +104,9 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "low_confidence_fields": low,
         "fields_to_confirm": sum(len(r.get("fields_to_confirm") or []) for r in ran),
         "wrong_and_not_sent_to_patient": confident_wrong,
+        # A wrong value is worse than a blank: the patient has nothing telling them to look.
+        "wrong_values_returned": sum(1 for r in ran for f, ok in r.get("checks", {}).items()
+                                     if not ok and (r.get("fields") or {}).get(f) is not None),
         "flagged_unreadable": [r["bill"] for r in ran if r.get("unreadable")],
         "flagged_poor_photo": [r["bill"] for r in ran if (r.get("quality") or {}).get("ok") is False],
     }

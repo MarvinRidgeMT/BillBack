@@ -153,6 +153,21 @@ One entry per piece of AI-written work that was checked. Entries are honest: if 
   this exact case. Also fixed a misleading "retrying in 4.0s" log line on the last try, seen in the outage test.
 - Commit: `537cd5d`
 
+### 11. Keeping the OCR baseline fair instead of easy to beat
+- Date: 2026-11-23
+- Tool: Claude Code
+- What the AI produced: the Tesseract + rules baseline (`eval/baselines/tesseract_extract.py`), Method B in the bill
+  benchmark the AI is compared against.
+- How it was checked: once Tesseract was installed, ran it on all 12 bills and read every miss next to the OCR text.
+- What the check found: first run 32/60. Most misses were real OCR errors (zeros read as nines), but some were the
+  baseline's own fault: on the *clean* bill it took a line item instead of AMOUNT DUE because the "please pay"
+  sentence matched first; the OCR mode that splits columns was preferred over the one that keeps label and number on
+  one row; OCR money like "$4 931-80" and em-dashes weren't cleaned up. Reporting 32/60 would have overstated the AI's lead.
+- Decision: **changed the baseline** (label priority, row-keeping OCR mode first, money/dash cleanup), with unit tests
+  from the real OCR strings; re-ran: 37/60. Tuning on the same bills favors the baseline, so RESULTS.md says the gap is,
+  if anything, understated. Also added "wrong values returned" to the report: baseline 15, AI 0.
+- Commit: see `git log -- eval/baselines/tesseract_extract.py`
+
 ---
 
 ## The team's own story from the original build weekend

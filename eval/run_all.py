@@ -124,11 +124,15 @@ def bill_section(bench: Optional[dict[str, Any]]) -> tuple[list[str], dict[str, 
               f"| Estimated cost per bill | {money(a['avg_cost_usd'])} | $0 (runs locally) |",
               "| (time and cost leave out bills that errored) | | |",
               f"| Bills that errored | {a['errors']} | {b['errors']} |",
-              f"| Wrong values NOT sent to the patient to check | **{a.get('wrong_and_not_sent_to_patient', '—')}** | n/a (no confidence scores) |", "",
+              f"| Wrong values returned (a value, but the wrong one; blanks not counted) | {a.get('wrong_values_returned', '—')} | {b.get('wrong_values_returned', '—')} |",
+              f"| Wrong values NOT sent to the patient to check | **{a.get('wrong_and_not_sent_to_patient', '—')}** | all of them (no confidence scores) |", "",
               f"Image-quality check (plain code): flagged as poor photos {', '.join(a.get('flagged_poor_photo') or []) or 'none'}; "
               f"flagged as unreadable (patient offered *Retake* or *Enter by hand*, pre-filled) {', '.join(a.get('flagged_unreadable') or []) or 'none'}.", "",
               "| Field | Method A | Method B |", "|---|---|---|",
               *[f"| {f} | {a['by_field'][f]}/{a['bills_run']} | {b['by_field'][f]}/{b['bills_run']} |" for f in compare.BILL_FIELDS], "",
+              "Fairness: the baseline's text rules were improved twice after looking at its misses on these same bills "
+              "(label priority, OCR money/dash cleanup, row-preserving OCR mode first): 32/60 → 37/60. That tuning favors "
+              "the baseline, so the gap is, if anything, understated. Unit tests: `backend/tests/test_tesseract_baseline.py`.", "",
               f"Cost = tokens × the published price in `backend/pricing.py` ({bench.get('pricing_source', '')}). "
               "Condition = the hardest condition on the bill (blurry > dim > crumpled > angled > clean); text PDFs count as clean.", ""]
     misses = [(m, r["bill"], f) for m in ("A", "B") for r in bench["methods"][m]["rows"] if not r.get("not_run")
@@ -145,8 +149,11 @@ def bill_section(bench: Optional[dict[str, Any]]) -> tuple[list[str], dict[str, 
               f"> On our {a['bills_run']} test bills, the AI reader got {frac(a['correct'], a['total'])} of fields right"
               + (f", against {frac(b['correct'], b['total'])} for a Tesseract-plus-rules baseline ({gap:+.0f} points)" if gap is not None else "")
               + f", at about {money(a['avg_cost_usd'], 3)} and {secs(a['avg_seconds'])} per bill. "
-              + ("Where the gap shows on the photos patients actually take (angled, crumpled, dim, blurry) is in the "
-                 "condition table above. " if gap is not None else
+              + (f"Both tie on clean bills; the gap is on the photos patients actually take (angled, crumpled, dim, blurry; "
+                 f"condition table above), where OCR misreads digits. Worse, the baseline returned "
+                 f"{b.get('wrong_values_returned', '—')} wrong values with nothing to flag them (for example an amount off by "
+                 f"9 cents), while the AI returned {a.get('wrong_values_returned', '—')}: its misses were blanks marked low confidence. "
+                 if gap is not None else
                  f"The OCR baseline hasn't been run on photos yet ({TODO}, see the note above), so we make no claim "
                  "about how much better the AI does on them until it has. ")
               + "The AI also returns a confidence for each field, which is what lets BillBack send unsure fields back "
@@ -318,6 +325,10 @@ def summary_table(bench_stats, g, rep, hh, pt) -> list[str]:
         rows.append(("Bill fields correct (AI), all bills", frac(a["correct"], a["total"])))
         rows.append(("AI vs. Tesseract baseline", f"baseline incomplete (Tesseract not installed): on the {same['bills']} text-PDF "
                      f"bills both ran, {frac(same['a'], same['total'])} vs. {frac(same['b'], same['total'])}"))
+
+    if a:
+        rows.append(("Wrong bill values returned, AI vs. baseline (blanks not counted)",
+                     f"{a.get('wrong_values_returned', '—')} vs. {b.get('wrong_values_returned', '—') if b else '—'}"))
         rows.append(("Time and cost per bill (AI)", f"{secs(a['avg_seconds'])}, {money(a['avg_cost_usd'])}"))
     if g:
         acc = g["accuracy"]
