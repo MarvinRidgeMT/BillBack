@@ -19,7 +19,7 @@ def model_name() -> str:
     """The model the app is configured to use (what a live run will call)."""
     from dotenv import load_dotenv
 
-    load_dotenv(REPO / ".env")
+    load_dotenv()  # same lookup as the app: .env here or in a parent folder
     provider = (os.getenv("LLM_PROVIDER") or "anthropic").lower()
     if provider == "gemini":
         return os.getenv("GEMINI_MODEL") or "gemini (GEMINI_MODEL unset)"
@@ -27,10 +27,14 @@ def model_name() -> str:
 
 
 def git_commit() -> str:
+    """HEAD, plus '+uncommitted' when tracked code under backend/ or eval/ has changes not yet committed."""
     try:
-        return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=REPO, text=True).strip()
+        head = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], cwd=REPO, text=True).strip()
+        dirty = subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=no", "--", "backend", "eval"],
+                                        cwd=REPO, text=True).strip()
     except (OSError, subprocess.CalledProcessError):
         return "unknown"
+    return f"{head}+uncommitted" if dirty else head
 
 
 def run_meta(**extra: Any) -> dict[str, Any]:
