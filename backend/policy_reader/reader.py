@@ -75,9 +75,10 @@ def revalidate_cached(
 
 
 def _generate(client: ModelClient, prompt: PromptInput) -> ModelResult:
-    from backend.llm_retry import POLICY_TOTAL_TIMEOUT_S, generate_with_retry
+    from backend.llm_retry import POLICY_PER_TRY_TIMEOUT_S, POLICY_TOTAL_TIMEOUT_S, generate_with_retry
 
-    return generate_with_retry(client, prompt, total_timeout_s=POLICY_TOTAL_TIMEOUT_S)
+    return generate_with_retry(client, prompt, total_timeout_s=POLICY_TOTAL_TIMEOUT_S,
+                               per_try_timeout_s=POLICY_PER_TRY_TIMEOUT_S)
 
 
 def _parse_with_retry(client: ModelClient, prompt: PromptInput) -> tuple[PolicyRules, ModelResult, int, int]:

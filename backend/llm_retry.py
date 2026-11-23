@@ -19,6 +19,10 @@ MAX_TRIES = 3
 BASE_DELAY_S = 1.0
 BILL_TOTAL_TIMEOUT_S = 30.0
 POLICY_TOTAL_TIMEOUT_S = 120.0  # one policy read takes 8-40 s, so 30 s would cut off good reads
+# Each try gets at most this long, so one hung call can't use the whole budget and leave no time to retry
+# (seen in the bill benchmark on 2026-11-23: a text PDF that normally reads in 3 s timed out once at 30 s).
+BILL_PER_TRY_TIMEOUT_S = 12.0  # bill reads take 2-5 s
+POLICY_PER_TRY_TIMEOUT_S = 60.0
 MIN_TRY_S = 3.0  # don't start a try with less time than this left
 
 
@@ -38,6 +42,7 @@ def generate_with_retry(
     prompt: PromptInput,
     *,
     total_timeout_s: float = BILL_TOTAL_TIMEOUT_S,
+    per_try_timeout_s: float = BILL_PER_TRY_TIMEOUT_S,
     tries: int = MAX_TRIES,
     base_delay_s: float = BASE_DELAY_S,
     sleep: Callable[[float], None] = time.sleep,
@@ -52,7 +57,7 @@ def generate_with_retry(
             break
         try:
             if pass_timeout:
-                return client.generate(prompt, timeout=remaining)  # type: ignore[call-arg]
+                return client.generate(prompt, timeout=min(remaining, per_try_timeout_s))  # type: ignore[call-arg]
             return client.generate(prompt)
         except TransientModelError as exc:
             last = exc

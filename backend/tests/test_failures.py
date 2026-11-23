@@ -122,6 +122,26 @@ def test_total_time_budget_stops_retries():
     assert fake.calls == 1
 
 
+class TimedClient(FakeClient):
+    """Accepts a per-call timeout like the real clients, and records it."""
+
+    def __init__(self, *outcomes):
+        super().__init__(*outcomes)
+        self.timeouts = []
+
+    def generate(self, prompt, timeout=None):
+        self.timeouts.append(timeout)
+        return super().generate(prompt)
+
+
+def test_one_hung_call_cannot_use_the_whole_budget():
+    """Found by the bill benchmark: a call that hung for 30 s left no time to retry."""
+    fake = TimedClient(TransientModelError("timed out"), fields_json(0.9))
+    llm_retry.generate_with_retry(fake, PromptInput("x", ""), sleep=lambda s: None, total_timeout_s=30.0)
+    assert fake.calls == 2
+    assert fake.timeouts[0] <= llm_retry.BILL_PER_TRY_TIMEOUT_S < 30.0
+
+
 def test_non_transient_error_is_not_retried():
     fake = FakeClient(PolicyReaderError("bad API key"), fields_json(0.9))
     with pytest.raises(PolicyReaderError):
