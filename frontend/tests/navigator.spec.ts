@@ -24,6 +24,7 @@ test("navigator cases stay in memory and download one ZIP", async ({ page }) => 
     presumptive_eligibility: null, has_page_images: false, source_url: null,
   }, error: null } }));
   await page.route("**/api/packet", (route) => route.fulfill({ status: 200, contentType: "application/pdf", body: "%PDF-1.4\n%%EOF" }));
+  await page.route("**/api/follow-up/letter", (route) => route.fulfill({ status: 200, contentType: "application/pdf", body: "%PDF-1.4\n%%EOF" }));
   await page.route("**/api/schedule-h/**", (route) => route.fulfill({ status: 404, json: { detail: "not matched" } }));
   await page.route("**/api/policy/**", (route) => route.fulfill({ status: 404, json: { detail: "not in test" } }));
 
@@ -50,4 +51,12 @@ test("navigator cases stay in memory and download one ZIP", async ({ page }) => 
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toBe("BillBack-navigator-cases.zip");
   await expect(page.getByText("Packet downloaded")).toBeVisible();
+
+  await page.getByRole("button", { name: "Documents sent" }).click();
+  await page.getByLabel("Proof of income").check();
+  const checklistPromise = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Get document checklist" }).click();
+  const checklist = await checklistPromise;
+  expect(checklist.suggestedFilename()).toBe("BillBack-more-documents.pdf");
+  await expect(page.getByRole("heading", { name: "I got a collections notice" })).toBeVisible();
 });

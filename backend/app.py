@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 import hashlib
 
-from backend import demo_mode, fpl, hospital_form, packet, policies, schedule_h
+from backend import demo_mode, follow_up, fpl, hospital_form, packet, policies, schedule_h
 from backend.policy_reader import cache as policy_cache
 from backend.bill_reader import reader as bill_reader
 from backend.eob_reader import reader as eob_reader
@@ -155,6 +155,30 @@ class InsuranceLetterRequest(BaseModel):
 def insurance_letter(req: InsuranceLetterRequest) -> Response:
     """Create an editable request letter in memory and stream it to the browser."""
     pdf = build_insurance_letter(**req.model_dump())
+    return Response(
+        content=pdf,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="BillBack-{req.kind.replace("_", "-")}.pdf"',
+            "Cache-Control": "no-store",
+        },
+    )
+
+
+class FollowUpLetterRequest(BaseModel):
+    kind: Literal["status_request", "more_documents", "eca_pause_request"]
+    lang: Literal["en", "es"] = "en"
+    hospital: str = Field("", max_length=300)
+    account_number: str = Field("", max_length=60)
+    service_date: str = Field("", max_length=40)
+    application_date: str = Field("", max_length=40)
+    documents: list[Literal["income", "residency", "tax", "bank", "insurance", "benefits"]] = Field(default_factory=list, max_length=6)
+
+
+@app.post("/api/follow-up/letter")
+def follow_up_letter(req: FollowUpLetterRequest) -> Response:
+    """Create a follow-up request in memory and stream it without storage."""
+    pdf = follow_up.build_follow_up_letter(**req.model_dump())
     return Response(
         content=pdf,
         media_type="application/pdf",

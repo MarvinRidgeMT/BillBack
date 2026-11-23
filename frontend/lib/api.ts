@@ -190,6 +190,42 @@ export async function downloadInsuranceLetter(body: InsuranceLetterRequest): Pro
   window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
+export interface FollowUpLetterRequest {
+  kind: "status_request" | "more_documents" | "eca_pause_request";
+  lang: "en" | "es";
+  hospital: string;
+  account_number: string;
+  service_date: string;
+  application_date: string;
+  documents: Array<"income" | "residency" | "tax" | "bank" | "insurance" | "benefits">;
+}
+
+export async function downloadFollowUpLetter(body: FollowUpLetterRequest): Promise<void> {
+  let response: Response;
+  try {
+    response = await fetch("/api/follow-up/letter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(ELIGIBILITY_TIMEOUT_MS),
+    });
+  } catch {
+    throw new ApiError("unavailable", null);
+  }
+  if (!response.ok || !response.headers.get("content-type")?.includes("application/pdf")) {
+    throw new ApiError(response.status === 503 ? "unavailable" : "failed", response.status);
+  }
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `BillBack-${body.kind.replaceAll("_", "-")}.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
 /** POST /api/eligibility. Plain code on the backend makes the call; the front end only shows it. */
 export async function checkEligibility(body: EligibilityRequest): Promise<EligibilityData> {
   const data = await request<EligibilityData>(

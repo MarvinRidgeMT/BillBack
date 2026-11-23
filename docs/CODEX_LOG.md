@@ -17,7 +17,7 @@
 | F3 languages | Accessibility; Community | 5-locale menu; 298 complete EN/ES keys; 107 critical-flow keys in each new locale; 4 i18n tests | VI/ZH-CN/TL are AI-translated previews with English fallback and need human review | Language menu → translated notice |
 | F4 Schedule H | Community; trust | 22 cached hospitals checked; 3 conservative matches with comparable data; 2 agree; 1 conflict | 19 unknown/unmatched filings omitted; ProPublica rendered-XML fallback used for Deflate64 archives | Result → Schedule H badge |
 | F5 navigator | Community | 1 browser journey covers third-person flow, case state, printable summary, packet ZIP, and status update | Anonymous case labels; tab memory only; EN/ES packet generation | Navigator toggle → cases → download all |
-| F6 follow-up | Health; Community | Pending letter tests | Request, not guarantee | Result → tracker → follow-up letter |
+| F6 follow-up | Health; Community | 6 backend letter/API tests + browser checklist download | Collections pause is a request; urgent legal notices route to legal aid | Result → tracker → follow-up letter |
 | F7 Medicaid | Health | Conditional | Only verified states | Result → referral card |
 
 ## TODO(team)
@@ -46,6 +46,16 @@
 - Added `fflate` 0.8.3 pinned exactly. The npm registry reports its license as MIT; it is not GPL.
 - Verification: the Playwright navigator journey exercises the third-person entry, one complete case, status transition, summary action, generated ZIP download, and downloaded state. TypeScript, lint, and localization catalog tests pass.
 - Video: **turn on “I'm helping someone else” → Try a sample with insurance → complete the result → show Case 1 and its status → Print one-page summary → Download everything → show “Packet downloaded.”**
+
+## 2026-11-23 — F6 follow-up kit complete
+
+- Added an in-memory four-step tracker: applied → documents sent → decision → appeal. Refreshing or closing the tab clears it.
+- Added EN/ES status-request letters for “I haven't heard back,” plus an EN/ES checklist builder for six common document categories. The checklist tells patients to send only what the hospital's policy requires, use copies, and keep originals.
+- Added an EN/ES request to pause extraordinary collection actions while a complete, timely financial-assistance application is being decided. Every surface says this is a request, not a guarantee. It directs court papers, lawsuits, bank levies, and wage-garnishment notices to local legal aid/a lawyer immediately and warns not to miss court deadlines.
+- Current IRS basis verified on Nov. 23, 2026: §501(r)(6) requires reasonable efforts before extraordinary collection actions; after a complete application during the application period, the hospital must timely suspend ECAs, decide eligibility, and notify the person in writing. Source opened: <https://www.irs.gov/charities-non-profits/billing-and-collections-section-501r6>.
+- All PDFs are generated and streamed in memory with `Cache-Control: no-store`; none are written to disk.
+- Verification: **6** focused backend letter/API tests pass in both languages; the browser journey selects a document and downloads the checklist; full backend is **294 passed, 2 skipped**; TypeScript, lint, catalog tests, and production build pass.
+- Video: **result → What happens after you apply → click Applied and download the status request → click Documents sent and select proof of income → download the checklist → show “I got a collections notice” and its legal-aid warning/request letter.**
 
 ## 2026-11-23 — F2 accessibility pack complete
 

@@ -25,6 +25,7 @@ import { ReadAloud } from "./ReadAloud";
 import { ResultExtras } from "./ResultExtras";
 import { ScheduleHBadge } from "./ScheduleHBadge";
 import { NavigatorPanel } from "./NavigatorPanel";
+import { FollowUpKit } from "./FollowUpKit";
 import type { NavigatorCase } from "@/lib/navigator";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 import { FLIP_S, ScrapBurst } from "./ZeroFinale";
@@ -412,6 +413,8 @@ function Verdict({ data, sample, bill, household, income, benefits, eob, reduce,
       )}
 
       <ResultExtras data={data} bill={bill} benefits={benefits} sample={sample} />
+
+      {!sample && <FollowUpKit bill={bill} onAppeal={() => getPacket("appeal")} />}
 
       {navigator && onNavigatorDownloaded && (
         <NavigatorPanel cases={navigatorCases} onDownloaded={onNavigatorDownloaded} />
