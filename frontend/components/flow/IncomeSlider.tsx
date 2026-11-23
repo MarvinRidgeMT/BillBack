@@ -141,9 +141,9 @@ export function IncomeSlider({ slug, household, state, income, initial }: Income
 
   return (
     <section className="whatif" aria-labelledby={`${id}-title`}>
-      <h3 className="whatif-title" id={`${id}-title`}>
+      <h2 className="whatif-title" id={`${id}-title`}>
         {t("wow.slider.title")} <span className="whatif-tag">{t("wow.slider.tag")}</span>
-      </h3>
+      </h2>
       <p className="whatif-sub">{t("wow.slider.sub")}</p>
 
       <div className="whatif-readout">

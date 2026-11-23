@@ -6,29 +6,36 @@ import { CharityMap } from "@/components/CharityMap";
 import { Footer } from "@/components/Footer";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Nav } from "@/components/Nav";
+import { TranslationNotice } from "@/components/TranslationNotice";
 import { Hero } from "@/components/hero/Hero";
 import { Sky } from "@/components/hero/Sky";
-import { checkEligibility, readBill } from "@/lib/api";
-import { I18nProvider } from "@/lib/i18n";
-import { MOCK_BILL_READ } from "@/lib/mock";
+import { AccessibilityProvider } from "@/lib/accessibility";
+import { checkEligibility, readBill, readEob } from "@/lib/api";
+import { I18nProvider, useI18n, type MessageKey } from "@/lib/i18n";
+import { MOCK_BILL_READ, MOCK_EOB_READ } from "@/lib/mock";
 import { useParallax, useReducedMotionPref } from "@/lib/motion";
-import type { BillReadData, ConfirmedBill, EligibilityData, EligibilityRequest } from "@/lib/types";
+import type { NavigatorCase } from "@/lib/navigator";
+import type { BillReadData, ConfirmedBill, EligibilityData, EligibilityRequest, EobDocument, EobReadData } from "@/lib/types";
 import type { Benefits } from "./BenefitsQuestion";
 import { ManualEntry } from "./ManualEntry";
+import { InsuranceStep } from "./InsuranceStep";
 import { QuestionsStep, type Answers } from "./QuestionsStep";
 import { ReadingStep } from "./ReadingStep";
 import { ResultStep } from "./ResultStep";
 import type { Entrance } from "./StepCard";
 import { UploadStep } from "./UploadStep";
 
-type Step = "hero" | "upload" | "reading" | "manual" | "questions" | "result";
+type Step = "hero" | "upload" | "reading" | "insurance" | "manual" | "questions" | "result";
 
 interface Reading {
   attempt: number;
   /** Kept in memory only, so "Try again" can resend it. Null for the sample reading. */
   file: File | null;
+  eobFile: File | null;
   promise: Promise<BillReadData>;
+  eobPromise: Promise<EobReadData> | null;
   sample: boolean;
+  sampleInsurance: boolean;
 }
 
 interface Checking {
@@ -50,6 +57,7 @@ function quiet<T>(promise: Promise<T>): Promise<T> {
  * Everything lives in React state. Nothing is stored, so a refresh starts over.
  */
 function FlowInner() {
+  const { lang, t } = useI18n();
   const reduce = useReducedMotionPref();
   const parallax = useParallax(!reduce);
 
@@ -57,7 +65,12 @@ function FlowInner() {
   const [entrance, setEntrance] = useState<Entrance>("hero");
   const [reading, setReading] = useState<Reading | null>(null);
   const [bill, setBill] = useState<ConfirmedBill | null>(null);
+  const [eob, setEob] = useState<EobDocument | null>(null);
   const [checking, setChecking] = useState<Checking | null>(null);
+  const [navigatorMode, setNavigatorMode] = useState(false);
+  const [navigatorCases, setNavigatorCases] = useState<NavigatorCase[]>([]);
+  const activeCase = useRef<string | null>(null);
+  const caseCount = useRef(0);
   const attempts = useRef(0);
   const visited = useRef(false);
 
@@ -67,6 +80,21 @@ function FlowInner() {
       return next;
     });
   }, []);
+
+  const ensureNavigatorCase = useCallback(() => {
+    if (!navigatorMode || activeCase.current) return;
+    caseCount.current += 1;
+    const id = `case-${caseCount.current}`;
+    activeCase.current = id;
+    setNavigatorCases((items) => [...items, {
+      id,
+      label: t("navigator.case_label", { n: caseCount.current }),
+      status: "started",
+      packet: null,
+      hospital: "",
+      result: "",
+    }]);
+  }, [navigatorMode, t]);
 
   // Each new step starts at the top of the page. Back on the hero, focus returns to the CTA.
   useEffect(() => {
@@ -81,19 +109,42 @@ function FlowInner() {
     return () => window.clearTimeout(timer);
   }, [step, reduce]);
 
+  useEffect(() => {
+    if (navigatorMode && step !== "hero") ensureNavigatorCase();
+  }, [ensureNavigatorCase, navigatorMode, step]);
+
   const startReading = useCallback(
-    (file: File | null) => {
+    (file: File | null, eobFile: File | null = null) => {
+      ensureNavigatorCase();
       attempts.current += 1;
       setReading({
         attempt: attempts.current,
         file,
+        eobFile,
         sample: file === null,
+        sampleInsurance: false,
         promise: quiet(file ? readBill(file) : Promise.resolve(MOCK_BILL_READ)),
+        eobPromise: eobFile ? quiet(readEob(eobFile)) : null,
       });
       go("reading");
     },
-    [go],
+    [ensureNavigatorCase, go],
   );
+
+  const startSampleInsurance = useCallback(() => {
+    ensureNavigatorCase();
+    attempts.current += 1;
+    setReading({
+      attempt: attempts.current,
+      file: null,
+      eobFile: null,
+      sample: true,
+      sampleInsurance: true,
+      promise: Promise.resolve(MOCK_BILL_READ),
+      eobPromise: Promise.resolve(MOCK_EOB_READ),
+    });
+    go("reading");
+  }, [ensureNavigatorCase, go]);
 
   const startChecking = useCallback(
     (request: EligibilityRequest, benefits: Benefits = "skip") => {
@@ -113,10 +164,33 @@ function FlowInner() {
   const onConfirm = useCallback(
     (confirmed: ConfirmedBill) => {
       setBill(confirmed);
-      go("questions");
+      go(reading?.eobPromise ? "insurance" : "questions");
     },
-    [go],
+    [go, reading],
   );
+
+  const confirmInsurance = useCallback((confirmed: EobDocument) => {
+    setEob(confirmed);
+    go("questions");
+  }, [go]);
+
+  const skipInsurance = useCallback(() => {
+    setEob(null);
+    go("questions");
+  }, [go]);
+
+  const retryInsurance = useCallback(() => {
+    if (!reading?.eobFile) {
+      skipInsurance();
+      return;
+    }
+    attempts.current += 1;
+    setReading((current) => current ? {
+      ...current,
+      attempt: attempts.current,
+      eobPromise: quiet(readEob(current.eobFile as File)),
+    } : current);
+  }, [reading, skipInsurance]);
 
   const onAnswers = useCallback(
     ({ household, income, benefits }: Answers) => {
@@ -134,21 +208,68 @@ function FlowInner() {
   const startOver = useCallback(() => {
     setReading(null);
     setBill(null);
+    setEob(null);
     setChecking(null);
+    activeCase.current = null;
     go("hero");
   }, [go]);
+
+  const navigatorResult = useCallback((data: EligibilityData) => {
+    const id = activeCase.current;
+    if (!navigatorMode || !id || !bill || !checking) return;
+    const titleKey = `result.title.${data.status}` as MessageKey;
+    setNavigatorCases((items) => items.map((item) => item.id === id ? {
+      ...item,
+      status: "result",
+      hospital: data.hospital_name || bill.hospital.name,
+      result: t(titleKey),
+      packet: {
+        bill: bill.fields,
+        hospital_slug: bill.hospital.slug,
+        household_size: checking.household,
+        annual_income: checking.request.annual_income,
+        eligibility: {
+          status: data.status,
+          percent_of_fpl: data.percent_of_fpl,
+          quote: data.evidence.quote,
+          page: data.evidence.page,
+          fpl_year: data.fpl_year ?? null,
+        },
+        lang: lang === "es" ? "es" : "en",
+        benefits: checking.benefits === "yes",
+      },
+    } : item));
+  }, [bill, checking, lang, navigatorMode, t]);
+
+  const navigatorPacketDownloaded = useCallback(() => {
+    const id = activeCase.current;
+    if (!id) return;
+    setNavigatorCases((items) => items.map((item) => item.id === id ? { ...item, status: "packet_downloaded" } : item));
+  }, []);
+
+  const navigatorAllDownloaded = useCallback((ids: string[]) => {
+    const downloaded = new Set(ids);
+    setNavigatorCases((items) => items.map((item) => downloaded.has(item.id) ? { ...item, status: "packet_downloaded" } : item));
+  }, []);
 
   return (
     <MotionConfig reducedMotion="user">
       <div className={step === "hero" ? "stage" : "stage in-step"}>
         <Sky parallax={parallax} />
-        <Nav />
+        <Nav navigatorMode={navigatorMode} onNavigatorMode={(value) => {
+          setNavigatorMode(value);
+        }} />
+        <TranslationNotice />
+        {navigatorMode && <p className="navigator-notice">{t("navigator.active_note")}</p>}
         <main>
           <AnimatePresence mode="wait">
             {step === "hero" && (
               <Hero
                 key={reduce ? "hero-still" : "hero"}
-                onStart={() => go("upload")}
+                onStart={() => {
+                  ensureNavigatorCase();
+                  go("upload");
+                }}
                 parallax={parallax}
                 reduce={reduce}
               />
@@ -159,7 +280,24 @@ function FlowInner() {
                 entrance={entrance}
                 reduce={reduce}
                 onFile={startReading}
-                onManual={() => go("manual")}
+                onSampleInsurance={startSampleInsurance}
+                onManual={() => {
+                  ensureNavigatorCase();
+                  go("manual");
+                }}
+                navigator={navigatorMode}
+              />
+            )}
+            {step === "insurance" && reading?.eobPromise && (
+              <InsuranceStep
+                key={`insurance-${reading.attempt}`}
+                entrance={entrance}
+                reduce={reduce}
+                reading={reading.eobPromise}
+                sample={reading.sampleInsurance}
+                onConfirm={confirmInsurance}
+                onRetry={retryInsurance}
+                onSkip={skipInsurance}
               />
             )}
             {step === "reading" && reading && (
@@ -170,8 +308,11 @@ function FlowInner() {
                 reading={reading.promise}
                 sample={reading.sample}
                 onConfirm={onConfirm}
-                onRetry={() => (reading.file ? startReading(reading.file) : go("upload"))}
-                onManual={() => go("manual")}
+                onRetry={() => (reading.file ? startReading(reading.file, reading.eobFile) : go("upload"))}
+                onManual={() => {
+                  ensureNavigatorCase();
+                  go("manual");
+                }}
                 onSample={() => startReading(null)}
                 onStartOver={startOver}
               />
@@ -187,7 +328,7 @@ function FlowInner() {
               />
             )}
             {step === "questions" && (
-              <QuestionsStep key="questions" entrance={entrance} reduce={reduce} onSubmit={onAnswers} />
+              <QuestionsStep key="questions" entrance={entrance} reduce={reduce} onSubmit={onAnswers} navigator={navigatorMode} />
             )}
             {step === "result" && checking && bill && (
               <ResultStep
@@ -199,8 +340,14 @@ function FlowInner() {
                 household={checking.household}
                 income={checking.request.annual_income}
                 benefits={checking.benefits}
+                eob={eob}
                 onRetry={() => startChecking(checking.request, checking.benefits)}
                 onStartOver={startOver}
+                navigator={navigatorMode}
+                navigatorCases={navigatorCases}
+                onResult={navigatorResult}
+                onPacketDownloaded={navigatorPacketDownloaded}
+                onNavigatorDownloaded={navigatorAllDownloaded}
               />
             )}
           </AnimatePresence>
@@ -216,7 +363,9 @@ function FlowInner() {
 export function Flow() {
   return (
     <I18nProvider>
-      <FlowInner />
+      <AccessibilityProvider>
+        <FlowInner />
+      </AccessibilityProvider>
     </I18nProvider>
   );
 }

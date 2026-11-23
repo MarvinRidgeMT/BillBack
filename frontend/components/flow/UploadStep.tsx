@@ -30,16 +30,21 @@ function acceptable(file: File): File | null {
 interface UploadStepProps {
   entrance: Entrance;
   reduce: boolean;
-  onFile: (file: File) => void;
+  onFile: (file: File, eobFile: File | null) => void;
+  onSampleInsurance: () => void;
   onManual: () => void;
+  navigator?: boolean;
 }
 
-export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepProps) {
+export function UploadStep({ entrance, reduce, onFile, onSampleInsurance, onManual, navigator = false }: UploadStepProps) {
   const t = useT();
   const input = useRef<HTMLInputElement>(null);
+  const eobInput = useRef<HTMLInputElement>(null);
   const [over, setOver] = useState(false);
   const [error, setError] = useState<MessageKey | null>(null);
   const [loadingSample, setLoadingSample] = useState(false);
+  const [billFile, setBillFile] = useState<File | null>(null);
+  const [eobFile, setEobFile] = useState<File | null>(null);
   const alive = useRef(true);
   useEffect(() => {
     alive.current = true;
@@ -48,7 +53,7 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
     };
   }, []);
 
-  function take(file: File | undefined) {
+  function take(file: File | undefined, kind: "bill" | "eob" = "bill") {
     if (!file || loadingSample) return;
     const ok = acceptable(file);
     if (!ok) {
@@ -56,7 +61,8 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
       return;
     }
     setError(null);
-    onFile(ok);
+    if (kind === "eob") setEobFile(ok);
+    else setBillFile(ok);
   }
 
   function onDrop(e: DragEvent<HTMLDivElement>) {
@@ -73,7 +79,7 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
       if (!res.ok) throw new Error("sample missing");
       const blob = await res.blob();
       if (!alive.current) return;
-      onFile(new File([blob], "sample-bill.jpg", { type: "image/jpeg" }));
+      onFile(new File([blob], "sample-bill.jpg", { type: "image/jpeg" }), null);
     } catch {
       if (!alive.current) return;
       setError("upload.sample_failed");
@@ -83,8 +89,27 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
 
   return (
     <StepCard step={1} entrance={entrance} reduce={reduce}>
-      <StepHeading>{t("upload.title")}</StepHeading>
-      <p className="sub">{t("upload.sub")}</p>
+      <StepHeading>{t(navigator ? "navigator.upload_title" : "upload.title")}</StepHeading>
+      <p className="sub">{t(navigator ? "navigator.upload_sub" : "upload.sub")}</p>
+
+      <div className="optional-upload">
+        <p className="mb-1 font-medium">{t("upload.eob_title")}</p>
+        <p className="hint mt-0 mb-3">{t("upload.eob_sub")}</p>
+        <Button variant="ghost" onClick={() => eobInput.current?.click()} disabled={loadingSample}>
+          {eobFile ? t("upload.eob_selected", { name: eobFile.name }) : t("upload.eob_choose")}
+        </Button>
+        <input
+          ref={eobInput}
+          type="file"
+          accept={ACCEPT}
+          hidden
+          tabIndex={-1}
+          onChange={(e) => {
+            take(e.target.files?.[0], "eob");
+            e.target.value = "";
+          }}
+        />
+      </div>
 
       <div
         className={over ? "drop over" : "drop"}
@@ -124,11 +149,13 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
           hidden
           tabIndex={-1}
           onChange={(e) => {
-            take(e.target.files?.[0]);
+            take(e.target.files?.[0], "bill");
             e.target.value = "";
           }}
         />
       </div>
+
+      {billFile && <p className="banner">{t("upload.bill_selected", { name: billFile.name })}</p>}
 
       {error && (
         <p className="error-text" role="alert">
@@ -137,8 +164,14 @@ export function UploadStep({ entrance, reduce, onFile, onManual }: UploadStepPro
       )}
 
       <div className="btn-row">
+        <Button onClick={() => billFile && onFile(billFile, eobFile)} disabled={!billFile || loadingSample}>
+          {t("upload.continue")}
+        </Button>
         <Button variant="coral" onClick={trySample} disabled={loadingSample}>
           {t("upload.sample")}
+        </Button>
+        <Button variant="coral" onClick={onSampleInsurance} disabled={loadingSample}>
+          {t("upload.sample_insurance")}
         </Button>
         <Button variant="ghost" onClick={onManual} disabled={loadingSample}>
           {t("upload.manual")}

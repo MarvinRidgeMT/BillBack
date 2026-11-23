@@ -8,6 +8,7 @@ import { formatIncomeInput, parseIncome } from "@/lib/format";
 import { useT } from "@/lib/i18n";
 import { SNAPPY } from "@/lib/motion";
 import { BenefitsQuestion, type Benefits } from "./BenefitsQuestion";
+import { ReadAloud } from "./ReadAloud";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 
 const MIN_HOUSEHOLD = 1;
@@ -25,10 +26,11 @@ interface QuestionsStepProps {
   entrance: Entrance;
   reduce: boolean;
   onSubmit: (answers: Answers) => void;
+  navigator?: boolean;
 }
 
 /** The two things hospitals decide on: household size and yearly income. */
-export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps) {
+export function QuestionsStep({ entrance, reduce, onSubmit, navigator = false }: QuestionsStepProps) {
   const t = useT();
   const id = useId();
   const [household, setHousehold] = useState(MIN_HOUSEHOLD);
@@ -60,8 +62,17 @@ export function QuestionsStep({ entrance, reduce, onSubmit }: QuestionsStepProps
 
   return (
     <StepCard step={3} entrance={entrance} reduce={reduce}>
-      <StepHeading>{t("questions.title")}</StepHeading>
-      <p className="sub">{t("questions.sub")}</p>
+      <StepHeading>{t(navigator ? "navigator.questions_title" : "questions.title")}</StepHeading>
+      <p className="sub">{t(navigator ? "navigator.questions_sub" : "questions.sub")}</p>
+
+      <ReadAloud
+        summary={[
+          t("questions.read_household", { n: household }),
+          income ? t("questions.read_income", { amount: income }) : t("questions.read_income_empty"),
+          t("questions.read_instruction"),
+        ]}
+        script={[]}
+      />
 
       <form onSubmit={submit} noValidate>
         <div className="q">

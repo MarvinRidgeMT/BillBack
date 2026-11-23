@@ -8,7 +8,11 @@ import {
   type EligibilityRequest,
   type EligibilityStatus,
   type Envelope,
+  type EobDocument,
+  type EobReadData,
   type Evidence,
+  type ReconciliationData,
+  type ScheduleHCrosscheck,
 } from "./types";
 
 /**
@@ -106,6 +110,122 @@ export async function readBill(file: File): Promise<BillReadData> {
   };
 }
 
+/** POST /api/eob/read. The insurer statement is read in memory and is never saved. */
+export async function readEob(file: File): Promise<EobReadData> {
+  const form = new FormData();
+  form.append("file", file, file.name);
+  const data = await request<EobReadData>("/api/eob/read", { method: "POST", body: form }, READ_TIMEOUT_MS);
+  if (!data.document || !Array.isArray(data.document.claims) || data.document.claims.length === 0) {
+    throw new ApiError("failed", 200);
+  }
+  return { ...data, fields_to_confirm: Array.isArray(data.fields_to_confirm) ? data.fields_to_confirm : [] };
+}
+
+function cents(value: string): number | null {
+  const clean = value.replace(/[^0-9.-]/g, "");
+  const parsed = Number(clean);
+  return Number.isFinite(parsed) && parsed >= 0 ? Math.round(parsed * 100) : null;
+}
+
+function isoDate(value: string): string {
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.valueOf()) ? value : parsed.toISOString().slice(0, 10);
+}
+
+export async function compareEob(bill: ConfirmedBill, eob: EobDocument): Promise<ReconciliationData> {
+  return request<ReconciliationData>(
+    "/api/eob/compare",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        bill: {
+          provider: bill.fields.hospital_name,
+          service_date: isoDate(bill.fields.service_date),
+          amount_due_cents: cents(bill.fields.amount_due),
+          itemized: false,
+          line_items: [],
+        },
+        eob,
+      }),
+    },
+    ELIGIBILITY_TIMEOUT_MS,
+  );
+}
+
+export interface InsuranceLetterRequest {
+  kind: "itemized_bill" | "billing_hold";
+  lang: "en" | "es";
+  hospital: string;
+  account_number: string;
+  service_date: string;
+  bill_amount: string;
+  eob_patient_responsibility: string;
+  claim_status: string;
+}
+
+export async function downloadInsuranceLetter(body: InsuranceLetterRequest): Promise<void> {
+  let res: Response;
+  try {
+    res = await fetch("/api/eob/letter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(ELIGIBILITY_TIMEOUT_MS),
+    });
+  } catch {
+    throw new ApiError("unavailable", null);
+  }
+  if (!res.ok || !res.headers.get("content-type")?.includes("application/pdf")) {
+    throw new ApiError(res.status === 503 ? "unavailable" : "failed", res.status);
+  }
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `BillBack-${body.kind.replace("_", "-")}.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
+export interface FollowUpLetterRequest {
+  kind: "status_request" | "more_documents" | "eca_pause_request";
+  lang: "en" | "es";
+  hospital: string;
+  account_number: string;
+  service_date: string;
+  application_date: string;
+  documents: Array<"income" | "residency" | "tax" | "bank" | "insurance" | "benefits">;
+}
+
+export async function downloadFollowUpLetter(body: FollowUpLetterRequest): Promise<void> {
+  let response: Response;
+  try {
+    response = await fetch("/api/follow-up/letter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(ELIGIBILITY_TIMEOUT_MS),
+    });
+  } catch {
+    throw new ApiError("unavailable", null);
+  }
+  if (!response.ok || !response.headers.get("content-type")?.includes("application/pdf")) {
+    throw new ApiError(response.status === 503 ? "unavailable" : "failed", response.status);
+  }
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `BillBack-${body.kind.replaceAll("_", "-")}.pdf`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
 /** POST /api/eligibility. Plain code on the backend makes the call; the front end only shows it. */
 export async function checkEligibility(body: EligibilityRequest): Promise<EligibilityData> {
   const data = await request<EligibilityData>(
@@ -142,6 +262,20 @@ export async function checkEligibility(body: EligibilityRequest): Promise<Eligib
   };
 }
 
+/** Public filing context only. A missing match is expected and is not an error. */
+export async function getScheduleHCrosscheck(hospitalSlug: string): Promise<ScheduleHCrosscheck | null> {
+  try {
+    return await request<ScheduleHCrosscheck>(
+      `/api/schedule-h/${encodeURIComponent(hospitalSlug)}`,
+      { method: "GET" },
+      ELIGIBILITY_TIMEOUT_MS,
+    );
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
+}
+
 const STATUSES: readonly EligibilityStatus[] = [
   "likely_free",
   "likely_discounted",
@@ -165,7 +299,7 @@ export interface PacketRequest {
 }
 
 /** POST /api/packet. The PDF is built in memory on the backend and handed straight to the browser. */
-export async function downloadPacket(body: PacketRequest): Promise<void> {
+export async function buildPacketBlob(body: PacketRequest): Promise<Blob> {
   let res: Response;
   try {
     res = await fetch("/api/packet", {
@@ -180,7 +314,12 @@ export async function downloadPacket(body: PacketRequest): Promise<void> {
   if (!res.ok || !res.headers.get("content-type")?.includes("application/pdf")) {
     throw new ApiError(res.status === 503 ? "unavailable" : "failed", res.status);
   }
-  const blob = await res.blob();
+  return res.blob();
+}
+
+/** Download one generated packet without storing it on either side. */
+export async function downloadPacket(body: PacketRequest): Promise<void> {
+  const blob = await buildPacketBlob(body);
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

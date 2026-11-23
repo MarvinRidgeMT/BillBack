@@ -1,10 +1,12 @@
 "use client";
 
-import { useI18n } from "@/lib/i18n";
+import { useT } from "@/lib/i18n";
+import { AccessibilityToolbar } from "@/components/accessibility/AccessibilityToolbar";
+import { LanguageMenu } from "@/components/LanguageMenu";
 
 /** Logo left; "How it works" and the language toggle right. */
-export function Nav() {
-  const { t, toggleLang } = useI18n();
+export function Nav({ navigatorMode, onNavigatorMode }: { navigatorMode: boolean; onNavigatorMode: (value: boolean) => void }) {
+  const t = useT();
   return (
     <header className="nav">
       <div className="logo">BILLBACK</div>
@@ -12,9 +14,12 @@ export function Nav() {
         <a className="nav-link how-link" href="#how">
           {t("nav.how")}
         </a>
-        <button type="button" className="nav-link" lang={t("nav.lang_code")} onClick={toggleLang}>
-          {t("nav.lang_toggle")}
-        </button>
+        <label className="navigator-toggle">
+          <input type="checkbox" checked={navigatorMode} onChange={(event) => onNavigatorMode(event.target.checked)} />
+          <span>{t("navigator.toggle")}</span>
+        </label>
+        <AccessibilityToolbar />
+        <LanguageMenu />
       </nav>
     </header>
   );

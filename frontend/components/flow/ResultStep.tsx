@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Stamp } from "@/components/hero/Stamp";
+import { Glossary } from "@/components/accessibility/Glossary";
 import { Button } from "@/components/ui/button";
 import { ApiError, DEMO_MODE, downloadPacket } from "@/lib/api";
 import { useI18n, useT, type MessageKey, type Translate } from "@/lib/i18n";
@@ -12,14 +13,21 @@ import { MOCK_ELIGIBILITY_DEFAULT } from "@/lib/mock";
 import {
   CONFIRM_THRESHOLD,
   type ConfirmedBill,
+  type EobDocument,
   type EligibilityData,
   type EligibilityStatus,
 } from "@/lib/types";
 import type { Benefits } from "./BenefitsQuestion";
 import { IncomeSlider } from "./IncomeSlider";
+import { InsuranceReview } from "./InsuranceReview";
 import { PolicyReceipt } from "./PolicyReceipt";
 import { ReadAloud } from "./ReadAloud";
 import { ResultExtras } from "./ResultExtras";
+import { ScheduleHBadge } from "./ScheduleHBadge";
+import { NavigatorPanel } from "./NavigatorPanel";
+import { FollowUpKit } from "./FollowUpKit";
+import { MedicaidReferral } from "./MedicaidReferral";
+import type { NavigatorCase } from "@/lib/navigator";
 import { StepCard, StepHeading, type Entrance } from "./StepCard";
 import { FLIP_S, ScrapBurst } from "./ZeroFinale";
 
@@ -50,18 +58,33 @@ interface ResultStepProps {
   household: number;
   income: number;
   benefits?: Benefits;
+  eob?: EobDocument | null;
   onRetry: () => void;
   onStartOver: () => void;
+  navigator?: boolean;
+  navigatorCases?: NavigatorCase[];
+  onResult?: (data: EligibilityData) => void;
+  onPacketDownloaded?: () => void;
+  onNavigatorDownloaded?: (ids: string[]) => void;
 }
 
-export function ResultStep({ entrance, reduce, checking, bill, household, income, benefits = "skip", onRetry, onStartOver }: ResultStepProps) {
+export function ResultStep({ entrance, reduce, checking, bill, household, income, benefits = "skip", eob = null, onRetry, onStartOver, navigator = false, navigatorCases = [], onResult, onPacketDownloaded, onNavigatorDownloaded }: ResultStepProps) {
   const t = useT();
   const [state, setState] = useState<State>({ phase: "loading" });
+  const onResultRef = useRef(onResult);
+
+  useEffect(() => {
+    onResultRef.current = onResult;
+  }, [onResult]);
 
   useEffect(() => {
     let live = true;
     checking.then(
-      (data) => live && setState({ phase: "ready", data, sample: false }),
+      (data) => {
+        if (!live) return;
+        setState({ phase: "ready", data, sample: false });
+        onResultRef.current?.(data);
+      },
       (err: unknown) => {
         if (!live) return;
         const error = err instanceof ApiError ? err : new ApiError("failed", null);
@@ -113,8 +136,13 @@ export function ResultStep({ entrance, reduce, checking, bill, household, income
           household={household}
           income={income}
           benefits={benefits}
+          eob={eob}
           reduce={reduce}
           onStartOver={onStartOver}
+          navigator={navigator}
+          navigatorCases={navigatorCases}
+          onPacketDownloaded={onPacketDownloaded}
+          onNavigatorDownloaded={onNavigatorDownloaded}
         />
       )}
     </StepCard>
@@ -160,13 +188,18 @@ interface VerdictProps {
   household: number;
   income: number;
   benefits: Benefits;
+  eob: EobDocument | null;
   reduce: boolean;
   onStartOver: () => void;
+  navigator: boolean;
+  navigatorCases: NavigatorCase[];
+  onPacketDownloaded?: () => void;
+  onNavigatorDownloaded?: (ids: string[]) => void;
 }
 
 type PacketState = "idle" | "working" | "failed";
 
-function Verdict({ data, sample, bill, household, income, benefits, reduce, onStartOver }: VerdictProps) {
+function Verdict({ data, sample, bill, household, income, benefits, eob, reduce, onStartOver, navigator, navigatorCases, onPacketDownloaded, onNavigatorDownloaded }: VerdictProps) {
   const { t, lang } = useI18n();
   const stamp = stampText(data, t);
   const [stamped, setStamped] = useState(reduce);
@@ -218,8 +251,9 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
           page: evidence.page,
           fpl_year: data.fpl_year ?? null,
         },
-        lang,
+        lang: lang === "es" ? "es" : "en",
       });
+      onPacketDownloaded?.();
       setPacket("idle");
     } catch {
       setPacket("failed");
@@ -268,11 +302,11 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
           {finale && <ScrapBurst delay={stampDelayMs / 1000} />}
         </motion.div>
         <div>
-          <StepHeading key={data.status}>{t(TITLES[data.status])}</StepHeading>
+          <StepHeading key={data.status}>{t(navigator ? (`navigator.${TITLES[data.status]}` as MessageKey) : TITLES[data.status])}</StepHeading>
           <p className="sub mb-0!">
             {sample
               ? t("result.sample_note")
-              : t(household === 1 ? "result.fpl_one" : "result.fpl_other", {
+              : t(navigator ? "navigator.result_fpl" : household === 1 ? "result.fpl_one" : "result.fpl_other", {
                   pct: Math.round(data.percent_of_fpl),
                   n: household,
                 })}
@@ -289,7 +323,7 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
 
       <div className="quote-box">
         <p className="lead">{lead}</p>
-        {lang === "es" && quote && <p className="quote-lang">{t("result.policy_text_label")}</p>}
+        {lang !== "en" && quote && <p className="quote-lang">{t("result.policy_text_label")}</p>}
         {quote ? (
           <p lang="en">
             {"“"}
@@ -328,6 +362,8 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
           reduce={reduce}
         />
       )}
+
+      {!sample && <ScheduleHBadge hospitalSlug={bill.hospital.slug} />}
 
       {!sample && (
         <ReadAloud
@@ -378,6 +414,18 @@ function Verdict({ data, sample, bill, household, income, benefits, reduce, onSt
       )}
 
       <ResultExtras data={data} bill={bill} benefits={benefits} sample={sample} />
+
+      {!sample && <MedicaidReferral state={bill.hospital.state} percentOfFpl={data.percent_of_fpl} />}
+
+      {!sample && <FollowUpKit bill={bill} onAppeal={() => getPacket("appeal")} />}
+
+      {navigator && onNavigatorDownloaded && (
+        <NavigatorPanel cases={navigatorCases} onDownloaded={onNavigatorDownloaded} />
+      )}
+
+      {eob && <InsuranceReview bill={bill} eob={eob} />}
+
+      <Glossary />
 
       {caveats.length > 0 && (
         <>

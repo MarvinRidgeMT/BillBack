@@ -41,8 +41,8 @@ export function StepHeading({ children }: { children: ReactNode }) {
     ref.current?.focus({ preventScroll: true });
   }, []);
   return (
-    <h2 ref={ref} tabIndex={-1}>
+    <h1 ref={ref} tabIndex={-1}>
       {children}
-    </h2>
+    </h1>
   );
 }

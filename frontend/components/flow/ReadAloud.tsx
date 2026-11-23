@@ -8,6 +8,9 @@ import { useI18n, type Lang } from "@/lib/i18n";
 const PREFERRED: Record<Lang, string[]> = {
   en: ["en-US", "en-GB", "en"],
   es: ["es-US", "es-MX", "es-419", "es"],
+  vi: ["vi-VN", "vi"],
+  "zh-CN": ["zh-CN", "zh"],
+  tl: ["fil-PH", "tl-PH", "fil", "tl"],
 };
 
 function pickVoice(voices: SpeechSynthesisVoice[], lang: Lang): SpeechSynthesisVoice | null {
@@ -38,6 +41,8 @@ interface ReadAloudProps {
   summary: string[];
   /** Part 2: what to say when calling the billing office. */
   script: string[];
+  /** Hide the call-script disclosure when this is reading an on-screen form. */
+  scriptTitle?: string;
 }
 
 type Playback = "idle" | "playing" | "paused";
@@ -46,7 +51,7 @@ type Playback = "idle" | "playing" | "paused";
  * "Read it to me". Uses the voice already on the device (speechSynthesis), so nothing is downloaded or sent.
  * Never autoplays. Everything being read is visible on screen.
  */
-export function ReadAloud({ summary, script }: ReadAloudProps) {
+export function ReadAloud({ summary, script, scriptTitle }: ReadAloudProps) {
   const { t, lang } = useI18n();
   const id = useId();
   const { supported, voice } = useVoice(lang);
@@ -85,7 +90,7 @@ export function ReadAloud({ summary, script }: ReadAloudProps) {
         u.voice = voice;
         u.lang = voice.lang;
       } else {
-        u.lang = lang === "es" ? "es-US" : "en-US";
+        u.lang = lang === "es" ? "es-US" : lang === "vi" ? "vi-VN" : lang === "zh-CN" ? "zh-CN" : lang === "tl" ? "fil-PH" : "en-US";
       }
       u.rate = 0.95;
       u.onstart = () => run === runId.current && setCurrent(i);
@@ -110,9 +115,9 @@ export function ReadAloud({ summary, script }: ReadAloudProps) {
 
   return (
     <section className="readaloud" aria-labelledby={`${id}-title`}>
-      <h3 className="sr-only" id={`${id}-title`}>
+      <h2 className="sr-only" id={`${id}-title`}>
         {t("wow.read.title")}
-      </h3>
+      </h2>
       {canSpeak && (
         <div className="btn-row readaloud-controls">
           <Button
@@ -140,14 +145,16 @@ export function ReadAloud({ summary, script }: ReadAloudProps) {
           ))}
         </ol>
       )}
-      <details className="call-script" open={playback !== "idle" && current >= summary.length ? true : undefined}>
-        <summary>{t("wow.read.script_title")}</summary>
-        {script.map((text, i) => (
-          <p key={i} data-current={current === summary.length + i || undefined}>
-            {text}
-          </p>
-        ))}
-      </details>
+      {script.length > 0 && (
+        <details className="call-script" open={playback !== "idle" && current >= summary.length ? true : undefined}>
+          <summary>{scriptTitle ?? t("wow.read.script_title")}</summary>
+          {script.map((text, i) => (
+            <p key={i} data-current={current === summary.length + i || undefined}>
+              {text}
+            </p>
+          ))}
+        </details>
+      )}
     </section>
   );
 }
