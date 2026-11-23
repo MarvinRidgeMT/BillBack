@@ -8,6 +8,9 @@ import { useI18n, type Lang } from "@/lib/i18n";
 const PREFERRED: Record<Lang, string[]> = {
   en: ["en-US", "en-GB", "en"],
   es: ["es-US", "es-MX", "es-419", "es"],
+  vi: ["vi-VN", "vi"],
+  "zh-CN": ["zh-CN", "zh"],
+  tl: ["fil-PH", "tl-PH", "fil", "tl"],
 };
 
 function pickVoice(voices: SpeechSynthesisVoice[], lang: Lang): SpeechSynthesisVoice | null {
@@ -87,7 +90,7 @@ export function ReadAloud({ summary, script, scriptTitle }: ReadAloudProps) {
         u.voice = voice;
         u.lang = voice.lang;
       } else {
-        u.lang = lang === "es" ? "es-US" : "en-US";
+        u.lang = lang === "es" ? "es-US" : lang === "vi" ? "vi-VN" : lang === "zh-CN" ? "zh-CN" : lang === "tl" ? "fil-PH" : "en-US";
       }
       u.rate = 0.95;
       u.onstart = () => run === runId.current && setCurrent(i);

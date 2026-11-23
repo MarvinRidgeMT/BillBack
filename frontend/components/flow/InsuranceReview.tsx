@@ -38,7 +38,7 @@ export function InsuranceReview({ bill, eob }: InsuranceReviewProps) {
     try {
       await downloadInsuranceLetter({
         kind,
-        lang,
+        lang: lang === "es" ? "es" : "en",
         hospital: bill.fields.hospital_name,
         account_number: bill.fields.account_number,
         service_date: bill.fields.service_date,

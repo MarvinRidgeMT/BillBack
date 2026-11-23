@@ -53,10 +53,10 @@ async function audit(page: Page, label: string) {
 
 async function auditEnglishAndSpanish(page: Page, label: string) {
   await audit(page, `${label} EN`);
-  await page.getByRole("button", { name: "Español" }).click();
+  await page.getByRole("combobox", { name: "Language" }).selectOption("es");
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
   await audit(page, `${label} ES`);
-  await page.getByRole("button", { name: "English" }).click();
+  await page.getByRole("combobox", { name: "Idioma" }).selectOption("en");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
 }
 

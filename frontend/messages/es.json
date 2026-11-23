@@ -292,5 +292,9 @@
   "questions.read_household": "Tu hogar tiene actualmente {n} personas.",
   "questions.read_income": "Ingreso anual del hogar ingresado: {amount} dólares.",
   "questions.read_income_empty": "El ingreso anual del hogar sigue en blanco.",
-  "questions.read_instruction": "Cambia cualquiera de las respuestas y luego elige Ver mi resultado."
+  "questions.read_instruction": "Cambia cualquiera de las respuestas y luego elige Ver mi resultado.",
+  "language.label": "Idioma",
+  "language.ai_notice": "Traducción hecha por IA; pide al hospital la versión oficial en tu idioma.",
+  "language.letters_notice": "Las cartas y los PDF están disponibles por ahora solo en inglés o español.",
+  "language.official_notice": "Los hospitales deben traducir los documentos de ayuda financiera para ciertos grupos locales grandes con dominio limitado del inglés. Pide la versión oficial."
 }

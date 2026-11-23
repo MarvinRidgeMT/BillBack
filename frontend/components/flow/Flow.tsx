@@ -6,6 +6,7 @@ import { CharityMap } from "@/components/CharityMap";
 import { Footer } from "@/components/Footer";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Nav } from "@/components/Nav";
+import { TranslationNotice } from "@/components/TranslationNotice";
 import { Hero } from "@/components/hero/Hero";
 import { Sky } from "@/components/hero/Sky";
 import { AccessibilityProvider } from "@/lib/accessibility";
@@ -190,6 +191,7 @@ function FlowInner() {
       <div className={step === "hero" ? "stage" : "stage in-step"}>
         <Sky parallax={parallax} />
         <Nav />
+        <TranslationNotice />
         <main>
           <AnimatePresence mode="wait">
             {step === "hero" && (

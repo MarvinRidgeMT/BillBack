@@ -12,17 +12,31 @@ import {
 } from "react";
 import en from "@/messages/en.json";
 import es from "@/messages/es.json";
+import vi from "@/messages/vi.json";
+import zhCN from "@/messages/zh-CN.json";
+import tl from "@/messages/tl.json";
 
-export type Lang = "en" | "es";
+export type Lang = "en" | "es" | "vi" | "zh-CN" | "tl";
 export type MessageKey = keyof typeof en;
 export type Translate = (key: MessageKey, vars?: Record<string, string | number>) => string;
 
-// Typing es against en's keys makes a missing Spanish key a build error.
-const MESSAGES: Record<Lang, Record<MessageKey, string>> = { en, es };
+// EN/ES remain complete and human-reviewed. New locales are intentionally partial machine translations;
+// untranslated keys fall back to English and the UI always discloses that limitation.
+const MESSAGES: Record<Lang, Partial<Record<MessageKey, string>>> = { en, es, vi, "zh-CN": zhCN, tl };
+const MACHINE_TRANSLATED = new Set<Lang>(["vi", "zh-CN", "tl"]);
+
+export const LANGUAGE_OPTIONS: readonly { code: Lang; label: string }[] = [
+  { code: "en", label: "English" },
+  { code: "es", label: "Español" },
+  { code: "vi", label: "Tiếng Việt" },
+  { code: "zh-CN", label: "简体中文" },
+  { code: "tl", label: "Tagalog" },
+];
 
 interface I18nValue {
   lang: Lang;
-  toggleLang: () => void;
+  setLang: (lang: Lang) => void;
+  machineTranslated: boolean;
   t: Translate;
 }
 
@@ -34,12 +48,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = lang;
-    document.title = MESSAGES[lang]["meta.title"];
+    document.title = MESSAGES[lang]["meta.title"] ?? en["meta.title"];
   }, [lang]);
 
   const t = useCallback<Translate>(
     (key, vars) => {
-      const template = MESSAGES[lang][key] ?? MESSAGES.en[key] ?? key;
+      const template = MESSAGES[lang][key] ?? en[key] ?? key;
       if (!vars) return template;
       return template.replace(/\{(\w+)\}/g, (match, name: string) =>
         name in vars ? String(vars[name]) : match,
@@ -48,8 +62,10 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     [lang],
   );
 
-  const toggleLang = useCallback(() => setLang((l) => (l === "en" ? "es" : "en")), []);
-  const value = useMemo(() => ({ lang, toggleLang, t }), [lang, toggleLang, t]);
+  const value = useMemo(
+    () => ({ lang, setLang, machineTranslated: MACHINE_TRANSLATED.has(lang), t }),
+    [lang, t],
+  );
 
   return createElement(I18nContext.Provider, { value }, children);
 }

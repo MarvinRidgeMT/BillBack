@@ -224,7 +224,7 @@ function Verdict({ data, sample, bill, household, income, benefits, eob, reduce,
           page: evidence.page,
           fpl_year: data.fpl_year ?? null,
         },
-        lang,
+        lang: lang === "es" ? "es" : "en",
       });
       setPacket("idle");
     } catch {
@@ -295,7 +295,7 @@ function Verdict({ data, sample, bill, household, income, benefits, eob, reduce,
 
       <div className="quote-box">
         <p className="lead">{lead}</p>
-        {lang === "es" && quote && <p className="quote-lang">{t("result.policy_text_label")}</p>}
+        {lang !== "en" && quote && <p className="quote-lang">{t("result.policy_text_label")}</p>}
         {quote ? (
           <p lang="en">
             {"“"}

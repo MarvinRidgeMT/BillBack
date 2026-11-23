@@ -292,5 +292,9 @@
   "questions.read_household": "Your household currently has {n} people.",
   "questions.read_income": "Yearly household income entered: {amount} dollars.",
   "questions.read_income_empty": "Yearly household income is still blank.",
-  "questions.read_instruction": "Change either answer, then choose See my result."
+  "questions.read_instruction": "Change either answer, then choose See my result.",
+  "language.label": "Language",
+  "language.ai_notice": "Translated by AI; ask the hospital for the official version in your language.",
+  "language.letters_notice": "Letters and PDFs are currently available only in English or Spanish.",
+  "language.official_notice": "Hospitals must translate financial-aid documents for certain large local groups with limited English proficiency. Ask for the official version."
 }
