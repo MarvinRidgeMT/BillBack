@@ -166,7 +166,7 @@ One entry per piece of AI-written work that was checked. Entries are honest: if 
 - Decision: **changed the baseline** (label priority, row-keeping OCR mode first, money/dash cleanup), with unit tests
   from the real OCR strings; re-ran: 37/60. Tuning on the same bills favors the baseline, so RESULTS.md says the gap is,
   if anything, understated. Also added "wrong values returned" to the report: baseline 15, AI 0.
-- Commit: see `git log -- eval/baselines/tesseract_extract.py`
+- Commit: `01fc4b1`
 
 ---
 
