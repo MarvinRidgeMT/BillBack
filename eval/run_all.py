@@ -53,21 +53,28 @@ def run_pytest() -> dict[str, Any]:
     return summary
 
 
-def run_steps(offline: bool, runs: int) -> dict[str, Optional[str]]:
-    from eval import bench_bill_reader, live_mode_check, policy_grounding, repeat_runs, run_households
+def _main_of(module: str):
+    """Import an eval module's main() lazily, so one broken import is reported as a failed step, not a crash."""
+    def call(argv):
+        import importlib
 
+        return importlib.import_module(f"eval.{module}").main(argv)
+    return call
+
+
+def run_steps(offline: bool, runs: int) -> dict[str, Optional[str]]:
     errors: dict[str, Optional[str]] = {}
     errors["pytest"] = _step("pytest", run_pytest)
     if offline:
         errors["bench"] = _step("bill reader benchmark (Method B only; Method A kept from the last live run)",
-                                bench_bill_reader.main, ["--only", "B"])
+                                _main_of("bench_bill_reader"), ["--only", "B"])
     else:
-        errors["bench"] = _step("bill reader benchmark", bench_bill_reader.main, [])
-        errors["repeat"] = _step("repeat runs", repeat_runs.main, ["--runs", str(runs)])
-    errors["grounding"] = _step("policy grounding + accuracy", policy_grounding.main, [])
-    errors["households"] = _step("households end to end", run_households.main, [])
+        errors["bench"] = _step("bill reader benchmark", _main_of("bench_bill_reader"), [])
+        errors["repeat"] = _step("repeat runs", _main_of("repeat_runs"), ["--runs", str(runs)])
+    errors["grounding"] = _step("policy grounding + accuracy", _main_of("policy_grounding"), [])
+    errors["households"] = _step("households end to end", _main_of("run_households"), [])
     if load_result("live_mode_check") is None:
-        errors["live_mode"] = _step("live mode check", live_mode_check.main, [])
+        errors["live_mode"] = _step("live mode check", _main_of("live_mode_check"), [])
     return errors
 
 

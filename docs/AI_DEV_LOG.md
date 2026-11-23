@@ -168,6 +168,21 @@ One entry per piece of AI-written work that was checked. Entries are honest: if 
   if anything, understated. Also added "wrong values returned" to the report: baseline 15, AI 0.
 - Commit: `01fc4b1`
 
+### 12. Graphify's automated PR review found five more bugs
+- Date: 2026-11-23
+- Tool: Graphify PR review on PR #1 (gate passed, 0 blocking; its investigation listed 5 bugs and did not finish), fixes by Claude Code
+- What the AI produced: the PR's backend, eval and front-end code.
+- How it was checked: each finding reproduced or read against the code before changing anything; a test written first.
+- What the check found (all 5 confirmed): a chunked upload with no Content-Length skipped the size cap and could spool a
+  large file to disk; the Gemini client accepted the per-try timeout but ignored it; OCR money split across two lines
+  crashed the baseline with a ValueError; one unimportable eval module aborted `run_all.py` before RESULTS.md was
+  written; and going back from "my hospital isn't listed" with a different hospital's bill kept the first hospital's
+  name and state for the policy check.
+- Decision: **changed**, each with a regression test: a streaming body-size cap (counts bytes as they arrive), the
+  timeout passed to the Gemini SDK, OCR money matched within one line, eval modules imported per step, and a fresh
+  not-listed draft whenever the bill's hospital changes. Re-ran the baseline: still 37/60.
+- Commit: see the commit after `c01e620` ("fix: five bugs from Graphify's review of PR #1")
+
 ---
 
 ## The team's own story from the original build weekend

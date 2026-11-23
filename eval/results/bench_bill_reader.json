@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-23T23:30:59+00:00",
+  "generated_at": "2026-11-23T23:44:03+00:00",
   "model": "claude-sonnet-5-5",
-  "git_commit": "0466d28+uncommitted",
+  "git_commit": "c01e620+uncommitted",
   "method_a": "AI bill reader shipped in the app (backend/bill_reader/reader.py)",
   "method_b": "Tesseract OCR + regex/heuristics (eval/baselines/tesseract_extract.py)",
   "rules": "Text is Unicode-normalized, case-folded and whitespace-collapsed before comparing. Money must match to the cent. Dates must be the same calendar day after parsing. Hospital names and addresses match if equal after normalization or if the fuzzy ratio (token sort) is \u2265 0.90; for addresses every number (street number, ZIP) must also be exactly the same. Account numbers: case and whitespace ignored, separators kept. % of the poverty line must match exactly.",
@@ -605,8 +605,8 @@
           "service_date": 7,
           "account_number": 6
         },
-        "avg_seconds": 1.204429965194625,
-        "max_seconds": 1.8594197910279036,
+        "avg_seconds": 1.2257353125023656,
+        "max_seconds": 2.0332144999410957,
         "avg_cost_usd": 0.0,
         "low_confidence_fields": 0,
         "fields_to_confirm": 0,
@@ -627,7 +627,7 @@
             "account_number": "UH-4471902"
           },
           "method": "ocr",
-          "seconds": 1.7021407918073237,
+          "seconds": 1.6992407080251724,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -648,7 +648,7 @@
             "account_number": "BT-00938815"
           },
           "method": "pdf_text",
-          "seconds": 0.005722332978621125,
+          "seconds": 0.030686333077028394,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -669,7 +669,7 @@
             "account_number": "FH 7720-1145"
           },
           "method": "ocr",
-          "seconds": 1.3350357920862734,
+          "seconds": 1.3170636252034456,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -690,7 +690,7 @@
             "account_number": "MC-55293975"
           },
           "method": "ocr",
-          "seconds": 1.0858524998184294,
+          "seconds": 1.067163416882977,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -711,7 +711,7 @@
             "account_number": "ADH-3309184"
           },
           "method": "ocr",
-          "seconds": 1.6027742088772357,
+          "seconds": 1.5847136660013348,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": false,
@@ -732,7 +732,7 @@
             "account_number": "MS 39705"
           },
           "method": "ocr",
-          "seconds": 1.673040083842352,
+          "seconds": 1.6463634169194847,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -753,7 +753,7 @@
             "account_number": "UH-4489315"
           },
           "method": "ocr",
-          "seconds": 1.8594197910279036,
+          "seconds": 1.8570371251553297,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -774,7 +774,7 @@
             "account_number": "91347722"
           },
           "method": "ocr",
-          "seconds": 1.1310492081101984,
+          "seconds": 1.144155542133376,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": false,
@@ -795,7 +795,7 @@
             "account_number": "MC-55418820"
           },
           "method": "pdf_text",
-          "seconds": 0.0067967078648507595,
+          "seconds": 0.006377833895385265,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -816,7 +816,7 @@
             "account_number": "FH 7735-0995"
           },
           "method": "ocr",
-          "seconds": 1.8291536660399288,
+          "seconds": 2.0332144999410957,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -837,7 +837,7 @@
             "account_number": "4471902"
           },
           "method": "ocr",
-          "seconds": 1.640819874824956,
+          "seconds": 1.73366849985905,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": true,
@@ -858,7 +858,7 @@
             "account_number": null
           },
           "method": "ocr",
-          "seconds": 0.5813546250574291,
+          "seconds": 0.5891390829347074,
           "cost_usd": 0.0,
           "checks": {
             "hospital_name": false,
@@ -870,9 +870,9 @@
         }
       ],
       "meta": {
-        "generated_at": "2026-11-23T23:30:45+00:00",
+        "generated_at": "2026-11-23T23:43:48+00:00",
         "model": "claude-sonnet-5-5",
-        "git_commit": "0466d28+uncommitted"
+        "git_commit": "c01e620+uncommitted"
       }
     }
   }

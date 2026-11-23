@@ -90,11 +90,12 @@ def _images_for(data: bytes) -> list[Image.Image]:
 
 
 # OCR splits money: "$4 931-80", "$6 ,200 .00", "$742. 80" -> "$4,931.80", "$6,200.00", "$742.80"
-_OCR_MONEY = re.compile(r"\$\s?(\d{1,3}(?:\s?[ ,]\s?\d{3})*|\d+)\s?[.\-]\s?(\d{2})\b")
+# Spaces and tabs only (never a line break), so an amount can't be stitched together across two lines.
+_OCR_MONEY = re.compile(r"\$[ \t]?(\d{1,3}(?:[ \t]?[ ,][ \t]?\d{3})*|\d+)[ \t]?[.\-][ \t]?(\d{2})\b")
 
 
 def _fix_money(match: re.Match) -> str:
-    whole = re.sub(r"[ ,]", "", match.group(1))
+    whole = re.sub(r"[\s,]", "", match.group(1))
     return f"${int(whole):,}.{match.group(2)}"
 
 

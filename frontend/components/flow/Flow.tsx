@@ -26,6 +26,7 @@ import {
   type ManualInitial,
   type PolicyReadData,
 } from "@/lib/types";
+import { nextNotListedDraft } from "@/lib/notListedDraft";
 import { stateFromAddress } from "@/lib/validation";
 import type { Benefits } from "./BenefitsQuestion";
 import { LivePolicyStep } from "./LivePolicyStep";
@@ -171,16 +172,13 @@ function FlowInner() {
 
   const onNotListed = useCallback(
     (fields: Record<FieldName, string>) => {
+      // A different hospital's bill starts a fresh draft, so the old hospital never reaches the policy check.
+      setNotListedDraft((d) => nextNotListedDraft(d, pendingFields, fields, stateFromAddress(fields.hospital_address)));
       setPendingFields(fields);
-      setNotListedDraft((d) => ({
-        ...d,
-        hospital: d.hospital || fields.hospital_name,
-        state: d.state || stateFromAddress(fields.hospital_address) || "",
-      }));
       setNotListedFocus(null);
       go("notListed");
     },
-    [go],
+    [go, pendingFields],
   );
 
   const startPolicy = useCallback(

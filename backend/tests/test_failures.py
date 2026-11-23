@@ -196,3 +196,22 @@ def test_household_of_twenty_is_allowed():
     resp = client.post("/api/eligibility", json={"hospital_slug": "fort-healthcare-inc", "household_size": 20,
                                                  "annual_income": 50000, "state": "WI"})
     assert resp.status_code == 200
+
+
+def test_gemini_client_passes_the_per_try_timeout_to_the_sdk():
+    """Graphify review: GeminiClient accepted `timeout` but never used it, so a slow call ran past its budget."""
+    from types import SimpleNamespace
+
+    from backend.policy_reader.llm_clients import GeminiClient
+
+    seen = {}
+
+    def generate_content(model, contents, config):
+        seen["timeout_ms"] = config.http_options.timeout if config.http_options else None
+        return SimpleNamespace(text="{}", usage_metadata=None)
+
+    client = object.__new__(GeminiClient)  # skip __init__: no API key needed
+    client.model = "gemini-test"
+    client._client = SimpleNamespace(models=SimpleNamespace(generate_content=generate_content))
+    client.generate(PromptInput("x", "y"), timeout=12.0)
+    assert seen["timeout_ms"] == 12000

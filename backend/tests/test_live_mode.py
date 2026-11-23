@@ -343,3 +343,24 @@ def test_bad_json_body_is_a_typed_error():
 
 def test_search_with_only_apostrophes_does_not_crash():
     assert client.get("/api/hospitals/search?q=%27%27").json()["data"] == []
+
+
+def test_chunked_upload_without_content_length_is_capped_in_memory(monkeypatch):
+    """Graphify review: a chunked body has no Content-Length, so a header check alone lets it through."""
+    from backend import app as app_mod
+
+    monkeypatch.setattr(app_mod, "MAX_REQUEST_BYTES", 64 * 1024)
+    monkeypatch.setattr(app_mod.body_limit_state, "max_bytes", 64 * 1024)
+    boundary = "xyz"
+    head = (f"--{boundary}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"p.pdf\"\r\n"
+            "Content-Type: application/pdf\r\n\r\n%PDF-1.4\n").encode()
+
+    def body():
+        yield head
+        for _ in range(40):  # 40 x 4 KB = 160 KB, over the 64 KB test cap
+            yield b"x" * 4096
+        yield f"\r\n--{boundary}--\r\n".encode()
+
+    resp = client.post("/api/policy/read", content=body(),
+                       headers={"content-type": f"multipart/form-data; boundary={boundary}"})
+    assert resp.status_code == 413 and resp.json()["code"] == "too_large"

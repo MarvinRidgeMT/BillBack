@@ -193,6 +193,8 @@ class GeminiClient:
         config = types.GenerateContentConfig(
             temperature=0,
             seed=GEMINI_SEED,
+            # The retry helper's per-try budget (backend/llm_retry.py); the SDK takes milliseconds.
+            http_options=types.HttpOptions(timeout=int(timeout * 1000)) if timeout else None,
             response_mime_type="application/json",
             response_json_schema=prompt.loose_schema or llm_json_schema(),
         )

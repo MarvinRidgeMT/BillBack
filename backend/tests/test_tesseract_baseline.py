@@ -39,3 +39,9 @@ def test_ocr_split_money_is_repaired():
     """Seen in real OCR of the angled bill: '$4 931-80' for $4,931.80."""
     assert extract_fields("amount due: $4 931-80\n")["amount_due"] == "$4,931.80"
     assert extract_fields("AMOUNT DUE\n$6 ,200 .00\n")["amount_due"] == "$6,200.00"
+
+
+def test_money_split_across_lines_does_not_crash():
+    """Graphify review: '$12' at a line end + ' 345.67' on the next line raised ValueError and lost the whole bill."""
+    fields = extract_fields("Total $12\n 345.67\nAMOUNT DUE $5,800.00\n")
+    assert fields["amount_due"] == "$5,800.00"

@@ -8,7 +8,6 @@ from dataclasses import dataclass
 from typing import Any, Literal, Optional
 
 from fastapi import FastAPI, HTTPException, Request, Response, UploadFile
-from fastapi.responses import JSONResponse
 from starlette.formparsers import MultiPartParser
 from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
@@ -16,6 +15,7 @@ from pydantic import BaseModel, Field
 import hashlib
 
 from backend import demo_mode, errors, fpl, hospital_form, packet, policies
+from backend.body_limit import BodyLimitMiddleware, BodyLimitState
 from backend.errors import AppError
 from backend.llm_retry import ModelUnavailable
 from backend.policy_reader import cache as policy_cache
@@ -28,20 +28,15 @@ from backend.policy_reader.fetch import MAX_BYTES, FetchError, fetch_policy
 from backend.policy_reader.reader import PolicyReaderError, read_policy, read_policy_text
 
 log = logging.getLogger("billback")
-# Uploads stay in memory: Starlette spools multipart parts over 1 MB to a temp file on disk by default.
-MultiPartParser.spool_max_size = MAX_BYTES + 1024 * 1024
-MAX_REQUEST_BYTES = MAX_BYTES + 1024 * 1024  # 25 MB file + form overhead; checked before the body is parsed
+MAX_REQUEST_BYTES = MAX_BYTES + 1024 * 1024  # 25 MB file + form overhead; enforced while the body streams in
+# Uploads stay in memory: Starlette spools multipart parts over 1 MB to a temp file on disk by default. The spool
+# threshold is above the request cap, and BodyLimitMiddleware stops reading at the cap (even for chunked uploads).
+MultiPartParser.spool_max_size = MAX_REQUEST_BYTES + 1024 * 1024
 
 app = FastAPI(title="BillBack API")
 errors.install(app)
-
-
-@app.middleware("http")
-async def _cap_request_size(request: Request, call_next):
-    length = request.headers.get("content-length")
-    if length and length.isdigit() and int(length) > MAX_REQUEST_BYTES:
-        return JSONResponse(errors.error_body("too_large", "file is larger than 25 MB"), status_code=413)
-    return await call_next(request)
+body_limit_state = BodyLimitState(max_bytes=MAX_REQUEST_BYTES)
+app.add_middleware(BodyLimitMiddleware, state=body_limit_state)
 MAX_HOUSEHOLD = 20  # API and UI agree: 1-20 people
 
 
