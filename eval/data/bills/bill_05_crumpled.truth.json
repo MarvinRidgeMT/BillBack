@@ -1,0 +1,15 @@
+{
+  "file": "sample_bills/bill_05_crumpled.jpg",
+  "condition": "crumpled",
+  "conditions": [
+    "crumpled"
+  ],
+  "hospital_name": "Adena Health System",
+  "hospital_address": "77 Ridgeline Pkwy, Chillicothe, OH 45601",
+  "amount_due": "6700.00",
+  "service_date": "2026-10-03",
+  "account_number": "ADH-3309184",
+  "hospital_slug": "adena-health-system",
+  "state": "OH",
+  "source": "sample_bills/answer_key.csv (values typed into the bill generator)"
+}

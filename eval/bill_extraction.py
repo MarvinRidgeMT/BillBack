@@ -18,6 +18,7 @@ from pathlib import Path
 
 from rapidfuzz import fuzz
 
+from backend import pricing
 from backend.bill_reader.reader import read_bill
 from backend.demo_mode import BILL_CACHE_DIR
 from backend.policy_reader.cache import REPO_ROOT
@@ -26,7 +27,6 @@ BILLS = REPO_ROOT / "sample_bills"
 OUT = REPO_ROOT / "eval" / "results"
 FIELDS = ("hospital_name", "hospital_address", "amount_due", "service_date", "account_number")
 ADDRESS_MIN = 90
-PRICE_IN, PRICE_OUT = 2.00, 10.00  # Claude Sonnet 5.5 USD per 1M tokens (platform.claude.com/docs/en/about-claude/pricing)
 
 
 def norm_text(s: str | None) -> str:
@@ -63,7 +63,7 @@ def main() -> int:
         results.append({
             "file": row["file"], "condition": row["condition"], "checks": checks, "fields": out["fields"],
             "fields_to_confirm": out["fields_to_confirm"], "seconds": seconds,
-            "cost": res.input_tokens / 1e6 * PRICE_IN + res.output_tokens / 1e6 * PRICE_OUT,
+            "cost": pricing.estimate_cost_usd(res.model, res.input_tokens, res.output_tokens) or 0.0,
             "tokens_in": res.input_tokens, "tokens_out": res.output_tokens,
         })
         print(f"{row['file']:28} {sum(checks.values())}/5  {seconds:.1f}s  confirm={out['fields_to_confirm']}")

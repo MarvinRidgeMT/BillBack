@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import dataclasses
 import logging
-import os
 import time
 from dataclasses import dataclass, field
 from datetime import date
@@ -12,6 +11,8 @@ from pathlib import Path
 from typing import Optional
 
 from pydantic import ValidationError
+
+from backend import pricing
 
 from . import cache, extract_text, validate
 from .llm_clients import ModelClient, ModelResult, PolicyReaderError, PromptInput, default_client
@@ -22,8 +23,6 @@ __all__ = ["ModelResult", "PolicyReaderError", "ReadResult", "read_policy"]
 log = logging.getLogger(__name__)
 
 PROMPT_PATH = Path(__file__).resolve().parents[1] / "prompts" / "policy_reader.md"
-# USD per 1M tokens, for cost estimates only. Claude Sonnet 5.5 list price; override via env.
-DEFAULT_PRICES = {"claude-sonnet-5-5": (2.00, 10.00), "claude-opus-5-5": (4.00, 20.00), "claude-haiku-5-5": (0.10, 0.50)}
 
 
 @dataclass(frozen=True)
@@ -38,14 +37,7 @@ class ReadResult:
     extraction_warnings: tuple[str, ...] = field(default_factory=tuple)
 
     def estimated_cost_usd(self) -> Optional[float]:
-        env_in, env_out = os.getenv("PRICE_IN_PER_M"), os.getenv("PRICE_OUT_PER_M")
-        if env_in and env_out:
-            price_in, price_out = float(env_in), float(env_out)
-        elif self.model in DEFAULT_PRICES:
-            price_in, price_out = DEFAULT_PRICES[self.model]
-        else:
-            return None
-        return self.input_tokens / 1e6 * price_in + self.output_tokens / 1e6 * price_out
+        return pricing.estimate_cost_usd(self.model, self.input_tokens, self.output_tokens)
 
 
 def _raw_path(cache_dir: Path, sha: str) -> Path:

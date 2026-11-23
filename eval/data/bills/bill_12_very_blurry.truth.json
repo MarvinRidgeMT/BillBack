@@ -1,0 +1,16 @@
+{
+  "file": "eval/data/bills/bill_12_very_blurry.jpg",
+  "condition": "blurry",
+  "conditions": [
+    "blurry",
+    "crumpled"
+  ],
+  "hospital_name": "Adena Health System",
+  "hospital_address": "77 Ridgeline Pkwy, Chillicothe, OH 45601",
+  "amount_due": "6700.00",
+  "service_date": "2026-10-03",
+  "account_number": "ADH-3309184",
+  "hospital_slug": "adena-health-system",
+  "state": "OH",
+  "source": "copy of bill_05_crumpled.jpg blurred with Pillow GaussianBlur(radius=7.0); truth = that bill's row"
+}

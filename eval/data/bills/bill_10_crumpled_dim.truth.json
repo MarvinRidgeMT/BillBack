@@ -1,0 +1,16 @@
+{
+  "file": "sample_bills/bill_10_crumpled_dim.jpg",
+  "condition": "dim",
+  "conditions": [
+    "dim",
+    "crumpled"
+  ],
+  "hospital_name": "Fort HealthCare",
+  "hospital_address": "811 Cedar Bluff Rd, Fort Atkinson, WI 53538",
+  "amount_due": "5800.00",
+  "service_date": "2026-11-02",
+  "account_number": "FH 7735-0092",
+  "hospital_slug": "fort-healthcare-inc",
+  "state": "WI",
+  "source": "sample_bills/answer_key.csv (values typed into the bill generator)"
+}

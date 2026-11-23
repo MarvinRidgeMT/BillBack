@@ -1,0 +1,15 @@
+{
+  "file": "sample_bills/bill_06_crumpled.jpg",
+  "condition": "crumpled",
+  "conditions": [
+    "crumpled"
+  ],
+  "hospital_name": "Baptist Memorial Health Care",
+  "hospital_address": "4100 Pecan Hollow Dr, Columbus, MS 39705",
+  "amount_due": "2412.40",
+  "service_date": "2026-05-11",
+  "account_number": "BMH-20871466",
+  "hospital_slug": "baptist-memorial-health-care-corporation",
+  "state": "MS",
+  "source": "sample_bills/answer_key.csv (values typed into the bill generator)"
+}
